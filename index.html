@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ボートレース予想メーカー（完全復旧版）</title>
+    <title>ボートレース予想メーカー（復旧版）</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root { --br-blue: #0054a6; --br-orange: #f39800; --sheet-bg: #fffbf0; }
-        body { font-family: "Hiragino Sans", "Meiryo", sans-serif; background-color: #ccc; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        body { font-family: sans-serif; background-color: #ccc; display: flex; flex-direction: column; align-items: center; padding: 20px; }
 
         /* --- 舟券デザイン --- */
         .ticket-container {
@@ -28,12 +28,7 @@
         .bet-details { font-family: "MS Gothic", monospace; font-size: 18px; margin-top: 5px; }
         .rank-line { display: flex; align-items: center; margin-bottom: 2px; }
         .rank-title { width: 60px; font-weight: normal; }
-        .rank-numbers { 
-            font-size: 28px; 
-            font-weight: 950; 
-            letter-spacing: 5px; 
-            text-shadow: 0.5px 0.5px 0px #000;
-        }
+        .rank-numbers { font-size: 28px; font-weight: 950; letter-spacing: 5px; text-shadow: 0.5px 0.5px 0px #000; }
 
         .summary-row { display: flex; justify-content: flex-end; gap: 15px; font-size: 14px; font-weight: bold; margin-top: 5px; font-family: "MS Gothic"; }
         .ticket-footer { margin-top: 10px; border-top: 1px dashed #999; padding-top: 5px; }
@@ -41,20 +36,29 @@
         
         /* --- マークシート --- */
         .marksheet { background-color: var(--sheet-bg); width: 100%; max-width: 650px; padding: 20px; border: 2px solid var(--br-orange); border-left: 20px solid var(--br-orange); display: flex; flex-direction: column; box-shadow: 5px 5px 0px #888; box-sizing: border-box;}
-        .place-row { display: flex; margin-left: 155px; margin-bottom: 15px; border: 1px solid var(--br-orange); background: #fff; overflow-x: auto; }
+        .place-row { display: flex; margin-left: 150px; margin-bottom: 15px; border: 1px solid var(--br-orange); background: #fff; overflow-x: auto; }
         .place-btn { display: flex; flex-direction: column; align-items: center; min-width: 20px; border-right: 1px solid var(--br-orange); cursor: pointer; padding: 5px 2px; }
         .place-name-vertical { writing-mode: vertical-rl; font-size: 11px; font-weight: bold; color: var(--br-blue); }
-        .place-btn.selected { background-color: var(--br-orange); }
-        .place-btn.selected .place-name-vertical { color: #fff; }
+        .place-btn.selected { background-color: var(--br-orange); color: #fff; }
+
         .main-layout { display: flex; gap: 20px; }
         .race-column { width: 140px; border: 2px solid var(--br-orange); background: #fff; padding: 5px; }
         .race-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
         .race-btn { height: 30px; display: flex; align-items: center; justify-content: center; font-size: 14px; border: 1px solid var(--br-orange); cursor: pointer; color: var(--br-orange); font-weight: bold;}
         .race-btn.selected { background-color: var(--br-orange); color: #fff; }
+
+        .ranks-section { flex: 1; }
         .rank-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
         .rank-label { background: var(--br-blue); color: #fff; font-size: 11px; padding: 3px 5px; width: 35px; text-align: center; }
-        .mark { width: 18px; height: 32px; border: 1.5px solid #555; border-radius: 50% / 30%; display: flex; justify-content: center; align-items: center; font-size: 13px; font-weight: bold; cursor: pointer; background: #fff; user-select: none;}
-        .mark.selected { background-color: #222; color: #fff; }
+        .mark-group { display: flex; gap: 10px; } /* ← これが重要 */
+        
+        .mark { 
+            width: 18px; height: 32px; border: 1.5px solid #555; border-radius: 50% / 30%; 
+            display: flex; justify-content: center; align-items: center; font-size: 13px; 
+            font-weight: bold; cursor: pointer; background: #fff; user-select: none;
+        }
+        .mark.selected { background-color: #222; color: #fff; border-color: #000; }
+        
         .btn-save { margin-top: 30px; padding: 15px 50px; background: #e60012; color: #fff; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
@@ -90,7 +94,10 @@
     <div class="marksheet">
         <div class="place-row" id="place-grid"></div>
         <div class="main-layout">
-            <div class="race-column"><div class="race-container" id="race-grid"></div></div>
+            <div class="race-column">
+                <div style="color:var(--br-orange); font-size:10px; text-align:center; margin-bottom:5px;">レース</div>
+                <div class="race-container" id="race-grid"></div>
+            </div>
             <div class="ranks-section">
                 <div class="rank-row"><div class="rank-label">1着</div><div class="mark-group" id="rank-0"></div></div>
                 <div class="rank-row"><div class="rank-label">2着</div><div class="mark-group" id="rank-1"></div></div>
@@ -103,10 +110,9 @@
 
     <script>
         const places = ["桐生","戸田","江戸川","平和島","多摩川","浜名湖","蒲郡","常滑","津","三国","びわこ","住之江","尼崎","鳴門","丸亀","児島","宮島","徳山","下関","若松","芦屋","福岡","唐津","大村"];
-        // 選択状態を保持する配列
         let selected = [[], [], []];
 
-        // 開催場
+        // 開催場の初期化
         const pGrid = document.getElementById('place-grid');
         places.forEach((name, i) => {
             const btn = document.createElement('div');
@@ -120,21 +126,21 @@
             pGrid.appendChild(btn);
         });
 
-        // レース番号
+        // レース番号の初期化
         const rGrid = document.getElementById('race-grid');
         for (let i = 1; i <= 12; i++) {
             const btn = document.createElement('div');
             btn.className = 'race-btn' + (i === 1 ? " selected" : "");
             btn.innerText = i;
             btn.onclick = () => {
-                rGrid.querySelectorAll('.race-btn').forEach(b => b.classList.remove('selected'));
+                document.querySelectorAll('.race-btn').forEach(b => b.classList.remove('selected'));
                 btn.classList.add('selected');
                 document.getElementById('display-race').innerText = i.toString().padStart(2, '0');
             };
             rGrid.appendChild(btn);
         }
 
-        // マーク（着順ごとの数字選択）
+        // マークの初期化
         for (let r = 0; r < 3; r++) {
             const container = document.getElementById(`rank-${r}`);
             for (let n = 1; n <= 6; n++) {
@@ -149,7 +155,7 @@
                         this.classList.add('selected');
                         selected[r].push(n);
                     }
-                    update(); // ここで点数と舟券表示を更新
+                    update();
                 };
                 container.appendChild(div);
             }
@@ -157,7 +163,7 @@
 
         function update() {
             let count = 0;
-            // 3連単フォーメーション計算（重複を排除）
+            // 3連単計算
             for (let a of selected[0]) {
                 for (let b of selected[1]) {
                     if (a === b) continue;
@@ -167,14 +173,9 @@
                     }
                 }
             }
-            
-            // 舟券の買い目表示を更新
+            // 表示更新
             selected.forEach((arr, i) => {
-                const target = document.getElementById(`numbers-${i}`);
-                // 昇順に並べ替えて表示
-                target.innerText = arr.slice().sort((x, y) => x - y).join(" ");
+                document.getElementById(`numbers-${i}`).innerText = arr.slice().sort().join(" ");
             });
-
-            // 点数と金額の更新
             document.getElementById('display-count').innerText = count;
-            document.getElementById('display-total').innerText = (count * 100).toLocal
+            document.getElementById('display-total').innerText = (count *
