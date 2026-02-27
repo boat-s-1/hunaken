@@ -35,21 +35,18 @@
         .ms-race { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; width: 130px; border: 1px solid var(--br-orange); background: #fff; padding: 3px; }
         .ms-place { flex: 1; border: 1px solid var(--br-orange); background: #fff; display: flex; overflow-x: auto; padding: 3px; gap: 4px; }
         
-        .ms-btn, .p-btn, .amt-btn { border: 1px solid var(--br-orange); background: #fff; color: var(--br-orange); font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 10px; cursor: pointer; }
+        .ms-btn, .p-btn, .amt-btn { border: 1px solid var(--br-orange); background: #fff; color: var(--br-orange); font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 10px; }
         .active { background: var(--br-orange) !important; color: #fff !important; }
 
         .row { display: flex; align-items: center; gap: 5px; margin: 8px 0; }
         .label { background: var(--br-blue); color: #fff; font-size: 11px; width: 40px; text-align: center; padding: 6px 0; font-weight: bold; }
-        .mark { width: 25px; height: 35px; border: 1.5px solid #444; border-radius: 50% / 30%; background: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .mark { width: 25px; height: 35px; border: 1.5px solid #444; border-radius: 50% / 30%; background: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; }
         .mark.selected { background: #222 !important; color: #fff !important; }
 
         .amt-row { display: flex; justify-content: flex-end; gap: 5px; margin-top: 10px; padding-top: 5px; border-top: 1px dashed var(--br-orange); }
         .amt-btn { padding: 5px 10px; }
 
-        /* ボタン類 */
-        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
-        .save-btn { padding: 12px 25px; background: #e60012; color: #fff; border: none; border-radius: 25px; font-weight: bold; font-size: 14px; cursor: pointer; }
-        .x-btn { padding: 12px 25px; background: #000; color: #fff; border: none; border-radius: 25px; font-weight: bold; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+        .save-btn { margin-top: 20px; padding: 12px 40px; background: #e60012; color: #fff; border: none; border-radius: 25px; font-weight: bold; font-size: 16px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -90,18 +87,16 @@
         <div class="amt-row" id="amt-list"></div>
     </div>
 
-    <div class="btn-group">
-        <button class="save-btn" onclick="save(false)">画像を保存</button>
-        <button class="x-btn" onclick="save(true)">𝕏 に投稿</button>
-    </div>
+    <button class="save-btn" onclick="save()">画像を保存</button>
 
     <script>
+        // 設定データ
         const places = ["桐生","戸田","江戸川","平和島","多摩川","浜名湖","蒲郡","常滑","津","三国","びわこ","住之江","尼崎","鳴門","丸亀","児島","宮島","徳山","下関","若松","芦屋","福岡","唐津","大村"];
         const amts = [100, 200, 300, 500, 1000];
         let sel = [[], [], []];
         let unit = 100;
 
-        // 日付
+        // 日付セット
         const now = new Date();
         document.getElementById('res-date').innerText = `${now.getFullYear()}.${now.getMonth()+1}.${now.getDate()}`;
 
@@ -134,7 +129,7 @@
             pl.appendChild(b);
         });
 
-        // 数字
+        // 数字ボタン
         const gl = document.getElementById('mark-groups');
         for(let r=0; r<3; r++){
             const d = document.createElement('div');
@@ -182,15 +177,14 @@
             document.getElementById('res-total').innerText = (cnt * unit).toLocaleString();
         }
 
-        function save(shareX){
+        function save(){
             html2canvas(document.getElementById('capture-target'), {scale: 3}).then(canvas => {
                 const a = document.createElement('a');
                 a.href = canvas.toDataURL();
-                a.download = 'boat_bet.png';
+                a.download = 'boat.png';
                 a.click();
-
-                if(shareX){
-                    setTimeout(() => {
-                        const place = document.getElementById('res-place').innerText;
-                        const race = document.getElementById('res-race').innerText;
-                        const text = encodeURIComponent(`ボートレース$
+            });
+        }
+    </script>
+</body>
+</html>
