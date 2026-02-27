@@ -3,132 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ボートレース予想メーカー（決定版）</title>
+    <title>ボートレース予想メーカー（本格フォーメーション版）</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root { --br-blue: #0054a6; --br-orange: #f39800; --sheet-bg: #fffbf0; }
         body { font-family: "Hiragino Sans", "Meiryo", sans-serif; background-color: #ccc; display: flex; flex-direction: column; align-items: center; padding: 20px; }
 
-        /* --- 舟券デザイン（画像生成対象） --- */
+        /* --- 舟券デザイン（超リアル版） --- */
         .ticket-container {
-            width: 380px; min-height: 180px; background: #fdfdf5; border: 1px solid #999;
-            position: relative; padding: 15px; box-sizing: border-box;
-            font-family: 'Courier New', monospace; color: #111; margin-bottom: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            width: 400px; min-height: 240px; background: #fff; border: 1px solid #999;
+            position: relative; padding: 10px 15px; box-sizing: border-box;
+            color: #000; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            /* 背景の透かしロゴ風デザイン */
+            background-image: radial-gradient(rgba(255, 192, 203, 0.2) 20%, transparent 20%);
+            background-size: 60px 60px;
         }
-        .ticket-header { display: flex; justify-content: space-between; border-bottom: 2px solid #333; font-weight: bold; }
-        .numbers { font-size: 1.8rem; font-weight: bold; text-align: center; margin: 20px 0; letter-spacing: 2px; }
-        .ticket-footer { font-size: 0.7rem; text-align: center; color: #888; margin-top: 5px; }
+        
+        .ticket-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 5px; }
+        .ticket-logo { font-size: 10px; font-weight: bold; line-height: 1; border-bottom: 1px solid #000; }
+        .ticket-place { font-size: 24px; font-weight: 900; font-family: "MS Gothic", sans-serif; }
+        
+        .ticket-info-row { display: flex; border-top: 2px solid #000; border-bottom: 2px solid #000; margin: 5px 0; padding: 2px 0; }
+        .race-num { font-size: 20px; font-weight: bold; width: 100px; border-right: 1px solid #000; }
+        .shikibetsu-box { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: bold; letter-spacing: 5px; }
 
-        /* --- 本格マークシート全体 --- */
+        /* 着順ごとの横並びエリア */
+        .bet-details { font-family: "MS Gothic", monospace; font-size: 18px; font-weight: bold; margin-top: 10px; }
+        .rank-line { display: flex; align-items: center; margin-bottom: 5px; }
+        .rank-title { width: 50px; }
+        .rank-numbers { font-size: 22px; letter-spacing: 3px; }
+
+        /* 下部のバーコードと日付 */
+        .ticket-footer { margin-top: 15px; border-top: 1px dashed #999; padding-top: 5px; }
+        .barcode { height: 30px; background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 4px); width: 100%; }
+        .ticket-date { font-size: 9px; text-align: left; color: #333; }
+
+        /* --- マークシートは以前のものを維持 --- */
         .marksheet {
-            background-color: var(--sheet-bg);
-            width: 100%; max-width: 650px;
-            padding: 20px;
-            border: 2px solid var(--br-orange);
-            border-left: 20px solid var(--br-orange);
-            display: flex;
-            flex-direction: column;
-            box-shadow: 5px 5px 0px #888;
-            box-sizing: border-box;
+            background-color: var(--sheet-bg); width: 100%; max-width: 650px; padding: 20px;
+            border: 2px solid var(--br-orange); border-left: 20px solid var(--br-orange);
+            display: flex; flex-direction: column; box-shadow: 5px 5px 0px #888;
         }
-
-        /* 開催場：横1列・縦書き */
-        .place-row {
-            display: flex;
-            justify-content: flex-start;
-            margin-left: 155px; /* レース番号エリアの幅に合わせる */
-            margin-bottom: 15px;
-            border: 1px solid var(--br-orange);
-            background: #fff;
-            overflow-x: auto;
-        }
-        .place-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-width: 20px;
-            border-right: 1px solid var(--br-orange);
-            cursor: pointer;
-            padding: 5px 2px;
-        }
-        .place-name-vertical {
-            writing-mode: vertical-rl;
-            text-orientation: upright;
-            font-size: 11px;
-            font-weight: bold;
-            color: var(--br-blue);
-            letter-spacing: -1px;
-        }
+        .place-row { display: flex; margin-left: 155px; margin-bottom: 15px; border: 1px solid var(--br-orange); background: #fff; overflow-x: auto; }
+        .place-btn { display: flex; flex-direction: column; align-items: center; min-width: 20px; border-right: 1px solid var(--br-orange); cursor: pointer; padding: 5px 2px; }
+        .place-name-vertical { writing-mode: vertical-rl; font-size: 11px; font-weight: bold; color: var(--br-blue); }
         .place-btn.selected { background-color: var(--br-orange); }
         .place-btn.selected .place-name-vertical { color: #fff; }
-
-        /* メインレイアウト（左：レース番号、右：着順） */
         .main-layout { display: flex; gap: 20px; }
-
-        /* レース番号：4x3グリッド */
-        .race-column {
-            width: 140px;
-            border: 2px solid var(--br-orange);
-            background: #fff;
-            padding: 5px;
-        }
-        .race-label { color: var(--br-orange); font-size: 0.7rem; font-weight: bold; text-align: center; margin-bottom: 5px; }
-        .race-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: repeat(3, 1fr);
-            gap: 4px;
-        }
-        .race-btn {
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: bold;
-            color: var(--br-orange);
-            border: 1px solid var(--br-orange);
-            cursor: pointer;
-        }
+        .race-column { width: 140px; border: 2px solid var(--br-orange); background: #fff; padding: 5px; }
+        .race-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+        .race-btn { height: 30px; display: flex; align-items: center; justify-content: center; font-size: 14px; border: 1px solid var(--br-orange); cursor: pointer; color: var(--br-orange); font-weight: bold;}
         .race-btn.selected { background-color: var(--br-orange); color: #fff; }
-
-        /* 着順セクション */
-        .ranks-section { flex: 1; }
         .rank-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-        .rank-label { 
-            background: var(--br-blue); color: #fff; 
-            font-size: 11px; padding: 3px 5px; width: 35px; text-align: center; font-weight: bold;
-        }
-
-        /* 縦長の楕円マーク */
-        .mark-group { display: flex; gap: 10px; }
-        .mark {
-            width: 18px;
-            height: 32px;
-            border: 1.5px solid #555;
-            border-radius: 50% / 30%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            background: #fff;
-            user-select: none;
-        }
-        .mark.selected {
-            background-color: #222;
-            color: #fff;
-            border-color: #000;
-        }
-
-        .btn-save {
-            margin-top: 30px; padding: 15px 50px;
-            background: #e60012; color: #fff; border: none;
-            border-radius: 50px; font-weight: bold; font-size: 1.2rem;
-            cursor: pointer; box-shadow: 0 4px 0 #900;
-        }
+        .rank-label { background: var(--br-blue); color: #fff; font-size: 11px; padding: 3px 5px; width: 35px; text-align: center; }
+        .mark { width: 18px; height: 32px; border: 1.5px solid #555; border-radius: 50% / 30%; display: flex; justify-content: center; align-items: center; font-size: 13px; font-weight: bold; cursor: pointer; background: #fff; }
+        .mark.selected { background-color: #222; color: #fff; }
+        .btn-save { margin-top: 30px; padding: 15px 50px; background: #e60012; color: #fff; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -136,39 +66,49 @@
     <div id="capture-target">
         <div class="ticket-container">
             <div class="ticket-header">
-                <div id="display-place">平和島</div>
-                <div>勝舟投票券</div>
+                <div class="ticket-logo">BOAT<br>RACE</div>
+                <div class="ticket-place" id="display-place">平和島</div>
+                <div style="font-size: 10px; font-weight: bold;">予想用</div>
             </div>
-            <div style="font-weight: bold; margin-top:8px; font-size: 1.1rem;">
-                <span id="display-race">1</span>R　<span id="display-shiki">3連単</span>
+            
+            <div class="ticket-info-row">
+                <div class="race-num"><span id="display-race">01</span> レース</div>
+                <div class="shikibetsu-box" id="display-shiki">３連単</div>
             </div>
-            <div id="display-numbers" class="numbers">_ － _ － _</div>
-            <div class="ticket-footer">※これは予想シミュレーターです</div>
+
+            <div class="bet-details">
+                <div class="rank-line">
+                    <div class="rank-title">1着</div>
+                    <div class="rank-numbers" id="numbers-0">－</div>
+                </div>
+                <div class="rank-line">
+                    <div class="rank-title">2着</div>
+                    <div class="rank-numbers" id="numbers-1">－</div>
+                </div>
+                <div class="rank-line">
+                    <div class="rank-title">3着</div>
+                    <div class="rank-numbers" id="numbers-2">－</div>
+                </div>
+            </div>
+
+            <div class="ticket-footer">
+                <div class="ticket-date">2026年 02月 27日発行</div>
+                <div class="barcode"></div>
+            </div>
         </div>
     </div>
 
     <div class="marksheet">
         <div class="place-row" id="place-grid"></div>
-
         <div class="main-layout">
             <div class="race-column">
-                <div class="race-label">レース</div>
+                <div style="color:var(--br-orange); font-size:10px; text-align:center; margin-bottom:5px;">レース</div>
                 <div class="race-container" id="race-grid"></div>
             </div>
-
             <div class="ranks-section">
-                <div class="rank-row">
-                    <div class="rank-label">1着</div>
-                    <div class="mark-group" id="rank-0"></div>
-                </div>
-                <div class="rank-row">
-                    <div class="rank-label">2着</div>
-                    <div class="mark-group" id="rank-1"></div>
-                </div>
-                <div class="rank-row">
-                    <div class="rank-label">3着</div>
-                    <div class="mark-group" id="rank-2"></div>
-                </div>
+                <div class="rank-row"><div class="rank-label">1着</div><div style="display:flex;gap:10px;" id="rank-0"></div></div>
+                <div class="rank-row"><div class="rank-label">2着</div><div style="display:flex;gap:10px;" id="rank-1"></div></div>
+                <div class="rank-row"><div class="rank-label">3着</div><div style="display:flex;gap:10px;" id="rank-2"></div></div>
             </div>
         </div>
     </div>
@@ -179,7 +119,7 @@
         const places = ["桐生","戸田","江戸川","平和島","多摩川","浜名湖","蒲郡","常滑","津","三国","びわこ","住之江","尼崎","鳴門","丸亀","児島","宮島","徳山","下関","若松","芦屋","福岡","唐津","大村"];
         let selectedNumbers = [[], [], []];
 
-        // 開催場ボタン生成
+        // 開催場
         const pGrid = document.getElementById('place-grid');
         places.forEach((name, i) => {
             const btn = document.createElement('div');
@@ -193,7 +133,7 @@
             pGrid.appendChild(btn);
         });
 
-        // レース番号生成（4x3グリッド用）
+        // レース番号 (4x3)
         const rGrid = document.getElementById('race-grid');
         for (let i = 1; i <= 12; i++) {
             const btn = document.createElement('div');
@@ -202,12 +142,12 @@
             btn.onclick = () => {
                 rGrid.querySelectorAll('.race-btn').forEach(b => b.classList.remove('selected'));
                 btn.classList.add('selected');
-                document.getElementById('display-race').innerText = i;
+                document.getElementById('display-race').innerText = i.toString().padStart(2, '0');
             };
             rGrid.appendChild(btn);
         }
 
-        // 縦長マーク生成
+        // マーク
         for (let r = 0; r < 3; r++) {
             const container = document.getElementById(`rank-${r}`);
             for (let n = 1; n <= 6; n++) {
@@ -230,15 +170,15 @@
         }
 
         function updateDisplay() {
-            const result = selectedNumbers.map(arr => arr.length > 0 ? arr.join(",") : "_").join(" － ");
-            document.getElementById('display-numbers').innerText = result;
+            selectedNumbers.forEach((arr, i) => {
+                document.getElementById(`numbers-${i}`).innerText = arr.length > 0 ? arr.join(" ") : "－";
+            });
         }
 
         function saveImage() {
-            const target = document.getElementById('capture-target');
-            html2canvas(target, { scale: 2 }).then(canvas => {
+            html2canvas(document.getElementById('capture-target'), { scale: 2 }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = `boatrace_yoso.png`;
+                link.download = `boatrace_ticket.png`;
                 link.href = canvas.toDataURL("image/png");
                 link.click();
             });
