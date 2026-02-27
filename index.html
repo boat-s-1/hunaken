@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ボートレース予想メーカー 究極版</title>
+    <title>ボートレース予想メーカー 修正版</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root { --br-blue: #0054a6; --br-orange: #f39800; --sheet-bg: #fffbf0; }
@@ -16,7 +16,7 @@
             padding: 8px; box-sizing: border-box; display: flex; flex-direction: column; position: relative;
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="40"><text x="10" y="30" font-family="sans-serif" font-size="14" fill="rgba(255,192,203,0.1)" transform="rotate(-15, 50, 20)">P-STAR</text></svg>');
         }
-        .t-top-row { display: flex; flex: 1; }
+        .t-top-row { display: flex; flex: 1; overflow: hidden; }
         .t-left { width: 110px; border-right: 1px solid #000; display: flex; flex-direction: column; padding-right: 5px; }
         .t-mid { width: 45px; display: flex; align-items: center; justify-content: center; }
         .t-right { flex: 1; padding-left: 8px; display: flex; flex-direction: column; }
@@ -28,37 +28,50 @@
         .t-barcode-area { width: 100%; display: flex; justify-content: center; padding: 5px 0; }
         .t-barcode { width: 85%; height: 18px; background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 4px); }
 
-        /* --- 新マークシートデザイン --- */
+        /* --- マークシート修正 --- */
         .ms { background: var(--sheet-bg); width: 100%; max-width: 380px; padding: 12px; border: 2px solid var(--br-orange); border-left: 10px solid var(--br-orange); box-sizing: border-box; margin-top: 10px; border-radius: 4px; }
         
-        /* レースと会場の並び */
-        .ms-top-flex { display: flex; gap: 8px; margin-bottom: 12px; }
+        .ms-top-flex { display: flex; gap: 8px; margin-bottom: 12px; height: 110px; }
         
-        /* レース選択(左) */
+        /* レース選択 */
         .race-container { width: 140px; border: 1px solid var(--br-orange); padding: 5px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; background: #fff; }
-        .r-btn { border: 1px solid #ddd; font-size: 10px; color: var(--br-orange); text-align: center; padding: 6px 0; cursor: pointer; font-weight: bold; }
+        .r-btn { border: 1px solid #ddd; font-size: 11px; color: var(--br-orange); text-align: center; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; height: 100%; }
         .r-btn.active { background: var(--br-orange); color: #fff; border-color: var(--br-orange); }
 
-        /* 会場選択(右) */
-        .place-container { flex: 1; border: 1px solid var(--br-orange); background: #fff; display: flex; overflow-x: auto; padding: 5px 2px; gap: 2px; }
-        .p-btn { min-width: 22px; writing-mode: vertical-rl; text-orientation: upright; font-size: 10px; color: #444; padding: 4px 0; text-align: center; cursor: pointer; border-left: 1px solid #eee; position: relative; }
+        /* 会場選択（重なり防止修正） */
+        .place-container { flex: 1; border: 1px solid var(--br-orange); background: #fff; display: flex; overflow-x: auto; padding: 0; }
+        .p-btn { 
+            min-width: 30px; 
+            writing-mode: vertical-rl; 
+            text-orientation: upright; 
+            font-size: 11px; 
+            color: #444; 
+            text-align: center; 
+            cursor: pointer; 
+            border-right: 1px solid #eee; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            height: 100%;
+            flex-shrink: 0;
+            z-index: 1;
+        }
         .p-btn.active { background: var(--br-orange); color: #fff; font-weight: bold; }
-        .p-btn span { font-size: 8px; color: #999; margin-bottom: 2px; }
+        .p-btn span { font-size: 8px; margin-bottom: 4px; pointer-events: none; }
 
         /* 着順選択 */
         .row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
         .label { background: var(--br-blue); color: #fff; font-size: 11px; width: 35px; text-align: center; padding: 8px 0; font-weight: bold; border-radius: 2px; }
         .mark-wrap { display: flex; gap: 6px; }
-        .mark { width: 34px; height: 34px; border: 1.5px solid #444; border-radius: 50%; background: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; transition: 0.2s; }
-        .mark.selected { background: #222 !important; color: #fff !important; border-color: #222; }
+        .mark { width: 34px; height: 34px; border: 1.5px solid #444; border-radius: 50%; background: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
+        .mark.selected { background: #222 !important; color: #fff !important; }
 
         /* 金額 */
         .amt-wrap { display: flex; justify-content: flex-end; gap: 5px; border-top: 1px dashed #ccc; padding-top: 10px; }
-        .amt-btn { border: 1px solid var(--br-orange); background: #fff; color: var(--br-orange); font-weight: bold; padding: 6px 12px; font-size: 11px; cursor: pointer; border-radius: 3px; }
+        .amt-btn { border: 1px solid var(--br-orange); background: #fff; color: var(--br-orange); font-weight: bold; padding: 8px 15px; font-size: 12px; cursor: pointer; border-radius: 3px; }
         .amt-btn.active { background: var(--br-orange); color: #fff; }
 
-        .btn-group { display: flex; gap: 10px; margin-top: 15px; width: 100%; max-width: 380px; }
-        .save-btn { padding: 14px; background: #e60012; color: #fff; border: none; border-radius: 30px; font-weight: bold; cursor: pointer; flex: 1; font-size: 16px; }
+        .save-btn { margin-top: 15px; padding: 14px; background: #e60012; color: #fff; border: none; border-radius: 30px; font-weight: bold; cursor: pointer; width: 100%; max-width: 380px; font-size: 16px; }
     </style>
 </head>
 <body>
@@ -73,13 +86,10 @@
                         <span style="font-size:24px; font-weight:bold;" id="res-race">07</span><span style="font-size:14px; font-weight:bold;">レース</span>
                     </div>
                     <div style="font-size:9px; font-weight:bold; line-height:1.2;">
-                        2024年 05月 20日<br>
-                        <span id="res-pref">滋賀県</span>
+                        2024年 05月 20日<br><span id="res-pref">滋賀県</span>
                     </div>
                 </div>
-                <div class="t-mid">
-                    <div class="t-shiki-v">３連単</div>
-                </div>
+                <div class="t-mid"><div class="t-shiki-v">３連単</div></div>
                 <div class="t-right">
                     <div style="border:1.5px solid #000; padding:1px 5px; align-self:flex-start; margin-bottom:5px; font-size:11px; font-weight:bold;">フォーメーション</div>
                     <div style="flex:1; display:flex; flex-direction:column; justify-content:center;">
@@ -94,9 +104,7 @@
                     </div>
                 </div>
             </div>
-            <div class="t-barcode-area">
-                <div class="t-barcode"></div>
-            </div>
+            <div class="t-barcode-area"><div class="t-barcode"></div></div>
         </div>
     </div>
 
@@ -112,14 +120,14 @@
             <div class="place-container" id="place-btns">
                 <script>
                     const places = [
-                        {id:1, n:'桐生',p:'群馬県'},{id:2, n:'戸田',p:'埼玉県'},{id:3, n:'江戸川',p:'東京都'},{id:4, n:'平和島',p:'東京都'},{id:5, n:'多摩川',p:'東京都'},
-                        {id:6, n:'浜名湖',p:'静岡県'},{id:7, n:'蒲郡',p:'愛知県'},{id:8, n:'常滑',p:'愛知県'},{id:9, n:'津',p:'三重県'},{id:10,n:'三国',p:'福井県'},
-                        {id:11,n:'びわこ',p:'滋賀県'},{id:12,n:'住之江',p:'大阪府'},{id:13,n:'尼崎',p:'兵庫県'},{id:14,n:'鳴門',p:'徳島県'},{id:15,n:'丸亀',p:'香川県'},
-                        {id:16,n:'児島',p:'岡山県'},{id:17,n:'宮島',p:'広島県'},{id:18,n:'徳山',p:'山口県'},{id:19,n:'下関',p:'山口県'},{id:20,n:'若松',p:'福岡県'},
-                        {id:21,n:'芦屋',p:'福岡県'},{id:22,n:'福岡',p:'福岡県'},{id:23,n:'唐津',p:'佐賀県'},{id:24,n:'大村',p:'長崎県'}
+                        {n:'桐生',p:'群馬県'},{n:'戸田',p:'埼玉県'},{n:'江戸川',p:'東京都'},{n:'平和島',p:'東京都'},{n:'多摩川',p:'東京都'},
+                        {n:'浜名湖',p:'静岡県'},{n:'蒲郡',p:'愛知県'},{n:'常滑',p:'愛知県'},{n:'津',p:'三重県'},{n:'三国',p:'福井県'},
+                        {n:'びわこ',p:'滋賀県'},{n:'住之江',p:'大阪府'},{n:'尼崎',p:'兵庫県'},{n:'鳴門',p:'徳島県'},{n:'丸亀',p:'香川県'},
+                        {n:'児島',p:'岡山県'},{n:'宮島',p:'広島県'},{id:18,n:'徳山',p:'山口県'},{n:'下関',p:'山口県'},{n:'若松',p:'福岡県'},
+                        {n:'芦屋',p:'福岡県'},{n:'福岡',p:'福岡県'},{n:'唐津',p:'佐賀県'},{n:'大村',p:'長崎県'}
                     ];
-                    places.forEach(p => {
-                        document.write(`<div class="p-btn ${p.n=='びわこ'?'active':''}" onclick="setPlace(this, '${p.n}', '${p.p}')"><span>${p.id}</span>${p.n}</div>`);
+                    places.forEach((p, idx) => {
+                        document.write(`<div class="p-btn ${p.n=='びわこ'?'active':''}" onclick="setPlace(this, '${p.n}', '${p.p}')"><span>${idx+1}</span>${p.n}</div>`);
                     });
                 </script>
             </div>
@@ -144,9 +152,7 @@
         </div>
     </div>
 
-    <div class="btn-group">
-        <button class="save-btn" onclick="save()">画像を保存する</button>
-    </div>
+    <button class="save-btn" onclick="save()">画像を保存する</button>
 
     <script>
         let sel = [[], [], []];
@@ -161,4 +167,5 @@
 
         function setRace(el, val) {
             document.querySelectorAll('#race-btns .r-btn').forEach(b => b.classList.remove('active'));
-            el.classLi
+            el.classList.add('active');
+            document.getElem
