@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ボートレース予想メーカー 決定版</title>
+    <title>ボートレース予想メーカー 修正版</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root { --br-blue: #0054a6; --br-orange: #f39800; --sheet-bg: #fffbf0; }
@@ -19,8 +19,7 @@
 
         .t-top-row { display: flex; flex: 1; }
         .t-left { width: 110px; border-right: 1px solid #000; display: flex; flex-direction: column; padding-right: 5px; }
-        /* 縦線を消すため border をなしに設定 */
-        .t-mid { width: 45px; display: flex; align-items: center; justify-content: center; border: none; }
+        .t-mid { width: 45px; display: flex; align-items: center; justify-content: center; }
         .t-right { flex: 1; padding-left: 8px; display: flex; flex-direction: column; }
 
         .t-place-box { border: 1.5px solid #000; padding: 2px; text-align: center; margin: 5px 0; font-size: 18px; font-weight: bold; }
@@ -31,14 +30,11 @@
 
         .t-summary { text-align: right; font-size: 11px; font-weight: bold; line-height: 1.2; margin-top: auto; }
 
-        /* バーコードを中央配置 */
         .t-barcode-area { width: 100%; display: flex; justify-content: center; padding: 5px 0; }
         .t-barcode { width: 85%; height: 18px; background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 4px); }
 
         /* --- マークシート --- */
         .ms { background: var(--sheet-bg); width: 100%; max-width: 360px; padding: 10px; border: 2px solid var(--br-orange); border-left: 10px solid var(--br-orange); box-sizing: border-box; margin-top: 10px; }
-        
-        /* 会場選択用グリッド (6列) */
         .grid-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; margin-bottom: 10px; }
         .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 10px; }
         
@@ -95,7 +91,7 @@
     </div>
 
     <div class="ms">
-        <div class="grid-6">
+        <div class="grid-6" id="place-btns">
             <script>
                 const places = [
                     {n:'桐生',p:'群馬県'},{n:'戸田',p:'埼玉県'},{n:'江戸川',p:'東京都'},{n:'平和島',p:'東京都'},{n:'多摩川',p:'東京都'},{n:'浜名湖',p:'静岡県'},
@@ -109,7 +105,7 @@
             </script>
         </div>
 
-        <div class="grid-4">
+        <div class="grid-4" id="race-btns">
             <script>
                 for(let i=1; i<=12; i++) {
                     document.write(`<div class="btn ${i==7?'active':''}" onclick="setRace(this, '${String(i).padStart(2,'0')}')">${i}R</div>`);
@@ -129,7 +125,7 @@
             </script>
         </div>
 
-        <div style="display:flex; justify-content:flex-end; gap:5px; margin-top:10px;">
+        <div style="display:flex; justify-content:flex-end; gap:5px; margin-top:10px;" id="amt-btns">
             <div class="btn active" onclick="setAmt(this, 100)">100円</div>
             <div class="btn" onclick="setAmt(this, 500)">500円</div>
             <div class="btn" onclick="setAmt(this, 1000)">1000円</div>
@@ -146,27 +142,30 @@
         let unit = 100;
 
         function setPlace(el, name, pref) {
-            document.querySelectorAll('.grid-6 .btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('#place-btns .btn').forEach(b => b.classList.remove('active'));
             el.classList.add('active');
             document.getElementById('res-place').innerText = name;
             document.getElementById('res-pref').innerText = pref;
         }
 
         function setRace(el, val) {
-            document.querySelectorAll('.grid-4 .btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('#race-btns .btn').forEach(b => b.classList.remove('active'));
             el.classList.add('active');
             document.getElementById('res-race').innerText = val;
         }
 
         function tapMark(el, r, n) {
-            if(sel[r].includes(n)) sel[r] = sel[r].filter(v => v !== n);
-            else sel[r].push(n);
+            if(sel[r].includes(n)) {
+                sel[r] = sel[r].filter(v => v !== n);
+            } else {
+                sel[r].push(n);
+            }
             el.classList.toggle('selected');
             update();
         }
 
         function setAmt(el, val) {
-            document.querySelectorAll('.ms .btn:not(.grid-4 .btn):not(.grid-6 .btn)').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('#amt-btns .btn').forEach(b => b.classList.remove('active'));
             el.classList.add('active');
             unit = val;
             document.getElementById('res-unit').innerText = val;
@@ -175,15 +174,18 @@
 
         function update() {
             let cnt = 0;
-            for(let a of sel[0]) for(let b of sel[1]) for(let d of sel[2]) {
-                if(a !== b && b !== d && a !== d) cnt++;
+            // フォーメーション計算
+            for(let a of sel[0]) {
+                for(let b of sel[1]) {
+                    if(a === b) continue;
+                    for(let d of sel[2]) {
+                        if(a === d || b === d) continue;
+                        cnt++;
+                    }
+                }
             }
             sel.forEach((set, i) => {
                 document.getElementById('ans' + i).innerText = set.sort().join(' ');
             });
             document.getElementById('res-cnt').innerText = cnt;
-            document.getElementById('res-total').innerText = (cnt * unit).toLocaleString();
-        }
-
-        function save(shareX) {
-            html2canvas(
+            documen
