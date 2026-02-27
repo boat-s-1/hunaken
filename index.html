@@ -21,11 +21,12 @@
         }
         .ticket-header { display: flex; justify-content: space-between; align-items: center; }
         .ticket-place { font-size: 22px; font-weight: 950; letter-spacing: 1px; }
+        
         .ticket-info-row { 
             display: flex; border-top: 2.5px solid #000; border-bottom: 2.5px solid #000; 
             margin: 2px 0; padding: 0; height: 30px; align-items: center;
         }
-        .race-num { font-size: 18px; font-weight: 900; width: 110px; border-right: 2px solid #000; white-space: nowrap; padding-left: 5px; }
+        .race-num { font-size: 18px; font-weight: 900; width: 115px; border-right: 2px solid #000; white-space: nowrap; padding-left: 5px; }
         .shikibetsu-box { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 900; letter-spacing: 8px; }
 
         .bet-area { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; }
@@ -34,21 +35,30 @@
         .rank-numbers { 
             font-size: 24px; font-weight: 950; letter-spacing: 2px; 
             font-family: serif; text-shadow: 0.5px 0.5px 0px #000;
-            white-space: nowrap; overflow: hidden;
+            white-space: nowrap;
         }
 
         .summary-area { font-size: 13px; font-weight: 900; text-align: right; line-height: 1.1; margin-top: 2px; }
         .barcode { height: 20px; background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 5px); margin-top: 3px; }
 
         /* --- マークシート --- */
-        .marksheet { background-color: var(--sheet-bg); width: 100%; max-width: 420px; padding: 10px; border: 2px solid var(--br-orange); border-left: 15px solid var(--br-orange); box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; position: relative; }
+        .marksheet { 
+            background-color: var(--sheet-bg); width: 100%; max-width: 420px; 
+            padding: 10px; border: 2px solid var(--br-orange); 
+            border-left: 15px solid var(--br-orange); box-sizing: border-box; 
+            display: flex; flex-direction: column; gap: 8px; 
+        }
         .ms-top-row { display: flex; gap: 8px; height: 110px; }
+        
+        /* レース番号：横4縦3 */
         .race-section { width: 135px; border: 1.5px solid var(--br-orange); background: #fff; padding: 4px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; }
         .race-btn { font-size: 11px; height: 28px; border: 1px solid var(--br-orange); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--br-orange); cursor: pointer; }
-        .race-btn.selected { background: var(--br-orange); color: #fff; }
+        .race-btn.selected { background: var(--br-orange) !important; color: #fff !important; }
+
+        /* 会場選択：横スクロール */
         .place-section { flex: 1; border: 1.5px solid var(--br-orange); background: #fff; display: flex; overflow-x: auto; padding: 4px; gap: 2px; }
         .place-btn { display: flex; flex-direction: column; align-items: center; min-width: 20px; cursor: pointer; }
-        .place-btn.selected { background: var(--br-orange); color: #fff; }
+        .place-btn.selected { background: var(--br-orange) !important; color: #fff !important; }
         .place-name-v { writing-mode: vertical-rl; font-size: 10px; font-weight: bold; }
 
         .marks-area { display: flex; flex-direction: column; gap: 4px; }
@@ -57,10 +67,13 @@
         .mark { width: 18px; height: 34px; border: 2px solid #444; border-radius: 50% / 35%; display: flex; justify-content: center; align-items: center; font-size: 14px; font-weight: bold; background: #fff; cursor: pointer; }
         .mark.selected { background: #222 !important; color: #fff !important; }
 
-        /* 金額選択セクション */
-        .amount-section { align-self: flex-end; display: flex; gap: 5px; margin-top: 5px; background: #fff; padding: 4px; border: 1.5px solid var(--br-orange); }
-        .amount-btn { font-size: 10px; width: 35px; height: 25px; border: 1px solid var(--br-orange); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--br-orange); cursor: pointer; }
-        .amount-btn.selected { background: var(--br-orange); color: #fff; }
+        /* 金額ボタン */
+        .amount-row { display: flex; justify-content: flex-end; gap: 5px; margin-top: 5px; }
+        .amt-btn { 
+            font-size: 10px; padding: 5px 8px; border: 1.5px solid var(--br-orange); 
+            background: #fff; color: var(--br-orange); font-weight: bold; cursor: pointer; 
+        }
+        .amt-btn.selected { background: var(--br-orange) !important; color: #fff !important; }
 
         .btn-save { margin-top: 15px; padding: 12px 40px; background: #e60012; color: #fff; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 15px; }
     </style>
@@ -101,7 +114,7 @@
             <div class="mark-row" style="margin-top:4px;"><div class="rank-label-ms">2着</div><div id="group-1" style="display:flex; gap:8px;"></div></div>
             <div class="mark-row" style="margin-top:4px;"><div class="rank-label-ms">3着</div><div id="group-2" style="display:flex; gap:8px;"></div></div>
         </div>
-        <div class="amount-section" id="amount-container"></div>
+        <div class="amount-row" id="amount-container"></div>
     </div>
 
     <button class="btn-save" onclick="saveImage()">画像を保存</button>
@@ -112,6 +125,7 @@
         let sel = [[], [], []];
         let unitPrice = 100;
 
+        // 会場
         const pCont = document.getElementById('place-container');
         places.forEach((p, i) => {
             const d = document.createElement('div');
@@ -125,6 +139,7 @@
             pCont.appendChild(d);
         });
 
+        // レース番号
         const rCont = document.getElementById('race-container');
         for(let i=1; i<=12; i++){
             const d = document.createElement('div');
@@ -138,21 +153,23 @@
             rCont.appendChild(d);
         }
 
+        // 金額
         const aCont = document.getElementById('amount-container');
         amounts.forEach(amt => {
-            const d = document.createElement('div');
-            d.className = 'amount-btn' + (amt===100?' selected':'');
-            d.innerText = amt;
-            d.onclick = function(){
-                document.querySelectorAll('.amount-btn').forEach(b=>b.classList.remove('selected'));
+            const b = document.createElement('div');
+            b.className = 'amt-btn' + (amt===100?' selected':'');
+            b.innerText = amt + '円';
+            b.onclick = function(){
+                document.querySelectorAll('.amt-btn').forEach(el=>el.classList.remove('selected'));
                 this.classList.add('selected');
                 unitPrice = amt;
                 document.getElementById('disp-unit-price').innerText = amt;
                 update();
             };
-            aCont.appendChild(d);
+            aCont.appendChild(b);
         });
 
+        // 数字
         for(let r=0; r<3; r++){
             const g = document.getElementById('group-' + r);
             for(let n=1; n<=6; n++){
@@ -167,10 +184,3 @@
                         this.classList.add('selected');
                         sel[r].push(n);
                     }
-                    update();
-                };
-                g.appendChild(m);
-            }
-        }
-
-        function update(){
