@@ -9,7 +9,7 @@
         :root { --br-blue: #0054a6; --br-orange: #f39800; --sheet-bg: #fffbf0; }
         body { font-family: "MS Gothic", sans-serif; background-color: #ccc; display: flex; flex-direction: column; align-items: center; padding: 10px; margin: 0; }
 
-        /* 舟券表示 */
+        /* --- 舟券デザイン --- */
         #capture-target { padding: 10px; background: #ccc; }
         .ticket-container {
             width: 380px; min-height: 240px; background: #fff; border: 1px solid #333;
@@ -23,7 +23,7 @@
         .race-num { font-size: 22px; font-weight: 900; width: 100px; border-right: 2px solid #000; }
         .shikibetsu-box { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 900; letter-spacing: 8px; }
 
-        /* 買い目数字を「びわこ風」に極太に */
+        /* 買い目数字（極太・びわこ風） */
         .rank-numbers { 
             font-size: 34px; font-weight: 950; letter-spacing: 6px; 
             font-family: serif; text-shadow: 1px 1px 0px #000;
@@ -31,19 +31,33 @@
 
         .summary-row { display: flex; justify-content: flex-end; gap: 15px; font-size: 15px; font-weight: 900; }
 
-        /* マークシート */
+        /* --- マークシート --- */
         .marksheet {
             background-color: var(--sheet-bg); width: 100%; max-width: 400px;
             padding: 15px; border: 2px solid var(--br-orange);
             border-left: 15px solid var(--br-orange); box-sizing: border-box;
+            display: flex; flex-direction: column; gap: 10px;
         }
-        .mark-row { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        
+        /* 会場選択（スクロール可能） */
+        .place-row { display: flex; overflow-x: auto; background: #fff; border: 1.5px solid var(--br-orange); padding: 5px; gap: 3px; }
+        .place-btn { display: flex; flex-direction: column; align-items: center; min-width: 22px; cursor: pointer; border-right: 1px solid #eee; }
+        .place-btn.selected { background: var(--br-orange); color: #fff; }
+        .place-name-v { writing-mode: vertical-rl; font-size: 11px; font-weight: bold; }
+
+        /* レース番号（4列3行） */
+        .race-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; background: #fff; border: 1.5px solid var(--br-orange); padding: 5px; }
+        .race-btn { height: 30px; border: 1.5px solid var(--br-orange); display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer; color: var(--br-orange); }
+        .race-btn.selected { background: var(--br-orange); color: #fff; }
+
+        /* 着順マーク */
+        .mark-row { display: flex; align-items: center; gap: 10px; margin-top: 5px; }
         .rank-label-ms { background: var(--br-blue); color: #fff; font-size: 12px; width: 45px; text-align: center; font-weight: bold; padding: 4px 0;}
         .mark-group { display: flex; gap: 10px; }
         .mark {
             width: 22px; height: 38px; border: 2.5px solid #444; border-radius: 50% / 35%;
             display: flex; justify-content: center; align-items: center;
-            font-size: 16px; font-weight: bold; background: #fff; cursor: pointer;
+            font-size: 16px; font-weight: bold; background: #fff; cursor: pointer; user-select: none;
         }
         .mark.selected { background: #222 !important; color: #fff !important; }
 
@@ -56,11 +70,11 @@
         <div class="ticket-container">
             <div class="ticket-header">
                 <div style="font-size:11px; font-weight:bold;">BOAT<br>RACE</div>
-                <div class="ticket-place">びわこ</div>
+                <div class="ticket-place" id="disp-place">平和島</div>
                 <div style="font-size:12px; font-weight:bold;">フォーメーション</div>
             </div>
             <div class="ticket-info-row">
-                <div class="race-num">07 レース</div>
+                <div class="race-num"><span id="disp-race">01</span> レース</div>
                 <div class="shikibetsu-box">３連単</div>
             </div>
             <div style="margin-top:10px;">
@@ -75,53 +89,85 @@
     </div>
 
     <div class="marksheet">
-        <div class="mark-row">
-            <div class="rank-label-ms">1着</div>
-            <div class="mark-group">
-                <div class="mark" onclick="tap(0,1,this)">1</div><div class="mark" onclick="tap(0,2,this)">2</div><div class="mark" onclick="tap(0,3,this)">3</div><div class="mark" onclick="tap(0,4,this)">4</div><div class="mark" onclick="tap(0,5,this)">5</div><div class="mark" onclick="tap(0,6,this)">6</div>
-            </div>
-        </div>
-        <div class="mark-row">
-            <div class="rank-label-ms">2着</div>
-            <div class="mark-group">
-                <div class="mark" onclick="tap(1,1,this)">1</div><div class="mark" onclick="tap(1,2,this)">2</div><div class="mark" onclick="tap(1,3,this)">3</div><div class="mark" onclick="tap(1,4,this)">4</div><div class="mark" onclick="tap(1,5,this)">5</div><div class="mark" onclick="tap(1,6,this)">6</div>
-            </div>
-        </div>
-        <div class="mark-row">
-            <div class="rank-label-ms">3着</div>
-            <div class="mark-group">
-                <div class="mark" onclick="tap(2,1,this)">1</div><div class="mark" onclick="tap(2,2,this)">2</div><div class="mark" onclick="tap(2,3,this)">3</div><div class="mark" onclick="tap(2,4,this)">4</div><div class="mark" onclick="tap(2,5,this)">5</div><div class="mark" onclick="tap(2,6,this)">6</div>
-            </div>
-        </div>
+        <div class="place-row" id="place-container"></div>
+
+        <div class="race-grid" id="race-container"></div>
+
+        <div class="mark-row"><div class="rank-label-ms">1着</div><div class="mark-group" id="group-0"></div></div>
+        <div class="mark-row"><div class="rank-label-ms">2着</div><div class="mark-group" id="group-1"></div></div>
+        <div class="mark-row"><div class="rank-label-ms">3着</div><div class="mark-group" id="group-2"></div></div>
     </div>
 
     <button class="btn-save" onclick="saveImage()">画像を保存</button>
 
     <script>
+        const places = ["桐生","戸田","江戸川","平和島","多摩川","浜名湖","蒲郡","常滑","津","三国","びわこ","住之江","尼崎","鳴門","丸亀","児島","宮島","徳山","下関","若松","芦屋","福岡","唐津","大村"];
         let sel = [[], [], []];
 
-        function tap(r, n, el) {
-            if (el.classList.contains('selected')) {
-                el.classList.remove('selected');
-                sel[r] = sel[r].filter(v => v !== n);
-            } else {
-                el.classList.add('selected');
-                sel[r].push(n);
+        // 開催場の生成
+        const pCont = document.getElementById('place-container');
+        places.forEach((p, i) => {
+            const d = document.createElement('div');
+            d.className = 'place-btn' + (p==='平和島'?' selected':'');
+            d.innerHTML = `<span style="font-size:7px;">${i+1}</span><span class="place-name-v">${p}</span>`;
+            d.onclick = function(){
+                document.querySelectorAll('.place-btn').forEach(b=>b.classList.remove('selected'));
+                this.classList.add('selected');
+                document.getElementById('disp-place').innerText = p;
+            };
+            pCont.appendChild(d);
+        });
+
+        // レース番号の生成
+        const rCont = document.getElementById('race-container');
+        for(let i=1; i<=12; i++){
+            const d = document.createElement('div');
+            d.className = 'race-btn' + (i===1?' selected':'');
+            d.innerText = i + 'R';
+            d.onclick = function(){
+                document.querySelectorAll('.race-btn').forEach(b=>b.classList.remove('selected'));
+                this.classList.add('selected');
+                document.getElementById('disp-race').innerText = i.toString().padStart(2, '0');
+            };
+            rCont.appendChild(d);
+        }
+
+        // 数字マークの生成
+        for(let r=0; r<3; r++){
+            const g = document.getElementById('group-' + r);
+            for(let n=1; n<=6; n++){
+                const m = document.createElement('div');
+                m.className = 'mark';
+                m.innerText = n;
+                m.onclick = function(){
+                    if(this.classList.contains('selected')){
+                        this.classList.remove('selected');
+                        sel[r] = sel[r].filter(v=>v!==n);
+                    } else {
+                        this.classList.add('selected');
+                        sel[r].push(n);
+                    }
+                    update();
+                };
+                g.appendChild(m);
             }
+        }
+
+        function update(){
             let c = 0;
-            for (let a of sel[0]) for (let b of sel[1]) for (let d of sel[2]) {
-                if (a !== b && b !== d && a !== d) c++;
+            for(let a of sel[0]) for(let b of sel[1]) for(let d of sel[2]) {
+                if(a!==b && b!==d && a!==d) c++;
             }
             sel.forEach((a, i) => document.getElementById('ans-' + i).innerText = a.sort().join(' '));
             document.getElementById('cnt').innerText = c;
-            document.getElementById('total').innerText = (c * 100).toLocaleString();
+            document.getElementById('total').innerText = (c*100).toLocaleString();
         }
 
-        function saveImage() {
-            html2canvas(document.getElementById('capture-target'), {scale: 2}).then(canvas => {
+        function saveImage(){
+            html2canvas(document.getElementById('capture-target'), {scale: 2.5}).then(canvas => {
                 const a = document.createElement('a');
                 a.href = canvas.toDataURL();
-                a.download = 'ticket.png';
+                a.download = 'boat_ticket.png';
                 a.click();
             });
         }
