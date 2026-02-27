@@ -3,54 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ボートレース予想メーカー（本格シート版）</title>
+    <title>ボートレース予想メーカー（決定版）</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root { --br-blue: #0054a6; --br-orange: #f39800; --sheet-bg: #fffbf0; }
         body { font-family: "Hiragino Sans", "Meiryo", sans-serif; background-color: #ccc; display: flex; flex-direction: column; align-items: center; padding: 20px; }
 
-        /* 舟券デザインは維持 */
+        /* --- 舟券デザイン（画像生成対象） --- */
         .ticket-container {
-            width: 380px; min-height: 180px; background: #fffef0; border: 1px solid #999;
+            width: 380px; min-height: 180px; background: #fdfdf5; border: 1px solid #999;
             position: relative; padding: 15px; box-sizing: border-box;
             font-family: 'Courier New', monospace; color: #111; margin-bottom: 20px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         .ticket-header { display: flex; justify-content: space-between; border-bottom: 2px solid #333; font-weight: bold; }
-        .numbers { font-size: 2rem; font-weight: bold; text-align: center; margin: 20px 0; letter-spacing: 2px; }
+        .numbers { font-size: 1.8rem; font-weight: bold; text-align: center; margin: 20px 0; letter-spacing: 2px; }
+        .ticket-footer { font-size: 0.7rem; text-align: center; color: #888; margin-top: 5px; }
 
-        /* 本格マークシート */
+        /* --- 本格マークシート全体 --- */
         .marksheet {
             background-color: var(--sheet-bg);
-            width: 650px; /* 横長に広げる */
+            width: 100%; max-width: 650px;
             padding: 20px;
             border: 2px solid var(--br-orange);
             border-left: 20px solid var(--br-orange);
             display: flex;
             flex-direction: column;
             box-shadow: 5px 5px 0px #888;
+            box-sizing: border-box;
         }
 
-        /* 開催場：横1列で縦書き */
+        /* 開催場：横1列・縦書き */
         .place-row {
             display: flex;
             justify-content: flex-start;
-            margin-left: 60px; /* レース番号の幅分あける */
-            margin-bottom: 10px;
+            margin-left: 155px; /* レース番号エリアの幅に合わせる */
+            margin-bottom: 15px;
             border: 1px solid var(--br-orange);
             background: #fff;
+            overflow-x: auto;
         }
         .place-btn {
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 22px;
+            min-width: 20px;
             border-right: 1px solid var(--br-orange);
             cursor: pointer;
-            padding: 5px 0;
+            padding: 5px 2px;
         }
         .place-name-vertical {
-            writing-mode: vertical-rl; /* 縦書き設定 */
+            writing-mode: vertical-rl;
             text-orientation: upright;
             font-size: 11px;
             font-weight: bold;
@@ -60,64 +63,59 @@
         .place-btn.selected { background-color: var(--br-orange); }
         .place-btn.selected .place-name-vertical { color: #fff; }
 
-        /* メインエリア（レース番号左＋着順） */
-        .main-layout { display: flex; gap: 15px; }
+        /* メインレイアウト（左：レース番号、右：着順） */
+        .main-layout { display: flex; gap: 20px; }
 
-       /* レース番号エリアの修正 */
-.race-column {
-    width: 140px; /* 横幅を4列分に広げる */
-    border: 2px solid var(--br-orange);
-    background: #fff;
-    padding: 5px;
-}
+        /* レース番号：4x3グリッド */
+        .race-column {
+            width: 140px;
+            border: 2px solid var(--br-orange);
+            background: #fff;
+            padding: 5px;
+        }
+        .race-label { color: var(--br-orange); font-size: 0.7rem; font-weight: bold; text-align: center; margin-bottom: 5px; }
+        .race-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 4px;
+        }
+        .race-btn {
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--br-orange);
+            border: 1px solid var(--br-orange);
+            cursor: pointer;
+        }
+        .race-btn.selected { background-color: var(--br-orange); color: #fff; }
 
-.race-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* ここを4列に変更 */
-    grid-template-rows: repeat(3, 1fr);    /* ここを3行に変更 */
-    gap: 4px;
-}
-
-.race-btn {
-    height: 30px; /* 少し押しやすく高さを調整 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    font-weight: bold;
-    color: var(--br-orange);
-    border: 1px solid var(--br-orange);
-    cursor: pointer;
-    border-radius: 2px;
-}
-
-.race-btn.selected {
-    background-color: var(--br-orange);
-    color: #fff;
-}
         /* 着順セクション */
         .ranks-section { flex: 1; }
-        .rank-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .rank-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
         .rank-label { 
             background: var(--br-blue); color: #fff; 
-            font-size: 11px; padding: 2px 5px; width: 30px; text-align: center;
+            font-size: 11px; padding: 3px 5px; width: 35px; text-align: center; font-weight: bold;
         }
 
         /* 縦長の楕円マーク */
-        .mark-group { display: flex; gap: 8px; }
+        .mark-group { display: flex; gap: 10px; }
         .mark {
-            width: 16px;  /* 横幅を狭く */
-            height: 28px; /* 縦を長く */
+            width: 18px;
+            height: 32px;
             border: 1.5px solid #555;
-            border-radius: 50% / 30%; /* 縦長楕円の調整 */
+            border-radius: 50% / 30%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: bold;
             cursor: pointer;
             background: #fff;
-            transition: 0.1s;
+            user-select: none;
         }
         .mark.selected {
             background-color: #222;
@@ -126,12 +124,11 @@
         }
 
         .btn-save {
-            margin-top: 30px; padding: 15px 40px;
+            margin-top: 30px; padding: 15px 50px;
             background: #e60012; color: #fff; border: none;
             border-radius: 50px; font-weight: bold; font-size: 1.2rem;
             cursor: pointer; box-shadow: 0 4px 0 #900;
         }
-        .btn-save:active { transform: translateY(2px); box-shadow: 0 2px 0 #900; }
     </style>
 </head>
 <body>
@@ -142,10 +139,11 @@
                 <div id="display-place">平和島</div>
                 <div>勝舟投票券</div>
             </div>
-            <div style="font-weight: bold; margin-top:5px;">
+            <div style="font-weight: bold; margin-top:8px; font-size: 1.1rem;">
                 <span id="display-race">1</span>R　<span id="display-shiki">3連単</span>
             </div>
             <div id="display-numbers" class="numbers">_ － _ － _</div>
+            <div class="ticket-footer">※これは予想シミュレーターです</div>
         </div>
     </div>
 
@@ -153,7 +151,10 @@
         <div class="place-row" id="place-grid"></div>
 
         <div class="main-layout">
-            <div class="race-column" id="race-grid"></div>
+            <div class="race-column">
+                <div class="race-label">レース</div>
+                <div class="race-container" id="race-grid"></div>
+            </div>
 
             <div class="ranks-section">
                 <div class="rank-row">
@@ -172,18 +173,18 @@
         </div>
     </div>
 
-    <button class="btn-save" onclick="saveImage()">画像を生成して保存</button>
+    <button class="btn-save" onclick="saveImage()">舟券画像を保存</button>
 
     <script>
         const places = ["桐生","戸田","江戸川","平和島","多摩川","浜名湖","蒲郡","常滑","津","三国","びわこ","住之江","尼崎","鳴門","丸亀","児島","宮島","徳山","下関","若松","芦屋","福岡","唐津","大村"];
         let selectedNumbers = [[], [], []];
 
-        // 開催場の生成（縦書き）
+        // 開催場ボタン生成
         const pGrid = document.getElementById('place-grid');
         places.forEach((name, i) => {
             const btn = document.createElement('div');
             btn.className = 'place-btn' + (name === "平和島" ? " selected" : "");
-            btn.innerHTML = `<span style="font-size:8px;">${i+1}</span><span class="place-name-vertical">${name}</span>`;
+            btn.innerHTML = `<span style="font-size:7px;">${i+1}</span><span class="place-name-vertical">${name}</span>`;
             btn.onclick = () => {
                 document.querySelectorAll('.place-btn').forEach(b => b.classList.remove('selected'));
                 btn.classList.add('selected');
@@ -192,7 +193,7 @@
             pGrid.appendChild(btn);
         });
 
-        // レース番号の生成
+        // レース番号生成（4x3グリッド用）
         const rGrid = document.getElementById('race-grid');
         for (let i = 1; i <= 12; i++) {
             const btn = document.createElement('div');
@@ -206,7 +207,7 @@
             rGrid.appendChild(btn);
         }
 
-        // マークの生成（縦長楕円）
+        // 縦長マーク生成
         for (let r = 0; r < 3; r++) {
             const container = document.getElementById(`rank-${r}`);
             for (let n = 1; n <= 6; n++) {
@@ -222,26 +223,26 @@
                         selectedNumbers[r].push(n);
                         selectedNumbers[r].sort();
                     }
-                    updateNumbersDisplay();
+                    updateDisplay();
                 };
                 container.appendChild(div);
             }
         }
 
-        function updateNumbersDisplay() {
-            document.getElementById('display-numbers').innerText = 
-                selectedNumbers.map(arr => arr.length > 0 ? arr.join(",") : "_").join(" － ");
+        function updateDisplay() {
+            const result = selectedNumbers.map(arr => arr.length > 0 ? arr.join(",") : "_").join(" － ");
+            document.getElementById('display-numbers').innerText = result;
         }
 
         function saveImage() {
-            html2canvas(document.getElementById('capture-target'), { scale: 2 }).then(canvas => {
+            const target = document.getElementById('capture-target');
+            html2canvas(target, { scale: 2 }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = `boat_yoso.png`;
-                link.href = canvas.toDataURL();
+                link.download = `boatrace_yoso.png`;
+                link.href = canvas.toDataURL("image/png");
                 link.click();
             });
         }
     </script>
 </body>
 </html>
-
