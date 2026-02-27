@@ -3,22 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ボートレース予想メーカー 修正版</title>
+    <title>ボートレース予想メーカー 決定版</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root { --br-blue: #0054a6; --br-orange: #f39800; --sheet-bg: #fffbf0; }
         body { font-family: sans-serif; background-color: #ccc; display: flex; flex-direction: column; align-items: center; margin: 0; padding: 10px; -webkit-user-select: none; }
 
-        /* --- 舟券デザイン（びわこ特化） --- */
+        /* --- 舟券デザイン --- */
         #capture-target { padding: 5px; background: #ccc; }
         .ticket {
             width: 350px; height: 220px; background: #fff; border: 1px solid #333;
-            padding: 8px; box-sizing: border-box; display: flex; position: relative;
+            padding: 8px; box-sizing: border-box; display: flex; flex-direction: column; position: relative;
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="40"><text x="10" y="30" font-family="sans-serif" font-size="14" fill="rgba(255,192,203,0.1)" transform="rotate(-15, 50, 20)">P-STAR</text></svg>');
         }
 
+        .t-top-row { display: flex; flex: 1; }
         .t-left { width: 110px; border-right: 1px solid #000; display: flex; flex-direction: column; padding-right: 5px; }
-        .t-mid { width: 35px; border-right: 1px solid #000; display: flex; align-items: center; justify-content: center; }
+        /* 縦線を消すため border をなしに設定 */
+        .t-mid { width: 45px; display: flex; align-items: center; justify-content: center; border: none; }
         .t-right { flex: 1; padding-left: 8px; display: flex; flex-direction: column; }
 
         .t-place-box { border: 1.5px solid #000; padding: 2px; text-align: center; margin: 5px 0; font-size: 18px; font-weight: bold; }
@@ -29,10 +31,18 @@
 
         .t-summary { text-align: right; font-size: 11px; font-weight: bold; line-height: 1.2; margin-top: auto; }
 
-        /* --- マークシート（ボタン） --- */
+        /* バーコードを中央配置 */
+        .t-barcode-area { width: 100%; display: flex; justify-content: center; padding: 5px 0; }
+        .t-barcode { width: 85%; height: 18px; background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 4px); }
+
+        /* --- マークシート --- */
         .ms { background: var(--sheet-bg); width: 100%; max-width: 360px; padding: 10px; border: 2px solid var(--br-orange); border-left: 10px solid var(--br-orange); box-sizing: border-box; margin-top: 10px; }
+        
+        /* 会場選択用グリッド (6列) */
+        .grid-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; margin-bottom: 10px; }
         .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 10px; }
-        .btn { border: 1px solid var(--br-orange); background: #fff; color: var(--br-orange); font-weight: bold; padding: 6px; font-size: 11px; text-align: center; cursor: pointer; }
+        
+        .btn { border: 1px solid var(--br-orange); background: #fff; color: var(--br-orange); font-weight: bold; padding: 4px; font-size: 10px; text-align: center; cursor: pointer; }
         .btn.active { background: var(--br-orange) !important; color: #fff !important; }
 
         .row { display: flex; align-items: center; gap: 5px; margin-bottom: 8px; }
@@ -40,7 +50,7 @@
         .mark { width: 32px; height: 40px; border: 1.5px solid #444; border-radius: 50% / 30%; background: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
         .mark.selected { background: #222 !important; color: #fff !important; }
 
-        .btn-group { display: flex; gap: 10px; margin-top: 15px; }
+        .btn-group { display: flex; gap: 10px; margin-top: 15px; width: 100%; max-width: 360px; }
         .save-btn { padding: 12px 20px; background: #e60012; color: #fff; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; flex: 1; }
         .x-btn { padding: 12px 20px; background: #000; color: #fff; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; flex: 1; }
     </style>
@@ -49,37 +59,56 @@
 
     <div id="capture-target">
         <div class="ticket">
-            <div class="t-left">
-                <div style="font-size:9px; font-weight:bold;">BOAT RACE</div>
-                <div class="t-place-box" id="res-place">びわこ</div>
-                <div style="margin-bottom:auto;">
-                    <span style="font-size:24px; font-weight:bold;" id="res-race">07</span><span style="font-size:14px; font-weight:bold;">レース</span>
+            <div class="t-top-row">
+                <div class="t-left">
+                    <div style="font-size:9px; font-weight:bold;">BOAT RACE</div>
+                    <div class="t-place-box" id="res-place">びわこ</div>
+                    <div style="margin-bottom:auto;">
+                        <span style="font-size:24px; font-weight:bold;" id="res-race">07</span><span style="font-size:14px; font-weight:bold;">レース</span>
+                    </div>
+                    <div style="font-size:9px; font-weight:bold; line-height:1.2;">
+                        2024年 05月 20日<br>
+                        <span id="res-pref">滋賀県</span>
+                    </div>
                 </div>
-                <div style="font-size:9px; font-weight:bold; line-height:1.2;">
-                    2024年 05月 20日<br>滋賀県
+                <div class="t-mid">
+                    <div class="t-shiki-v">３連単</div>
+                </div>
+                <div class="t-right">
+                    <div style="border:1.5px solid #000; padding:1px 5px; align-self:flex-start; margin-bottom:5px; font-size:11px; font-weight:bold;">フォーメーション</div>
+                    <div style="flex:1; display:flex; flex-direction:column; justify-content:center;">
+                        <div class="t-bet-line">1着 － <span id="ans0" class="t-nums"></span></div>
+                        <div class="t-bet-line">2着 － <span id="ans1" class="t-nums"></span></div>
+                        <div class="t-bet-line">3着 － <span id="ans2" class="t-nums"></span></div>
+                    </div>
+                    <div class="t-summary">
+                        組合せ数 ◆◆<span id="res-cnt">0</span><br>
+                        各組 ◆◆◆◆<span id="res-unit">100</span>円<br>
+                        合計 ◆◆◆◆◆◆<span id="res-total">0</span>円
+                    </div>
                 </div>
             </div>
-            <div class="t-mid">
-                <div class="t-shiki-v">３連単</div>
-            </div>
-            <div class="t-right">
-                <div style="border:1.5px solid #000; padding:1px 5px; align-self:flex-start; margin-bottom:5px; font-size:11px; font-weight:bold;">フォーメーション</div>
-                <div style="flex:1; display:flex; flex-direction:column; justify-content:center;">
-                    <div class="t-bet-line">1着 － <span id="ans0" class="t-nums"></span></div>
-                    <div class="t-bet-line">2着 － <span id="ans1" class="t-nums"></span></div>
-                    <div class="t-bet-line">3着 － <span id="ans2" class="t-nums"></span></div>
-                </div>
-                <div class="t-summary">
-                    組合せ数 ◆◆<span id="res-cnt">0</span><br>
-                    各組 ◆◆◆◆<span id="res-unit">100</span>円<br>
-                    合計 ◆◆◆◆◆◆<span id="res-total">0</span>円
-                </div>
-                <div style="height:15px; background:repeating-linear-gradient(90deg,#000,#000 2px,#fff 2px,#fff 4px); margin-top:3px;"></div>
+            <div class="t-barcode-area">
+                <div class="t-barcode"></div>
             </div>
         </div>
     </div>
 
     <div class="ms">
+        <div class="grid-6">
+            <script>
+                const places = [
+                    {n:'桐生',p:'群馬県'},{n:'戸田',p:'埼玉県'},{n:'江戸川',p:'東京都'},{n:'平和島',p:'東京都'},{n:'多摩川',p:'東京都'},{n:'浜名湖',p:'静岡県'},
+                    {n:'蒲郡',p:'愛知県'},{n:'常滑',p:'愛知県'},{n:'津',p:'三重県'},{n:'三国',p:'福井県'},{n:'びわこ',p:'滋賀県'},{n:'住之江',p:'大阪府'},
+                    {n:'尼崎',p:'兵庫県'},{n:'鳴門',p:'徳島県'},{n:'丸亀',p:'香川県'},{n:'児島',p:'岡山県'},{n:'宮島',p:'広島県'},{n:'徳山',p:'山口県'},
+                    {n:'下関',p:'山口県'},{n:'若松',p:'福岡県'},{n:'芦屋',p:'福岡県'},{n:'福岡',p:'福岡県'},{n:'唐津',p:'佐賀県'},{n:'大村',p:'長崎県'}
+                ];
+                places.forEach(p => {
+                    document.write(`<div class="btn ${p.n=='びわこ'?'active':''}" onclick="setPlace(this, '${p.n}', '${p.p}')">${p.n}</div>`);
+                });
+            </script>
+        </div>
+
         <div class="grid-4">
             <script>
                 for(let i=1; i<=12; i++) {
@@ -116,6 +145,13 @@
         let sel = [[], [], []];
         let unit = 100;
 
+        function setPlace(el, name, pref) {
+            document.querySelectorAll('.grid-6 .btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('res-place').innerText = name;
+            document.getElementById('res-pref').innerText = pref;
+        }
+
         function setRace(el, val) {
             document.querySelectorAll('.grid-4 .btn').forEach(b => b.classList.remove('active'));
             el.classList.add('active');
@@ -130,7 +166,7 @@
         }
 
         function setAmt(el, val) {
-            document.querySelectorAll('.ms .btn:not(.grid-4 .btn)').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.ms .btn:not(.grid-4 .btn):not(.grid-6 .btn)').forEach(b => b.classList.remove('active'));
             el.classList.add('active');
             unit = val;
             document.getElementById('res-unit').innerText = val;
@@ -150,14 +186,4 @@
         }
 
         function save(shareX) {
-            html2canvas(document.getElementById('capture-target'), {scale: 3}).then(canvas => {
-                const a = document.createElement('a');
-                a.href = canvas.toDataURL();
-                a.download = 'boat_bet.png';
-                a.click();
-                if(shareX) window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent('ボートレース予想！')}`, '_blank');
-            });
-        }
-    </script>
-</body>
-</html>
+            html2canvas(
