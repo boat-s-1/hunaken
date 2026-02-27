@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ボートレース予想メーカー 修正版</title>
+    <title>ボートレース予想メーカー 究極版</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root { --br-blue: #0054a6; --br-orange: #f39800; --sheet-bg: #fffbf0; }
@@ -16,39 +16,49 @@
             padding: 8px; box-sizing: border-box; display: flex; flex-direction: column; position: relative;
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="40"><text x="10" y="30" font-family="sans-serif" font-size="14" fill="rgba(255,192,203,0.1)" transform="rotate(-15, 50, 20)">P-STAR</text></svg>');
         }
-
         .t-top-row { display: flex; flex: 1; }
         .t-left { width: 110px; border-right: 1px solid #000; display: flex; flex-direction: column; padding-right: 5px; }
         .t-mid { width: 45px; display: flex; align-items: center; justify-content: center; }
         .t-right { flex: 1; padding-left: 8px; display: flex; flex-direction: column; }
-
         .t-place-box { border: 1.5px solid #000; padding: 2px; text-align: center; margin: 5px 0; font-size: 18px; font-weight: bold; }
         .t-shiki-v { writing-mode: vertical-rl; text-orientation: upright; font-size: 16px; font-weight: bold; border: 1.5px solid #000; padding: 8px 2px; letter-spacing: 4px; }
-
         .t-bet-line { display: flex; align-items: center; font-weight: bold; height: 24px; font-size: 13px; }
         .t-nums { font-size: 18px; margin-left: 8px; letter-spacing: 1px; }
-
         .t-summary { text-align: right; font-size: 11px; font-weight: bold; line-height: 1.2; margin-top: auto; }
-
         .t-barcode-area { width: 100%; display: flex; justify-content: center; padding: 5px 0; }
         .t-barcode { width: 85%; height: 18px; background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 4px); }
 
-        /* --- マークシート --- */
-        .ms { background: var(--sheet-bg); width: 100%; max-width: 360px; padding: 10px; border: 2px solid var(--br-orange); border-left: 10px solid var(--br-orange); box-sizing: border-box; margin-top: 10px; }
-        .grid-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; margin-bottom: 10px; }
-        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 10px; }
+        /* --- 新マークシートデザイン --- */
+        .ms { background: var(--sheet-bg); width: 100%; max-width: 380px; padding: 12px; border: 2px solid var(--br-orange); border-left: 10px solid var(--br-orange); box-sizing: border-box; margin-top: 10px; border-radius: 4px; }
         
-        .btn { border: 1px solid var(--br-orange); background: #fff; color: var(--br-orange); font-weight: bold; padding: 4px; font-size: 10px; text-align: center; cursor: pointer; }
-        .btn.active { background: var(--br-orange) !important; color: #fff !important; }
+        /* レースと会場の並び */
+        .ms-top-flex { display: flex; gap: 8px; margin-bottom: 12px; }
+        
+        /* レース選択(左) */
+        .race-container { width: 140px; border: 1px solid var(--br-orange); padding: 5px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; background: #fff; }
+        .r-btn { border: 1px solid #ddd; font-size: 10px; color: var(--br-orange); text-align: center; padding: 6px 0; cursor: pointer; font-weight: bold; }
+        .r-btn.active { background: var(--br-orange); color: #fff; border-color: var(--br-orange); }
 
-        .row { display: flex; align-items: center; gap: 5px; margin-bottom: 8px; }
-        .label { background: var(--br-blue); color: #fff; font-size: 11px; width: 40px; text-align: center; padding: 6px 0; font-weight: bold; border-radius: 3px; }
-        .mark { width: 32px; height: 40px; border: 1.5px solid #444; border-radius: 50% / 30%; background: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
-        .mark.selected { background: #222 !important; color: #fff !important; }
+        /* 会場選択(右) */
+        .place-container { flex: 1; border: 1px solid var(--br-orange); background: #fff; display: flex; overflow-x: auto; padding: 5px 2px; gap: 2px; }
+        .p-btn { min-width: 22px; writing-mode: vertical-rl; text-orientation: upright; font-size: 10px; color: #444; padding: 4px 0; text-align: center; cursor: pointer; border-left: 1px solid #eee; position: relative; }
+        .p-btn.active { background: var(--br-orange); color: #fff; font-weight: bold; }
+        .p-btn span { font-size: 8px; color: #999; margin-bottom: 2px; }
 
-        .btn-group { display: flex; gap: 10px; margin-top: 15px; width: 100%; max-width: 360px; }
-        .save-btn { padding: 12px 20px; background: #e60012; color: #fff; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; flex: 1; }
-        .x-btn { padding: 12px 20px; background: #000; color: #fff; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; flex: 1; }
+        /* 着順選択 */
+        .row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+        .label { background: var(--br-blue); color: #fff; font-size: 11px; width: 35px; text-align: center; padding: 8px 0; font-weight: bold; border-radius: 2px; }
+        .mark-wrap { display: flex; gap: 6px; }
+        .mark { width: 34px; height: 34px; border: 1.5px solid #444; border-radius: 50%; background: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; transition: 0.2s; }
+        .mark.selected { background: #222 !important; color: #fff !important; border-color: #222; }
+
+        /* 金額 */
+        .amt-wrap { display: flex; justify-content: flex-end; gap: 5px; border-top: 1px dashed #ccc; padding-top: 10px; }
+        .amt-btn { border: 1px solid var(--br-orange); background: #fff; color: var(--br-orange); font-weight: bold; padding: 6px 12px; font-size: 11px; cursor: pointer; border-radius: 3px; }
+        .amt-btn.active { background: var(--br-orange); color: #fff; }
+
+        .btn-group { display: flex; gap: 10px; margin-top: 15px; width: 100%; max-width: 380px; }
+        .save-btn { padding: 14px; background: #e60012; color: #fff; border: none; border-radius: 30px; font-weight: bold; cursor: pointer; flex: 1; font-size: 16px; }
     </style>
 </head>
 <body>
@@ -78,9 +88,9 @@
                         <div class="t-bet-line">3着 － <span id="ans2" class="t-nums"></span></div>
                     </div>
                     <div class="t-summary">
-                        組合せ数 ◆◆<span id="res-cnt">0</span><br>
-                        各組 ◆◆◆◆<span id="res-unit">100</span>円<br>
-                        合計 ◆◆◆◆◆◆<span id="res-total">0</span>円
+                        組合せ数 <span id="res-cnt">0</span><br>
+                        各組 <span id="res-unit">100</span>円<br>
+                        合計 <span id="res-total">0</span>円
                     </div>
                 </div>
             </div>
@@ -91,50 +101,51 @@
     </div>
 
     <div class="ms">
-        <div class="grid-6" id="place-btns">
-            <script>
-                const places = [
-                    {n:'桐生',p:'群馬県'},{n:'戸田',p:'埼玉県'},{n:'江戸川',p:'東京都'},{n:'平和島',p:'東京都'},{n:'多摩川',p:'東京都'},{n:'浜名湖',p:'静岡県'},
-                    {n:'蒲郡',p:'愛知県'},{n:'常滑',p:'愛知県'},{n:'津',p:'三重県'},{n:'三国',p:'福井県'},{n:'びわこ',p:'滋賀県'},{n:'住之江',p:'大阪府'},
-                    {n:'尼崎',p:'兵庫県'},{n:'鳴門',p:'徳島県'},{n:'丸亀',p:'香川県'},{n:'児島',p:'岡山県'},{n:'宮島',p:'広島県'},{n:'徳山',p:'山口県'},
-                    {n:'下関',p:'山口県'},{n:'若松',p:'福岡県'},{n:'芦屋',p:'福岡県'},{n:'福岡',p:'福岡県'},{n:'唐津',p:'佐賀県'},{n:'大村',p:'長崎県'}
-                ];
-                places.forEach(p => {
-                    document.write(`<div class="btn ${p.n=='びわこ'?'active':''}" onclick="setPlace(this, '${p.n}', '${p.p}')">${p.n}</div>`);
-                });
-            </script>
-        </div>
-
-        <div class="grid-4" id="race-btns">
-            <script>
-                for(let i=1; i<=12; i++) {
-                    document.write(`<div class="btn ${i==7?'active':''}" onclick="setRace(this, '${String(i).padStart(2,'0')}')">${i}R</div>`);
-                }
-            </script>
+        <div class="ms-top-flex">
+            <div class="race-container" id="race-btns">
+                <script>
+                    for(let i=1; i<=12; i++) {
+                        document.write(`<div class="r-btn ${i==7?'active':''}" onclick="setRace(this, '${String(i).padStart(2,'0')}')">${i}R</div>`);
+                    }
+                </script>
+            </div>
+            <div class="place-container" id="place-btns">
+                <script>
+                    const places = [
+                        {id:1, n:'桐生',p:'群馬県'},{id:2, n:'戸田',p:'埼玉県'},{id:3, n:'江戸川',p:'東京都'},{id:4, n:'平和島',p:'東京都'},{id:5, n:'多摩川',p:'東京都'},
+                        {id:6, n:'浜名湖',p:'静岡県'},{id:7, n:'蒲郡',p:'愛知県'},{id:8, n:'常滑',p:'愛知県'},{id:9, n:'津',p:'三重県'},{id:10,n:'三国',p:'福井県'},
+                        {id:11,n:'びわこ',p:'滋賀県'},{id:12,n:'住之江',p:'大阪府'},{id:13,n:'尼崎',p:'兵庫県'},{id:14,n:'鳴門',p:'徳島県'},{id:15,n:'丸亀',p:'香川県'},
+                        {id:16,n:'児島',p:'岡山県'},{id:17,n:'宮島',p:'広島県'},{id:18,n:'徳山',p:'山口県'},{id:19,n:'下関',p:'山口県'},{id:20,n:'若松',p:'福岡県'},
+                        {id:21,n:'芦屋',p:'福岡県'},{id:22,n:'福岡',p:'福岡県'},{id:23,n:'唐津',p:'佐賀県'},{id:24,n:'大村',p:'長崎県'}
+                    ];
+                    places.forEach(p => {
+                        document.write(`<div class="p-btn ${p.n=='びわこ'?'active':''}" onclick="setPlace(this, '${p.n}', '${p.p}')"><span>${p.id}</span>${p.n}</div>`);
+                    });
+                </script>
+            </div>
         </div>
 
         <div id="mark-area">
             <script>
                 for(let r=0; r<3; r++) {
-                    document.write(`<div class="row"><div class="label">${r+1}着</div>`);
+                    document.write(`<div class="row"><div class="label">${r+1}着</div><div class="mark-wrap">`);
                     for(let n=1; n<=6; n++) {
                         document.write(`<div class="mark" onclick="tapMark(this, ${r}, ${n})">${n}</div>`);
                     }
-                    document.write(`</div>`);
+                    document.write(`</div></div>`);
                 }
             </script>
         </div>
 
-        <div style="display:flex; justify-content:flex-end; gap:5px; margin-top:10px;" id="amt-btns">
-            <div class="btn active" onclick="setAmt(this, 100)">100円</div>
-            <div class="btn" onclick="setAmt(this, 500)">500円</div>
-            <div class="btn" onclick="setAmt(this, 1000)">1000円</div>
+        <div class="amt-wrap" id="amt-btns">
+            <div class="amt-btn active" onclick="setAmt(this, 100)">100円</div>
+            <div class="amt-btn" onclick="setAmt(this, 500)">500円</div>
+            <div class="amt-btn" onclick="setAmt(this, 1000)">1000円</div>
         </div>
     </div>
 
     <div class="btn-group">
-        <button class="save-btn" onclick="save(false)">画像を保存</button>
-        <button class="x-btn" onclick="save(true)">𝕏 投稿</button>
+        <button class="save-btn" onclick="save()">画像を保存する</button>
     </div>
 
     <script>
@@ -142,50 +153,12 @@
         let unit = 100;
 
         function setPlace(el, name, pref) {
-            document.querySelectorAll('#place-btns .btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('#place-btns .p-btn').forEach(b => b.classList.remove('active'));
             el.classList.add('active');
             document.getElementById('res-place').innerText = name;
             document.getElementById('res-pref').innerText = pref;
         }
 
         function setRace(el, val) {
-            document.querySelectorAll('#race-btns .btn').forEach(b => b.classList.remove('active'));
-            el.classList.add('active');
-            document.getElementById('res-race').innerText = val;
-        }
-
-        function tapMark(el, r, n) {
-            if(sel[r].includes(n)) {
-                sel[r] = sel[r].filter(v => v !== n);
-            } else {
-                sel[r].push(n);
-            }
-            el.classList.toggle('selected');
-            update();
-        }
-
-        function setAmt(el, val) {
-            document.querySelectorAll('#amt-btns .btn').forEach(b => b.classList.remove('active'));
-            el.classList.add('active');
-            unit = val;
-            document.getElementById('res-unit').innerText = val;
-            update();
-        }
-
-        function update() {
-            let cnt = 0;
-            // フォーメーション計算
-            for(let a of sel[0]) {
-                for(let b of sel[1]) {
-                    if(a === b) continue;
-                    for(let d of sel[2]) {
-                        if(a === d || b === d) continue;
-                        cnt++;
-                    }
-                }
-            }
-            sel.forEach((set, i) => {
-                document.getElementById('ans' + i).innerText = set.sort().join(' ');
-            });
-            document.getElementById('res-cnt').innerText = cnt;
-            documen
+            document.querySelectorAll('#race-btns .r-btn').forEach(b => b.classList.remove('active'));
+            el.classLi
