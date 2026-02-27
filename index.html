@@ -9,47 +9,45 @@
         :root { --br-blue: #0054a6; --br-orange: #f39800; --sheet-bg: #fffbf0; }
         body { font-family: "MS Gothic", sans-serif; background-color: #ccc; display: flex; flex-direction: column; align-items: center; padding: 10px; margin: 0; }
 
-        /* --- 舟券デザイン（横長・高さ固定） --- */
+        /* --- 舟券デザイン（見切れ防止版） --- */
         #capture-target { padding: 10px; background: #ccc; }
         .ticket-container {
-            width: 390px; height: 230px; /* 横幅を広げ、高さを230pxに固定 */
+            width: 380px; height: 225px; /* 高さを固定 */
             background: #fff; border: 1px solid #333;
-            padding: 10px 15px; box-sizing: border-box; color: #000;
+            padding: 8px 12px; box-sizing: border-box; color: #000;
             background-image: radial-gradient(rgba(255, 192, 203, 0.2) 20%, transparent 20%);
             background-size: 50px 50px;
-            display: flex; flex-direction: column;
+            display: flex; flex-direction: column; position: relative;
         }
-        .ticket-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; }
-        .ticket-place { font-size: 26px; font-weight: 950; letter-spacing: 1px; }
         
-        /* レース番号と3連単エリア（ここを狭くして1行に） */
+        .ticket-header { display: flex; justify-content: space-between; align-items: center; }
+        /* 会場名を少し小さく */
+        .ticket-place { font-size: 22px; font-weight: 950; letter-spacing: 1px; }
+        
+        /* レース・3連単エリアをスリム化 */
         .ticket-info-row { 
             display: flex; border-top: 2.5px solid #000; border-bottom: 2.5px solid #000; 
-            margin: 2px 0; padding: 1px 0; height: 32px; align-items: center;
+            margin: 2px 0; padding: 0; height: 30px; align-items: center;
         }
-        .race-num { font-size: 20px; font-weight: 900; width: 130px; border-right: 2px solid #000; white-space: nowrap; }
-        .shikibetsu-box { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 19px; font-weight: 900; letter-spacing: 10px; }
+        .race-num { font-size: 18px; font-weight: 900; width: 110px; border-right: 2px solid #000; white-space: nowrap; padding-left: 5px; }
+        .shikibetsu-box { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 900; letter-spacing: 8px; }
 
-        /* 買い目表示（高さを固定して伸びないように） */
-        .bet-area { flex: 1; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
-        .rank-line { display: flex; align-items: center; height: 36px; }
-        .rank-title { width: 55px; font-size: 15px; font-weight: bold; }
+        /* 買い目エリア（見切れない工夫） */
+        .bet-area { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; }
+        .rank-line { display: flex; align-items: center; height: 32px; border-bottom: 1px solid transparent; }
+        .rank-title { width: 50px; font-size: 14px; font-weight: bold; }
+        /* 買い目のフォントを小さくし、間隔を調整可能に */
         .rank-numbers { 
-            font-size: 30px; font-weight: 950; letter-spacing: 5px; 
+            font-size: 24px; font-weight: 950; letter-spacing: 2px; 
             font-family: serif; text-shadow: 0.5px 0.5px 0px #000;
             white-space: nowrap; overflow: hidden;
         }
 
-        .summary-area { font-size: 14px; font-weight: 900; text-align: right; line-height: 1.2; }
-        .barcode { height: 22px; background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 5px); margin-top: 5px; }
+        .summary-area { font-size: 13px; font-weight: 900; text-align: right; line-height: 1.1; margin-top: 2px; }
+        .barcode { height: 20px; background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 5px); margin-top: 3px; }
 
-        /* --- マークシートレイアウト --- */
-        .marksheet {
-            background-color: var(--sheet-bg); width: 100%; max-width: 420px;
-            padding: 10px; border: 2px solid var(--br-orange);
-            border-left: 15px solid var(--br-orange); box-sizing: border-box;
-            display: flex; flex-direction: column; gap: 8px;
-        }
+        /* --- マークシートはそのまま維持 --- */
+        .marksheet { background-color: var(--sheet-bg); width: 100%; max-width: 420px; padding: 10px; border: 2px solid var(--br-orange); border-left: 15px solid var(--br-orange); box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; }
         .ms-top-row { display: flex; gap: 8px; height: 110px; }
         .race-section { width: 135px; border: 1.5px solid var(--br-orange); background: #fff; padding: 4px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; }
         .race-btn { font-size: 11px; height: 28px; border: 1px solid var(--br-orange); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--br-orange); cursor: pointer; }
@@ -70,9 +68,9 @@
     <div id="capture-target">
         <div class="ticket-container">
             <div class="ticket-header">
-                <div style="font-size:10px; font-weight:bold; line-height:1;">BOAT<br>RACE</div>
+                <div style="font-size:9px; font-weight:bold; line-height:1;">BOAT<br>RACE</div>
                 <div class="ticket-place" id="disp-place">平和島</div>
-                <div style="font-size:11px; font-weight:bold;">フォーメーション</div>
+                <div style="font-size:10px; font-weight:bold;">フォーメーション</div>
             </div>
             <div class="ticket-info-row">
                 <div class="race-num"><span id="disp-race">01</span> レース</div>
@@ -160,7 +158,14 @@
             for(let a of sel[0]) for(let b of sel[1]) for(let d of sel[2]) {
                 if(a!==b && b!==d && a!==d) c++;
             }
-            sel.forEach((a, i) => document.getElementById('ans-' + i).innerText = a.sort().join(' '));
+            sel.forEach((a, i) => {
+                const target = document.getElementById('ans-' + i);
+                const nums = a.sort().join(' ');
+                target.innerText = nums;
+                // 数字が多い時に間隔を詰める
+                target.style.letterSpacing = a.length > 4 ? "0px" : "2px";
+                target.style.fontSize = a.length > 5 ? "20px" : "24px";
+            });
             document.getElementById('cnt').innerText = c;
             document.getElementById('total').innerText = (c*100).toLocaleString();
         }
