@@ -9,7 +9,6 @@
         :root { --br-blue: #0054a6; --br-orange: #f39800; --sheet-bg: #fffbf0; }
         body { font-family: "MS Gothic", sans-serif; background-color: #ccc; display: flex; flex-direction: column; align-items: center; padding: 10px; margin: 0; }
 
-        /* --- 舟券デザイン --- */
         #capture-target { padding: 10px; background: #ccc; }
         .ticket-container {
             width: 380px; min-height: 240px; background: #fff; border: 1px solid #333;
@@ -25,7 +24,6 @@
         .rank-numbers { font-size: 34px; font-weight: 950; letter-spacing: 6px; font-family: serif; text-shadow: 1px 1px 0px #000; }
         .summary-row { display: flex; justify-content: flex-end; gap: 15px; font-size: 15px; font-weight: 900; }
 
-        /* --- マークシート新レイアウト --- */
         .marksheet {
             background-color: var(--sheet-bg); width: 100%; max-width: 420px;
             padding: 10px; border: 2px solid var(--br-orange);
@@ -33,21 +31,18 @@
             display: flex; flex-direction: column; gap: 8px;
         }
 
-        /* 会場とレース番号を横並びに */
-        .ms-top-row { display: flex; gap: 8px; height: 120px; }
+        .ms-top-row { display: flex; gap: 8px; height: 115px; }
         
-        /* 会場（縦にスクロールできるエリア） */
+        /* レース番号：横4×縦3 */
+        .race-section { width: 130px; border: 1.5px solid var(--br-orange); background: #fff; padding: 4px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; }
+        .race-btn { font-size: 11px; height: 28px; border: 1px solid var(--br-orange); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--br-orange); cursor: pointer; }
+        .race-btn.selected { background: var(--br-orange); color: #fff; }
+
         .place-section { flex: 1; border: 1.5px solid var(--br-orange); background: #fff; display: flex; overflow-x: auto; padding: 4px; gap: 2px; }
         .place-btn { display: flex; flex-direction: column; align-items: center; min-width: 20px; cursor: pointer; }
         .place-btn.selected { background: var(--br-orange); color: #fff; }
         .place-name-v { writing-mode: vertical-rl; font-size: 10px; font-weight: bold; letter-spacing: 1px; }
 
-        /* レース番号（コンパクトなグリッド） */
-        .race-section { width: 100px; border: 1.5px solid var(--br-orange); background: #fff; padding: 4px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; }
-        .race-btn { font-size: 10px; height: 24px; border: 1px solid var(--br-orange); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--br-orange); cursor: pointer; }
-        .race-btn.selected { background: var(--br-orange); color: #fff; }
-
-        /* 着順マークエリア */
         .marks-area { display: flex; flex-direction: column; gap: 4px; }
         .mark-row { display: flex; align-items: center; gap: 8px; }
         .rank-label-ms { background: var(--br-blue); color: #fff; font-size: 11px; width: 38px; text-align: center; font-weight: bold; padding: 3px 0;}
@@ -91,7 +86,6 @@
             <div class="race-section" id="race-container"></div>
             <div class="place-section" id="place-container"></div>
         </div>
-
         <div class="marks-area">
             <div class="mark-row"><div class="rank-label-ms">1着</div><div class="mark-group" id="group-0"></div></div>
             <div class="mark-row"><div class="rank-label-ms">2着</div><div class="mark-group" id="group-1"></div></div>
@@ -105,7 +99,6 @@
         const places = ["桐生","戸田","江戸川","平和島","多摩川","浜名湖","蒲郡","常滑","津","三国","びわこ","住之江","尼崎","鳴門","丸亀","児島","宮島","徳山","下関","若松","芦屋","福岡","唐津","大村"];
         let sel = [[], [], []];
 
-        // 会場生成
         const pCont = document.getElementById('place-container');
         places.forEach((p, i) => {
             const d = document.createElement('div');
@@ -119,7 +112,6 @@
             pCont.appendChild(d);
         });
 
-        // レース番号（3x4のコンパクト配置）
         const rCont = document.getElementById('race-container');
         for(let i=1; i<=12; i++){
             const d = document.createElement('div');
@@ -133,7 +125,6 @@
             rCont.appendChild(d);
         }
 
-        // マーク生成
         for(let r=0; r<3; r++){
             const g = document.getElementById('group-' + r);
             for(let n=1; n<=6; n++){
@@ -167,7 +158,7 @@
         function saveImage(){
             html2canvas(document.getElementById('capture-target'), {scale: 3}).then(canvas => {
                 const a = document.createElement('a');
-                a.href = canvas.toDataURL();
+                a.href = canvas.toURL ? canvas.toDataURL() : canvas.src;
                 a.download = 'boat_ticket.png';
                 a.click();
             });
