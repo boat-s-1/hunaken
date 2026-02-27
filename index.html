@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ボートレース予想メーカー</title>
+    <title>ボートレース予想メーカー Pro</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root { --br-blue: #0054a6; --br-orange: #f39800; --sheet-bg: #fffbf0; }
@@ -12,9 +12,9 @@
         /* --- 舟券デザイン --- */
         #capture-target { padding: 5px; background: #ccc; }
         .ticket {
-            width: 360px; height: 210px; background: #fff; border: 1px solid #333;
+            width: 360px; height: 215px; background: #fff; border: 1px solid #333;
             padding: 10px; box-sizing: border-box; display: flex; flex-direction: column;
-            background-image: radial-gradient(rgba(255, 192, 203, 0.2) 20%, transparent 20%); background-size: 40px 40px;
+            background-image: radial-gradient(rgba(255, 192, 203, 0.15) 20%, transparent 20%); background-size: 40px 40px;
         }
         .t-header { display: flex; justify-content: space-between; align-items: center; }
         .t-place { font-size: 22px; font-weight: bold; }
@@ -22,31 +22,40 @@
         .t-race { font-size: 16px; font-weight: bold; width: 100px; border-right: 1.5px solid #000; padding-left: 5px; }
         .t-shiki { flex: 1; text-align: center; font-size: 16px; font-weight: bold; letter-spacing: 5px; }
         .t-bet { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .t-line { display: flex; align-items: center; height: 30px; font-size: 14px; }
-        .t-num { font-size: 22px; font-weight: bold; margin-left: 10px; letter-spacing: 2px; font-family: serif; }
-        .t-summary { font-size: 12px; font-weight: bold; text-align: right; line-height: 1.2; }
-        .barcode { height: 18px; background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 4px); margin-top: 3px; }
+        .t-line { display: flex; align-items: center; height: 28px; font-size: 13px; }
+        .t-num { font-size: 20px; font-weight: bold; margin-left: 10px; letter-spacing: 2px; font-family: serif; }
+        .t-footer { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 2px; }
+        .t-date { font-size: 9px; font-weight: bold; line-height: 1.2; }
+        .t-summary { font-size: 11px; font-weight: bold; text-align: right; line-height: 1.1; }
+        .barcode { height: 16px; background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 4px); margin-top: 2px; }
 
         /* --- マークシート --- */
         .ms { background: var(--sheet-bg); width: 100%; max-width: 380px; padding: 10px; border: 2px solid var(--br-orange); border-left: 12px solid var(--br-orange); box-sizing: border-box; margin-top: 10px; }
         .ms-top { display: flex; gap: 5px; height: 100px; margin-bottom: 8px; }
         .ms-race { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; width: 130px; border: 1px solid var(--br-orange); background: #fff; padding: 3px; }
-        .ms-btn { border: 1px solid var(--br-orange); font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--br-orange); background: #fff; }
+        .ms-btn { border: 1px solid var(--br-orange); font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--br-orange); background: #fff; cursor: pointer; }
         .ms-btn.active { background: var(--br-orange) !important; color: #fff !important; }
         .ms-place { flex: 1; border: 1px solid var(--br-orange); background: #fff; display: flex; overflow-x: auto; padding: 3px; gap: 2px; }
-        .p-btn { display: flex; flex-direction: column; align-items: center; min-width: 22px; border: 0.5px solid #eee; }
+        .p-btn { display: flex; flex-direction: column; align-items: center; min-width: 22px; cursor: pointer; }
         .p-name { writing-mode: vertical-rl; font-size: 10px; font-weight: bold; padding: 2px 0; }
+        
+        .ms-main { display: flex; gap: 10px; }
+        .ms-marks { flex: 1; }
         .ms-mark-row { display: flex; align-items: center; gap: 5px; margin-bottom: 4px; }
         .ms-label { background: var(--br-blue); color: #fff; font-size: 11px; width: 35px; text-align: center; font-weight: bold; padding: 4px 0; }
-        .mark { width: 22px; height: 32px; border: 1.5px solid #444; border-radius: 50% / 30%; display: flex; align-items: center; justify-content: center; font-weight: bold; background: #fff; }
+        .mark { width: 22px; height: 32px; border: 1.5px solid #444; border-radius: 50% / 30%; display: flex; align-items: center; justify-content: center; font-weight: bold; background: #fff; cursor: pointer; }
         .mark.active { background: #222 !important; color: #fff !important; }
         
-        /* 金額ボタンエリア */
+        /* 式別選択ボタン */
+        .ms-shiki-side { width: 50px; display: flex; flex-direction: column; gap: 3px; }
+        .shiki-btn { font-size: 9px; padding: 4px 0; border: 1px solid var(--br-orange); color: var(--br-orange); background: #fff; font-weight: bold; cursor: pointer; }
+        .shiki-btn.active { background: var(--br-orange) !important; color: #fff !important; }
+
         .amt-box { display: flex; justify-content: flex-end; gap: 4px; margin-top: 5px; padding-top: 5px; border-top: 1px dashed var(--br-orange); }
-        .amt-btn { font-size: 10px; padding: 4px 6px; border: 1px solid var(--br-orange); color: var(--br-orange); background: #fff; font-weight: bold; }
+        .amt-btn { font-size: 10px; padding: 4px 6px; border: 1px solid var(--br-orange); color: var(--br-orange); background: #fff; font-weight: bold; cursor: pointer; }
         .amt-btn.active { background: var(--br-orange) !important; color: #fff !important; }
 
-        .save-btn { margin-top: 15px; padding: 12px 30px; background: #e60012; color: #fff; border: none; border-radius: 25px; font-weight: bold; font-size: 16px; }
+        .save-btn { margin-top: 15px; padding: 12px 30px; background: #e60012; color: #fff; border: none; border-radius: 25px; font-weight: bold; font-size: 16px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -60,16 +69,19 @@
             </div>
             <div class="t-row">
                 <div class="t-race"><span id="res-race">01</span> レース</div>
-                <div class="t-shiki">３連単</div>
+                <div class="t-shiki" id="res-shiki">３連単</div>
             </div>
             <div class="t-bet">
-                <div class="t-line">1着 － <span class="t-num" id="ans0"></span></div>
-                <div class="t-line">2着 － <span class="t-num" id="ans1"></span></div>
-                <div class="t-line">3着 － <span class="t-num" id="ans2"></span></div>
+                <div class="t-line" id="line0">1着 － <span class="t-num" id="ans0"></span></div>
+                <div class="t-line" id="line1">2着 － <span class="t-num" id="ans1"></span></div>
+                <div class="t-line" id="line2">3着 － <span class="t-num" id="ans2"></span></div>
             </div>
-            <div class="t-summary">
-                組合せ数 <span id="res-cnt">0</span> 各組 <span id="res-unit">100</span>円<br>
-                合計 <span id="res-total">0</span>円
+            <div class="t-footer">
+                <div class="t-date" id="res-date">2024.01.01 12:00<br>平和島本場</div>
+                <div class="t-summary">
+                    組合せ数 <span id="res-cnt">0</span> 各組 <span id="res-unit">100</span>円<br>
+                    合計 <span id="res-total">0</span>円
+                </div>
             </div>
             <div class="barcode"></div>
         </div>
@@ -80,7 +92,10 @@
             <div class="ms-race" id="race-list"></div>
             <div class="ms-place" id="place-list"></div>
         </div>
-        <div id="mark-groups"></div>
+        <div class="ms-main">
+            <div class="ms-marks" id="mark-groups"></div>
+            <div class="ms-shiki-side" id="shiki-list"></div>
+        </div>
         <div class="amt-box" id="amt-list"></div>
     </div>
 
@@ -89,10 +104,45 @@
     <script>
         const places = ["桐生","戸田","江戸川","平和島","多摩川","浜名湖","蒲郡","常滑","津","三国","びわこ","住之江","尼崎","鳴門","丸亀","児島","宮島","徳山","下関","若松","芦屋","福岡","唐津","大村"];
         const amts = [100, 200, 300, 500, 1000];
+        const shikiTypes = ["単勝", "複勝", "２連単", "２連複", "３連単", "３連複"];
         let selected = [[], [], []];
         let unit = 100;
+        let currentShiki = "３連単";
 
-        // 初期化: 会場
+        // 日付の自動設定
+        function updateDate() {
+            const now = new Date();
+            const y = now.getFullYear();
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            const d = String(now.getDate()).padStart(2, '0');
+            const hh = String(now.getHours()).padStart(2, '0');
+            const mm = String(now.getMinutes()).padStart(2, '0');
+            const place = document.getElementById('res-place').innerText;
+            document.getElementById('res-date').innerHTML = `${y}.${m}.${d} ${hh}:${mm}<br>${place}本場`;
+        }
+        updateDate();
+
+        // 式別ボタン
+        const sl = document.getElementById('shiki-list');
+        shikiTypes.forEach(s => {
+            const b = document.createElement('button');
+            b.className = 'shiki-btn' + (s==='３連単'?' active':'');
+            b.innerText = s;
+            b.onclick = () => {
+                document.querySelectorAll('.shiki-btn').forEach(x=>x.classList.remove('active'));
+                b.classList.add('active');
+                currentShiki = s;
+                document.getElementById('res-shiki').innerText = s;
+                
+                // 表示行の制御
+                document.getElementById('line1').style.display = (s==="単勝" || s==="複勝") ? "none" : "flex";
+                document.getElementById('line2').style.display = (s.includes("２") || s==="単勝" || s==="複勝") ? "none" : "flex";
+                update();
+            };
+            sl.appendChild(b);
+        });
+
+        // 会場
         const pl = document.getElementById('place-list');
         places.forEach(p => {
             const d = document.createElement('div');
@@ -102,86 +152,28 @@
                 document.querySelectorAll('.p-btn').forEach(b=>b.classList.remove('active'));
                 d.classList.add('active');
                 document.getElementById('res-place').innerText = p;
+                updateDate();
             };
             pl.appendChild(d);
         });
 
-        // 初期化: レース番号
+        // レース
         const rl = document.getElementById('race-list');
         for(let i=1; i<=12; i++){
             const d = document.createElement('div');
             d.className = 'ms-btn' + (i===1?' active':'');
             d.innerText = i + 'R';
+            rl.appendChild(d);
             d.onclick = () => {
                 document.querySelectorAll('.ms-btn').forEach(b=>b.classList.remove('active'));
                 d.classList.add('active');
                 document.getElementById('res-race').innerText = i.toString().padStart(2, '0');
             };
-            rl.appendChild(d);
         }
 
-        // 初期化: 金額
+        // 金額
         const al = document.getElementById('amt-list');
         amts.forEach(a => {
             const b = document.createElement('button');
             b.className = 'amt-btn' + (a===100?' active':'');
-            b.innerText = a + '円';
-            b.onclick = () => {
-                document.querySelectorAll('.amt-btn').forEach(x=>x.classList.remove('active'));
-                b.classList.add('active');
-                unit = a;
-                document.getElementById('res-unit').innerText = a;
-                update();
-            };
-            al.appendChild(b);
-        });
-
-        // 初期化: 数字マーク
-        const gl = document.getElementById('mark-groups');
-        for(let r=0; r<3; r++){
-            const row = document.createElement('div');
-            row.className = 'ms-mark-row';
-            row.innerHTML = `<div class="ms-label">${r+1}着</div>`;
-            const box = document.createElement('div');
-            box.style.display = 'flex'; box.style.gap = '6px';
-            for(let n=1; n<=6; n++){
-                const m = document.createElement('div');
-                m.className = 'mark'; m.innerText = n;
-                m.onclick = () => {
-                    if(selected[r].includes(n)) selected[r] = selected[r].filter(v=>v!==n);
-                    else selected[r].push(n);
-                    m.classList.toggle('active');
-                    update();
-                };
-                box.appendChild(m);
-            }
-            row.appendChild(box);
-            gl.appendChild(row);
-        }
-
-        function update(){
-            let count = 0;
-            for(let a of selected[0]) for(let b of selected[1]) for(let c of selected[2]) {
-                if(a!==b && b!==c && a!==c) count++;
-            }
-            selected.forEach((set, i) => {
-                const el = document.getElementById('ans' + i);
-                el.innerText = set.sort().join(' ');
-                el.style.fontSize = set.length > 5 ? "16px" : "22px";
-            });
-            document.getElementById('res-cnt').innerText = count;
-            document.getElementById('res-total').innerText = (count * unit).toLocaleString();
-        }
-
-        function save(){
-            const target = document.getElementById('capture-target');
-            html2canvas(target, {scale: 3, backgroundColor: "#ccc"}).then(canvas => {
-                const link = document.createElement('a');
-                link.href = canvas.toDataURL("image/png");
-                link.download = 'boat_ticket.png';
-                link.click();
-            });
-        }
-    </script>
-</body>
-</html>
+            b.inner
