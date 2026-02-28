@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ボートレース予想 2連単・レイアウト調整</title>
+    <title>ボートレース予想 2連単・日付1行調整</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root { --br-blue: #2c559b; --br-orange: #f39800; --sheet-bg: #fffbf0; }
@@ -20,19 +20,21 @@
         .t-form-box { margin-left: auto; border: 1.5px solid #000; padding: 1px 8px; font-size: 12px; font-weight: bold; }
         
         .t-body { display: flex; flex: 1; z-index: 1; }
-        .t-left { width: 125px; display: flex; flex-direction: column; padding-top: 5px; }
+        .t-left { width: 135px; display: flex; flex-direction: column; padding-top: 5px; }
         .t-sub-place { border: 1.5px solid #000; padding: 2px 5px; font-size: 16px; font-weight: bold; text-align: center; width: 110px; margin-bottom: 5px; white-space: nowrap; transition: color 0.3s; }
         .t-race-num { font-size: 38px; font-weight: bold; line-height: 1; }
         .t-race-label { font-size: 16px; font-weight: bold; }
         
-        /* ★メモエリアの位置調整：中央に配置 */
+        /* メモエリア */
         .t-memo-area { margin-top: 15px; margin-bottom: auto; font-size: 9px; font-weight: bold; line-height: 1.1; white-space: pre-wrap; }
-        .t-date-area { font-size: 11px; font-weight: bold; line-height: 1.2; margin-top: 5px; }
+        
+        /* ★日付エリアを1行に変更 */
+        .t-date-area { font-size: 10.5px; font-weight: bold; line-height: 1.2; margin-top: 5px; white-space: nowrap; letter-spacing: -0.5px; }
         
         .t-mid { width: 45px; display: flex; align-items: center; justify-content: center; }
         .t-shiki-v { writing-mode: vertical-rl; text-orientation: upright; font-size: 22px; font-weight: bold; border: 1.5px solid #000; padding: 15px 4px; letter-spacing: 10px; background: #fff; }
         
-        .t-right { flex: 1; padding-left: 15px; display: flex; flex-direction: column; justify-content: center; }
+        .t-right { flex: 1; padding-left: 10px; display: flex; flex-direction: column; justify-content: center; }
         .t-bet-row { display: flex; align-items: center; height: 45px; font-size: 18px; font-weight: bold; }
         .t-nums { font-size: 28px; margin-left: 15px; letter-spacing: 4px; }
         
@@ -82,10 +84,7 @@
                     
                     <div class="t-memo-area" id="res-memo">03年度<br>第04回07日</div>
                     
-                    <div class="t-date-area">
-                        <span id="res-year">2026年</span><br>
-                        <span id="res-date">2月28日</span>
-                    </div>
+                    <div class="t-date-area" id="res-full-date">2026年2月28日</div>
                 </div>
                 <div class="t-mid"><div class="t-shiki-v">２連単</div></div>
                 <div class="t-right">
@@ -168,8 +167,8 @@
                 pg.appendChild(b);
             });
             const now = new Date();
-            document.getElementById('res-year').innerText = now.getFullYear() + "年";
-            document.getElementById('res-date').innerText = (now.getMonth() + 1) + "月" + now.getDate() + "日";
+            // 日付を1行に結合してセット
+            document.getElementById('res-full-date').innerText = now.getFullYear() + "年" + (now.getMonth() + 1) + "月" + now.getDate() + "日";
         };
 
         function changeColor(el, type) {
@@ -216,7 +215,7 @@
             html2canvas(document.getElementById('capture-target'), { scale: 3 }).then(canvas => {
                 const a = document.createElement('a');
                 a.href = canvas.toDataURL();
-                a.download = 'boat_ticket_fixed.png';
+                a.download = 'boat_ticket_horizontal_date.png';
                 a.click();
             });
         }
