@@ -86,77 +86,25 @@
 
     <div class="ms">
         <div class="ms-top">
-            <div class="ms-race" id="race-list">
-                </div>
-            <div class="ms-place" id="place-list">
-                </div>
-        </div>
-
-        <div id="mark-groups">
-            <div class="row">
-                <div class="label">1着</div>
-                <div class="mark-wrap" id="row-0"></div>
+            <div class="ms-race">
+                <div class="ms-btn active" onclick="setRace(this,'01')">1R</div><div class="ms-btn" onclick="setRace(this,'02')">2R</div><div class="ms-btn" onclick="setRace(this,'03')">3R</div><div class="ms-btn" onclick="setRace(this,'04')">4R</div>
+                <div class="ms-btn" onclick="setRace(this,'05')">5R</div><div class="ms-btn" onclick="setRace(this,'06')">6R</div><div class="ms-btn" onclick="setRace(this,'07')">7R</div><div class="ms-btn" onclick="setRace(this,'08')">8R</div>
+                <div class="ms-btn" onclick="setRace(this,'09')">9R</div><div class="ms-btn" onclick="setRace(this,'10')">10R</div><div class="ms-btn" onclick="setRace(this,'11')">11R</div><div class="ms-btn" onclick="setRace(this,'12')">12R</div>
             </div>
-            <div class="row">
-                <div class="label">2着</div>
-                <div class="mark-wrap" id="row-1"></div>
-            </div>
-        </div>
-
-        <div class="amt-row" id="amt-list">
-            </div>
-    </div>
-
-    <button class="save-btn" onclick="save()">画像を保存する</button>
-    <br>
-    <a href="index.html" class="back-btn">← トップに戻る</a>
-
-    <script>
-        const places = [
-            {n:"桐生",p:"群馬県"},{n:"戸田",p:"埼玉県"},{n:"江戸川",p:"東京都"},{n:"平和島",p:"東京都"},{n:"多摩川",p:"東京都"},
-            {n:"浜名湖",p:"静岡県"},{n:"蒲郡",p:"愛知県"},{n:"常滑",p:"愛知県"},{n:"津",p:"三重県"},{n:"三国",p:"福井県"},
-            {n:"びわこ",p:"滋賀県"},{n:"住之江",p:"大阪府"},{n:"尼崎",p:"兵庫県"},{n:"鳴門",p:"徳島県"},{n:"丸亀",p:"香川県"},
-            {n:"児島",p:"岡山県"},{n:"宮島",p:"広島県"},{n:"徳山",p:"山口県"},{n:"下関",p:"山口県"},{n:"若松",p:"福岡県"},
-            {n:"芦屋",p:"福岡県"},{n:"福岡",p:"福岡県"},{n:"唐津",p:"佐賀県"},{n:"大村",p:"長崎県"}
-        ];
-        
-        let sel = [[], []];
-        let unit = 100;
-
-        // 初期化
-        window.onload = () => {
-            const now = new Date();
-            document.getElementById('res-date').innerText = `${now.getFullYear()}年 ${now.getMonth()+1}月 ${now.getDate()}日`;
-
-            // レース生成
-            const rl = document.getElementById('race-list');
-            for(let i=1; i<=12; i++){
-                const b = document.createElement('div');
-                b.className = 'ms-btn' + (i===1?' active':'');
-                b.innerText = i + 'R';
-                b.onclick = function() {
-                    document.querySelectorAll('.ms-btn').forEach(x => x.classList.remove('active'));
-                    this.classList.add('active');
-                    document.getElementById('res-race').innerText = String(i).padStart(2,'0');
-                };
-                rl.appendChild(b);
-            }
-
-            // 会場生成
-            const pl = document.getElementById('place-list');
-            places.forEach((p, idx) => {
-                const b = document.createElement('div');
-                b.className = 'p-btn' + (p.n==='平和島'?' active':'');
-                b.innerHTML = `<span class="p-num">${idx+1}</span><span class="p-name">${p.n}</span>`;
-                b.onclick = function() {
-                    document.querySelectorAll('.p-btn').forEach(x => x.classList.remove('active'));
-                    this.classList.add('active');
-                    document.getElementById('res-place').innerText = p.n;
-                    document.getElementById('res-pref').innerText = p.p;
-                };
-                pl.appendChild(b);
-            });
-
-            // 着順数字生成
-            for(let r=0; r<2; r++){
-                const targetRow = document.getElementById('row-' +
+            <div class="ms-place">
+                <div class="p-btn" onclick="setPlace(this,'桐生','群馬県')"><span class="p-num">1</span><span class="p-name">桐生</span></div>
+                <div class="p-btn" onclick="setPlace(this,'戸田','埼玉県')"><span class="p-num">2</span><span class="p-name">戸田</span></div>
+                <div class="p-btn" onclick="setPlace(this,'江戸川','東京都')"><span class="p-num">3</span><span class="p-name">江戸川</span></div>
+                <div class="p-btn active" onclick="setPlace(this,'平和島','東京都')"><span class="p-num">4</span><span class="p-name">平和島</span></div>
+                <div class="p-btn" onclick="setPlace(this,'多摩川','東京都')"><span class="p-num">5</span><span class="p-name">多摩川</span></div>
+                <div class="p-btn" onclick="setPlace(this,'浜名湖','静岡県')"><span class="p-num">6</span><span class="p-name">浜名湖</span></div>
+                <div class="p-btn" onclick="setPlace(this,'蒲郡','愛知県')"><span class="p-num">7</span><span class="p-name">蒲郡</span></div>
+                <div class="p-btn" onclick="setPlace(this,'常滑','愛知県')"><span class="p-num">8</span><span class="p-name">常滑</span></div>
+                <div class="p-btn" onclick="setPlace(this,'津','三重県')"><span class="p-num">9</span><span class="p-name">津</span></div>
+                <div class="p-btn" onclick="setPlace(this,'三国','福井県')"><span class="p-num">10</span><span class="p-name">三国</span></div>
+                <div class="p-btn" onclick="setPlace(this,'びわこ','滋賀県')"><span class="p-num">11</span><span class="p-name">びわこ</span></div>
+                <div class="p-btn" onclick="setPlace(this,'住之江','大阪府')"><span class="p-num">12</span><span class="p-name">住之江</span></div>
+                <div class="p-btn" onclick="setPlace(this,'尼崎','兵庫県')"><span class="p-num">13</span><span class="p-name">尼崎</span></div>
+                <div class="p-btn" onclick="setPlace(this,'鳴門','徳島県')"><span class="p-num">14</span><span class="p-name">鳴門</span></div>
+                <div class="p-btn" onclick="setPlace(this,'丸亀','香川県')"><span class="p-num">15</span><span class="p-name">丸亀</span></div>
+                <div class="p-btn" onclick="setPlace(this,'児島','岡山県')"><span class="p-num">16</span><span class="p-name">児島</span></
