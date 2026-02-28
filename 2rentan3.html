@@ -162,4 +162,64 @@
                     document.querySelectorAll('.p-btn').forEach(x=>x.classList.remove('active'));
                     b.classList.add('active');
                     document.getElementById('in-main').value = p;
-                    document.getElementById('in-sub').
+                    document.getElementById('in-sub').value = p;
+                    sync();
+                };
+                pg.appendChild(b);
+            });
+            const now = new Date();
+            document.getElementById('res-year').innerText = now.getFullYear() + "年";
+            document.getElementById('res-date').innerText = (now.getMonth() + 1) + "月" + now.getDate() + "日";
+        };
+
+        function changeColor(el, type) {
+            document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+            el.classList.add('active');
+            const field = document.getElementById('in-sub');
+            const targetText = document.getElementById('res-sub-text');
+            if(type === 'red') { field.style.background = '#ffcccc'; targetText.style.color = '#ff0000'; }
+            else if(type === 'blue') { field.style.background = '#cce5ff'; targetText.style.color = '#0000ff'; }
+            else { field.style.background = '#f9f9f9'; targetText.style.color = '#000000'; }
+        }
+
+        function sync() {
+            document.getElementById('res-main-place').innerText = document.getElementById('in-main').value;
+            document.getElementById('res-sub-text').innerText = document.getElementById('in-sub').value;
+            document.getElementById('res-memo').innerText = document.getElementById('in-memo').value;
+        }
+
+        function tapMark(el, row, num) {
+            if (sel[row].includes(num)) sel[row] = sel[row].filter(v => v !== num);
+            else sel[row].push(num);
+            el.classList.toggle('selected');
+            update();
+        }
+
+        function setAmt(el, v) {
+            document.querySelectorAll('.amt-btn').forEach(x => x.classList.remove('active'));
+            el.classList.add('active');
+            unit = v;
+            document.getElementById('res-unit').innerText = v;
+            update();
+        }
+
+        function update() {
+            let cnt = 0;
+            for (let a of sel[0]) for (let b of sel[1]) if (a !== b) cnt++;
+            document.getElementById('ans0').innerText = sel[0].sort().join(' ');
+            document.getElementById('ans1').innerText = sel[1].sort().join(' ');
+            document.getElementById('res-cnt').innerText = cnt;
+            document.getElementById('res-total').innerText = (cnt * unit).toLocaleString();
+        }
+
+        function save() {
+            html2canvas(document.getElementById('capture-target'), { scale: 3 }).then(canvas => {
+                const a = document.createElement('a');
+                a.href = canvas.toDataURL();
+                a.download = 'boat_ticket_fixed.png';
+                a.click();
+            });
+        }
+    </script>
+</body>
+</html>
