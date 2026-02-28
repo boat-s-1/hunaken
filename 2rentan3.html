@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ボートレース予想 2連単カスタム</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root { --br-blue: #2c559b; --br-orange: #f39800; --sheet-bg: #fffbf0; }
+        body { font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans", sans-serif; background-color: #ccc; display: flex; flex-direction: column; align-items: center; margin: 0; padding: 10px; -webkit-user-select: none; }
+
+        /* --- 舟券デザイン（最新画像再現） --- */
+        #capture-target { padding: 5px; background: #ccc; }
+        .ticket { width: 380px; height: 230px; background: #fff; border: 1px solid #333; padding: 10px; box-sizing: border-box; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+        
+        /* 背景ロゴ */
+        .ticket::before { content: "P-STAR"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg); font-size: 60px; color: rgba(0,0,0,0.03); font-weight: bold; z-index: 0; pointer-events: none; }
+
+        .t-header { display: flex; align-items: flex-end; gap: 20px; border-bottom: 1.5px solid #000; padding-bottom: 2px; margin-bottom: 5px; z-index: 1; }
+        .t-br-logo { font-size: 12px; font-weight: 900; font-style: italic; line-height: 1; }
+        .t-main-place { font-size: 32px; font-weight: 900; letter-spacing: -2px; font-family: "Arial Black", sans-serif; line-height: 1; }
+
+        .t-body { display: flex; flex: 1; z-index: 1; }
+        .t-left { width: 120px; display: flex; flex-direction: column; padding-top: 5px; }
+        .t-sub-place { border: 1.5px solid #000; padding: 2px 5px; font-size: 18px; font-weight: bold; text-align: center; width: fit-content; margin-bottom: 5px; }
+        .t-race-num { font-size: 34px; font-weight: bold; line-height: 1; }
+        .t-race-label { font-size: 16px; font-weight: bold; margin-left: 2px; }
+        .t-date-area { margin-top: auto; font-size: 11px; font-weight: bold; line-height: 1.2; }
+
+        .t-mid { width: 50px; display: flex; align-items: center; justify-content: center; position: relative; }
+        .t-shiki-v { writing-mode: vertical-rl; text-orientation: upright; font-size: 22px; font-weight: bold; border: 1.5px solid #000; padding: 15px 5px; letter-spacing: 10px; background: #fff; }
+
+        .t-right { flex: 1; padding-left: 15px; display: flex; flex-direction: column; }
+        .t-form-box { border: 1.5px solid #000; padding: 1px 10px; font-size: 12px; font-weight: bold; width: fit-content; margin-bottom: 10px; }
+        .t-bet-row { display: flex; align-items: center; height: 40px; font-size: 18px; font-weight: bold; }
+        .t-nums { font-size: 26px; margin-left: 15px; letter-spacing: 4px; }
+        
+        .t-summary { text-align: right; font-size: 12px; font-weight: bold; line-height: 1.2; margin-top: auto; }
+        .t-barcode { width: 100%; height: 25px; background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 4px); margin-top: 5px; }
+
+        /* --- 入力・操作エリア --- */
+        .ms { background: var(--sheet-bg); width: 100%; max-width: 400px; padding: 15px; border: 2px solid var(--br-orange); border-left: 12px solid var(--br-orange); box-sizing: border-box; margin-top: 10px; }
+        .input-group { margin-bottom: 15px; background: #fff; padding: 10px; border: 1px solid var(--br-orange); }
+        .input-group label { font-size: 12px; font-weight: bold; color: var(--br-orange); display: block; margin-bottom: 5px; }
+        .input-group input { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; font-size: 16px; }
+
+        .ms-top-grid { display: grid; grid-template-columns: 130px 1fr; gap: 8px; margin-bottom: 10px; }
+        .ms-race-area { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; border: 1.2px solid var(--br-orange); padding: 4px; background: #fff; }
+        .ms-place-area { display: flex; overflow-x: auto; border: 1.2px solid var(--br-orange); padding: 4px; background: #fff; gap: 4px; height: 100px; }
+        
+        .ms-btn, .p-btn, .amt-btn { border: 1px solid var(--br-orange); background: #fff; color: var(--br-orange); font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 10px; cursor: pointer; }
+        .p-btn { min-width: 30px; writing-mode: vertical-rl; padding: 5px 0; }
+        .active { background: var(--br-orange) !important; color: #fff !important; }
+
+        .row { display: flex; align-items: center; gap: 10px; margin: 12px 0; }
+        .label { background: var(--br-blue); color: #fff; font-size: 12px; width: 50px; text-align: center; padding: 8px 0; font-weight: bold; border-radius: 2px; }
+        .mark-wrap { display: flex; gap: 8px; }
+        .mark { width: 35px; height: 42px; border: 1.5px solid #444; border-radius: 50% / 30%; background: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 20px; }
+        .mark.selected { background: #222 !important; color: #fff !important; }
+
+        .save-btn { margin: 20px 0; padding: 16px 40px; background: #e60012; color: #fff; border: none; border-radius: 35px; font-weight: bold; font-size: 18px; cursor: pointer; width: 90%; max-width: 400px; box-shadow: 0 4px 0 #b3000d; }
+    </style>
+</head>
+<body>
+
+    <div id="capture-target">
+        <div class="ticket">
+            <div class="t-header">
+                <div class="t-br-logo">BOAT<br>RACE</div>
+                <div class="t-main-place" id="res-main-place">びわこ</div>
+                <div class="t-form-box" style="margin-left: auto; margin-bottom: 0;">フォーメーション</div>
+            </div>
+            <div class="t-body">
+                <div class="t-left">
+                    <div class="t-sub-place" id="res-sub-text">平和島場外</div>
+                    <div>
+                        <span class="t-race-num" id="res-race">07</span><span class="t-race-label">レース</span>
+                    </div>
+                    <div class="t-date-area">
+                        03年度<br>
+                        第04回07日<br>
+                        <span id="res-full-date">2021年07月13日</span>
+                    </div>
+                </div>
+                <div class="t-mid">
+                    <div class="t-shiki-v">２連単</div>
+                </div>
+                <div class="t-right">
+                    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; padding-top: 10px;">
+                        <div class="t-bet-row">1着 － <span id="ans0" class="t-nums"></span></div>
+                        <div class="t-bet-row">2着 － <span id="ans1" class="t-nums"></span></div>
+                    </div>
+                    <div class="t-summary">
+                        組合せ数 ◆◆<span id="res-cnt">0</span><br>
+                        各組 ◆◆◆◆<span id="res-unit">100</span>円<br>
+                        合計 ◆◆◆◆◆◆<span id="res-total">0</span>円
+                    </div>
+                </div>
+            </div>
+            <div class="t-barcode"></div>
+        </div>
+    </div>
+
+    <div class="ms">
+        <div class="input-group">
+            <label>会場名（ロゴ部分）</label>
+            <input type="text" id="in-main-place" value="びわこ" oninput="syncText()">
+            <label style="margin-top:10px;">補足テキスト（平和島場外など）</label>
+            <input type="text" id="in-sub-text" value="平和島場外" oninput="syncText()">
+        </div>
+
+        <div class="ms-top-grid">
+            <div class="ms-race-area">
+                <div class="ms-btn active" onclick="setRace(this,'07')">7R</div>
+                <div class="ms-btn" onclick="setRace(this,'01')">1R</div><div class="ms-btn" onclick="setRace(this,'10')">10R</div><div class="ms-btn" onclick="setRace(this,'12')">12R</div>
+            </div>
+            <div class="ms-place-area">
+                <div class="p-btn active" onclick="quickPlace('びわこ')">びわこ</div>
+                <div class="p-btn" onclick="quickPlace('平和島')">平和島</div>
+                <div class="p-btn" onclick="quickPlace('住之江')">住之江</div>
+                <div class="p-btn" onclick="quickPlace('蒲郡')">蒲郡</div>
+                <div class="p-btn" onclick="quickPlace('福岡')">福岡</div>
+            </div>
+        </div>
+
+        <div class="row"><div class="label">1着</div><div class="mark-wrap">
+            <div class="mark" onclick="tapMark(this,0,1)">1</div><div class="mark" onclick="tapMark(this,0,2)">2</div><div class="mark" onclick="tapMark(this,0,3)">3</div><div class="mark" onclick="tapMark(this,0,4)">4</div><div class="mark" onclick="tapMark(this,0,5)">5</div><div class="mark" onclick="tapMark(this,0,6)">6</div>
+        </div></div>
+        <div class="row"><div class="label">2着</div><div class="mark-wrap">
+            <div class="mark" onclick="tapMark(this,1,1)">1</div><div class="mark" onclick="tapMark(this,1,2)">2</div><div class="mark" onclick="tapMark(this,1,3)">3</div><div class="mark" onclick="tapMark(this,1,4)">4</div><div class="mark" onclick="tapMark(this,1,5)">5</div><div class="mark" onclick="tapMark(this,1,6)">6</div>
+        </div></div>
+
+        <div style="display:flex; justify-content:flex-end; gap:5px; margin-top:10px;">
+            <div class="amt-btn active" style="padding:5px 10px;" onclick="setAmt(this,100)">100円</div>
+            <div class="amt-btn" style="padding:5px 10px;" onclick="setAmt(this,500)">500円</div>
+        </div>
+    </div>
+
+    <button class="save-btn" onclick="save()">画像を保存する</button>
+
+    <script>
+        let sel = [[], []]; let unit = 100;
+
+        // 入力欄の内容を即座に舟券に反映
+        function syncText() {
+            document.getElementById('res-main-place').innerText = document.getElementById('in-main-place').value;
+            document.getElementById('res-sub-text').innerText = document.getElementById('in-sub-text').value;
+        }
+
+        // 会場ボタンを押したとき
+        function quickPlace(name) {
+            document.getElementById('in-main-place').value = name;
+            syncText();
+            // ボタンの見た目更新
+            document.querySelectorAll('.p-btn').forEach(b => {
+                if(b.innerText === name) b.classList.add('active');
+                else b.classList.remove('active');
+            });
+        }
+
+        function setRace(el, v) {
+            document.querySelectorAll('.ms-race-area .ms-btn').forEach(x => x.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('res-race').innerText = v;
+        }
+
+        function tapMark(el, row, num) {
+            if (sel[row].includes(num)) sel[row] = sel[row].filter(v => v !== num);
+            else sel[row].push(num);
+            el.classList.toggle('selected');
+            updateDisplay();
+        }
+
+        function setAmt(el, v) {
+            document.querySelectorAll('.amt-btn').forEach(x => x.classList.remove('active'));
+            el.classList.add('active');
+            unit = v;
+            document.getElementById('res-unit').innerText = v;
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            let cnt = 0;
+            for (let a of sel[0]) for (let b of sel[1]) if (a !== b) cnt++;
+            document.getElementById('ans0').innerText = sel[0].sort().join(' ');
+            document.getElementById('ans1').innerText = sel[1].sort().join(' ');
+            document.getElementById('res-cnt').innerText = cnt;
+            document.getElementById('res-total').innerText = (cnt * unit).toLocaleString();
+        }
+
+        function save() {
+            html2canvas(document.getElementById('capture-target'), { scale: 3 }).then(canvas => {
+                const a = document.createElement('a');
+                a.href = canvas.toDataURL();
+                a.download = 'boat_custom.png';
+                a.click();
+            });
+        }
+
+        // 初期日付設定
+        window.onload = () => {
+            const now = new Date();
+            document.getElementById('res-full-date').innerText = `${now.getFullYear()}年${String(now.getMonth() + 1).padStart(2, '0')}月${String(now.getDate()).padStart(2, '0')}日`;
+        };
+    </script>
+</body>
+</html>
