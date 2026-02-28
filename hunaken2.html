@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ボートレース予想メーカー 2連単</title>
+    <title>ボートレース予想メーカー 3連単</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root { --br-blue: #0054a6; --br-orange: #f39800; --sheet-bg: #fffbf0; }
@@ -24,8 +24,8 @@
         .t-place-box { border: 2px solid #000; padding: 2px; text-align: center; margin: 5px 0; font-size: 20px; font-weight: bold; }
         .t-shiki-v { writing-mode: vertical-rl; text-orientation: upright; font-size: 18px; font-weight: bold; border: 2px solid #000; padding: 10px 2px; letter-spacing: 4px; }
         
-        .t-bet-line { display: flex; align-items: center; font-weight: bold; height: 35px; font-size: 14px; }
-        .t-nums { font-size: 22px; margin-left: 8px; letter-spacing: 1px; }
+        .t-bet-line { display: flex; align-items: center; font-weight: bold; height: 32px; font-size: 14px; }
+        .t-nums { font-size: 20px; margin-left: 8px; letter-spacing: 1px; }
         
         .t-summary { text-align: right; font-size: 11px; font-weight: bold; line-height: 1.2; margin-top: auto; }
         .t-barcode-area { width: 100%; display: flex; justify-content: center; padding: 5px 0; }
@@ -41,10 +41,10 @@
         .p-btn { min-width: 28px; }
         .active { background: var(--br-orange) !important; color: #fff !important; }
 
-        .row { display: flex; align-items: center; gap: 5px; margin: 12px 0; }
-        .label { background: var(--br-blue); color: #fff; font-size: 11px; width: 40px; text-align: center; padding: 8px 0; font-weight: bold; border-radius: 2px; }
+        .row { display: flex; align-items: center; gap: 5px; margin: 8px 0; }
+        .label { background: var(--br-blue); color: #fff; font-size: 11px; width: 40px; text-align: center; padding: 6px 0; font-weight: bold; border-radius: 2px; }
         .mark-wrap { display: flex; gap: 4px; }
-        .mark { width: 34px; height: 40px; border: 1.5px solid #444; border-radius: 50% / 30%; background: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; }
+        .mark { width: 28px; height: 38px; border: 1.5px solid #444; border-radius: 50% / 30%; background: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
         .mark.selected { background: #222 !important; color: #fff !important; }
 
         .amt-row { display: flex; justify-content: flex-end; gap: 5px; margin-top: 10px; padding-top: 5px; border-top: 1px dashed var(--br-orange); }
@@ -62,16 +62,18 @@
                     <div style="margin-bottom:auto;">
                         <span style="font-size:24px; font-weight:bold;" id="res-race">01</span><span style="font-size:14px; font-weight:bold;">レース</span>
                     </div>
-                    <div style="font-size:9px; font-weight:bold; line-height:1.2;">
-                        <span id="res-date"></span><br>東京都
+                    <div style="font-size:10px; font-weight:bold; line-height:1.4;">
+                        <span id="res-date-top"></span><br>
+                        <span id="res-date-bottom"></span>
                     </div>
                 </div>
-                <div class="t-mid"><div class="t-shiki-v">２連単</div></div>
+                <div class="t-mid"><div class="t-shiki-v">３連単</div></div>
                 <div class="t-right">
                     <div style="border:1.5px solid #000; padding:1px 5px; align-self:flex-start; margin-bottom:5px; font-size:11px; font-weight:bold;">フォーメーション</div>
                     <div style="flex:1; display:flex; flex-direction:column; justify-content:center;">
                         <div class="t-bet-line">1着 － <span id="ans0" class="t-nums"></span></div>
                         <div class="t-bet-line">2着 － <span id="ans1" class="t-nums"></span></div>
+                        <div class="t-bet-line">3着 － <span id="ans2" class="t-nums"></span></div>
                     </div>
                     <div class="t-summary">
                         組合せ数 ◆◆<span id="res-cnt">0</span><br>
@@ -110,6 +112,13 @@
                     <div class="mark" onclick="tapMark(this,1,4)">4</div><div class="mark" onclick="tapMark(this,1,5)">5</div><div class="mark" onclick="tapMark(this,1,6)">6</div>
                 </div>
             </div>
+            <div class="row">
+                <div class="label">3着</div>
+                <div class="mark-wrap">
+                    <div class="mark" onclick="tapMark(this,2,1)">1</div><div class="mark" onclick="tapMark(this,2,2)">2</div><div class="mark" onclick="tapMark(this,2,3)">3</div>
+                    <div class="mark" onclick="tapMark(this,2,4)">4</div><div class="mark" onclick="tapMark(this,2,5)">5</div><div class="mark" onclick="tapMark(this,2,6)">6</div>
+                </div>
+            </div>
         </div>
 
         <div class="amt-row">
@@ -123,35 +132,18 @@
 
     <script>
         const places = ["桐生","戸田","江戸川","平和島","多摩川","浜名湖","蒲郡","常滑","津","三国","びわこ","住之江","尼崎","鳴門","丸亀","児島","宮島","徳山","下関","若松","芦屋","福岡","唐津","大村"];
-        let sel = [[], []];
+        let sel = [[], [], []];
         let unit = 100;
 
         window.onload = () => {
             const now = new Date();
-            document.getElementById('res-date').innerText = `${now.getFullYear()}年 ${now.getMonth()+1}月 ${now.getDate()}日`;
+            // 年月日の表示
+            document.getElementById('res-date-top').innerText = `${now.getFullYear()}年`;
+            document.getElementById('res-date-bottom').innerText = `${now.getMonth()+1}月${now.getDate()}日`;
             
-            // 会場ボタン生成
             const pl = document.getElementById('place-list');
             places.forEach(p => {
                 const b = document.createElement('div');
                 b.className = 'p-btn' + (p==='平和島'?' active':'');
                 b.innerHTML = `<span style="writing-mode:vertical-rl; padding:4px 0;">${p}</span>`;
-                b.onclick = () => {
-                    document.querySelectorAll('.p-btn').forEach(x=>x.classList.remove('active'));
-                    b.classList.add('active');
-                    document.getElementById('res-place').innerText = p;
-                };
-                pl.appendChild(b);
-            });
-        };
-
-        function setRace(el, val) {
-            document.querySelectorAll('.ms-btn').forEach(x=>x.classList.remove('active'));
-            el.classList.add('active');
-            document.getElementById('res-race').innerText = val;
-        }
-
-        function tapMark(el, row, num) {
-            if(sel[row].includes(num)) sel[row] = sel[row].filter(v=>v!==num);
-            else sel[row].push(num);
-            el.classList.toggle('selected'
+                b.onclick =
