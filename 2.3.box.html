@@ -288,6 +288,38 @@
                 a.click();
             });
         }
-    </script>
+    </script><div style="display: flex; gap: 10px; width: 95%; max-width: 400px; margin-top: 20px;">
+    <button class="save-btn" style="flex: 2;" onclick="save()">画像を保存する</button>
+    <button class="share-btn" style="flex: 1; background: #000; color: #fff; border: none; border-radius: 35px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px;" onclick="shareTwitter()">
+        <span style="font-size: 20px;">𝕏</span> シェア
+    </button>
+</div>
+
+<script>
+function shareTwitter() {
+    // 入力されている値を取得
+    const place = document.getElementById('in-main').value;
+    const race = document.getElementById('res-race').innerText;
+    const total = document.getElementById('res-total').innerText;
+    const cnt = document.getElementById('res-cnt').innerText;
+    const shiki = document.getElementById('res-shiki') ? document.getElementById('res-shiki').innerText : "3連単";
+
+    // ツイート本文の作成
+    const text = encodeURIComponent(
+        `【ボートレース予想】\n` +
+        `${place} ${race}R\n` +
+        `式別：${shiki}\n` +
+        `点数：${cnt}点（合計 ${total}円）\n\n` +
+        `#ボートレース #競艇予想 #舟券メーカー \n`
+    );
+    
+    // 現在のページのURL（サイトを公開したらそのURLを入れるのがベスト）
+    const url = encodeURIComponent(window.location.href);
+
+    // Xの投稿画面を開く
+    window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
+}
+</script>
+    
 </body>
 </html>
