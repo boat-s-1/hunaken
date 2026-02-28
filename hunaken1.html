@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ボートレース予想メーカー</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --sheet-bg: #fdf5e6;
+            --mark-color: #333;
+            --primary-green: #2e7d32;
+        }
+
+        body { font-family: sans-serif; background-color: #eee; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+
+        /* --- 舟券のデザイン --- */
+        .ticket-container {
+            width: 350px; height: 180px; background: #fffef0; border: 1px solid #ccc;
+            position: relative; padding: 15px; box-sizing: border-box;
+            font-family: 'Courier New', monospace; color: #111; margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .ticket-header { display: flex; justify-content: space-between; border-bottom: 2px solid #333; font-weight: bold; }
+        .race-num { font-size: 1.2rem; margin-top: 5px; }
+        .bet-type { border: 1px solid #333; padding: 0 5px; font-size: 0.9rem; }
+        .numbers { font-size: 2rem; font-weight: bold; text-align: center; margin: 15px 0; letter-spacing: 5px; }
+        .dummy-barcode { height: 15px; background: repeating-linear-gradient(90deg, #333, #333 2px, #fffef0 2px, #fffef0 4px); width: 100%; margin-top: 10px; }
+
+        /* --- マークシートのデザイン --- */
+        .marksheet {
+            background-color: var(--sheet-bg); width: 100%; max-width: 380px;
+            padding: 15px; border-radius: 8px; border-left: 10px solid var(--primary-green);
+        }
+        .section-title { background: var(--primary-green); color: white; padding: 2px 8px; font-size: 0.8rem; margin: 10px 0; display: inline-block; }
+        .row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+        .label { width: 40px; font-weight: bold; font-size: 0.8rem; }
+        .mark-group { display: flex; gap: 4px; }
+        .mark {
+            width: 32px; height: 20px; border: 2px solid var(--mark-color);
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            font-size: 0.8rem; cursor: pointer; transition: 0.2s;
+        }
+        .mark.selected { background-color: var(--mark-color); color: white; }
+
+        /* --- ボタン系 --- */
+        .btn-area { margin-top: 20px; width: 100%; max-width: 380px; display: flex; gap: 10px; }
+        button { flex: 1; padding: 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; color: white; }
+        .btn-save { background: #d32f2f; }
+        .btn-x { background: #000; }
+
+        /* アフィリエイト用スペース */
+        .ad-space { margin-top: 20px; padding: 10px; background: #fff; border: 1px dashed #999; font-size: 0.8rem; text-align: center; color: #666; width: 100%; max-width: 380px; }
+    </style>
+</head>
+<body>
+
+    <div id="capture-target">
+        <div class="ticket-container">
+            <div class="ticket-header">
+                <div id="display-place">平和島</div>
+                <div>勝舟投票券</div>
+            </div>
+            <div class="race-num"><span id="display-race">1</span>R</div>
+            <div class="bet-type">3連単</div>
+            <div id="display-numbers" class="numbers">_ － _ － _</div>
+            <div class="dummy-barcode"></div>
+        </div>
+    </div>
+
+    <div class="marksheet">
+        <div class="section-title">開催場</div>
+        <select id="place-select" onchange="updateInfo()" style="width:100%; padding:5px;">
+            <option value="平和島">平和島</option>
+            <option value="住之江">住之江</option>
+            <option value="福岡">福岡</option>
+            </select>
+
+        <div class="section-title">レース</div>
+        <div class="row">
+            <div class="mark-group">
+                <div class="mark" onclick="updateRace(1, this)">1</div>
+                <div class="mark" onclick="updateRace(12, this)">12</div>
+            </div>
+        </div>
+
+        <div class="section-title">1着</div>
+        <div class="row"><div class="mark-group" id="rank-0"></div></div>
+        <div class="section-title">2着</div>
+        <div class="row"><div class="mark-group" id="rank-1"></div></div>
+        <div class="section-title">3着</div>
+        <div class="row"><div class="mark-group" id="rank-2"></div></div>
+    </div>
+
+    <div class="btn-area">
+        <button class="btn-save" onclick="saveImage()">画像を生成</button>
+        <button class="btn-x" onclick="shareX()">Xでシェア</button>
+    </div>
+
+    <div class="ad-space">
+        ここにアフィリエイトバナーを貼る<br>
+        (例：テレボート新規登録はこちら)
+    </div>
+
+    <script>
+        let selected = [null, null, null];
+
+        // 1-6のマークを生成
+        for (let r = 0; r < 3; r++) {
+            const container = document.getElementById(`rank-${r}`);
+            for (let n = 1; n <= 6; n++) {
+                const div = document.createElement('div');
+                div.className = 'mark';
+                div.innerText = n;
+                div.onclick = function() {
+                    container.querySelectorAll('.mark').forEach(m => m.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selected[r] = n;
+                    document.getElementById('display-numbers').innerText = selected.map(num => num || "_").join(" － ");
+                };
+                container.appendChild(div);
+            }
+        }
+
+        function updateInfo() {
+            document.getElementById('display-place').innerText = document.getElementById('place-select').value;
+        }
+
+        function updateRace(num, el) {
+            el.parentElement.querySelectorAll('.mark').forEach(m => m.classList.remove('selected'));
+            el.classList.add('selected');
+            document.getElementById('display-race').innerText = num;
+        }
+
+        function saveImage() {
+            html2canvas(document.getElementById('capture-target')).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'boatrace-yoso.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+
+        function shareX() {
+            const text = encodeURIComponent("舟券予想ツールで作りました！ #ボートレース");
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
+        }
+    </script>
+</body>
+</html>
