@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ボートレース予想メーカー 3連単</title>
+    <title>ボートレース予想メーカー 2連単</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root { --br-blue: #0054a6; --br-orange: #f39800; --sheet-bg: #fffbf0; }
         body { font-family: sans-serif; background-color: #ccc; display: flex; flex-direction: column; align-items: center; margin: 0; padding: 10px; -webkit-user-select: none; }
 
-        /* --- 舟券デザイン（リアルVer） --- */
+        /* --- 舟券デザイン --- */
         #capture-target { padding: 5px; background: #ccc; }
         .ticket {
             width: 360px; height: 220px; background: #fff; border: 1px solid #333;
@@ -24,7 +24,7 @@
         .t-place-box { border: 2px solid #000; padding: 2px; text-align: center; margin: 5px 0; font-size: 20px; font-weight: bold; }
         .t-shiki-v { writing-mode: vertical-rl; text-orientation: upright; font-size: 18px; font-weight: bold; border: 2px solid #000; padding: 10px 2px; letter-spacing: 4px; }
         
-        .t-bet-line { display: flex; align-items: center; font-weight: bold; height: 32px; font-size: 14px; }
+        .t-bet-line { display: flex; align-items: center; font-weight: bold; height: 35px; font-size: 14px; }
         .t-nums { font-size: 22px; margin-left: 8px; letter-spacing: 1px; }
         
         .t-summary { text-align: right; font-size: 11px; font-weight: bold; line-height: 1.2; margin-top: auto; }
@@ -33,16 +33,18 @@
 
         /* --- マークシート --- */
         .ms { background: var(--sheet-bg); width: 100%; max-width: 380px; padding: 10px; border: 2px solid var(--br-orange); border-left: 12px solid var(--br-orange); box-sizing: border-box; margin-top: 10px; }
-        .ms-top { display: flex; gap: 5px; height: 100px; margin-bottom: 8px; }
+        .ms-top { display: flex; gap: 5px; height: 110px; margin-bottom: 8px; }
         .ms-race { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; width: 130px; border: 1px solid var(--br-orange); background: #fff; padding: 3px; }
         .ms-place { flex: 1; border: 1px solid var(--br-orange); background: #fff; display: flex; overflow-x: auto; padding: 3px; gap: 4px; }
         
         .ms-btn, .p-btn, .amt-btn { border: 1px solid var(--br-orange); background: #fff; color: var(--br-orange); font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 10px; cursor: pointer; }
+        .p-btn { min-width: 28px; }
         .active { background: var(--br-orange) !important; color: #fff !important; }
 
-        .row { display: flex; align-items: center; gap: 5px; margin: 8px 0; }
-        .label { background: var(--br-blue); color: #fff; font-size: 11px; width: 40px; text-align: center; padding: 6px 0; font-weight: bold; border-radius: 2px; }
-        .mark { width: 28px; height: 38px; border: 1.5px solid #444; border-radius: 50% / 30%; background: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
+        .row { display: flex; align-items: center; gap: 5px; margin: 12px 0; }
+        .label { background: var(--br-blue); color: #fff; font-size: 11px; width: 40px; text-align: center; padding: 8px 0; font-weight: bold; border-radius: 2px; }
+        .mark-wrap { display: flex; gap: 4px; }
+        .mark { width: 34px; height: 40px; border: 1.5px solid #444; border-radius: 50% / 30%; background: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; }
         .mark.selected { background: #222 !important; color: #fff !important; }
 
         .amt-row { display: flex; justify-content: flex-end; gap: 5px; margin-top: 10px; padding-top: 5px; border-top: 1px dashed var(--br-orange); }
@@ -64,13 +66,12 @@
                         <span id="res-date"></span><br>東京都
                     </div>
                 </div>
-                <div class="t-mid"><div class="t-shiki-v">３連単</div></div>
+                <div class="t-mid"><div class="t-shiki-v">２連単</div></div>
                 <div class="t-right">
                     <div style="border:1.5px solid #000; padding:1px 5px; align-self:flex-start; margin-bottom:5px; font-size:11px; font-weight:bold;">フォーメーション</div>
                     <div style="flex:1; display:flex; flex-direction:column; justify-content:center;">
                         <div class="t-bet-line">1着 － <span id="ans0" class="t-nums"></span></div>
                         <div class="t-bet-line">2着 － <span id="ans1" class="t-nums"></span></div>
-                        <div class="t-bet-line">3着 － <span id="ans2" class="t-nums"></span></div>
                     </div>
                     <div class="t-summary">
                         組合せ数 ◆◆<span id="res-cnt">0</span><br>
@@ -85,98 +86,72 @@
 
     <div class="ms">
         <div class="ms-top">
-            <div class="ms-race" id="race-list"></div>
-            <div class="ms-place" id="place-list"></div>
+            <div class="ms-race">
+                <div class="ms-btn active" onclick="setRace(this,'01')">1R</div><div class="ms-btn" onclick="setRace(this,'02')">2R</div><div class="ms-btn" onclick="setRace(this,'03')">3R</div><div class="ms-btn" onclick="setRace(this,'04')">4R</div>
+                <div class="ms-btn" onclick="setRace(this,'05')">5R</div><div class="ms-btn" onclick="setRace(this,'06')">6R</div><div class="ms-btn" onclick="setRace(this,'07')">7R</div><div class="ms-btn" onclick="setRace(this,'08')">8R</div>
+                <div class="ms-btn" onclick="setRace(this,'09')">9R</div><div class="ms-btn" onclick="setRace(this,'10')">10R</div><div class="ms-btn" onclick="setRace(this,'11')">11R</div><div class="ms-btn" onclick="setRace(this,'12')">12R</div>
+            </div>
+            <div class="ms-place" id="place-list">
+                </div>
         </div>
-        <div id="mark-groups"></div>
-        <div class="amt-row" id="amt-list"></div>
+
+        <div id="mark-groups">
+            <div class="row">
+                <div class="label">1着</div>
+                <div class="mark-wrap">
+                    <div class="mark" onclick="tapMark(this,0,1)">1</div><div class="mark" onclick="tapMark(this,0,2)">2</div><div class="mark" onclick="tapMark(this,0,3)">3</div>
+                    <div class="mark" onclick="tapMark(this,0,4)">4</div><div class="mark" onclick="tapMark(this,0,5)">5</div><div class="mark" onclick="tapMark(this,0,6)">6</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="label">2着</div>
+                <div class="mark-wrap">
+                    <div class="mark" onclick="tapMark(this,1,1)">1</div><div class="mark" onclick="tapMark(this,1,2)">2</div><div class="mark" onclick="tapMark(this,1,3)">3</div>
+                    <div class="mark" onclick="tapMark(this,1,4)">4</div><div class="mark" onclick="tapMark(this,1,5)">5</div><div class="mark" onclick="tapMark(this,1,6)">6</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="amt-row">
+            <div class="amt-btn active" onclick="setAmt(this,100)">100円</div>
+            <div class="amt-btn" onclick="setAmt(this,500)">500円</div>
+            <div class="amt-btn" onclick="setAmt(this,1000)">1000円</div>
+        </div>
     </div>
 
     <button class="save-btn" onclick="save()">画像を保存する</button>
 
     <script>
         const places = ["桐生","戸田","江戸川","平和島","多摩川","浜名湖","蒲郡","常滑","津","三国","びわこ","住之江","尼崎","鳴門","丸亀","児島","宮島","徳山","下関","若松","芦屋","福岡","唐津","大村"];
-        const amts = [100, 200, 300, 500, 1000];
-        let sel = [[], [], []];
+        let sel = [[], []];
         let unit = 100;
 
-        const now = new Date();
-        document.getElementById('res-date').innerText = `${now.getFullYear()}年 ${now.getMonth()+1}月 ${now.getDate()}日`;
-
-        // レース生成
-        const rl = document.getElementById('race-list');
-        for(let i=1; i<=12; i++){
-            const b = document.createElement('div');
-            b.className = 'ms-btn' + (i===1?' active':'');
-            b.innerText = i + 'R';
-            b.onclick = () => {
-                document.querySelectorAll('.ms-btn').forEach(x=>x.classList.remove('active'));
-                b.classList.add('active');
-                document.getElementById('res-race').innerText = String(i).padStart(2,'0');
-            };
-            rl.appendChild(b);
-        }
-
-        // 会場生成
-        const pl = document.getElementById('place-list');
-        places.forEach(p => {
-            const b = document.createElement('div');
-            b.className = 'p-btn' + (p==='平和島'?' active':'');
-            b.style.minWidth = '28px';
-            b.innerHTML = `<span style="writing-mode:vertical-rl; padding:5px 0; letter-spacing:1px;">${p}</span>`;
-            b.onclick = () => {
-                document.querySelectorAll('.p-btn').forEach(x=>x.classList.remove('active'));
-                b.classList.add('active');
-                document.getElementById('res-place').innerText = p;
-            };
-            pl.appendChild(b);
-        });
-
-        // 数字ボタン生成
-        const gl = document.getElementById('mark-groups');
-        for(let r=0; r<3; r++){
-            const d = document.createElement('div');
-            d.className = 'row';
-            d.innerHTML = `<div class="label">${r+1}着</div>`;
-            for(let n=1; n<=6; n++){
-                const m = document.createElement('div');
-                m.className = 'mark'; m.innerText = n;
-                m.onclick = () => {
-                    if(sel[r].includes(n)) sel[r] = sel[r].filter(v=>v!==n);
-                    else sel[r].push(n);
-                    m.classList.toggle('selected');
-                    update();
+        window.onload = () => {
+            const now = new Date();
+            document.getElementById('res-date').innerText = `${now.getFullYear()}年 ${now.getMonth()+1}月 ${now.getDate()}日`;
+            
+            // 会場ボタン生成
+            const pl = document.getElementById('place-list');
+            places.forEach(p => {
+                const b = document.createElement('div');
+                b.className = 'p-btn' + (p==='平和島'?' active':'');
+                b.innerHTML = `<span style="writing-mode:vertical-rl; padding:4px 0;">${p}</span>`;
+                b.onclick = () => {
+                    document.querySelectorAll('.p-btn').forEach(x=>x.classList.remove('active'));
+                    b.classList.add('active');
+                    document.getElementById('res-place').innerText = p;
                 };
-                d.appendChild(m);
-            }
-            gl.appendChild(d);
+                pl.appendChild(b);
+            });
+        };
+
+        function setRace(el, val) {
+            document.querySelectorAll('.ms-btn').forEach(x=>x.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('res-race').innerText = val;
         }
 
-        // 金額生成
-        const al = document.getElementById('amt-list');
-        amts.forEach(a => {
-            const b = document.createElement('div');
-            b.className = 'amt-btn' + (a===100?' active':'');
-            b.style.padding = '6px 10px';
-            b.innerText = a + '円';
-            b.onclick = () => {
-                document.querySelectorAll('.amt-btn').forEach(x=>x.classList.remove('active'));
-                b.classList.add('active');
-                unit = a;
-                document.getElementById('res-unit').innerText = a;
-                update();
-            };
-            al.appendChild(b);
-        });
-
-        function update(){
-            let cnt = 0;
-            for(let a of sel[0]) for(let b of sel[1]) for(let d of sel[2]) {
-                if(a!==b && b!==d && a!==d) cnt++;
-            }
-            sel.forEach((set, i) => {
-                const target = document.getElementById('ans' + i);
-                if(target) target.innerText = set.sort().join(' ');
-            });
-            document.getElementById('res-cnt').innerText = cnt;
-            document.getElementByI
+        function tapMark(el, row, num) {
+            if(sel[row].includes(num)) sel[row] = sel[row].filter(v=>v!==num);
+            else sel[row].push(num);
+            el.classList.toggle('selected'
