@@ -9,12 +9,11 @@
         :root { --br-blue: #2c559b; --br-orange: #f39800; --sheet-bg: #fffbf0; }
         body { font-family: "Helvetica Neue", Arial, sans-serif; background-color: #ccc; display: flex; flex-direction: column; align-items: center; margin: 0; padding: 10px; -webkit-user-select: none; }
 
-        /* --- 舟券デザイン（画像のデザインを忠実に再現） --- */
+        /* --- 舟券デザイン --- */
         #capture-target { padding: 5px; background: #ccc; }
         .ticket {
             width: 360px; height: 220px; background: #fff; border: 1px solid #333;
             padding: 8px; box-sizing: border-box; display: flex; flex-direction: column; position: relative;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="40"><text x="10" y="30" font-family="sans-serif" font-size="12" fill="rgba(0,0,0,0.03)" transform="rotate(-15, 50, 20)">P-STAR</text></svg>');
         }
         .t-top-row { display: flex; flex: 1; }
         .t-left { width: 110px; border-right: 1.5px solid #000; display: flex; flex-direction: column; padding-right: 5px; }
@@ -24,13 +23,13 @@
         .t-place-label { border: 1.5px solid #000; padding: 2px; text-align: center; margin: 5px 0; font-size: 20px; font-weight: bold; }
         .t-shiki-v { writing-mode: vertical-rl; text-orientation: upright; font-size: 18px; font-weight: bold; border: 1.5px solid #000; padding: 12px 4px; letter-spacing: 4px; }
         
-        .t-bet-line { display: flex; align-items: center; font-weight: bold; height: 32px; font-size: 14px; border-bottom: 1px solid transparent; }
+        .t-bet-line { display: flex; align-items: center; font-weight: bold; height: 32px; font-size: 14px; }
         .t-nums { font-size: 20px; margin-left: 10px; letter-spacing: 2px; }
         
         .t-summary { text-align: right; font-size: 11px; font-weight: bold; line-height: 1.2; margin-top: auto; }
         .t-barcode { width: 100%; height: 20px; background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 4px); margin-top: 5px; }
 
-        /* --- マークシートデザイン（最新の枠組み） --- */
+        /* --- マークシートデザイン --- */
         .ms { background: var(--sheet-bg); width: 100%; max-width: 380px; padding: 12px; border: 2px solid var(--br-orange); border-left: 12px solid var(--br-orange); box-sizing: border-box; margin-top: 10px; }
         .ms-top-grid { display: grid; grid-template-columns: 130px 1fr; gap: 8px; margin-bottom: 10px; }
         .ms-race-area { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; border: 1.2px solid var(--br-orange); padding: 4px; background: #fff; }
@@ -46,8 +45,7 @@
         .mark.selected { background: #222 !important; color: #fff !important; }
 
         .amt-row { display: flex; justify-content: flex-end; gap: 5px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--br-orange); }
-        .save-btn { margin-top: 20px; padding: 14px 40px; background: #e60012; color: #fff; border: none; border-radius: 30px; font-weight: bold; font-size: 16px; cursor: pointer; width: 90%; max-width: 360px; box-shadow: 0 4px 0 #b3000d; }
-        .save-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #b3000d; }
+        .save-btn { margin-top: 20px; padding: 14px 40px; background: #e60012; color: #fff; border: none; border-radius: 30px; font-weight: bold; font-size: 16px; cursor: pointer; width: 90%; max-width: 360px; }
     </style>
 </head>
 <body>
@@ -56,12 +54,12 @@
         <div class="ticket">
             <div class="t-top-row">
                 <div class="t-left">
-                    <div style="font-size:9px; font-weight:bold; letter-spacing:1px;">BOAT RACE</div>
+                    <div style="font-size:9px; font-weight:bold;">BOAT RACE</div>
                     <div class="t-place-label" id="res-place">平和島</div>
                     <div style="margin-bottom:auto;">
-                        <span style="font-size:24px; font-weight:bold;" id="res-race">01</span><span style="font-size:14px; font-weight:bold; margin-left:2px;">レース</span>
+                        <span style="font-size:24px; font-weight:bold;" id="res-race">01</span><span style="font-size:14px; font-weight:bold;">レース</span>
                     </div>
-                    <div style="font-size:10px; font-weight:bold; line-height:1.3; margin-bottom:2px;">
+                    <div style="font-size:10px; font-weight:bold; line-height:1.3;">
                         <span id="res-year"></span><br><span id="res-date"></span>
                     </div>
                 </div>
@@ -91,7 +89,8 @@
                 <div class="ms-btn" onclick="setRace(this,'05')">5R</div><div class="ms-btn" onclick="setRace(this,'06')">6R</div><div class="ms-btn" onclick="setRace(this,'07')">7R</div><div class="ms-btn" onclick="setRace(this,'08')">8R</div>
                 <div class="ms-btn" onclick="setRace(this,'09')">9R</div><div class="ms-btn" onclick="setRace(this,'10')">10R</div><div class="ms-btn" onclick="setRace(this,'11')">11R</div><div class="ms-btn" onclick="setRace(this,'12')">12R</div>
             </div>
-            <div class="ms-place-area" id="place-list"></div>
+            <div class="ms-place-area" id="place-list">
+                </div>
         </div>
 
         <div class="row">
@@ -138,4 +137,15 @@
                 b.className = 'p-btn' + (p==='平和島'?' active':'');
                 b.style.minWidth = '28px';
                 b.innerHTML = `<span style="writing-mode:vertical-rl; padding:5px 0;">${p}</span>`;
-                b.oncl
+                b.onclick = () => {
+                    document.querySelectorAll('.p-btn').forEach(x=>x.classList.remove('active'));
+                    b.classList.add('active');
+                    document.getElementById('res-place').innerText = p;
+                };
+                pl.appendChild(b);
+            });
+        };
+
+        function setRace(el, val) {
+            document.querySelectorAll('.ms-race-area .ms-btn').forEach(x=>x.classList.remove('active'));
+            el.classLis
