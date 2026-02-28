@@ -3,127 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ボートレース舟券メーカーβ版</title>
+    <title>舟券メーカー P-STAR | ボートレース点数計算・予想集計ツール</title>
     <style>
-        body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
-        h1 {
-            color: #0054a6;
-            font-size: 24px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        .menu-container {
-            width: 100%;
-            max-width: 400px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .menu-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px;
-            background-color: #fff;
-            border-left: 8px solid #f39800;
-            border-radius: 8px;
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .menu-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-        }
-        .menu-item span {
-            font-size: 18px;
-        }
-        .arrow {
-            color: #f39800;
-            font-size: 20px;
-        }
-        .footer {
-            margin-top: 50px;
-            font-size: 12px;
-            color: #888;
-        }
+        :root { --br-blue: #2c559b; --br-orange: #f39800; }
+        body { font-family: sans-serif; margin: 0; padding: 0; background: #f4f4f4; color: #333; }
+        header { background: var(--br-blue); color: #fff; padding: 20px; text-align: center; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        
+        /* ツール一覧のデザイン */
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+        .menu-item { background: #fff; border: 2px solid var(--br-orange); border-radius: 10px; padding: 15px; text-align: center; text-decoration: none; color: #333; font-weight: bold; transition: 0.2s; box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
+        .menu-item:hover { transform: translateY(-3px); background: #fffbf0; }
+        .menu-item span { display: block; font-size: 0.8em; color: #666; margin-top: 5px; }
+
+        /* --- ここが審査対策用の追加テキストエリア --- */
+        .content-section { background: #fff; padding: 20px; border-radius: 8px; line-height: 1.8; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .content-section h2 { border-bottom: 3px solid var(--br-blue); padding-bottom: 5px; font-size: 1.2em; color: var(--br-blue); }
+        .content-section p { font-size: 0.95em; }
+        .feature-list { padding-left: 20px; font-size: 0.9em; }
+
+        footer { text-align: center; padding: 30px; border-top: 1px solid #ccc; font-size: 12px; }
+        footer a { color: #666; text-decoration: none; margin: 0 10px; }
     </style>
 </head>
 <body>
 
-    <h1>ボートレース舟券メーカーβ版</h1>
-　　
-    <div class="menu-container"> 
-        <a href="hunaken3.html" class="menu-item">
-            <span>3連単 フォーメーション</span>
-            <span class="arrow">▶</span>
-        </a>
-        <a href="2rentan3.html" class="menu-item">
-            <span>2連単 フォーメーション</span>
-            <span class="arrow">▶</span>
-        </a>
-         <a href="box.html" class="menu-item">
-            <span>3連単ボックスorフォーメション</span>
-            <span class="arrow">▶</span>
-    　　  </a>
-            <a href="2.3.box.html" class="menu-item">
-            <span>2・3連単/ボックス</span>
-            <span class="arrow">▶</span>
-        </a>
-        </a>
-        <br>
-        <br>
-        <a href="hunaken1.html" class="menu-item">
-            <span>3連単 フォーメーション簡易デザイン①</span>
-            <span class="arrow">▶</span>
-        </a>
-    <div class="menu-container">
-        <a href="hunaken2.html" class="menu-item">
-            <span>3連単 フォーメーション簡易デザイン②</span>
-            <span class="arrow">▶</span>
-        </a>
-        <a href="2rentan.html" class="menu-item">
-            <span>2連単 フォーメーション簡易デザイン①</span>
-            <span class="arrow">▶</span>
-        </a>
-        <a href="2rentan2.html" class="menu-item">
-            <span>2連単 フォーメーション簡易デザイン②</span>
-            <span class="arrow">▶</span>
-        </a>
-        
-        </div>
+<header>
+    <h1>舟券メーカー P-STAR</h1>
+    <p>ボートレース予想をスマートに集計・共有</p>
+</header>
 
-    <div class="footer">
-        © 2024 Boat Race Predictor Tools
+<div class="container">
+
+    <div class="menu-grid">
+        <a href="2.3.box.html" class="menu-item">🔥 2/3連単(BOX)<span>フォーメーションも対応</span></a>
+        <a href="hunaken3.html" class="menu-item">⛵ 3連単(F)<span>専用フォーメーション</span></a>
+        <a href="2rentan3.html" class="menu-item">🚤 2連単(F)<span>2連単特化ツール</span></a>
+        <a href="hunaken1.html" class="menu-item">✅ 簡易版①<span>シンプル入力</span></a>
+        <a href="hunaken2.html" class="menu-item">✅ 簡易版②<span>リスト形式</span></a>
     </div>
-<footer style="margin-top: 30px; padding: 20px; text-align: center; border-top: 1px solid #ccc; width: 100%;">
-    <a href="info.html" style="color: #666; font-size: 12px; text-decoration: none;">ツールの使い方 / 免責事項 / プライバシーポリシー</a>
+
+    <section class="content-section">
+        <h2>舟券メーカー P-STARとは？</h2>
+        <p>当サイトは、全国24会場で開催されるボートレース（競艇）の予想を、誰でも簡単に視覚化・点数計算できる無料ツール集です。</p>
+        <p>「フォーメーションを組むと点数がわからなくなる」「SNSでカッコよく予想を公開したい」という競艇ファンの声から生まれました。</p>
+    </section>
+
+    <section class="content-section">
+        <h2>主な機能とメリット</h2>
+        <ul class="feature-list">
+            <li><strong>自動点数計算：</strong> 買い目を選ぶだけで合計金額を瞬時に算出。資金配分に役立ちます。</li>
+            <li><strong>本物風の舟券画像生成：</strong> 予想をリアルな舟券イメージとして保存可能。</li>
+            <li><strong>SNS連携：</strong> 𝕏（旧Twitter）へワンタップで予想内容を投稿できます。</li>
+            <li><strong>全24場対応：</strong> 平和島から大村まで、全会場のデータを反映。</li>
+        </ul>
+    </section>
+
+    <section class="content-section">
+        <h2>なぜ点数計算が重要なのか</h2>
+        <p>ボートレースにおいて、合成オッズの把握と点数の管理は収支安定の第一歩です。多点買いになりがちな3連単フォーメーションも、当ツールで事前に計算することで、無駄な「トリガミ（的中しても赤字）」を防ぐシミュレーションが可能です。</p>
+    </section>
+
+</div>
+
+<footer>
+    <p>&copy; 2026 舟券メーカー P-STAR</p>
+    <a href="info.html">ツールの使い方</a> | 
+    <a href="info.html">免責事項</a> | 
+    <a href="info.html">プライバシーポリシー</a>
 </footer>
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
