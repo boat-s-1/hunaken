@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ボートレース予想 2連単・日付1行調整</title>
+    <title>ボートレース予想 2連単・カスタム金額</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root { --br-blue: #2c559b; --br-orange: #f39800; --sheet-bg: #fffbf0; }
@@ -24,11 +24,7 @@
         .t-sub-place { border: 1.5px solid #000; padding: 2px 5px; font-size: 16px; font-weight: bold; text-align: center; width: 110px; margin-bottom: 5px; white-space: nowrap; transition: color 0.3s; }
         .t-race-num { font-size: 38px; font-weight: bold; line-height: 1; }
         .t-race-label { font-size: 16px; font-weight: bold; }
-        
-        /* メモエリア */
         .t-memo-area { margin-top: 15px; margin-bottom: auto; font-size: 9px; font-weight: bold; line-height: 1.1; white-space: pre-wrap; }
-        
-        /* ★日付エリアを1行に変更 */
         .t-date-area { font-size: 10.5px; font-weight: bold; line-height: 1.2; margin-top: 5px; white-space: nowrap; letter-spacing: -0.5px; }
         
         .t-mid { width: 45px; display: flex; align-items: center; justify-content: center; }
@@ -41,6 +37,7 @@
         .t-summary { text-align: right; font-size: 12px; font-weight: bold; line-height: 1.2; margin-top: auto; }
         .t-barcode { width: 100%; height: 25px; background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 4px); margin-top: 5px; }
 
+        /* 操作パネル */
         .controls-container { width: 100%; max-width: 400px; margin-top: 10px; display: flex; flex-direction: column; gap: 0px; }
         .input-section { background: #fff; padding: 12px; border: 1px solid #bbb; border-bottom: none; border-radius: 8px 8px 0 0; }
         .color-selector { display: flex; gap: 10px; margin-bottom: 8px; align-items: center; }
@@ -49,7 +46,7 @@
         .dot-white { background: #fff; }
         .dot-red { background: #ff0000; }
         .dot-blue { background: #0000ff; }
-        .input-field { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; margin-bottom: 6px; transition: all 0.3s; }
+        .input-field { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; margin-bottom: 6px; }
 
         .ms { background: var(--sheet-bg); padding: 10px; border: 4px solid var(--br-orange); border-left: 12px solid var(--br-orange); border-radius: 0 0 8px 8px; box-sizing: border-box; }
         .ms-top-flex { display: flex; gap: 8px; margin-bottom: 12px; }
@@ -58,13 +55,21 @@
         .ms-btn { border: 1px solid var(--br-orange); background: #fff; color: var(--br-orange); font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 11px; cursor: pointer; height: 34px; }
         .p-btn { min-width: 32px; writing-mode: vertical-rl; padding: 5px 0; border: 1px solid var(--br-orange); background: #fff; color: var(--br-orange); font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 12px; }
         .active { background: var(--br-orange) !important; color: #fff !important; }
+        
         .row { display: flex; align-items: center; gap: 8px; margin: 12px 0; }
         .label { background: var(--br-blue); color: #fff; font-size: 12px; width: 45px; text-align: center; padding: 7px 0; font-weight: bold; border-radius: 2px; }
         .mark-wrap { display: flex; gap: 6px; }
         .mark { width: 36px; height: 36px; border: 1.5px solid #444; border-radius: 50%; background: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; }
         .mark.selected { background: #222 !important; color: #fff !important; }
-        .amt-row { display: flex; justify-content: flex-end; gap: 8px; margin-top: 5px; border-top: 1px dashed var(--br-orange); padding-top: 10px; }
-        .amt-btn { border: 1px solid var(--br-orange); color: var(--br-orange); background: #fff; padding: 6px 12px; font-size: 11px; font-weight: bold; cursor: pointer; border-radius: 4px; }
+
+        /* ★金額ボタンと自由入力のレイアウト */
+        .amt-row { display: flex; align-items: center; justify-content: space-between; gap: 5px; margin-top: 5px; border-top: 1px dashed var(--br-orange); padding-top: 10px; }
+        .amt-btns-left { display: flex; gap: 5px; }
+        .amt-btn { border: 1px solid var(--br-orange); color: var(--br-orange); background: #fff; padding: 6px 8px; font-size: 11px; font-weight: bold; cursor: pointer; border-radius: 4px; min-width: 50px; text-align: center; }
+        .amt-input-wrap { display: flex; align-items: center; gap: 3px; border: 1px solid #999; padding: 2px 5px; border-radius: 4px; background: #fff; }
+        .amt-input-field { width: 50px; border: none; font-size: 14px; font-weight: bold; text-align: right; outline: none; }
+        .amt-unit-label { font-size: 11px; font-weight: bold; color: #666; }
+
         .save-btn { margin-top: 20px; padding: 16px; background: #e60012; color: #fff; border: none; border-radius: 35px; font-weight: bold; font-size: 18px; width: 95%; max-width: 400px; cursor: pointer; box-shadow: 0 4px 0 #b3000d; }
     </style>
 </head>
@@ -81,9 +86,7 @@
                 <div class="t-left">
                     <div class="t-sub-place" id="res-sub-text">平和島</div>
                     <div><span class="t-race-num" id="res-race">01</span><span class="t-race-label">レース</span></div>
-                    
                     <div class="t-memo-area" id="res-memo">03年度<br>第04回07日</div>
-                    
                     <div class="t-date-area" id="res-full-date">2026年2月28日</div>
                 </div>
                 <div class="t-mid"><div class="t-shiki-v">２連単</div></div>
@@ -125,10 +128,17 @@
             <div class="row"><div class="label">2着</div><div class="mark-wrap">
                 <div class="mark" onclick="tapMark(this,1,1)">1</div><div class="mark" onclick="tapMark(this,1,2)">2</div><div class="mark" onclick="tapMark(this,1,3)">3</div><div class="mark" onclick="tapMark(this,1,4)">4</div><div class="mark" onclick="tapMark(this,1,5)">5</div><div class="mark" onclick="tapMark(this,1,6)">6</div>
             </div></div>
+            
             <div class="amt-row">
-                <div class="amt-btn active" onclick="setAmt(this,100)">100円</div>
-                <div class="amt-btn" onclick="setAmt(this,500)">500円</div>
-                <div class="amt-btn" onclick="setAmt(this,1000)">1000円</div>
+                <div class="amt-btns-left">
+                    <div class="amt-btn active" onclick="quickAmt(this,100)">100</div>
+                    <div class="amt-btn" onclick="quickAmt(this,500)">500</div>
+                    <div class="amt-btn" onclick="quickAmt(this,1000)">1000</div>
+                </div>
+                <div class="amt-input-wrap">
+                    <input type="number" id="in-unit" class="amt-input-field" value="100" oninput="manualAmt()">
+                    <span class="amt-unit-label">円</span>
+                </div>
             </div>
         </div>
     </div>
@@ -167,7 +177,6 @@
                 pg.appendChild(b);
             });
             const now = new Date();
-            // 日付を1行に結合してセット
             document.getElementById('res-full-date').innerText = now.getFullYear() + "年" + (now.getMonth() + 1) + "月" + now.getDate() + "日";
         };
 
@@ -179,6 +188,23 @@
             if(type === 'red') { field.style.background = '#ffcccc'; targetText.style.color = '#ff0000'; }
             else if(type === 'blue') { field.style.background = '#cce5ff'; targetText.style.color = '#0000ff'; }
             else { field.style.background = '#f9f9f9'; targetText.style.color = '#000000'; }
+        }
+
+        // 金額ボタン（一発入力）
+        function quickAmt(el, v) {
+            document.querySelectorAll('.amt-btn').forEach(x => x.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('in-unit').value = v;
+            unit = v;
+            update();
+        }
+
+        // 金額自由入力（タイピング）
+        function manualAmt() {
+            document.querySelectorAll('.amt-btn').forEach(x => x.classList.remove('active'));
+            const val = parseInt(document.getElementById('in-unit').value) || 0;
+            unit = val;
+            update();
         }
 
         function sync() {
@@ -194,20 +220,13 @@
             update();
         }
 
-        function setAmt(el, v) {
-            document.querySelectorAll('.amt-btn').forEach(x => x.classList.remove('active'));
-            el.classList.add('active');
-            unit = v;
-            document.getElementById('res-unit').innerText = v;
-            update();
-        }
-
         function update() {
             let cnt = 0;
             for (let a of sel[0]) for (let b of sel[1]) if (a !== b) cnt++;
             document.getElementById('ans0').innerText = sel[0].sort().join(' ');
             document.getElementById('ans1').innerText = sel[1].sort().join(' ');
             document.getElementById('res-cnt').innerText = cnt;
+            document.getElementById('res-unit').innerText = unit.toLocaleString();
             document.getElementById('res-total').innerText = (cnt * unit).toLocaleString();
         }
 
@@ -215,7 +234,7 @@
             html2canvas(document.getElementById('capture-target'), { scale: 3 }).then(canvas => {
                 const a = document.createElement('a');
                 a.href = canvas.toDataURL();
-                a.download = 'boat_ticket_horizontal_date.png';
+                a.download = 'boat_bet_custom_price.png';
                 a.click();
             });
         }
