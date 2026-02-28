@@ -44,7 +44,6 @@
 
         .ms { background: var(--sheet-bg); padding: 10px; border: 4px solid var(--br-orange); border-left: 12px solid var(--br-orange); border-radius: 0 0 8px 8px; box-sizing: border-box; }
         
-        /* 切替スイッチ */
         .toggle-group { display: flex; gap: 5px; margin-bottom: 8px; }
         .m-btn { flex: 1; text-align: center; padding: 6px; font-size: 11px; font-weight: bold; cursor: pointer; border-radius: 18px; color: #666; background: #ddd; }
         .m-btn.active { background: #333; color: #fff; }
@@ -67,7 +66,11 @@
         .amt-btn { border: 1px solid var(--br-orange); color: var(--br-orange); background: #fff; padding: 6px 8px; font-size: 11px; font-weight: bold; cursor: pointer; border-radius: 4px; min-width: 45px; }
         .amt-input-field { width: 60px; border: 1px solid #999; border-radius:4px; padding: 4px; font-size: 14px; font-weight: bold; text-align: right; }
 
-        .save-btn { margin-top: 20px; padding: 16px; background: #e60012; color: #fff; border: none; border-radius: 35px; font-weight: bold; font-size: 18px; width: 95%; max-width: 400px; cursor: pointer; box-shadow: 0 4px 0 #b3000d; }
+        /* ボタンエリア */
+        .btn-container { display: flex; gap: 10px; width: 95%; max-width: 400px; margin-top: 20px; }
+        .save-btn { flex: 2; padding: 16px; background: #e60012; color: #fff; border: none; border-radius: 35px; font-weight: bold; font-size: 18px; cursor: pointer; box-shadow: 0 4px 0 #b3000d; }
+        .share-btn { flex: 1; padding: 16px; background: #000; color: #fff; border: none; border-radius: 35px; font-weight: bold; font-size: 18px; cursor: pointer; box-shadow: 0 4px 0 #333; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .save-btn:active, .share-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #333; }
     </style>
 </head>
 <body>
@@ -154,11 +157,14 @@
         </div>
     </div>
 
-    <button class="save-btn" onclick="save()">画像を保存する</button>
+    <div class="btn-container">
+        <button class="save-btn" onclick="save()">画像を保存する</button>
+        <button class="share-btn" onclick="shareX()">𝕏 投稿</button>
+    </div>
 
     <script>
-        let shiki = 3; // 2 or 3
-        let method = 'form'; // 'form' or 'box'
+        let shiki = 3; 
+        let method = 'form'; 
         let sel = [[], [], []];
         let unit = 100;
         const places = ["桐生","戸田","江戸川","平和島","多摩川","浜名湖","蒲郡","常滑","津","三国","びわこ","住之江","尼崎","鳴門","丸亀","児島","宮島","徳山","下関","若松","芦屋","福岡","唐津","大村"];
@@ -208,13 +214,9 @@
             method = m;
             document.getElementById('btn-form').classList.toggle('active', m==='form');
             document.getElementById('btn-box').classList.toggle('active', m==='box');
-            
-            // 入力行の出し分け
             document.getElementById('row1').style.display = (m==='box') ? 'none' : 'flex';
             document.getElementById('row2').style.display = (m==='box' || shiki===2) ? 'none' : 'flex';
             document.getElementById('label0').innerText = (m==='box') ? '選択' : '1着';
-            
-            // 券面表示の出し分け
             document.getElementById('view-normal').style.display = (m==='box') ? 'none' : 'block';
             document.getElementById('view-box').style.display = (m==='box') ? 'block' : 'none';
             document.getElementById('res-mode-label').innerText = (m==='box') ? 'ボックス' : 'フォーメーション';
@@ -288,33 +290,27 @@
                 a.click();
             });
         }
+
+        // X(Twitter)連携関数
+        function shareX() {
+            const place = document.getElementById('res-main-place').innerText;
+            const race = document.getElementById('res-race').innerText;
+            const shikiStr = document.getElementById('res-shiki').innerText;
+            const methodStr = document.getElementById('res-mode-label').innerText;
+            const count = document.getElementById('res-cnt').innerText;
+            const total = document.getElementById('res-total').innerText;
+            const url = "https://boat-s-1.github.io/hunaken/";
+
+            const text = encodeURIComponent(
+                `【ボートレース予想】\n` +
+                `${place} ${race}R\n` +
+                `${shikiStr} ${methodStr}\n` +
+                `点数：${count}点（合計 ${total}円）\n\n` +
+                `#ボートレース #競艇予想 #舟券メーカー\n`
+            );
+
+            window.open(`https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(url)}`, '_blank');
+        }
     </script>
-
-<script>
-function shareTwitter() {
-    // 入力されている値を取得
-    const place = document.getElementById('in-main').value;
-    const race = document.getElementById('res-race').innerText;
-    const total = document.getElementById('res-total').innerText;
-    const cnt = document.getElementById('res-cnt').innerText;
-    const shiki = document.getElementById('res-shiki') ? document.getElementById('res-shiki').innerText : "3連単";
-
-    // ツイート本文の作成
-    const text = encodeURIComponent(
-        `【ボートレース予想】\n` +
-        `${place} ${race}R\n` +
-        `式別：${shiki}\n` +
-        `点数：${cnt}点（合計 ${total}円）\n\n` +
-        `#ボートレース #競艇予想 #舟券メーカー \n`
-    );
-    
-    // 現在のページのURL（サイトを公開したらそのURLを入れるのがベスト）
-    const url = encodeURIComponent(window.location.href);
-
-    // Xの投稿画面を開く
-    window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
-}
-</script>
-    
 </body>
 </html>
