@@ -9,25 +9,25 @@
         :root { --br-blue: #2c559b; --br-orange: #f39800; --sheet-bg: #fffbf0; }
         body { font-family: sans-serif; background-color: #ccc; display: flex; flex-direction: column; align-items: center; margin: 0; padding: 10px; -webkit-user-select: none; }
 
-        /* --- 舟券デザイン --- */
+        /* --- 舟券 --- */
         #capture-target { padding: 5px; background: #ccc; }
         .ticket { width: 360px; height: 220px; background: #fff; border: 1px solid #333; padding: 8px; box-sizing: border-box; display: flex; flex-direction: column; position: relative; }
         .t-top-row { display: flex; flex: 1; }
         .t-left { width: 110px; border-right: 1.5px solid #000; display: flex; flex-direction: column; padding-right: 5px; }
         .t-mid { width: 45px; display: flex; align-items: center; justify-content: center; }
         .t-right { flex: 1; padding-left: 10px; display: flex; flex-direction: column; }
-        .t-place-label { border: 1.5px solid #000; padding: 2px; text-align: center; margin: 5px 0; font-size: 20px; font-weight: bold; }
+        .t-place-label { border: 1.5px solid #000; padding: 2px; text-align: center; margin: 5px 0; font-size: 20px; font-weight: bold; min-height: 30px; }
         .t-shiki-v { writing-mode: vertical-rl; text-orientation: upright; font-size: 18px; font-weight: bold; border: 1.5px solid #000; padding: 12px 4px; letter-spacing: 4px; }
         .t-bet-line { display: flex; align-items: center; font-weight: bold; height: 32px; font-size: 14px; }
-        .t-nums { font-size: 20px; margin-left: 10px; letter-spacing: 2px; }
+        .t-nums { font-size: 20px; margin-left: 10px; letter-spacing: 2px; color: #000; }
         .t-summary { text-align: right; font-size: 11px; font-weight: bold; line-height: 1.2; margin-top: auto; }
         .t-barcode { width: 100%; height: 20px; background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 4px); margin-top: 5px; }
 
-        /* --- マークシートデザイン（最初からHTMLで記述） --- */
+        /* --- マークシート --- */
         .ms { background: var(--sheet-bg); width: 100%; max-width: 380px; padding: 12px; border: 2px solid var(--br-orange); border-left: 12px solid var(--br-orange); box-sizing: border-box; margin-top: 10px; }
         .ms-top-grid { display: grid; grid-template-columns: 130px 1fr; gap: 8px; margin-bottom: 10px; }
         .ms-race-area { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; border: 1.2px solid var(--br-orange); padding: 4px; background: #fff; }
-        .ms-place-area { display: flex; overflow-x: auto; border: 1.2px solid var(--br-orange); padding: 4px; background: #fff; gap: 4px; height: 100px; }
+        .ms-place-area { display: flex; overflow-x: auto; border: 1.2px solid var(--br-orange); padding: 4px; background: #fff; gap: 4px; height: 100px; white-space: nowrap; }
         
         .ms-btn, .p-btn, .amt-btn { border: 1px solid var(--br-orange); background: #fff; color: var(--br-orange); font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 10px; cursor: pointer; }
         .p-btn { min-width: 28px; writing-mode: vertical-rl; padding: 4px 0; }
@@ -40,7 +40,7 @@
         .mark.selected { background: #222 !important; color: #fff !important; }
 
         .amt-row { display: flex; justify-content: flex-end; gap: 5px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--br-orange); }
-        .save-btn { margin-top: 20px; padding: 14px 40px; background: #e60012; color: #fff; border: none; border-radius: 30px; font-weight: bold; font-size: 16px; cursor: pointer; width: 100%; }
+        .save-btn { margin-top: 20px; padding: 14px 40px; background: #e60012; color: #fff; border: none; border-radius: 30px; font-weight: bold; font-size: 16px; cursor: pointer; width: 100%; box-shadow: 0 4px 0 #b3000d; }
     </style>
 </head>
 <body>
@@ -85,12 +85,7 @@
                 <div class="ms-btn" onclick="setRace(this,'09')">9R</div><div class="ms-btn" onclick="setRace(this,'10')">10R</div><div class="ms-btn" onclick="setRace(this,'11')">11R</div><div class="ms-btn" onclick="setRace(this,'12')">12R</div>
             </div>
             <div class="ms-place-area">
-                <div class="p-btn active" onclick="setPlace(this,'平和島')">平和島</div>
-                <div class="p-btn" onclick="setPlace(this,'桐生')">桐生</div>
-                <div class="p-btn" onclick="setPlace(this,'戸田')">戸田</div>
-                <div class="p-btn" onclick="setPlace(this,'江戸川')">江戸川</div>
-                <div class="p-btn" onclick="setPlace(this,'多摩川')">多摩川</div>
-                <div class="p-btn" onclick="setPlace(this,'浜名湖')">浜名湖</div>
+                <div class="p-btn active" onclick="setPlace(this,'平和島')">平和島</div><div class="p-btn" onclick="setPlace(this,'桐生')">桐生</div><div class="p-btn" onclick="setPlace(this,'戸田')">戸田</div><div class="p-btn" onclick="setPlace(this,'江戸川')">江戸川</div><div class="p-btn" onclick="setPlace(this,'多摩川')">多摩川</div><div class="p-btn" onclick="setPlace(this,'浜名湖')">浜名湖</div><div class="p-btn" onclick="setPlace(this,'蒲郡')">蒲郡</div><div class="p-btn" onclick="setPlace(this,'常滑')">常滑</div><div class="p-btn" onclick="setPlace(this,'津')">津</div><div class="p-btn" onclick="setPlace(this,'三国')">三国</div><div class="p-btn" onclick="setPlace(this,'びわこ')">びわこ</div><div class="p-btn" onclick="setPlace(this,'住之江')">住之江</div><div class="p-btn" onclick="setPlace(this,'尼崎')">尼崎</div><div class="p-btn" onclick="setPlace(this,'鳴門')">鳴門</div><div class="p-btn" onclick="setPlace(this,'丸亀')">丸亀</div><div class="p-btn" onclick="setPlace(this,'児島')">児島</div><div class="p-btn" onclick="setPlace(this,'宮島')">宮島</div><div class="p-btn" onclick="setPlace(this,'徳山')">徳山</div><div class="p-btn" onclick="setPlace(this,'下関')">下関</div><div class="p-btn" onclick="setPlace(this,'若松')">若松</div><div class="p-btn" onclick="setPlace(this,'芦屋')">芦屋</div><div class="p-btn" onclick="setPlace(this,'福岡')">福岡</div><div class="p-btn" onclick="setPlace(this,'唐津')">唐津</div><div class="p-btn" onclick="setPlace(this,'大村')">大村</div>
             </div>
         </div>
 
@@ -114,11 +109,77 @@
     <button class="save-btn" onclick="save()">画像を保存する</button>
 
     <script>
-        let sel = [[], [], []]; let unit = 100;
-        function setRace(el,v){ document.querySelectorAll('.ms-race-area .ms-btn').forEach(x=>x.classList.remove('active')); el.classList.add('active'); document.getElementById('res-race').innerText=v; }
-        function setPlace(el,v){ document.querySelectorAll('.p-btn').forEach(x=>x.classList.remove('active')); el.classList.add('active'); document.getElementById('res-place').innerText=v; }
-        function tapMark(el,r,n){ if(sel[r].includes(n)) sel[r]=sel[r].filter(v=>v!==n); else sel[r].push(n); el.classList.toggle('selected'); update(); }
-        function setAmt(el,v){ document.querySelectorAll('.amt-btn').forEach(x=>x.classList.remove('active')); el.classList.add('active'); unit=v; document.getElementById('res-unit').innerText=v; update(); }
-        function update(){
-            let cnt=0; for(let a of sel[0]) for(let b of sel[1]) for(let d of sel[2]) if(a!==b && b!==d && a!==d) cnt++;
-            [0,1,2].forEach(i=>document.getElementById('ans'+i)
+        // 選択データを保持する変数
+        let sel = [[], [], []]; 
+        let unit = 100;
+
+        // レース切り替え
+        function setRace(el, v) {
+            document.querySelectorAll('.ms-race-area .ms-btn').forEach(x => x.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('res-race').innerText = v;
+        }
+
+        // 会場切り替え
+        function setPlace(el, v) {
+            document.querySelectorAll('.p-btn').forEach(x => x.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('res-place').innerText = v;
+        }
+
+        // 数字ボタン（1〜6）のクリック
+        function tapMark(el, row, num) {
+            // すでに選ばれていたら消す、選ばれていなければ追加
+            if (sel[row].includes(num)) {
+                sel[row] = sel[row].filter(v => v !== num);
+            } else {
+                sel[row].push(num);
+            }
+            el.classList.toggle('selected');
+            updateDisplay(); // 画面を更新
+        }
+
+        // 金額切り替え
+        function setAmt(el, v) {
+            document.querySelectorAll('.amt-btn').forEach(x => x.classList.remove('active'));
+            el.classList.add('active');
+            unit = v;
+            document.getElementById('res-unit').innerText = v;
+            updateDisplay();
+        }
+
+        // 舟券の文字と計算を更新
+        function updateDisplay() {
+            // 組み合わせ計算（フォーメーション）
+            let cnt = 0;
+            for (let a of sel[0]) {
+                for (let b of sel[1]) {
+                    for (let d of sel[2]) {
+                        // 同じ数字が重ならない組み合わせのみカウント
+                        if (a !== b && b !== d && a !== d) cnt++;
+                    }
+                }
+            }
+
+            // 舟券の1着・2着・3着の数字を表示
+            document.getElementById('ans0').innerText = sel[0].sort().join(' ');
+            document.getElementById('ans1').innerText = sel[1].sort().join(' ');
+            document.getElementById('ans2').innerText = sel[2].sort().join(' ');
+
+            // 合計金額などを更新
+            document.getElementById('res-cnt').innerText = cnt;
+            document.getElementById('res-total').innerText = (cnt * unit).toLocaleString();
+        }
+
+        // 画像保存
+        function save() {
+            html2canvas(document.getElementById('capture-target'), { scale: 3 }).then(canvas => {
+                const a = document.createElement('a');
+                a.href = canvas.toDataURL();
+                a.download = 'boat_3ren.png';
+                a.click();
+            });
+        }
+    </script>
+</body>
+</html>
