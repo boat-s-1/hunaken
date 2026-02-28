@@ -2,190 +2,85 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ボートレース予想メーカー</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ボートレース予想メーカー ツール集</title>
     <style>
-        :root { --br-blue: #0054a6; --br-orange: #f39800; --sheet-bg: #fffbf0; }
-        body { font-family: sans-serif; background-color: #ccc; display: flex; flex-direction: column; align-items: center; margin: 0; padding: 10px; }
-
-        /* 舟券 */
-        #capture-target { padding: 5px; background: #ccc; }
-        .ticket {
-            width: 360px; height: 215px; background: #fff; border: 1px solid #333;
-            padding: 10px; box-sizing: border-box; display: flex; flex-direction: column;
-            background-image: radial-gradient(rgba(255, 192, 203, 0.15) 20%, transparent 20%); background-size: 40px 40px;
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
         }
-        .t-header { display: flex; justify-content: space-between; align-items: center; }
-        .t-place { font-size: 24px; font-weight: bold; }
-        .t-row { display: flex; border-top: 2px solid #000; border-bottom: 2px solid #000; margin: 4px 0; height: 30px; align-items: center; }
-        .t-race { font-size: 18px; font-weight: bold; width: 110px; border-right: 2px solid #000; padding-left: 5px; }
-        .t-shiki { flex: 1; text-align: center; font-size: 18px; font-weight: bold; letter-spacing: 10px; }
-        .t-bet { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .t-line { display: flex; align-items: center; height: 30px; font-size: 14px; }
-        .t-num { font-size: 22px; font-weight: bold; margin-left: 10px; letter-spacing: 2px; }
-        .t-footer { display: flex; justify-content: space-between; align-items: flex-end; }
-        .t-date { font-size: 11px; font-weight: bold; }
-        .t-summary { font-size: 12px; font-weight: bold; text-align: right; }
-        .barcode { height: 18px; background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 4px); margin-top: 3px; }
-
-        /* マークシート */
-        .ms { background: var(--sheet-bg); width: 100%; max-width: 380px; padding: 10px; border: 2px solid var(--br-orange); border-left: 12px solid var(--br-orange); box-sizing: border-box; margin-top: 10px; }
-        .ms-top { display: flex; gap: 5px; height: 100px; margin-bottom: 8px; }
-        .ms-race { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; width: 130px; border: 1px solid var(--br-orange); background: #fff; padding: 3px; }
-        .ms-place { flex: 1; border: 1px solid var(--br-orange); background: #fff; display: flex; overflow-x: auto; padding: 3px; gap: 4px; }
-        
-        .ms-btn, .p-btn, .amt-btn { border: 1px solid var(--br-orange); background: #fff; color: var(--br-orange); font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 10px; }
-        .active { background: var(--br-orange) !important; color: #fff !important; }
-
-        .row { display: flex; align-items: center; gap: 5px; margin: 8px 0; }
-        .label { background: var(--br-blue); color: #fff; font-size: 11px; width: 40px; text-align: center; padding: 6px 0; font-weight: bold; }
-        .mark { width: 25px; height: 35px; border: 1.5px solid #444; border-radius: 50% / 30%; background: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; }
-        .mark.selected { background: #222 !important; color: #fff !important; }
-
-        .amt-row { display: flex; justify-content: flex-end; gap: 5px; margin-top: 10px; padding-top: 5px; border-top: 1px dashed var(--br-orange); }
-        .amt-btn { padding: 5px 10px; }
-
-        .save-btn { margin-top: 20px; padding: 12px 40px; background: #e60012; color: #fff; border: none; border-radius: 25px; font-weight: bold; font-size: 16px; cursor: pointer; }
+        h1 {
+            color: #0054a6;
+            font-size: 24px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .menu-container {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .menu-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background-color: #fff;
+            border-left: 8px solid #f39800;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .menu-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        .menu-item span {
+            font-size: 18px;
+        }
+        .arrow {
+            color: #f39800;
+            font-size: 20px;
+        }
+        .footer {
+            margin-top: 50px;
+            font-size: 12px;
+            color: #888;
+        }
     </style>
 </head>
 <body>
 
-    <div id="capture-target">
-        <div class="ticket">
-            <div class="t-header">
-                <div style="font-size:9px; font-weight:bold;">BOAT RACE</div>
-                <div class="t-place" id="res-place">平和島</div>
-                <div style="font-size:10px; font-weight:bold;">フォーメーション</div>
-            </div>
-            <div class="t-row">
-                <div class="t-race"><span id="res-race">01</span> レース</div>
-                <div class="t-shiki">３連単</div>
-            </div>
-            <div class="t-bet">
-                <div class="t-line">1着 － <span class="t-num" id="ans0"></span></div>
-                <div class="t-line">2着 － <span class="t-num" id="ans1"></span></div>
-                <div class="t-line">3着 － <span class="t-num" id="ans2"></span></div>
-            </div>
-            <div class="t-footer">
-                <div class="t-date" id="res-date"></div>
-                <div class="t-summary">
-                    組合せ数 <span id="res-cnt">0</span> 各組 <span id="res-unit">100</span>円<br>
-                    合計 <span id="res-total">0</span>円
-                </div>
-            </div>
-            <div class="barcode"></div>
+    <h1>ボートレース予想メーカー</h1>
+
+    <div class="menu-container">
+        <a href="hunaken1.html" class="menu-item">
+            <span>3連単 フォーメーション</span>
+            <span class="arrow">▶</span>
+        </a>
+
+        <a href="2rentan.html" class="menu-item">
+            <span>2連単 フォーメーション</span>
+            <span class="arrow">▶</span>
+        </a>
+
         </div>
+
+    <div class="footer">
+        © 2024 Boat Race Predictor Tools
     </div>
 
-    <div class="ms">
-        <div class="ms-top">
-            <div class="ms-race" id="race-list"></div>
-            <div class="ms-place" id="place-list"></div>
-        </div>
-        <div id="mark-groups"></div>
-        <div class="amt-row" id="amt-list"></div>
-    </div>
-
-    <button class="save-btn" onclick="save()">画像を保存</button>
-
-    <script>
-        // 設定データ
-        const places = ["桐生","戸田","江戸川","平和島","多摩川","浜名湖","蒲郡","常滑","津","三国","びわこ","住之江","尼崎","鳴門","丸亀","児島","宮島","徳山","下関","若松","芦屋","福岡","唐津","大村"];
-        const amts = [100, 200, 300, 500, 1000];
-        let sel = [[], [], []];
-        let unit = 100;
-
-        // 日付セット
-        const now = new Date();
-        document.getElementById('res-date').innerText = `${now.getFullYear()}.${now.getMonth()+1}.${now.getDate()}`;
-
-        // レース
-        const rl = document.getElementById('race-list');
-        for(let i=1; i<=12; i++){
-            const b = document.createElement('div');
-            b.className = 'ms-btn' + (i===1?' active':'');
-            b.innerText = i + 'R';
-            b.onclick = () => {
-                document.querySelectorAll('.ms-btn').forEach(x=>x.classList.remove('active'));
-                b.classList.add('active');
-                document.getElementById('res-race').innerText = String(i).padStart(2,'0');
-            };
-            rl.appendChild(b);
-        }
-
-        // 会場
-        const pl = document.getElementById('place-list');
-        places.forEach(p => {
-            const b = document.createElement('div');
-            b.className = 'p-btn' + (p==='平和島'?' active':'');
-            b.style.minWidth = '24px';
-            b.innerHTML = `<span style="writing-mode:vertical-rl; padding:4px 0;">${p}</span>`;
-            b.onclick = () => {
-                document.querySelectorAll('.p-btn').forEach(x=>x.classList.remove('active'));
-                b.classList.add('active');
-                document.getElementById('res-place').innerText = p;
-            };
-            pl.appendChild(b);
-        });
-
-        // 数字ボタン
-        const gl = document.getElementById('mark-groups');
-        for(let r=0; r<3; r++){
-            const d = document.createElement('div');
-            d.className = 'row';
-            d.innerHTML = `<div class="label">${r+1}着</div>`;
-            for(let n=1; n<=6; n++){
-                const m = document.createElement('div');
-                m.className = 'mark'; m.innerText = n;
-                m.onclick = () => {
-                    if(sel[r].includes(n)) sel[r] = sel[r].filter(v=>v!==n);
-                    else sel[r].push(n);
-                    m.classList.toggle('selected');
-                    update();
-                };
-                d.appendChild(m);
-            }
-            gl.appendChild(d);
-        }
-
-        // 金額
-        const al = document.getElementById('amt-list');
-        amts.forEach(a => {
-            const b = document.createElement('div');
-            b.className = 'amt-btn' + (a===100?' active':'');
-            b.innerText = a + '円';
-            b.onclick = () => {
-                document.querySelectorAll('.amt-btn').forEach(x=>x.classList.remove('active'));
-                b.classList.add('active');
-                unit = a;
-                document.getElementById('res-unit').innerText = a;
-                update();
-            };
-            al.appendChild(b);
-        });
-
-        function update(){
-            let cnt = 0;
-            for(let a of sel[0]) for(let b of sel[1]) for(let d of sel[2]) {
-                if(a!==b && b!==d && a!==d) cnt++;
-            }
-            sel.forEach((set, i) => {
-                document.getElementById('ans' + i).innerText = set.sort().join(' ');
-            });
-            document.getElementById('res-cnt').innerText = cnt;
-            document.getElementById('res-total').innerText = (cnt * unit).toLocaleString();
-        }
-
-        function save(){
-            html2canvas(document.getElementById('capture-target'), {scale: 3}).then(canvas => {
-                const a = document.createElement('a');
-                a.href = canvas.toDataURL();
-                a.download = 'boat.png';
-                a.click();
-            });
-        }
-    </script>
 </body>
 </html>
-
