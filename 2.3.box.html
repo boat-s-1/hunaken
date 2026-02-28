@@ -6,6 +6,45 @@
     <title>ボートレース予想 2/3連単・BOX対応</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
+        /* 共通ヘッダーメニューのスタイル */
+.top-menu {
+    width: 100%;
+    background: #333;
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.top-menu a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px 10px;
+    margin: 0 5px;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background: #444;
+    white-space: nowrap;
+}
+.top-menu a:hover {
+    background: var(--br-orange);
+    border-color: var(--br-orange);
+}
+/* 横スクロールできるように設定（スマホ用） */
+.menu-inner {
+    display: flex;
+    overflow-x: auto;
+    width: 100%;
+    max-width: 400px;
+    padding: 0 10px;
+}
+/* スクロールバーを隠す（任意） */
+.menu-inner::-webkit-scrollbar { display: none; }
         :root { --br-blue: #2c559b; --br-orange: #f39800; --sheet-bg: #fffbf0; }
         body { font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans", sans-serif; background-color: #ccc; display: flex; flex-direction: column; align-items: center; margin: 0; padding: 10px; -webkit-user-select: none; }
 
@@ -74,7 +113,16 @@
     </style>
 </head>
 <body>
-
+<div class="top-menu">
+    <div class="menu-inner">
+        <a href="index.html">🏠 TOP</a>
+        <a href="2.3.box.html">🔥 2/3連単(BOX対応)</a>
+        <a href="hunaken3.html">3連単(F)</a>
+        <a href="2rentan3.html">2連単(F)</a>
+        <a href="hunaken1.html">簡易①</a>
+        <a href="hunaken2.html">簡易②</a>
+    </div>
+</div>
     <div id="capture-target">
         <div class="ticket">
             <div class="t-header">
