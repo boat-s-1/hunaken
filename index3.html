@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>舟券メーカー P-STAR | ボートレース予想・計算ツール</title>
+    <style>
+        :root {
+            --bg-color: #f0f2f5;
+            --card-bg: #ffffff;
+            --primary-blue: #2c559b;
+            --accent-orange: #f39800;
+            --text-main: #333333;
+            --text-sub: #65676b;
+        }
+
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* ヘッダー */
+        header {
+            width: 100%;
+            background: var(--primary-blue);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        header h1 { margin: 0; font-size: 22px; letter-spacing: 1px; }
+        header p { margin: 5px 0 0; font-size: 11px; opacity: 0.8; }
+
+        /* メインコンテナ */
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+        /* 4列クイックナビゲーション */
+        .quick-nav {
+            display: flex;
+            justify-content: space-around;
+            background: #fff;
+            padding: 15px 5px;
+            margin: 0 0 20px 0;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .quick-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            flex: 1;
+            transition: transform 0.2s;
+        }
+
+        .quick-nav-item:active {
+            transform: scale(0.9);
+        }
+
+        .quick-nav-icon {
+            font-size: 24px;
+            margin-bottom: 6px;
+        }
+
+        .quick-nav-text {
+            font-size: 11px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        /* セクションタイトル */
+        .section-title {
+            font-size: 15px;
+            font-weight: bold;
+            margin: 25px 0 12px 5px;
+            display: flex;
+            align-items: center;
+        }
+        .section-title::before {
+            content: "";
+            display: inline-block;
+            width: 4px;
+            height: 16px;
+            background: var(--accent-orange);
+            margin-right: 8px;
+            border-radius: 2px;
+        }
+
+        /* タイル型グリッドレイアウト */
+        .grid-menu {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        /* カードデザイン */
+        .nav-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 22px 10px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-main);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .nav-card:active {
+            transform: scale(0.96);
+            background-color: #f8f8f8;
+        }
+
+        .nav-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .nav-title {
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .nav-card.popular::after {
+            content: "人気";
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: var(--accent-orange);
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        /* 特別ボタン */
+        .ai-btn {
+            grid-column: span 2;
+            background: linear-gradient(135deg, #ff4b4b, #ff7575);
+            color: white;
+            padding: 18px;
+            border-radius: 16px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(255,75,75,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* インフォメーションカード */
+        .info-card {
+            background: white;
+            border-radius: 16px;
+            padding: 18px;
+            margin-top: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .info-card h3 { font-size: 14px; margin-top: 0; color: var(--primary-blue); }
+        .info-card p { font-size: 12px; line-height: 1.6; color: var(--text-sub); margin-bottom: 0; }
+
+        footer {
+            margin-top: 50px;
+            padding: 30px 20px;
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-sub);
+            width: 100%;
+            background: #fff;
+            box-sizing: border-box;
+        }
+        footer a { color: var(--text-sub); text-decoration: none; margin: 0 8px; }
+
+        /* スムーススクロール用 */
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>舟券メーカー P-STAR</h1>
+    <p>ボートレース予想をスマートに集計・共有</p>
+</header>
+
+<div class="container">
+    
+    <div class="quick-nav">
+        <a href="https://boat-ai.streamlit.app/" class="quick-nav-item" target="_blank">
+            <span class="quick-nav-icon">🚀</span>
+            <span class="quick-nav-text">予想ツール</span>
+        </a>
+        <a href="info.html" class="quick-nav-item">
+            <span class="quick-nav-icon">📖</span>
+            <span class="quick-nav-text">使い方</span>
+        </a>
+        <a href="heiwajima.html" class="quick-nav-item">
+            <span class="quick-nav-icon">🏟️</span>
+            <span class="quick-nav-text">場情報</span>
+        </a>
+        <a href="#tools-section" class="quick-nav-item">
+            <span class="quick-nav-icon">🎟️</span>
+            <span class="quick-nav-text">舟券作成</span>
+        </a>
+    </div>
+
+    <div class="section-title">AI予想エンジン</div>
+    <div class="grid-menu">
+        <a href="https://boat-ai.streamlit.app/" class="ai-btn" target="_blank">
+            <span>🚀</span> AI予想ツール (β版)
+        </a>
+    </div>
+
+    <div id="tools-section" class="section-title">計算ツール・画像生成</div>
+    <div class="grid-menu">
+        <a href="2.3.box.html" class="nav-card popular">
+            <span class="nav-icon">🔥</span>
+            <span class="nav-title">2/3連単(BOX)</span>
+        </a>
+        <a href="hunaken3.html" class="nav-card">
+            <span class="nav-icon">📋</span>
+            <span class="nav-title">3連単(F)</span>
+        </a>
+        <a href="2rentan3.html" class="nav-card">
+            <span class="nav-icon">🚤</span>
+            <span class="nav-title">2連単(F)</span>
+        </a>
+        <a href="hunaken1.html" class="nav-card">
+            <span class="nav-icon">✅</span>
+            <span class="nav-title">簡易版①</span>
+        </a>
+        <a href="hunaken2.html" class="nav-card">
+            <span class="nav-icon">✨</span>
+            <span class="nav-title">簡易版②</span>
+        </a>
+    </div>
+
+    <div class="section-title">インフォメーション</div>
+    <div class="info-card">
+        <h3>P-STARとは？</h3>
+        <p>ボートレースファン必見！複雑なフォーメーションの点数計算や、SNS投稿用の舟券画像生成がスマホで簡単に行えます。収支管理の前段階として、スマートな買い目検討をサポートします。</p>
+    </div>
+
+</div>
+
+<footer>
+    &copy; 2026 舟券メーカー P-STAR<br><br>
+    <a href="info.html">使い方</a> | <a href="info.html">免責事項</a> | <a href="info.html">プライバシーポリシー</a>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+</body>
+</html>
