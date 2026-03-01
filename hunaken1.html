@@ -1,21 +1,62 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta name="google-adsense-account" content="ca-pub-9145518658275668">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="google-adsense-account" content="ca-pub-9145518658275668">
     <title>舟券メーカー P-STAR | ボートレース点数計算・予想集計ツール</title>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9145518658275668" crossorigin="anonymous"></script>
     <meta name="google-site-verification" content="gjZSAf-F1sn_m4mb6Yjjv4CrGE83tJfvrFHbAy7P00s" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <style>
         :root { --br-blue: #0054a6; --br-orange: #f39800; --sheet-bg: #fffbf0; }
-        body { font-family: sans-serif; background-color: #ccc; display: flex; flex-direction: column; align-items: center; margin: 0; padding: 10px; }
-
-        /* 舟券 */
-        #capture-target { padding: 5px; background: #ccc; }
-        .ticket {
-            width: 360px; height: 215px; background: #fff; border: 1px solid #333;
-            padding: 10px; box-sizing: border-box; display: flex; flex-direction: column;
-            background-image: radial-gradient(rgba(255, 192, 203, 0.15) 20%, transparent 20%); background-size: 40px 40px;
+        body { 
+            font-family: sans-serif; 
+            background-color: #ccc; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            margin: 0; 
+            padding: 0 0 20px 0; 
+            -webkit-user-select: none;
+            width: 100vw;
+            overflow-x: hidden;
         }
+
+        /* --- 舟券デザイン --- */
+        #capture-target { 
+            padding: 10px; 
+            background: #ccc; 
+            width: 100%; 
+            display: flex; 
+            justify-content: center; 
+            box-sizing: border-box;
+        }
+
+        .ticket {
+            width: 360px; 
+            height: 215px; 
+            background: #fff; 
+            border: 1px solid #333;
+            padding: 10px; 
+            box-sizing: border-box; 
+            display: flex; 
+            flex-direction: column;
+            background-image: radial-gradient(rgba(255, 192, 203, 0.15) 20%, transparent 20%); 
+            background-size: 40px 40px;
+            position: relative;
+            transform-origin: top center;
+        }
+
+        /* スマホ用レスポンシブ拡大 */
+        @media screen and (max-width: 380px) {
+            .ticket {
+                transform: scale(calc(100vw / 380));
+                margin-bottom: calc((215px * (100vw / 380)) - 215px);
+            }
+        }
+
         .t-header { display: flex; justify-content: space-between; align-items: center; }
         .t-place { font-size: 24px; font-weight: bold; }
         .t-row { display: flex; border-top: 2px solid #000; border-bottom: 2px solid #000; margin: 4px 0; height: 30px; align-items: center; }
@@ -30,23 +71,38 @@
         .barcode { height: 18px; background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 4px); margin-top: 3px; }
 
         /* マークシート */
-        .ms { background: var(--sheet-bg); width: 100%; max-width: 380px; padding: 10px; border: 2px solid var(--br-orange); border-left: 12px solid var(--br-orange); box-sizing: border-box; margin-top: 10px; }
+        .ms { 
+            background: var(--sheet-bg); 
+            width: 100%; 
+            max-width: 380px; 
+            padding: 10px; 
+            border: 2px solid var(--br-orange); 
+            border-left: 12px solid var(--br-orange); 
+            box-sizing: border-box; 
+            margin-top: 10px; 
+        }
         .ms-top { display: flex; gap: 5px; height: 100px; margin-bottom: 8px; }
         .ms-race { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; width: 130px; border: 1px solid var(--br-orange); background: #fff; padding: 3px; }
         .ms-place { flex: 1; border: 1px solid var(--br-orange); background: #fff; display: flex; overflow-x: auto; padding: 3px; gap: 4px; }
         
-        .ms-btn, .p-btn, .amt-btn { border: 1px solid var(--br-orange); background: #fff; color: var(--br-orange); font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 10px; }
+        .ms-btn, .p-btn, .amt-btn { border: 1px solid var(--br-orange); background: #fff; color: var(--br-orange); font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 10px; cursor: pointer; }
         .active { background: var(--br-orange) !important; color: #fff !important; }
 
         .row { display: flex; align-items: center; gap: 5px; margin: 8px 0; }
         .label { background: var(--br-blue); color: #fff; font-size: 11px; width: 40px; text-align: center; padding: 6px 0; font-weight: bold; }
-        .mark { width: 25px; height: 35px; border: 1.5px solid #444; border-radius: 50% / 30%; background: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; }
+        .mark { width: 28px; height: 38px; border: 1.5px solid #444; border-radius: 50% / 30%; background: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
         .mark.selected { background: #222 !important; color: #fff !important; }
 
         .amt-row { display: flex; justify-content: flex-end; gap: 5px; margin-top: 10px; padding-top: 5px; border-top: 1px dashed var(--br-orange); }
-        .amt-btn { padding: 5px 10px; }
+        .amt-btn { padding: 5px 10px; min-width: 50px; }
 
-        .save-btn { margin-top: 20px; padding: 12px 40px; background: #e60012; color: #fff; border: none; border-radius: 25px; font-weight: bold; font-size: 16px; cursor: pointer; }
+        .save-btn { margin-top: 20px; padding: 16px; background: #e60012; color: #fff; border: none; border-radius: 35px; font-weight: bold; font-size: 18px; width: 95%; max-width: 400px; cursor: pointer; box-shadow: 0 4px 0 #b3000d; }
+
+        /* 保存用モーダル */
+        #save-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; }
+        #save-modal p { color: #fff; font-weight: bold; margin-bottom: 15px; text-align: center; font-size: 14px; line-height: 1.5; }
+        #save-modal img { width: 100%; max-width: 360px; border: 2px solid #fff; margin-bottom: 20px; }
+        #save-modal .close-modal { padding: 12px 30px; background: #fff; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -87,10 +143,15 @@
         <div class="amt-row" id="amt-list"></div>
     </div>
 
-    <button class="save-btn" onclick="save()">画像を保存</button>
+    <button class="save-btn" onclick="save()">画像を保存する</button>
+
+    <div id="save-modal">
+        <p>【画像が生成されました】<br>画像を長押しして「保存」してください</p>
+        <img id="saved-image" src="" alt="舟券画像">
+        <button class="close-modal" onclick="closeModal()">閉じる</button>
+    </div>
 
     <script>
-        // 設定データ
         const places = ["桐生","戸田","江戸川","平和島","多摩川","浜名湖","蒲郡","常滑","津","三国","びわこ","住之江","尼崎","鳴門","丸亀","児島","宮島","徳山","下関","若松","芦屋","福岡","唐津","大村"];
         const amts = [100, 200, 300, 500, 1000];
         let sel = [[], [], []];
@@ -139,8 +200,12 @@
                 const m = document.createElement('div');
                 m.className = 'mark'; m.innerText = n;
                 m.onclick = () => {
-                    if(sel[r].includes(n)) sel[r] = sel[r].filter(v=>v!==n);
-                    else sel[r].push(n);
+                    if(sel[r].includes(n)) sel[r] = sel[setR(r)].filter(v=>v!==n); // バグ修正: sel[r]
+                    if(sel[r].includes(n)) {
+                        sel[r] = sel[r].filter(v=>v!==n);
+                    } else {
+                        sel[r].push(n);
+                    }
                     m.classList.toggle('selected');
                     update();
                 };
@@ -148,6 +213,21 @@
             }
             gl.appendChild(d);
         }
+        
+        // 正しいクリックイベントに修正
+        document.querySelectorAll('.mark').forEach((m, idx) => {
+            m.onclick = function() {
+                const row = Math.floor(idx / 6);
+                const num = (idx % 6) + 1;
+                if(sel[row].includes(num)) {
+                    sel[row] = sel[row].filter(v => v !== num);
+                } else {
+                    sel[row].push(num);
+                }
+                this.classList.toggle('selected');
+                update();
+            };
+        });
 
         // 金額
         const al = document.getElementById('amt-list');
@@ -177,22 +257,35 @@
             document.getElementById('res-total').innerText = (cnt * unit).toLocaleString();
         }
 
-        function save(){
-            html2canvas(document.getElementById('capture-target'), {scale: 3}).then(canvas => {
-                const a = document.createElement('a');
-                a.href = canvas.toDataURL();
-                a.download = 'boat.png';
-                a.click();
+        function save() {
+            const target = document.getElementById('capture-target');
+            html2canvas(target, { 
+                scale: 3,
+                useCORS: true,
+                backgroundColor: "#ccc"
+            }).then(canvas => {
+                const imgData = canvas.toDataURL("image/png");
+                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+                if (isMobile) {
+                    document.getElementById('saved-image').src = imgData;
+                    document.getElementById('save-modal').style.display = 'flex';
+                } else {
+                    const a = document.createElement('a');
+                    a.href = imgData;
+                    a.download = 'boat_3rentan_dot.png';
+                    a.click();
+                }
             });
         }
+
+        function closeModal() {
+            document.getElementById('save-modal').style.display = 'none';
+        }
     </script>
-    <footer style="margin-top: 30px; padding: 20px; text-align: center; border-top: 1px solid #ccc; width: 100%;">
-    <a href="info.html" style="color: #666; font-size: 12px; text-decoration: none;">ツールの使い方 / 免責事項 / プライバシーポリシー</a>
-</footer>
+
+    <footer style="margin-top: 30px; padding: 20px; text-align: center; border-top: 1px solid #ccc; width: 100%; background: #eee;">
+        <a href="info.html" style="color: #666; font-size: 12px; text-decoration: none;">ツールの使い方 / 免責事項 / プライバシーポリシー</a>
+    </footer>
 </body>
 </html>
-
-
-
-
-
