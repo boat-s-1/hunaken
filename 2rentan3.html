@@ -1,17 +1,61 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta name="google-adsense-account" content="ca-pub-9145518658275668">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="google-adsense-account" content="ca-pub-9145518658275668">
     <title>舟券メーカー P-STAR | ボートレース点数計算・予想集計ツール</title>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9145518658275668" crossorigin="anonymous"></script>
     <meta name="google-site-verification" content="gjZSAf-F1sn_m4mb6Yjjv4CrGE83tJfvrFHbAy7P00s" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <style>
         :root { --br-blue: #2c559b; --br-orange: #f39800; --sheet-bg: #fffbf0; }
-        body { font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans", sans-serif; background-color: #ccc; display: flex; flex-direction: column; align-items: center; margin: 0; padding: 10px; -webkit-user-select: none; }
+        body { 
+            font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans", sans-serif; 
+            background-color: #ccc; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            margin: 0; 
+            padding: 0 0 20px 0; 
+            -webkit-user-select: none;
+            width: 100vw;
+            overflow-x: hidden;
+        }
 
         /* --- 舟券デザイン --- */
-        #capture-target { padding: 5px; background: #ccc; }
-        .ticket { width: 380px; height: 235px; background: #fff; border: 1px solid #333; padding: 10px; box-sizing: border-box; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+        #capture-target { 
+            padding: 10px; 
+            background: #ccc; 
+            width: 100%; 
+            display: flex; 
+            justify-content: center; 
+            box-sizing: border-box;
+        }
+
+        .ticket { 
+            width: 380px; 
+            height: 235px; 
+            background: #fff; 
+            border: 1px solid #333; 
+            padding: 10px; 
+            box-sizing: border-box; 
+            display: flex; 
+            flex-direction: column; 
+            position: relative; 
+            overflow: hidden; 
+            transform-origin: top center;
+        }
+
+        /* スマホ用レスポンシブ拡大 */
+        @media screen and (max-width: 400px) {
+            .ticket {
+                transform: scale(calc(100vw / 400));
+                margin-bottom: calc((235px * (100vw / 400)) - 235px);
+            }
+        }
+
         .ticket::before { content: "P-STAR"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg); font-size: 60px; color: rgba(0,0,0,0.03); font-weight: bold; z-index: 0; pointer-events: none; }
         
         .t-header { display: flex; align-items: flex-end; border-bottom: 1.5px solid #000; padding-bottom: 2px; margin-bottom: 5px; z-index: 1; }
@@ -37,7 +81,8 @@
         .t-summary { text-align: right; font-size: 12px; font-weight: bold; line-height: 1.2; margin-top: auto; }
         .t-barcode { width: 100%; height: 25px; background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 4px); margin-top: 5px; }
 
-        .controls-container { width: 100%; max-width: 400px; margin-top: 10px; display: flex; flex-direction: column; gap: 0px; }
+        /* 操作パネル */
+        .controls-container { width: 100%; max-width: 400px; margin-top: 10px; display: flex; flex-direction: column; padding: 0 10px; box-sizing: border-box; }
         .input-section { background: #fff; padding: 12px; border: 1px solid #bbb; border-bottom: none; border-radius: 8px 8px 0 0; }
         .color-selector { display: flex; gap: 10px; margin-bottom: 8px; align-items: center; }
         .color-dot { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #ccc; cursor: pointer; }
@@ -61,17 +106,20 @@
         .mark { width: 36px; height: 36px; border: 1.5px solid #444; border-radius: 50%; background: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; }
         .mark.selected { background: #222 !important; color: #fff !important; }
 
-        /* 金額操作エリア */
         .amt-row { display: flex; align-items: center; justify-content: space-between; gap: 5px; margin-top: 5px; border-top: 1px dashed var(--br-orange); padding-top: 10px; }
         .amt-btns-left { display: flex; gap: 5px; }
         .amt-btn { border: 1px solid var(--br-orange); color: var(--br-orange); background: #fff; padding: 6px 8px; font-size: 11px; font-weight: bold; cursor: pointer; border-radius: 4px; min-width: 50px; text-align: center; }
         .amt-input-wrap { display: flex; align-items: center; gap: 3px; border: 1px solid #999; padding: 2px 5px; border-radius: 4px; background: #fff; }
-        
-        /* ★step="100" を追加 */
         .amt-input-field { width: 65px; border: none; font-size: 14px; font-weight: bold; text-align: right; outline: none; }
         .amt-unit-label { font-size: 11px; font-weight: bold; color: #666; }
 
         .save-btn { margin-top: 20px; padding: 16px; background: #e60012; color: #fff; border: none; border-radius: 35px; font-weight: bold; font-size: 18px; width: 95%; max-width: 400px; cursor: pointer; box-shadow: 0 4px 0 #b3000d; }
+
+        /* 保存用モーダル */
+        #save-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; }
+        #save-modal p { color: #fff; font-weight: bold; margin-bottom: 15px; text-align: center; font-size: 14px; line-height: 1.5; }
+        #save-modal img { width: 100%; max-width: 380px; border: 2px solid #fff; margin-bottom: 20px; }
+        #save-modal .close-modal { padding: 12px 30px; background: #fff; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -145,6 +193,12 @@
     </div>
 
     <button class="save-btn" onclick="save()">画像を保存する</button>
+
+    <div id="save-modal">
+        <p>【画像が生成されました】<br>画像を長押しして「保存」してください</p>
+        <img id="saved-image" src="" alt="舟券画像">
+        <button class="close-modal" onclick="closeModal()">閉じる</button>
+    </div>
 
     <script>
         const places = ["桐生","戸田","江戸川","平和島","多摩川","浜名湖","蒲郡","常滑","津","三国","びわこ","住之江","尼崎","鳴門","丸亀","児島","宮島","徳山","下関","若松","芦屋","福岡","唐津","大村"];
@@ -230,16 +284,33 @@
         }
 
         function save() {
-            html2canvas(document.getElementById('capture-target'), { scale: 3 }).then(canvas => {
-                const a = document.createElement('a');
-                a.href = canvas.toDataURL();
-                a.download = 'boat_bet_100step.png';
-                a.click();
+            const target = document.getElementById('capture-target');
+            html2canvas(target, { 
+                scale: 3,
+                useCORS: true,
+                backgroundColor: "#ccc"
+            }).then(canvas => {
+                const imgData = canvas.toDataURL("image/png");
+                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+                if (isMobile) {
+                    document.getElementById('saved-image').src = imgData;
+                    document.getElementById('save-modal').style.display = 'flex';
+                } else {
+                    const a = document.createElement('a');
+                    a.href = imgData;
+                    a.download = 'boat_2rentan_ticket.png';
+                    a.click();
+                }
             });
         }
+
+        function closeModal() {
+            document.getElementById('save-modal').style.display = 'none';
+        }
     </script>
-    <footer style="margin-top: 30px; padding: 20px; text-align: center; border-top: 1px solid #ccc; width: 100%;">
-    <a href="info.html" style="color: #666; font-size: 12px; text-decoration: none;">ツールの使い方 / 免責事項 / プライバシーポリシー</a>
-</footer>
+    <footer style="margin-top: 30px; padding: 20px; text-align: center; border-top: 1px solid #ccc; width: 100%; background: #eee;">
+        <a href="info.html" style="color: #666; font-size: 12px; text-decoration: none;">ツールの使い方 / 免責事項 / プライバシーポリシー</a>
+    </footer>
 </body>
 </html>
