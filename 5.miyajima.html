@@ -3,85 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>宮島ボート 5号艇攻略データ</title>
+    <title>宮島5枠突破・精密診断 - MIYAJIMA 5-STATS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #121212; color: #e0e0e0; }
-        .border-5 { border-left: 8px solid #facc15; } /* 5号艇イエロー */
-        .card { background-color: #1e1e1e; border-radius: 8px; transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        body { background-color: #0b0f19; color: #f1f5f9; font-family: sans-serif; }
+        .data-card { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #334155; }
+        .yellow-accent { color: #facc15; }
+        .bg-yellow-accent { background-color: #facc15; }
     </style>
 </head>
-<body>
+<body class="min-h-screen">
 
-    <header class="bg-yellow-400 p-6 text-black text-center shadow-lg">
-        <h1 class="text-3xl font-bold italic">MIYAJIMA 5-MASTER</h1>
-        <p class="text-sm font-semibold mt-1">宮島5号艇 1着奪取の条件分析</p>
+    <header class="p-8 text-center border-b border-slate-800">
+        <h1 class="text-3xl font-black italic tracking-widest yellow-accent">MIYAJIMA <span class="text-white">5</span> MASTER</h1>
+        <p class="text-gray-400 text-xs mt-2 font-bold uppercase tracking-tighter">2024年〜 最新統計データ準拠シミュレーター</p>
     </header>
 
-    <main class="max-w-4xl mx-auto p-4">
+    <main class="max-w-5xl mx-auto p-4 md:p-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        <section class="mt-8">
-            <h2 class="text-xl font-bold mb-4 flex items-center">
-                <span class="bg-yellow-400 text-black px-2 py-1 rounded mr-2">5</span> 
-                宮島で5枠が「突き抜ける」3条件
-            </h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="card p-4 border-5">
-                    <h3 class="font-bold text-yellow-400">1. 干潮時</h3>
-                    <p class="text-sm mt-2">潮が引くと水面が安定。ダッシュ勢の全速旋回が決まりやすくなり、5コースからのまくり差しが狙い目。</p>
-                </div>
-                <div class="card p-4 border-5">
-                    <h3 class="font-bold text-yellow-400">2. 向かい風</h3>
-                    <p class="text-sm mt-2">4m以上の向かい風ならインの加速が鈍る。カド（4コース）が攻めた内側を5コースがズバッと差す展開。</p>
-                </div>
-                <div class="card p-4 border-5">
-                    <h3 class="font-bold text-yellow-400">3. 4枠の攻め</h3>
-                    <p class="text-sm mt-2">4号艇が「攻めるタイプ」の場合、連動する5号艇の突き抜け率が急上昇。展示タイムに注目。</p>
+        <div class="lg:col-span-1 space-y-6">
+            <div class="data-card p-6 rounded-2xl shadow-xl">
+                <h2 class="text-lg font-bold mb-6 border-l-4 border-yellow-400 pl-3">レース条件設定</h2>
+                
+                <div class="space-y-4 text-sm">
+                    <div>
+                        <label class="text-gray-400 block mb-1">風速条件</label>
+                        <select id="wind" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none focus:border-yellow-400">
+                            <option value="strong">強風 (3m以上) [7.25%]</option>
+                            <option value="light">弱風 (1-2m) [5.64%]</option>
+                            <option value="none">無風 (0m) [5.46%]</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="text-gray-400 block mb-1">5号艇 展示順位</label>
+                        <select id="exRank" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none focus:border-yellow-400">
+                            <option value="1">展示タイム 1位 [10.00%]</option>
+                            <option value="2">展示タイム 2位以下</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="text-gray-400 block mb-1">vs 4号艇 展示タイム差</label>
+                        <select id="vs4" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none focus:border-yellow-400">
+                            <option value="fast">0.1秒以上速い [10.42%]</option>
+                            <option value="near">わずかに速い/同等</option>
+                            <option value="slow">劣勢</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="text-gray-400 block mb-1">1号艇の2連対率</label>
+                        <select id="target1" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none focus:border-yellow-400">
+                            <option value="high">70%以上 (イン強) [6.27%]</option>
+                            <option value="low">70%未満 (イン弱)</option>
+                        </select>
+                    </div>
+
+                    <button onclick="calc()" class="w-full bg-yellow-accent hover:bg-yellow-500 text-black font-black py-4 rounded-xl mt-4 transition-transform active:scale-95">
+                        データを解析する
+                    </button>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <section class="mt-12 bg-gray-800 rounded-lg p-6 shadow-inner">
-            <h2 class="text-lg font-bold mb-4">分析シミュレーター（デモ）</h2>
-            <div class="flex flex-col space-y-4">
-                <label>
-                    現在の潮位：
-                    <select id="tide" class="bg-gray-700 p-2 rounded w-full">
-                        <option value="high">満潮（イン有利）</option>
-                        <option value="low">干潮（外枠チャンス）</option>
-                    </select>
-                </label>
-                <button onclick="analyze()" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 rounded transition">
-                    5号艇の勝率を算出
-                </button>
-                <div id="result" class="text-center text-2xl font-black mt-4 hidden">
-                    期待度： <span id="score" class="text-yellow-400 text-4xl">--</span> %
+        <div class="lg:col-span-2 space-y-6">
+            <div id="welcome-msg" class="data-card p-12 rounded-2xl text-center border-dashed border-2 border-slate-700">
+                <p class="text-gray-500 font-bold italic">左側のフォームからレース条件を入力してください</p>
+            </div>
+
+            <div id="result-area" class="hidden space-y-6">
+                <div class="data-card p-8 rounded-2xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 font-black text-6xl">#5</div>
+                    <h3 class="text-gray-400 font-bold text-sm uppercase">算出された1着期待度</h3>
+                    <div class="flex items-baseline gap-2 mt-2">
+                        <span id="res-percent" class="text-7xl font-black yellow-accent tracking-tighter">0.0</span>
+                        <span class="text-2xl font-bold yellow-accent">%</span>
+                    </div>
+                    <p class="mt-4 text-sm text-gray-300 border-t border-slate-700 pt-4 italic" id="res-comment"></p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-slate-800/50 p-4 rounded-xl">
+                        <h4 class="text-xs font-bold text-gray-500 mb-2 uppercase">風速の影響 (画像データ)</h4>
+                        <ul class="text-xs space-y-1">
+                            <li class="flex justify-between"><span>強風(3m+)</span><span class="font-mono text-yellow-400">7.25%</span></li>
+                            <li class="flex justify-between text-gray-500"><span>無風(0m)</span><span class="font-mono">5.46%</span></li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-800/50 p-4 rounded-xl">
+                        <h4 class="text-xs font-bold text-gray-500 mb-2 uppercase">展示タイムの影響 (画像データ)</h4>
+                        <ul class="text-xs space-y-1">
+                            <li class="flex justify-between"><span>展示1位</span><span class="font-mono text-yellow-400">10.00%</span></li>
+                            <li class="flex justify-between"><span>vs4枠(+0.1s)</span><span class="font-mono text-yellow-400">10.42%</span></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </section>
-
+        </div>
     </main>
 
-    <footer class="mt-20 p-8 text-center text-gray-500 text-xs border-t border-gray-800">
-        &copy; 2026 Boat Race Analysis - Miyajima 5th Edition
-    </footer>
-
     <script>
-        function analyze() {
-            const tide = document.getElementById('tide').value;
-            const resultDiv = document.getElementById('result');
-            const scoreSpan = document.getElementById('score');
-            
-            resultDiv.classList.remove('hidden');
-            
-            // ロジックの例（実際はここにデータを紐づける）
-            if (tide === 'low') {
-                scoreSpan.innerText = "28.5"; // 干潮なら高め
+        function calc() {
+            const wind = document.getElementById('wind').value;
+            const exRank = document.getElementById('exRank').value;
+            const vs4 = document.getElementById('vs4').value;
+            const target1 = document.getElementById('target1').value;
+
+            document.getElementById('welcome-msg').classList.add('hidden');
+            document.getElementById('result-area').classList.remove('hidden');
+
+            // 統計に基づいた基礎値
+            let base = 5.78; // 5号艇 全体平均
+
+            // 風速補正
+            if (wind === 'strong') base = 7.25;
+            else if (wind === 'light') base = 5.64;
+            else base = 5.46;
+
+            // 展示タイム補正 (加算方式でシミュレーション)
+            if (exRank === '1') base += 4.22; // 10%への調整
+            if (vs4 === 'fast') base += 3.0;
+            if (target1 === 'high') base += 0.7; // イン強の方が差し場がある統計
+
+            // 天井設定
+            if (base > 18) base = 18.5; 
+
+            document.getElementById('res-percent').innerText = base.toFixed(2);
+
+            // コメント
+            let comment = "";
+            if (base > 12) {
+                comment = "【特注】統計上、極めて高い1着率を示しています。4枠を叩いてのまくり差し、または1枠を壁にした差し切りが濃厚です。";
+            } else if (base > 8) {
+                comment = "【好気配】5号艇の足が目立っています。宮島特有の強風を味方につければ、バックストレッチでの逆転も十分に狙えます。";
             } else {
-                scoreSpan.innerText = "8.2";
+                comment = "【通常】統計的には平均的な水準です。展開の助けが必要ですが、ヒモ（2,3着）としては常に警戒が必要です。";
             }
+            document.getElementById('res-comment').innerText = comment;
         }
     </script>
 </body>
