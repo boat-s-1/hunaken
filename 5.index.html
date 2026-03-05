@@ -41,6 +41,81 @@
         <h1 class="text-4xl font-black italic tracking-widest yellow-accent uppercase mb-2">5-Master Database</h1>
         <p class="text-gray-400 text-[10px] font-bold uppercase tracking-[0.4em]">全国24場 5号艇・精密統計＆機力相関データ 2026 Edition</p>
     </header>
+
+<section class="mt-12 mb-20">
+    <div class="flex justify-between items-end mb-6 px-2">
+        <h2 class="text-xl font-black italic yellow-accent flex items-center gap-3 uppercase tracking-widest">
+            <span class="bg-yellow-400 w-2 h-8 block"></span>
+            24場 個別解析ログ
+        </h2>
+        <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Select Track</span>
+    </div>
+
+    <div class="grid grid-cols-4 gap-2 md:gap-4">
+        <a href="/5.kiryu.html" class="track-link">桐生</a>
+        <a href="/5.toda.html" class="track-link">戸田</a>
+        <a href="/5.edogawa.html" class="track-link">江戸川</a>
+        <a href="/5.heiwajima.html" class="track-link">平和島</a>
+        
+        <a href="/5.tamagawa.html" class="track-link">多摩川</a>
+        <a href="/5.hamanako.html" class="track-link">浜名湖</a>
+        <a href="/5.gamagori.html" class="track-link">蒲郡</a>
+        <a href="/5.tokoname.html" class="track-link">常滑</a>
+
+        <a href="/5.tsu.html" class="track-link">津</a>
+        <a href="/5.mikuni.html" class="track-link">三国</a>
+        <a href="/5.biwako.html" class="track-link">びわこ</a>
+        <a href="/5.suminoe.html" class="track-link">住之江</a>
+
+        <a href="/5.amagasaki.html" class="track-link">尼崎</a>
+        <a href="/5.naruto.html" class="track-link">鳴門</a>
+        <a href="/5.marugame.html" class="track-link">丸亀</a>
+        <a href="/5.kojima.html" class="track-link">児島</a>
+
+        <a href="/5.miyajima.html" class="track-link">宮島</a>
+        <a href="/5.tokuyama.html" class="track-link">徳山</a>
+        <a href="/5.shimonoseki.html" class="track-link">下関</a>
+        <a href="/5.wakamatsu.html" class="track-link">若松</a>
+
+        <a href="/5.ashiya.html" class="track-link">芦屋</a>
+        <a href="/5.fukuoka.html" class="track-link">福岡</a>
+        <a href="/5.karatsu.html" class="track-link">唐津</a>
+        <a href="/5.omura.html" class="track-link">大村</a>
+    </div>
+</section>
+
+<style>
+    /* リンクボタンのスタイリング */
+    .track-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(145deg, #1e293b, #0f172a);
+        border: 1px solid #334155;
+        border-radius: 8px;
+        padding: 12px 5px;
+        color: #94a3b8;
+        font-size: 0.85rem;
+        font-weight: bold;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        text-align: center;
+    }
+
+    .track-link:hover {
+        background: #facc15;
+        color: #0b0f19;
+        border-color: #facc15;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(250, 204, 21, 0.3);
+    }
+
+    /* アクティブな場や特定の場を強調したい場合用 */
+    .track-link:active {
+        transform: translateY(0);
+    }
+</style>
+    
 <section class="py-12 border-y border-slate-800">
     <h2 class="text-2xl font-black italic yellow-accent mb-10 uppercase tracking-widest text-center">
         結局、5号艇が「一番うまい」理由
