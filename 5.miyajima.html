@@ -10,97 +10,143 @@
         .data-card { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #334155; }
         .yellow-accent { color: #facc15; }
         .bg-yellow-accent { background-color: #facc15; }
+        th { color: #94a3b8; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; padding: 12px 8px; border-bottom: 1px solid #334155; }
+        td { padding: 12px 8px; border-bottom: 1px solid #1e293b; font-size: 0.875rem; }
+        tr:last-child td { border-bottom: none; }
+        .highlight-row { background-color: rgba(250, 204, 21, 0.05); }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen pb-20">
 
-    <header class="p-8 text-center border-b border-slate-800">
-        <h1 class="text-3xl font-black italic tracking-widest yellow-accent">MIYAJIMA <span class="text-white">5</span> MASTER</h1>
-        <p class="text-gray-400 text-xs mt-2 font-bold uppercase tracking-tighter">2024年〜 最新統計データ準拠シミュレーター</p>
+    <header class="p-8 text-center border-b border-slate-800 mb-8">
+        <h1 class="text-3xl font-black italic tracking-widest yellow-accent uppercase">Miyajima 5-Master</h1>
+        <p class="text-gray-400 text-xs mt-2 font-bold uppercase tracking-tighter">宮島(17) 5号艇1着に関する統計データ (2024年〜)</p>
     </header>
 
-    <main class="max-w-5xl mx-auto p-4 md:p-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <main class="max-w-6xl mx-auto px-4 space-y-12">
         
-        <div class="lg:col-span-1 space-y-6">
-            <div class="data-card p-6 rounded-2xl shadow-xl">
-                <h2 class="text-lg font-bold mb-6 border-l-4 border-yellow-400 pl-3">レース条件設定</h2>
-                
-                <div class="space-y-4 text-sm">
-                    <div>
-                        <label class="text-gray-400 block mb-1">風速条件</label>
-                        <select id="wind" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none focus:border-yellow-400">
-                            <option value="strong">強風 (3m以上) [7.25%]</option>
-                            <option value="light">弱風 (1-2m) [5.64%]</option>
-                            <option value="none">無風 (0m) [5.46%]</option>
-                        </select>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-1">
+                <div class="data-card p-6 rounded-2xl shadow-xl border-t-4 border-yellow-400">
+                    <h2 class="text-lg font-bold mb-6 flex items-center">
+                        <span class="bg-yellow-400 text-black px-2 py-0.5 rounded mr-2 text-sm">TRY</span>
+                        条件シミュレーター
+                    </h2>
+                    <div class="space-y-4 text-sm">
+                        <div>
+                            <label class="text-gray-400 block mb-1">風速条件</label>
+                            <select id="wind" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="strong">強風 (3m以上)</option>
+                                <option value="light">弱風 (1-2m)</option>
+                                <option value="none">無風 (0m)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-gray-400 block mb-1">5号艇 展示順位</label>
+                            <select id="exRank" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="1">展示タイム 1位</option>
+                                <option value="2">展示タイム 2位以下</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-gray-400 block mb-1">vs 4号艇 展示タイム差</label>
+                            <select id="vs4" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="fast">0.1秒以上速い</option>
+                                <option value="near">わずかに速い/同等</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-gray-400 block mb-1">1号艇の2連対率</label>
+                            <select id="target1" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="high">70%以上 (イン強)</option>
+                                <option value="low">70%未満 (イン弱)</option>
+                            </select>
+                        </div>
+                        <button onclick="calc()" class="w-full bg-yellow-accent hover:bg-yellow-500 text-black font-black py-4 rounded-xl mt-4 transition-all active:scale-95 shadow-lg shadow-yellow-900/20">
+                            解析実行
+                        </button>
                     </div>
-
-                    <div>
-                        <label class="text-gray-400 block mb-1">5号艇 展示順位</label>
-                        <select id="exRank" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none focus:border-yellow-400">
-                            <option value="1">展示タイム 1位 [10.00%]</option>
-                            <option value="2">展示タイム 2位以下</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="text-gray-400 block mb-1">vs 4号艇 展示タイム差</label>
-                        <select id="vs4" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none focus:border-yellow-400">
-                            <option value="fast">0.1秒以上速い [10.42%]</option>
-                            <option value="near">わずかに速い/同等</option>
-                            <option value="slow">劣勢</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="text-gray-400 block mb-1">1号艇の2連対率</label>
-                        <select id="target1" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none focus:border-yellow-400">
-                            <option value="high">70%以上 (イン強) [6.27%]</option>
-                            <option value="low">70%未満 (イン弱)</option>
-                        </select>
-                    </div>
-
-                    <button onclick="calc()" class="w-full bg-yellow-accent hover:bg-yellow-500 text-black font-black py-4 rounded-xl mt-4 transition-transform active:scale-95">
-                        データを解析する
-                    </button>
                 </div>
             </div>
-        </div>
 
-        <div class="lg:col-span-2 space-y-6">
-            <div id="welcome-msg" class="data-card p-12 rounded-2xl text-center border-dashed border-2 border-slate-700">
-                <p class="text-gray-500 font-bold italic">左側のフォームからレース条件を入力してください</p>
-            </div>
-
-            <div id="result-area" class="hidden space-y-6">
-                <div class="data-card p-8 rounded-2xl relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 font-black text-6xl">#5</div>
+            <div class="lg:col-span-2">
+                <div id="welcome-msg" class="data-card h-full flex items-center justify-center rounded-2xl border-dashed border-2 border-slate-700 p-12">
+                    <p class="text-gray-500 font-bold italic text-center">条件を選択して「解析実行」を押してください。<br>画像データに基づいた勝率を算出します。</p>
+                </div>
+                <div id="result-area" class="hidden data-card p-8 rounded-2xl h-full relative overflow-hidden shadow-2xl">
                     <h3 class="text-gray-400 font-bold text-sm uppercase">算出された1着期待度</h3>
-                    <div class="flex items-baseline gap-2 mt-2">
-                        <span id="res-percent" class="text-7xl font-black yellow-accent tracking-tighter">0.0</span>
-                        <span class="text-2xl font-bold yellow-accent">%</span>
+                    <div class="flex items-baseline gap-2 mt-4">
+                        <span id="res-percent" class="text-8xl font-black yellow-accent tracking-tighter">0.0</span>
+                        <span class="text-3xl font-bold yellow-accent">%</span>
                     </div>
-                    <p class="mt-4 text-sm text-gray-300 border-t border-slate-700 pt-4 italic" id="res-comment"></p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-slate-800/50 p-4 rounded-xl">
-                        <h4 class="text-xs font-bold text-gray-500 mb-2 uppercase">風速の影響 (画像データ)</h4>
-                        <ul class="text-xs space-y-1">
-                            <li class="flex justify-between"><span>強風(3m+)</span><span class="font-mono text-yellow-400">7.25%</span></li>
-                            <li class="flex justify-between text-gray-500"><span>無風(0m)</span><span class="font-mono">5.46%</span></li>
-                        </ul>
-                    </div>
-                    <div class="bg-slate-800/50 p-4 rounded-xl">
-                        <h4 class="text-xs font-bold text-gray-500 mb-2 uppercase">展示タイムの影響 (画像データ)</h4>
-                        <ul class="text-xs space-y-1">
-                            <li class="flex justify-between"><span>展示1位</span><span class="font-mono text-yellow-400">10.00%</span></li>
-                            <li class="flex justify-between"><span>vs4枠(+0.1s)</span><span class="font-mono text-yellow-400">10.42%</span></li>
-                        </ul>
-                    </div>
+                    <div id="res-comment" class="mt-8 p-4 bg-slate-900/50 border-l-4 border-yellow-400 text-sm leading-relaxed italic text-gray-200 shadow-inner"></div>
                 </div>
             </div>
         </div>
+
+        <section class="space-y-8">
+            <h2 class="text-2xl font-black italic border-b-2 border-yellow-400 inline-block pb-1">DATABASE</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
+                    <div class="bg-slate-800 px-6 py-3 font-bold text-sm border-b border-slate-700">1. 展示タイム・一周タイムの1着率</div>
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr><th>条件</th><th>該当数</th><th>1着数</th><th class="yellow-accent">1着率</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold text-white"><td>展示タイム1位</td><td>830</td><td>83</td><td class="yellow-accent">10.00%</td></tr>
+                            <tr><td>一周タイム1位</td><td>688</td><td>52</td><td>7.56%</td></tr>
+                            <tr class="text-gray-500"><td>(参考) 5号艇全体平均</td><td>-</td><td>-</td><td>5.78%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
+                    <div class="bg-slate-800 px-6 py-3 font-bold text-sm border-b border-slate-700">2. 4号艇との展示タイム差</div>
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr><th>5号艇 vs 4号艇</th><th>該当数</th><th>1着数</th><th class="yellow-accent">1着率</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold text-white"><td>0.1秒以上速い</td><td>259</td><td>27</td><td class="yellow-accent">10.42%</td></tr>
+                            <tr><td>わずかに速い</td><td>2,030</td><td>129</td><td>6.35%</td></tr>
+                            <tr><td>同等・劣勢</td><td>2,741</td><td>157</td><td>5.73%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
+                    <div class="bg-slate-800 px-6 py-3 font-bold text-sm border-b border-slate-700">3. 1号艇の実力（イン信頼度）との相関</div>
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr><th>1号艇の2連対率</th><th>該当数</th><th>1着数</th><th class="yellow-accent">5号艇1着率</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold text-white"><td>70%以上 (イン強)</td><td>139,889</td><td>8,777</td><td class="yellow-accent">6.27%</td></tr>
+                            <tr><td>70%未満 (イン弱)</td><td>8,344</td><td>463</td><td>5.55%</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="p-3 text-[10px] text-gray-500 italic">※1号艇が壁になり、2・3号艇の攻めを抑えることで5号艇の差し場が生まれる傾向。</div>
+                </div>
+
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
+                    <div class="bg-slate-800 px-6 py-3 font-bold text-sm border-b border-slate-700">4. 風速と5号艇1着率の相関</div>
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr><th>風速条件</th><th>該当数</th><th>1着数</th><th class="yellow-accent">1着率</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold text-white"><td>強風 (3m以上)</td><td>2,150</td><td>156</td><td class="yellow-accent">7.25%</td></tr>
+                            <tr><td>弱風 (1-2m)</td><td>3,102</td><td>175</td><td>5.64%</td></tr>
+                            <tr><td>無風 (0m)</td><td>1,245</td><td>68</td><td>5.46%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </section>
     </main>
 
     <script>
@@ -113,32 +159,32 @@
             document.getElementById('welcome-msg').classList.add('hidden');
             document.getElementById('result-area').classList.remove('hidden');
 
-            // 統計に基づいた基礎値
-            let base = 5.78; // 5号艇 全体平均
+            // 統計画像に基づいた算出ロジック
+            let score = 5.78; // 全体平均
 
-            // 風速補正
-            if (wind === 'strong') base = 7.25;
-            else if (wind === 'light') base = 5.64;
-            else base = 5.46;
+            // 風速 (画像4)
+            if (wind === 'strong') score = 7.25;
+            else if (wind === 'light') score = 5.64;
+            else score = 5.46;
 
-            // 展示タイム補正 (加算方式でシミュレーション)
-            if (exRank === '1') base += 4.22; // 10%への調整
-            if (vs4 === 'fast') base += 3.0;
-            if (target1 === 'high') base += 0.7; // イン強の方が差し場がある統計
+            // 展示順位 (画像1)
+            if (exRank === '1') score += 4.22; // 10%まで引き上げ
 
-            // 天井設定
-            if (base > 18) base = 18.5; 
+            // vs4枠 (画像2)
+            if (vs4 === 'fast') score += 0.42; // 展示1位に加えて0.1差なら10.42%へ
 
-            document.getElementById('res-percent').innerText = base.toFixed(2);
+            // イン信頼度 (画像3)
+            if (target1 === 'high') score += 0.72; // イン強の方が差し展開がある
 
-            // コメント
+            document.getElementById('res-percent').innerText = score.toFixed(2);
+
             let comment = "";
-            if (base > 12) {
-                comment = "【特注】統計上、極めて高い1着率を示しています。4枠を叩いてのまくり差し、または1枠を壁にした差し切りが濃厚です。";
-            } else if (base > 8) {
-                comment = "【好気配】5号艇の足が目立っています。宮島特有の強風を味方につければ、バックストレッチでの逆転も十分に狙えます。";
+            if (score >= 10) {
+                comment = "【黄金パターン】画像データ上の最高条件が揃っています。展示タイム1位かつ4枠を圧倒していれば、宮島特有の『まくり差し』が決まる確率が極めて高い状態です。";
+            } else if (score >= 7) {
+                comment = "【強風・展開有利】風速3m以上のデータに合致。1号艇が壁となって内を抑える間に、5号艇が冷静に最内を差して突き抜ける展開が期待できます。";
             } else {
-                comment = "【通常】統計的には平均的な水準です。展開の助けが必要ですが、ヒモ（2,3着）としては常に警戒が必要です。";
+                comment = "【平均水準】統計データ上、突出した数字は出ていません。ヒモ穴として検討するか、より好条件のレースを待つのが定石です。";
             }
             document.getElementById('res-comment').innerText = comment;
         }
