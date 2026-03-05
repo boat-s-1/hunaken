@@ -8,33 +8,192 @@
     <style>
         body { background-color: #0b0f19; color: #f1f5f9; font-family: sans-serif; }
         .data-card { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #334155; transition: 0.3s; }
-        .data-card:hover { border-color: #facc15; transform: translateY(-4px); shadow: 0 10px 15px -3px rgba(250, 204, 21, 0.2); }
+        .data-card:hover { border-color: #facc15; transform: translateY(-4px); box-shadow: 0 10px 25px -5px rgba(250, 204, 21, 0.2); }
         .yellow-accent { color: #facc15; }
         .bg-yellow-accent { background-color: #facc15; }
         .status-badge { font-size: 0.65rem; padding: 2px 8px; border-radius: 9999px; font-weight: bold; }
+        .logic-border { border-left: 4px solid #facc15; }
     </style>
 </head>
 <body class="min-h-screen pb-20">
 
-    <header class="py-12 px-4 text-center border-b border-slate-800 bg-slate-900/50">
-        <h1 class="text-4xl font-black italic tracking-widest yellow-accent uppercase mb-2">5-Master Portal</h1>
-        <p class="text-gray-400 text-sm font-bold uppercase tracking-widest">全国24場 5号艇突破・精密データ解析プラットフォーム</p>
+    <header class="py-16 px-4 text-center border-b border-slate-800 bg-slate-900/50 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 pointer-events-none flex justify-center items-center text-[20vw] font-black italic">5</div>
+        <h1 class="text-5xl font-black italic tracking-widest yellow-accent uppercase mb-4 relative">5-Master Portal</h1>
+        <p class="text-gray-400 text-sm font-bold uppercase tracking-[0.3em] relative">全国24場 5号艇突破・精密データ解析プラットフォーム</p>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 mt-12 space-y-12">
+    <main class="max-w-6xl mx-auto px-4 mt-12 space-y-16">
         
-        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            
-            <a href="5.mikuni.html" class="data-card p-6 rounded-2xl block group shadow-xl">
-                <div class="flex justify-between items-start mb-4">
-                    <span class="text-xs font-bold text-gray-500 uppercase tracking-tighter">10# MIKUNI</span>
-                    <span class="status-badge bg-blue-900 text-blue-200 border border-blue-700">北陸エリア</span>
+        <section>
+            <h2 class="text-xs font-black text-gray-500 uppercase tracking-widest mb-6 flex items-center">
+                <span class="w-8 h-[1px] bg-gray-700 mr-2"></span> Select Track
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <a href="5.mikuni.html" class="data-card p-6 rounded-2xl block group shadow-xl">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="text-xs font-bold text-gray-500 uppercase tracking-tighter">10# MIKUNI</span>
+                        <span class="status-badge bg-blue-900 text-blue-200 border border-blue-700">北陸エリア</span>
+                    </div>
+                    <h2 class="text-2xl font-black italic group-hover:text-yellow-400 transition-colors uppercase">三国</h2>
+                    <p class="text-gray-400 text-xs mt-2 leading-relaxed italic">5枠1着率: 5.23% | 平均配当: ¥4,215</p>
+                    <div class="mt-4 flex gap-2">
+                        <span class="bg-slate-800 text-[10px] px-2 py-1 rounded text-gray-300">広い1マーク</span>
+                        <span class="bg-slate-800 text-[10px] px-2 py-1 rounded text-gray-300">向かい風◎</span>
+                    </div>
+                </a>
+
+                <a href="5.tsu.html" class="data-card p-6 rounded-2xl block group shadow-xl">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="text-xs font-bold text-gray-500 uppercase tracking-tighter">09# TSU</span>
+                        <span class="status-badge bg-orange-900 text-orange-200 border border-orange-700">東海エリア</span>
+                    </div>
+                    <h2 class="text-2xl font-black italic group-hover:text-yellow-400 transition-colors uppercase">津</h2>
+                    <p class="text-gray-400 text-xs mt-2 leading-relaxed italic">5枠1着率: (平均5%超) | イン信頼度相関型</p>
+                    <div class="mt-4 flex gap-2">
+                        <span class="bg-slate-800 text-[10px] px-2 py-1 rounded text-gray-300">鈴鹿おろし</span>
+                        <span class="bg-slate-800 text-[10px] px-2 py-1 rounded text-gray-300">イン崩れ</span>
+                    </div>
+                </a>
+
+                <a href="5.tokoname.html" class="data-card p-6 rounded-2xl block group shadow-xl border-t-2 border-yellow-400/30">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="text-xs font-bold text-gray-500 uppercase tracking-tighter">08# TOKONAME</span>
+                        <span class="status-badge bg-yellow-900 text-yellow-200 border border-yellow-700">東海エリア</span>
+                    </div>
+                    <h2 class="text-2xl font-black italic group-hover:text-yellow-400 transition-colors uppercase">常滑</h2>
+                    <p class="text-gray-400 text-xs mt-2 leading-relaxed italic">5枠1着率: 5.67% | 平均配当: ¥4,165</p>
+                    <div class="mt-4 flex gap-2">
+                        <span class="bg-slate-800 text-[10px] px-2 py-1 rounded text-gray-300">海水/潮位</span>
+                        <span class="bg-slate-800 text-[10px] px-2 py-1 rounded text-gray-300">カド連動</span>
+                    </div>
+                </a>
+
+                <a href="5.gamagori.html" class="data-card p-6 rounded-2xl block group shadow-xl">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="text-xs font-bold text-gray-500 uppercase tracking-tighter">07# GAMAGORI</span>
+                        <span class="status-badge bg-purple-900 text-purple-200 border border-purple-700">ナイター特化</span>
+                    </div>
+                    <h2 class="text-2xl font-black italic group-hover:text-yellow-400 transition-colors uppercase">蒲郡</h2>
+                    <p class="text-gray-400 text-xs mt-2 leading-relaxed italic">ナイター気温相関 | スピード差し展開</p>
+                    <div class="mt-4 flex gap-2">
+                        <span class="bg-slate-800 text-[10px] px-2 py-1 rounded text-gray-300">旋回スピード</span>
+                        <span class="bg-slate-800 text-[10px] px-2 py-1 rounded text-gray-300">気温低下</span>
+                    </div>
+                </a>
+
+                <a href="5.miyajima.html" class="data-card p-6 rounded-2xl block group shadow-xl border-l-2 border-yellow-400/50">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="text-xs font-bold text-gray-500 uppercase tracking-tighter">17# MIYAJIMA</span>
+                        <span class="status-badge bg-red-900 text-red-200 border border-red-700">安芸の宮島</span>
+                    </div>
+                    <h2 class="text-2xl font-black italic group-hover:text-yellow-400 transition-colors uppercase">宮島</h2>
+                    <p class="text-gray-400 text-xs mt-2 leading-relaxed italic">5枠1着率: 6.22% | 平均配当: ¥4,611</p>
+                    <div class="mt-4 flex gap-2">
+                        <span class="bg-slate-800 text-[10px] px-2 py-1 rounded text-gray-300">干満差最大</span>
+                        <span class="bg-slate-800 text-[10px] px-2 py-1 rounded text-gray-300">最高配当</span>
+                    </div>
+                </a>
+
+                <div class="data-card p-6 rounded-2xl border-dashed border-2 border-slate-700 opacity-50 flex items-center justify-center">
+                    <p class="text-gray-500 font-bold italic uppercase tracking-widest text-sm">Next Track Loading...</p>
                 </div>
-                <h2 class="text-2xl font-black italic group-hover:text-yellow-400 transition-colors uppercase">三国</h2>
-                <p class="text-gray-400 text-xs mt-2 leading-relaxed">広大な1マークが特徴。向かい風時のまくり差し展開を重点解析。</p>
-                <div class="mt-4 flex gap-2">
-                    <span class="bg-slate-800 text-[10px] px-2 py-1 rounded text-gray-300">広い1マーク</span>
-                    <span class="bg-slate-800 text-[10px] px-2 py-1 rounded text-gray-300">強風対応</span>
+            </div>
+        </section>
+
+        <section class="py-12 border-y border-slate-800">
+            <h2 class="text-2xl font-black italic yellow-accent mb-8 uppercase tracking-widest text-center">Why Target the 5th Boat?</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-slate-900/80 p-6 rounded-2xl border border-slate-700 relative overflow-hidden shadow-inner">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 text-5xl font-black yellow-accent">01</div>
+                    <h3 class="text-lg font-bold text-white mb-3">圧倒的な平均配当</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        データによれば、5号艇の1着平均配当は多くの場で<span class="yellow-accent font-bold">4,000円〜4,600円</span>をマークします。
+                        1号艇の平均配当（約1,500円以下）と比較して3倍近い爆発力を秘めています。
+                    </p>
+                </div>
+
+                <div class="bg-slate-900/80 p-6 rounded-2xl border border-slate-700 relative overflow-hidden shadow-inner">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 text-5xl font-black yellow-accent">02</div>
+                    <h3 class="text-lg font-bold text-white mb-3">「4のカド攻め」への連動</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        ファンは4号艇のカドまくりに注目しますが、その展開で最も恩恵を受けるのは外側の5号艇です。
+                        <span class="yellow-accent font-bold">「展開を突く技術」</span>が最も配当に反映されやすいのが5枠なのです。
+                    </p>
+                </div>
+
+                <div class="bg-slate-900/80 p-6 rounded-2xl border border-slate-700 relative overflow-hidden shadow-inner">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 text-5xl font-black yellow-accent">03</div>
+                    <h3 class="text-lg font-bold text-white mb-3">イン過信の裏を突く</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        現代の競艇はイン絶対主義ですが、気象条件（強風・潮）が整った瞬間にその信頼度は崩壊します。
+                        その<span class="yellow-accent font-bold">「一瞬の綻び」</span>を突くことで、投資効率を最大化できます。
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-slate-900/40 p-4 rounded-xl text-center">
+                    <p class="text-[10px] text-gray-500 font-bold uppercase mb-1">宮島(17) 平均配当</p>
+                    <p class="text-xl font-black text-white">¥4,611</p>
+                </div>
+                <div class="bg-slate-900/40 p-4 rounded-xl text-center">
+                    <p class="text-[10px] text-gray-500 font-bold uppercase mb-1">住之江(12) 平均配当</p>
+                    <p class="text-xl font-black text-white">¥4,480</p>
+                </div>
+                <div class="bg-slate-900/40 p-4 rounded-xl text-center border-x border-slate-800">
+                    <p class="text-[10px] text-gray-500 font-bold uppercase mb-1">常滑(08) 平均配当</p>
+                    <p class="text-xl font-black text-white">¥4,165</p>
+                </div>
+                <div class="bg-yellow-400/5 p-4 rounded-xl text-center border border-yellow-400/20">
+                    <p class="text-[10px] text-yellow-500 font-bold uppercase mb-1">平均1着率目安</p>
+                    <p class="text-xl font-black yellow-accent">約 5.5%</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="data-card p-8 rounded-3xl logic-border shadow-2xl">
+            <h2 class="text-xl font-black italic yellow-accent mb-6 uppercase tracking-wider">Analysis Core Methodology</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
+                <div>
+                    <h3 class="font-bold text-white mb-2 flex items-center">
+                        <span class="w-1.5 h-1.5 bg-yellow-400 rounded-full mr-2"></span>
+                        機力偏差の算出
+                    </h3>
+                    <p class="text-gray-400 leading-relaxed italic">展示タイム1位の価値を場ごとに数値化。特に対4枠とのタイム差を重視し、5号艇の「まくり差し」の初速を判定します。</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-white mb-2 flex items-center">
+                        <span class="w-1.5 h-1.5 bg-yellow-400 rounded-full mr-2"></span>
+                        環境因子の重み付け
+                    </h3>
+                    <p class="text-gray-400 leading-relaxed italic">風向、風速、潮位。5コースが最も有利になる「気象の隙」を独自のアルゴリズムで解析に組み込んでいます。</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-white mb-2 flex items-center">
+                        <span class="w-1.5 h-1.5 bg-yellow-400 rounded-full mr-2"></span>
+                        2着出現率の最適化
+                    </h3>
+                    <p class="text-gray-400 leading-relaxed italic">単なる勝率だけでなく、5が勝った時の「スジ舟券」を過去数万レースから算出。各場の特性に合わせた高精度な連対パターンを表示します。</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-20 p-12 border-t border-slate-800 text-center">
+        <p class="text-gray-500 text-xs font-bold tracking-widest uppercase mb-4">&copy; 2026 5-MASTER PRECISION ANALYTICS SYSTEM</p>
+        <div class="flex justify-center space-x-4">
+            <div class="w-2 h-2 bg-slate-700 rounded-full"></div>
+            <div class="w-2 h-2 bg-yellow-400 rounded-full"></div>
+            <div class="w-2 h-2 bg-slate-700 rounded-full"></div>
+        </div>
+    </footer>
+
+</body>
+</html>                    <span class="bg-slate-800 text-[10px] px-2 py-1 rounded text-gray-300">強風対応</span>
                 </div>
             </a>
 
