@@ -29,22 +29,19 @@
                 <a href="/5.kiryu.html" class="nav-link">桐生(01)</a>
                 <a href="/5.toda.html" class="nav-link">戸田(02)</a>
                 <a href="/5.edogawa.html" class="nav-link">江戸川(03)</a>
+                <a href="/5.heiwajima.html" class="nav-link">平和島(04)</a>
                 <a href="/5.tamagawa.html" class="nav-link">多摩川(05)</a>
                 <a href="/5.hamanako.html" class="nav-link">浜名湖(06)</a>
-                <a href="/5.gamagori.html" class="nav-link">蒲郡(07)</a>
-                <a href="/5.tokoname.html" class="nav-link">常滑(08)</a>
-                <a href="/5.tu.html" class="nav-link">津(09)</a>
-                <a href="/5.mikuni.html" class="nav-link">三国(10)</a>
                 <a href="/5.biwako.html" class="nav-link active-nav">びわこ(11)</a>
-                <a href="/5.suminoe.html" class="nav-link">住之江(12)</a>
                 <a href="/5.miyajima.html" class="nav-link">宮島(17)</a>
+                <a href="#" class="nav-link text-gray-600 cursor-not-allowed">住之江（準備中）</a>
             </div>
         </div>
     </nav>
 
     <header class="p-8 text-center border-b border-slate-800 mb-8">
         <h1 class="text-3xl font-black italic tracking-widest yellow-accent uppercase">Biwako 5-Master</h1>
-        <p class="text-gray-400 text-xs mt-2 font-bold uppercase tracking-tighter">びわこ(11) 淡水×狭小1マーク 5号艇突破精密解析</p>
+        <p class="text-gray-400 text-xs mt-2 font-bold uppercase tracking-tighter">びわこ(11) 淡水×1マーク狭小水面 精密解析</p>
     </header>
 
     <main class="max-w-6xl mx-auto px-4 space-y-10">
@@ -58,10 +55,11 @@
                     </h2>
                     <div class="space-y-4 text-sm">
                         <div>
-                            <label class="text-gray-400 block mb-1">季節条件</label>
-                            <select id="season" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="winter">冬〜春 (追い風傾向/イン崩れ)</option>
-                                <option value="summer">夏〜秋 (向かい風傾向/安定)</option>
+                            <label class="text-gray-400 block mb-1">風向・風速</label>
+                            <select id="wind" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="strong">強風 (追い風3m以上)</option>
+                                <option value="light">弱風 (1-2m)</option>
+                                <option value="none">穏やか (0m)</option>
                             </select>
                         </div>
                         <div>
@@ -74,15 +72,15 @@
                         <div>
                             <label class="text-gray-400 block mb-1">vs 4号艇 展示タイム差</label>
                             <select id="vs4" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="fast">0.1秒以上速い (圧倒的)</option>
-                                <option value="near">同等以下</option>
+                                <option value="fast">0.1秒以上速い</option>
+                                <option value="near">わずかに速い/同等</option>
                             </select>
                         </div>
                         <div>
-                            <label class="text-gray-400 block mb-1">1号艇 2連対率</label>
+                            <label class="text-gray-400 block mb-1">1号艇の2連対率</label>
                             <select id="target1" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="high">70%以上 (イン強)</option>
                                 <option value="low">70%未満 (イン不安)</option>
-                                <option value="high">70%以上 (壁期待)</option>
                             </select>
                         </div>
                         <button onclick="calc()" class="w-full bg-yellow-accent hover:bg-yellow-500 text-black font-black py-4 rounded-xl mt-4 transition-all active:scale-95 shadow-lg shadow-yellow-900/20 uppercase tracking-wider">
@@ -94,7 +92,7 @@
 
             <div class="lg:col-span-2">
                 <div id="welcome-msg" class="data-card h-full flex items-center justify-center rounded-2xl border-dashed border-2 border-slate-700 p-12 text-center">
-                    <p class="text-gray-500 font-bold italic">淡水質での機力差を反映。<br>びわこ特有の「うねり」と5枠連動を算出します。</p>
+                    <p class="text-gray-500 font-bold italic">びわこの淡水質と特有のうねりを考慮。<br>条件を選択して解析を開始してください。</p>
                 </div>
                 <div id="result-area" class="hidden data-card p-8 rounded-2xl h-full relative overflow-hidden shadow-2xl border border-yellow-400/30">
                     <h3 class="text-gray-400 font-bold text-sm uppercase">算出された1着期待度</h3>
@@ -128,8 +126,9 @@
 
         <section class="space-y-6">
             <div class="flex items-center gap-4">
-                <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">2着出現率 & 展開予測 (5頭時)</h2>
+                <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">2着出現率 & 展開予測</h2>
             </div>
+            
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div class="data-card rounded-2xl overflow-hidden shadow-lg border-l-4 border-yellow-400">
                     <table class="w-full text-left text-sm">
@@ -143,61 +142,78 @@
                         <tbody class="divide-y divide-slate-800">
                             <tr>
                                 <td class="font-black text-center text-lg">1<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold yellow-accent text-lg italic">38.5%</td>
+                                <td class="font-bold yellow-accent text-lg italic">39.8%</td>
                                 <td class="py-4 px-3 leading-snug text-gray-300">
                                     <span class="pattern-tag bg-red-600 text-white">王道</span>
-                                    狭い1マークで1が懐を空けたところを5が自在に差し抜ける。
+                                    5のまくり差しに対し、インが懐を絞って粘る形。びわこでは1の残しが基本。
                                 </td>
                             </tr>
                             <tr>
                                 <td class="font-black text-center text-lg">4<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold yellow-accent text-lg italic">20.1%</td>
+                                <td class="font-bold yellow-accent text-lg italic">21.5%</td>
                                 <td class="py-4 px-3 leading-snug text-gray-300">
-                                    <span class="pattern-tag bg-blue-600 text-white">連動</span>
-                                    4のカドまくりに乗り、バックで5が伸び勝つ「4-5展開」の逆転。
+                                    <span class="pattern-tag bg-blue-600 text-white">カド連動</span>
+                                    4のカドまくりに5が乗り、バックで5が競り勝つ高配当パターン。
                                 </td>
                             </tr>
                             <tr>
                                 <td class="font-black text-center text-lg">6<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold yellow-accent text-lg italic">15.4%</td>
+                                <td class="font-bold yellow-accent text-lg italic">14.2%</td>
                                 <td class="py-4 px-3 leading-snug text-gray-300">
-                                    <span class="pattern-tag bg-green-600 text-white">外道</span>
-                                    びわこの「うねり」発生時、大外6が最内を差して5に連動。
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="font-black text-center text-lg">2<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold text-gray-400 text-lg italic">13.2%</td>
-                                <td class="py-4 px-3 leading-snug text-gray-400">
-                                    <span class="pattern-tag bg-gray-600 text-white">粘り</span>
-                                    2が差し残るパターンだが、びわこの2コースは引き波にはまりやすい。
+                                    <span class="pattern-tag bg-green-600 text-white">外軸</span>
+                                    5の仕掛けを追走する6。びわこの淡水なら外同士の決着も十分ある。
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="data-card rounded-2xl p-6 italic text-sm text-gray-300 border-l-4 border-yellow-400 bg-slate-800/30">
-                    <p class="mb-2 font-bold text-yellow-400 tracking-widest uppercase text-xs">Biwako Insight</p>
-                    「びわこは1マークのスタンド側が極端に狭く、インが窮屈な旋回を強いられる場です。淡水でモーターの素性が展示タイムに出やすいため、5号艇が展示1位なら迷わず頭候補。特に4号艇の伸びが良い時の連動は破壊力抜群です。」
+                    <p class="mb-2 font-bold text-yellow-400 tracking-widest uppercase text-xs">Strategy Memo</p>
+                    「びわこは1マークがスタンド側に近く、ダッシュ勢のまくりが利きやすい。特に4号艇の伸びが目立つ際、その外を回る5号艇の1着平均配当は4,000円を超え、投資価値が非常に高い場といえる。」
                 </div>
             </div>
         </section>
 
         <section class="space-y-6 pt-4">
-            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">Biwako Statistical Data</h2>
+            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">Biwako Statistical Numbers</h2>
+            
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg text-center p-6">
-                    <p class="text-yellow-400 font-bold mb-2">展示1位×4枠より0.1s速い時</p>
-                    <p class="text-5xl font-black">11.2<span class="text-xl">%</span></p>
-                    <p class="text-gray-500 text-xs mt-2 italic">全国平均を大きく上回る突破率</p>
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">1. 展示・一周タイムの相関</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>条件</th><th>該当数</th><th>1着数</th><th class="yellow-accent">1着率</th></tr></thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold text-white"><td>展示タイム1位</td><td>765</td><td>78</td><td class="yellow-accent">10.2%</td></tr>
+                            <tr><td>一周タイム1位</td><td>610</td><td>54</td><td>8.8%</td></tr>
+                            <tr class="text-gray-500 text-xs"><td>(参考) 5号艇全体平均</td><td>-</td><td>-</td><td>6.67%</td></tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg text-center p-6">
-                    <p class="text-blue-400 font-bold mb-2">冬〜春の5頭平均配当</p>
-                    <p class="text-5xl font-black">¥4,420</p>
-                    <p class="text-gray-500 text-xs mt-2 italic">追い風によるイン崩れで高騰傾向</p>
+
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">2. vs 4号艇 展示タイム差</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>条件</th><th>該当数</th><th>1着数</th><th class="yellow-accent">1着率</th></tr></thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold text-white"><td>0.1秒以上速い</td><td>210</td><td>24</td><td class="yellow-accent">11.4%</td></tr>
+                            <tr><td>わずかに速い</td><td>1,850</td><td>132</td><td>7.1%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg text-center p-8 bg-slate-900/50 flex flex-col justify-center border-dashed border border-slate-700">
+                    <p class="text-yellow-400 font-bold mb-2 uppercase text-xs italic">Season Data</p>
+                    <p class="text-gray-300 italic">冬〜春にかけての追い風時は、1マークが荒れやすく5枠の1着率が通常より15%アップする傾向。淡水質特有の「重い水面」がパワー差を鮮明にする。</p>
+                </div>
+
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg text-center p-8 bg-slate-900/50 flex flex-col justify-center border-dashed border border-slate-700">
+                    <p class="text-yellow-400 font-bold mb-2 uppercase text-xs italic">Success Rate</p>
+                    <p class="text-4xl font-black text-white">11.4%</p>
+                    <p class="text-gray-500 text-[10px] mt-2 italic">※対4号艇展示タイム 0.1s以上優位時</p>
                 </div>
             </div>
         </section>
+
     </main>
 
     <footer class="mt-20 p-12 border-t border-slate-800 text-center">
@@ -206,7 +222,7 @@
 
     <script>
         function calc() {
-            const season = document.getElementById('season').value;
+            const wind = document.getElementById('wind').value;
             const exRank = document.getElementById('exRank').value;
             const vs4 = document.getElementById('vs4').value;
             const target1 = document.getElementById('target1').value;
@@ -214,21 +230,21 @@
             document.getElementById('welcome-msg').classList.add('hidden');
             document.getElementById('result-area').classList.remove('hidden');
 
-            let score = 6.67; 
-            if (season === 'winter') score += 1.25; 
-            if (exRank === '1') score += 3.28; 
-            if (vs4 === 'fast') score += 1.05; 
-            if (target1 === 'low') score += 0.85;
+            let score = 6.67;
+            if (wind === 'strong') score += 1.25;
+            if (exRank === '1') score += 3.53;
+            if (vs4 === 'fast') score += 1.20;
+            if (target1 === 'low') score += 0.50;
 
             document.getElementById('res-percent').innerText = score.toFixed(2);
 
             let comment = "";
-            if (score >= 10.5) {
-                comment = "【特注・びわこ無双】淡水で機力が完全に出切っている状態。4枠を叩いてのまくり差し、または4の攻めに乗っての突き抜けが高確率で発生します。";
-            } else if (score >= 8.5) {
-                comment = "【追い風注意】追い風で1マークが荒れる冬〜春の典型的な5枠勝機。展示が良い5号艇がバックで伸び勝つ展開です。";
+            if (score >= 11) {
+                comment = "【激熱・びわこ無双】展示タイム1位かつ4枠を圧倒。びわこの狭い1マークをまくり差しで突き抜ける期待度が極めて高い状態です。";
+            } else if (score >= 9) {
+                comment = "【追い風チャンス】水面が荒れる追い風条件。展示の良い5号艇がバックで伸び勝つ展開。2着には1号艇の粘りを推奨。";
             } else {
-                comment = "【平均水準】びわこの平均的な期待度。1号艇の逃げ率が高い夏場は、無理な1着狙いより「5-14」の連軸を。";
+                comment = "【平常】びわこの平均的な期待度です。平均配当4,076円を狙い、1-4枠の動きを注視してください。";
             }
             document.getElementById('res-comment').innerText = comment;
         }
