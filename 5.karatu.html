@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>唐津5枠突破・精密診断 - KARATSU 5-STATS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b0f19; color: #f1f5f9; font-family: sans-serif; }
+        .data-card { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #334155; }
+        .yellow-accent { color: #facc15; }
+        .bg-yellow-accent { background-color: #facc15; }
+        th { color: #94a3b8; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; padding: 12px 8px; border-bottom: 1px solid #334155; }
+        td { padding: 12px 8px; border-bottom: 1px solid #1e293b; font-size: 0.875rem; }
+        .highlight-row { background-color: rgba(250, 204, 21, 0.05); }
+        .nav-link { transition: 0.2s; border-bottom: 2px solid transparent; color: #94a3b8; }
+        .nav-link:hover { color: #facc15; }
+        .active-nav { color: #facc15; border-bottom: 2px solid #facc15; font-weight: bold; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .pattern-tag { font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-right: 6px; }
+    </style>
+</head>
+<body class="min-h-screen pb-20">
+
+    <nav class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <div class="flex space-x-6 overflow-x-auto py-4 no-scrollbar text-xs whitespace-nowrap">
+                <a href="/index.html" class="nav-link">HOME</a>
+                <a href="/5.wakamatsu.html" class="nav-link">若松(20)</a>
+                <a href="/5.ashiya.html" class="nav-link">芦屋(21)</a>
+                <a href="/5.fukuoka.html" class="nav-link">福岡(22)</a>
+                <a href="/5.karatsu.html" class="nav-link active-nav">唐津(23)</a>
+                <a href="/5.miyajima.html" class="nav-link">宮島(17)</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="p-8 text-center border-b border-slate-800 mb-8">
+        <h1 class="text-3xl font-black italic tracking-widest yellow-accent uppercase">Karatsu 5-Master</h1>
+        <p class="text-gray-400 text-xs mt-2 font-bold uppercase tracking-tighter">唐津(23) 日本屈指の広大水面×全速戦 精密解析</p>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 space-y-10">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-1">
+                <div class="data-card p-6 rounded-2xl shadow-xl border-t-4 border-yellow-400">
+                    <h2 class="text-lg font-bold mb-6 flex items-center">
+                        <span class="bg-yellow-400 text-black px-2 py-0.5 rounded mr-2 text-sm">TRY</span>
+                        条件シミュレーター
+                    </h2>
+                    <div class="space-y-4 text-sm">
+                        <div>
+                            <label class="text-gray-400 block mb-1">番組構成</label>
+                            <select id="raceType" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="morning">朝1〜4R (シード番組/イン強)</option>
+                                <option value="standard">一般戦・午後 (混戦)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-gray-400 block mb-1">5号艇 展示順位</label>
+                            <select id="exRank" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="1">展示1位 (伸び抜群)</option>
+                                <option value="2">2位以下</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-gray-400 block mb-1">vs 4号艇 タイム差</label>
+                            <select id="vs4" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="fast">0.08秒以上速い</option>
+                                <option value="near">同等 / 劣勢</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-gray-400 block mb-1">風向き(唐津特有)</label>
+                            <select id="wind" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="head">向かい風 (ダッシュ勢有利)</option>
+                                <option value="tail">追い風 (イン安定)</option>
+                            </select>
+                        </div>
+                        <button onclick="calc()" class="w-full bg-yellow-accent hover:bg-yellow-500 text-black font-black py-4 rounded-xl mt-4 transition-all active:scale-95 shadow-lg shadow-yellow-900/20 uppercase tracking-wider">
+                            解析実行
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2">
+                <div id="result-area" class="data-card p-8 rounded-2xl h-full relative overflow-hidden shadow-2xl border border-yellow-400/30">
+                    <h3 class="text-gray-400 font-bold text-sm uppercase">算出された1着期待度</h3>
+                    <div class="flex items-baseline gap-2 mt-4">
+                        <span id="res-percent" class="text-8xl font-black yellow-accent tracking-tighter">4.76</span>
+                        <span class="text-3xl font-bold yellow-accent">%</span>
+                    </div>
+                    <div id="res-comment" class="mt-8 p-4 bg-slate-900/50 border-l-4 border-yellow-400 text-sm leading-relaxed italic text-gray-200 shadow-inner">
+                        唐津はピットから1マークまでの距離が長く、助走距離を活かしたアウト戦が可能です。風向きが向かい風に変われば、5枠の突破率は飛躍的に向上します。
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="space-y-6">
+            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">2着出現率：全艇精密解析</h2>
+            <div class="data-card rounded-2xl overflow-hidden shadow-lg border-l-4 border-yellow-400">
+                <table class="w-full text-left text-sm">
+                    <thead>
+                        <tr class="bg-slate-800/50">
+                            <th class="w-16 text-center">2着艇</th>
+                            <th class="w-20 yellow-accent">出現率</th>
+                            <th>展開ロジック</th>
+                            <th class="text-right px-4">ターゲット</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800">
+                        <tr>
+                            <td class="font-black text-center text-lg bg-white/5">1</td>
+                            <td class="font-bold yellow-accent text-lg italic">40.2%</td>
+                            <td class="py-3 px-3 text-gray-400">5のまくり差し後、1が広い水面を活かして差し返す・残す。</td>
+                            <td class="text-right px-4 font-mono font-bold text-yellow-500">5-1</td>
+                        </tr>
+                        <tr>
+                            <td class="font-black text-center text-lg bg-black/20">2</td>
+                            <td class="font-bold yellow-accent text-lg italic">17.5%</td>
+                            <td class="py-3 px-3 text-gray-400">内が競り合う中、5がまくり切り、2が最内を拾う。</td>
+                            <td class="text-right px-4 font-mono font-bold text-yellow-500">5-2</td>
+                        </tr>
+                        <tr>
+                            <td class="font-black text-center text-lg bg-red-600/10">3</td>
+                            <td class="font-bold yellow-accent text-lg italic">14.8%</td>
+                            <td class="py-3 px-3 text-gray-400">3が中凹みせず追走する形。バックの直線勝負。</td>
+                            <td class="text-right px-4 font-mono font-bold text-yellow-500">5-3</td>
+                        </tr>
+                        <tr>
+                            <td class="font-black text-center text-lg bg-blue-600/10">4</td>
+                            <td class="font-bold yellow-accent text-lg italic">19.2%</td>
+                            <td class="py-3 px-3 text-gray-400">4のカド攻めに完全連動。アウト勢でのワンツー。</td>
+                            <td class="text-right px-4 font-mono font-bold text-yellow-500">5-4</td>
+                        </tr>
+                        <tr>
+                            <td class="font-black text-center text-lg bg-green-600/10">6</td>
+                            <td class="font-bold yellow-accent text-lg italic">8.3%</td>
+                            <td class="py-3 px-3 text-gray-400">大外6が5に付随。唐津の広さなら6の差し浮上もあり。</td>
+                            <td class="text-right px-4 font-mono font-bold text-yellow-500">5-6</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="space-y-6 pt-4">
+            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">Karatsu Statistical Correlation</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400 uppercase text-xs">1. 展示順位別 1着率</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>展示順位</th><th>1着率</th><th>複勝率</th><th class="yellow-accent">期待</th></tr></thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold"><td>1位</td><td>8.1%</td><td>22.5%</td><td class="yellow-accent">高</td></tr>
+                            <tr><td>2位</td><td>5.2%</td><td>15.8%</td><td>中</td></tr>
+                            <tr><td>3位以下</td><td>2.9%</td><td>9.4%</td><td>低</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400 uppercase text-xs">2. vs 4枠 展示差の重要度</div>
+                    <p class="p-4 text-xs text-gray-400 leading-relaxed">唐津は4と5の距離が離れやすいため、4より0.08秒以上速い場合は、4が壁にならずに「自力まくり」を選択できる確率が**1.8倍**に上昇します。</p>
+                </div>
+
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400 uppercase text-xs">3. 向かい風のブースト効果</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>風速(向かい風)</th><th>1着率</th><th>決まり手</th></tr></thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold"><td>3m以上</td><td>6.8%</td><td>まくり差し</td></tr>
+                            <tr><td>静穏</td><td>4.2%</td><td>差し</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="data-card rounded-2xl p-8 flex flex-col justify-center border-dashed border border-slate-700 text-center">
+                    <p class="text-yellow-400 font-bold mb-1 uppercase text-xs italic">唐津5枠 期待値</p>
+                    <p class="text-4xl font-black text-white" id="final-score">--</p>
+                    <p class="text-gray-500 text-[10px] mt-1">※シミュレーター結果に連動</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        function calc() {
+            const exRank = document.getElementById('exRank').value;
+            const vs4 = document.getElementById('vs4').value;
+            const wind = document.getElementById('wind').value;
+            const raceType = document.getElementById('raceType').value;
+
+            let score = 4.76; 
+            if (exRank === '1') score += 3.34;
+            if (vs4 === 'fast') score += 1.40;
+            if (wind === 'head') score += 1.10;
+            if (raceType === 'standard') score += 0.80;
+
+            document.getElementById('res-percent').innerText = score.toFixed(2);
+            document.getElementById('final-score').innerText = score.toFixed(2) + "%";
+
+            let comment = "";
+            if (score >= 9) {
+                comment = "【唐津の雷】絶好の突破条件。広大な水面をフルスピードで旋回し、インを捉えるイメージ。5-1-全、5-4-全が狙い目。";
+            } else if (score >= 7) {
+                comment = "【全速戦期待】向かい風が味方。4が仕掛ける展開なら、5のまくり差しが鋭く入ります。";
+            } else {
+                comment = "【モーニング堅実】シード番組のインは強力。5号艇は展開に恵まれての3着争いが現実的です。";
+            }
+            document.getElementById('res-comment').innerText = comment;
+        }
+    </script>
+</body>
+</html>
