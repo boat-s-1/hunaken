@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>5枠突破・精密解析総合ポータル - 5-MASTER INDEX</title>
+    <title>5枠突破・機力ブースト解析 - 5-MASTER INDEX</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #0b0f19; color: #f1f5f9; font-family: sans-serif; }
@@ -11,8 +11,8 @@
         .yellow-accent { color: #facc15; }
         
         /* アコーディオン制御 */
-        #table-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; }
-        #table-content.open { max-height: 2000px; transition: max-height 0.8s ease-in; }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; }
+        .accordion-content.open { max-height: 2000px; transition: max-height 0.8s ease-in; }
         .arrow-icon { transition: transform 0.3s; }
         .arrow-icon.rotate { transform: rotate(180deg); }
 
@@ -26,15 +26,52 @@
         .stats-table th:hover { background-color: rgba(250, 204, 21, 0.1); color: #fff; }
         .stats-table td { padding: 12px; border-bottom: 1px solid #1e293b; font-size: 0.8rem; transition: 0.2s; }
         .stats-table tr:hover td { background-color: rgba(250, 204, 21, 0.05); color: #facc15; }
-        .rank-high { color: #facc15; font-weight: bold; }
+        
+        .boost-high { color: #22c55e; font-weight: bold; text-shadow: 0 0 8px rgba(34, 197, 94, 0.4); }
+        .rank-gold { color: #facc15; font-weight: bold; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body class="min-h-screen pb-20">
 
-    <header class="py-16 px-4 text-center border-b border-slate-800 bg-slate-900/50">
-        <h1 class="text-5xl font-black italic tracking-widest yellow-accent uppercase mb-4">5-Master Portal</h1>
-        <p class="text-gray-400 text-sm font-bold uppercase tracking-[0.3em]">全国24場 5号艇突破・精密データ解析プラットフォーム</p>
+    <header class="py-12 px-4 text-center border-b border-slate-800 bg-slate-900/50">
+        <h1 class="text-4xl font-black italic tracking-widest yellow-accent uppercase mb-2">5-Master Analytics</h1>
+        <p class="text-gray-400 text-xs font-bold uppercase tracking-[0.3em]">全国24場 5号艇突破・機力相関データベース</p>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 mt-8 space-y-6">
+
+        <section class="data-card rounded-2xl overflow-hidden shadow-2xl border border-slate-700">
+            <div onclick="toggleAccordion('table-stats', 'arrow-stats')" class="p-6 flex justify-between items-center cursor-pointer hover:bg-slate-800/50">
+                <h2 class="text-lg font-black italic yellow-accent flex items-center gap-3 uppercase tracking-widest">
+                    <span class="bg-yellow-400 w-1.5 h-6 block"></span>
+                    全国24場 5枠統計マスターテーブル
+                </h2>
+                <svg id="arrow-stats" class="arrow-icon w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
+            <div id="table-stats" class="accordion-content">
+                <div class="overflow-x-auto no-scrollbar border-t border-slate-700">
+                    <table class="stats-table">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable('tableBodyStats', 0, 'string')">場名</th>
+                                <th onclick="sortTable('tableBodyStats', 1, 'float')">通常1着率</th>
+                                <th onclick="sortTable('tableBodyStats', 2, 'int')">平均配当</th>
+                                <th>最強相関条件</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBodyStats">
+                            <tr><td>17# 宮島</td><td>6.22%</td><td>4611</td><td>潮位変動×展示1位</td></tr>
+                            <tr><td>12# 住之江</td><td>5.82%</td><td>4480</td><td>4カド連動/ナイター</td></tr>
+                            <tr><td>08# 常滑</td><td>5.67%</td><td>4165</td><td>追い風3m以上</td></tr>
+                            <tr><td>24# 大村</td><td>4.64%</td><td>3478</td><td>イン崩れ/海風</td></tr>
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section class="data-card rounded-2xl overflow-hidden shadow        <p class="text-gray-400 text-sm font-bold uppercase tracking-[0.3em]">全国24場 5号艇突破・精密データ解析プラットフォーム</p>
     </header>
 
     <main class="max-w-6xl mx-auto px-4 mt-12 space-y-8">
