@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大村5枠突破・精密診断 - OMURA 5-STATS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b0f19; color: #f1f5f9; font-family: sans-serif; }
+        .data-card { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #334155; }
+        .yellow-accent { color: #facc15; }
+        .bg-yellow-accent { background-color: #facc15; }
+        th { color: #94a3b8; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; padding: 12px 8px; border-bottom: 1px solid #334155; }
+        td { padding: 12px 8px; border-bottom: 1px solid #1e293b; font-size: 0.875rem; }
+        .highlight-row { background-color: rgba(250, 204, 21, 0.05); }
+        .nav-link { transition: 0.2s; border-bottom: 2px solid transparent; color: #94a3b8; }
+        .nav-link:hover { color: #facc15; }
+        .active-nav { color: #facc15; border-bottom: 2px solid #facc15; font-weight: bold; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="min-h-screen pb-20">
+
+    <nav class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <div class="flex space-x-6 overflow-x-auto py-4 no-scrollbar text-xs whitespace-nowrap">
+                <a href="/index.html" class="nav-link">HOME</a>
+                <a href="/5.fukuoka.html" class="nav-link">福岡(22)</a>
+                <a href="/5.karatsu.html" class="nav-link">唐津(23)</a>
+                <a href="/5.omura.html" class="nav-link active-nav">大村(24)</a>
+                <a href="/5.miyajima.html" class="nav-link">宮島(17)</a>
+                <a href="/5.suminoe.html" class="nav-link">住之江(12)</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="p-8 text-center border-b border-slate-800 mb-8">
+        <h1 class="text-3xl font-black italic tracking-widest yellow-accent uppercase">Omura 5-Master</h1>
+        <p class="text-gray-400 text-xs mt-2 font-bold uppercase tracking-tighter">大村(24) 発祥の地・イン最強水面を裂く5枠の奇襲</p>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 space-y-10">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-1">
+                <div class="data-card p-6 rounded-2xl shadow-xl border-t-4 border-yellow-400">
+                    <h2 class="text-lg font-bold mb-6 flex items-center">
+                        <span class="bg-yellow-400 text-black px-2 py-0.5 rounded mr-2 text-sm">TRY</span>
+                        条件シミュレーター
+                    </h2>
+                    <div class="space-y-4 text-sm">
+                        <div>
+                            <label class="text-gray-400 block mb-1">展示順位(5枠)</label>
+                            <select id="exRank" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="1">1位 (抜けている)</option>
+                                <option value="2">2位以下</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-gray-400 block mb-1">vs 4号艇 展示タイム差</label>
+                            <select id="vs4" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="win">0.07秒以上速い</option>
+                                <option value="near">同等以下</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-gray-400 block mb-1">風速(大村湾の海風)</label>
+                            <select id="wind" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="strong">風速3m以上 (波乱含み)</option>
+                                <option value="calm">静穏 (イン絶対)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-gray-400 block mb-1">1号艇の逃げ信頼度</label>
+                            <select id="vs1" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="normal">高い (A級シード等)</option>
+                                <option value="weak">不安 (機力劣勢)</option>
+                            </select>
+                        </div>
+                        <button onclick="calc()" class="w-full bg-yellow-accent hover:bg-yellow-500 text-black font-black py-4 rounded-xl mt-4 transition-all active:scale-95 shadow-lg shadow-yellow-900/20 uppercase tracking-wider">
+                            解析実行
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2">
+                <div id="result-area" class="data-card p-8 rounded-2xl h-full relative overflow-hidden shadow-2xl border border-yellow-400/30">
+                    <h3 class="text-gray-400 font-bold text-sm uppercase">算出された1着期待度</h3>
+                    <div class="flex items-baseline gap-2 mt-4">
+                        <span id="res-percent" class="text-8xl font-black yellow-accent tracking-tighter">4.64</span>
+                        <span class="text-3xl font-bold yellow-accent">%</span>
+                    </div>
+                    <div id="res-comment" class="mt-8 p-4 bg-slate-900/50 border-l-4 border-yellow-400 text-sm leading-relaxed italic text-gray-200 shadow-inner">
+                        大村は「イン逃げの聖地」ですが、だからこそ4枠や5枠が仕掛けた時のオッズは破壊的です。特に海風が吹き込み、1マークで1号艇がターンを膨らませた際、5号艇の最内差しが突き刺さります。
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="space-y-6">
+            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">2着出現率：全艇精密ターゲット</h2>
+            <div class="data-card rounded-2xl overflow-hidden shadow-lg border-l-4 border-yellow-400">
+                <table class="w-full text-left text-sm">
+                    <thead>
+                        <tr class="bg-slate-800/50">
+                            <th class="w-16 text-center">2着艇</th>
+                            <th class="w-20 yellow-accent">出現率</th>
+                            <th>展開ロジック</th>
+                            <th class="text-right px-4">推奨スジ</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800">
+                        <tr>
+                            <td class="font-black text-center text-lg bg-white/5">1</td>
+                            <td class="font-bold yellow-accent text-lg italic">46.8%</td>
+                            <td class="py-3 px-3 text-gray-400">5の差し切りに対し、1が意地でバック踏ん張る形。最も多い。</td>
+                            <td class="text-right px-4 font-mono font-bold text-yellow-500">5-1</td>
+                        </tr>
+                        <tr>
+                            <td class="font-black text-center text-lg bg-black/20">2</td>
+                            <td class="font-bold yellow-accent text-lg italic">15.1%</td>
+                            <td class="py-3 px-3 text-gray-400">1がまくられて引き波へ。2が内々を突いて残る。</td>
+                            <td class="text-right px-4 font-mono font-bold text-yellow-500">5-2</td>
+                        </tr>
+                        <tr>
+                            <td class="font-black text-center text-lg bg-red-600/10">3</td>
+                            <td class="font-bold yellow-accent text-lg italic">12.5%</td>
+                            <td class="py-3 px-3 text-gray-400">3が外に抵抗し、空いたスペースを5が突き抜ける。</td>
+                            <td class="text-right px-4 font-mono font-bold text-yellow-500">5-3</td>
+                        </tr>
+                        <tr>
+                            <td class="font-black text-center text-lg bg-blue-600/10">4</td>
+                            <td class="font-bold yellow-accent text-lg italic">18.4%</td>
+                            <td class="py-3 px-3 text-gray-400">4の仕掛けに乗って5が差す「ダッシュワンツー」。</td>
+                            <td class="text-right px-4 font-mono font-bold text-yellow-500">5-4</td>
+                        </tr>
+                        <tr>
+                            <td class="font-black text-center text-lg bg-green-600/10">6</td>
+                            <td class="font-bold yellow-accent text-lg italic">7.2%</td>
+                            <td class="py-3 px-3 text-gray-400">大村では稀だが、内壊滅時のアウトセット。</td>
+                            <td class="text-right px-4 font-mono font-bold text-yellow-500">5-6</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="space-y-6 pt-4">
+            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">Omura Statistical Insights</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400 uppercase text-xs">1. 展示1位時の1着率変化</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>展示順位</th><th>1着率</th><th>期待値</th></tr></thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold"><td>1位</td><td>7.9%</td><td class="yellow-accent">大幅UP</td></tr>
+                            <tr><td>2位以下</td><td>3.2%</td><td>減少</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400 uppercase text-xs">2. vs 4枠 タイム差の重要性</div>
+                    <p class="p-4 text-xs text-gray-400 leading-relaxed">
+                        大村はダッシュ勢の助走距離がしっかり取れるため、4枠より展示が**0.07秒**以上速い場合、5枠の「自力まくり差し」成功率が通常の約1.5倍に跳ね上がります。
+                    </p>
+                </div>
+
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400 uppercase text-xs">3. 風によるイン崩壊率</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>風速</th><th>イン逃げ率</th><th>5枠連対率</th></tr></thead>
+                        <tbody>
+                            <tr><td>0-2m</td><td>70.1%</td><td>11.2%</td></tr>
+                            <tr class="highlight-row font-bold"><td>3m以上</td><td>61.5%</td><td>16.8%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="data-card rounded-2xl p-8 flex flex-col justify-center border-dashed border border-slate-700 text-center">
+                    <p class="text-yellow-400 font-bold mb-1 uppercase text-xs italic">大村5枠 最終期待値</p>
+                    <p class="text-4xl font-black text-white" id="final-score">--</p>
+                    <p class="text-gray-500 text-[10px] mt-1">※シミュレーター結果に連動</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        function calc() {
+            const exRank = document.getElementById('exRank').value;
+            const vs4 = document.getElementById('vs4').value;
+            const wind = document.getElementById('wind').value;
+            const vs1 = document.getElementById('vs1').value;
+
+            let score = 4.64; 
+            if (exRank === '1') score += 3.26;
+            if (vs4 === 'win') score += 1.30;
+            if (wind === 'strong') score += 1.80;
+            if (vs1 === 'weak') score += 2.10;
+
+            document.getElementById('res-percent').innerText = score.toFixed(2);
+            document.getElementById('final-score').innerText = score.toFixed(2) + "%";
+
+            let comment = "";
+            if (score >= 11) {
+                comment = "【発祥の地の反乱】条件が極めて良好。1の機力不安とあなたの展示評価が一致。5-1だけでなく5-2, 5-4への広がりも。";
+            } else if (score >= 8) {
+                comment = "【まくり差し警戒】風がインを苦しめています。展示1位の足があれば、鮮やかなまくり差しが届く圏内です。";
+            } else {
+                comment = "【イン盤石】大村らしい静かな水面。5枠が1着まで届くには、1マークで大きなアクシデントが必要です。";
+            }
+            document.getElementById('res-comment').innerText = comment;
+        }
+    </script>
+</body>
+</html>
