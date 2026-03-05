@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宮島ボート 5号艇攻略データ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #121212; color: #e0e0e0; }
+        .border-5 { border-left: 8px solid #facc15; } /* 5号艇イエロー */
+        .card { background-color: #1e1e1e; border-radius: 8px; transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body>
+
+    <header class="bg-yellow-400 p-6 text-black text-center shadow-lg">
+        <h1 class="text-3xl font-bold italic">MIYAJIMA 5-MASTER</h1>
+        <p class="text-sm font-semibold mt-1">宮島5号艇 1着奪取の条件分析</p>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-4">
+        
+        <section class="mt-8">
+            <h2 class="text-xl font-bold mb-4 flex items-center">
+                <span class="bg-yellow-400 text-black px-2 py-1 rounded mr-2">5</span> 
+                宮島で5枠が「突き抜ける」3条件
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="card p-4 border-5">
+                    <h3 class="font-bold text-yellow-400">1. 干潮時</h3>
+                    <p class="text-sm mt-2">潮が引くと水面が安定。ダッシュ勢の全速旋回が決まりやすくなり、5コースからのまくり差しが狙い目。</p>
+                </div>
+                <div class="card p-4 border-5">
+                    <h3 class="font-bold text-yellow-400">2. 向かい風</h3>
+                    <p class="text-sm mt-2">4m以上の向かい風ならインの加速が鈍る。カド（4コース）が攻めた内側を5コースがズバッと差す展開。</p>
+                </div>
+                <div class="card p-4 border-5">
+                    <h3 class="font-bold text-yellow-400">3. 4枠の攻め</h3>
+                    <p class="text-sm mt-2">4号艇が「攻めるタイプ」の場合、連動する5号艇の突き抜け率が急上昇。展示タイムに注目。</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-12 bg-gray-800 rounded-lg p-6 shadow-inner">
+            <h2 class="text-lg font-bold mb-4">分析シミュレーター（デモ）</h2>
+            <div class="flex flex-col space-y-4">
+                <label>
+                    現在の潮位：
+                    <select id="tide" class="bg-gray-700 p-2 rounded w-full">
+                        <option value="high">満潮（イン有利）</option>
+                        <option value="low">干潮（外枠チャンス）</option>
+                    </select>
+                </label>
+                <button onclick="analyze()" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 rounded transition">
+                    5号艇の勝率を算出
+                </button>
+                <div id="result" class="text-center text-2xl font-black mt-4 hidden">
+                    期待度： <span id="score" class="text-yellow-400 text-4xl">--</span> %
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-20 p-8 text-center text-gray-500 text-xs border-t border-gray-800">
+        &copy; 2026 Boat Race Analysis - Miyajima 5th Edition
+    </footer>
+
+    <script>
+        function analyze() {
+            const tide = document.getElementById('tide').value;
+            const resultDiv = document.getElementById('result');
+            const scoreSpan = document.getElementById('score');
+            
+            resultDiv.classList.remove('hidden');
+            
+            // ロジックの例（実際はここにデータを紐づける）
+            if (tide === 'low') {
+                scoreSpan.innerText = "28.5"; // 干潮なら高め
+            } else {
+                scoreSpan.innerText = "8.2";
+            }
+        }
+    </script>
+</body>
+</html>
