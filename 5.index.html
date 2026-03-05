@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ボートレース場別・5枠突破診断</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b0f19; color: #f1f5f9; font-family: sans-serif; }
+        .data-card { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #334155; }
+        .yellow-accent { color: #facc15; }
+        .nav-item { transition: 0.3s; border-bottom: 2px solid transparent; }
+        .nav-item:hover { color: #facc15; border-bottom: 2px solid #facc15; }
+        .active-nav { color: #facc15; border-bottom: 2px solid #facc15; font-weight: bold; }
+    </style>
+</head>
+<body class="min-h-screen pb-20">
+
+    <nav class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex space-x-8 overflow-x-auto py-4 no-scrollbar text-sm whitespace-nowrap">
+                <a href="index.html" class="nav-item">HOME</a>
+                <a href="miyajima.html" class="nav-item active-nav">宮島(17)</a>
+                <a href="#" class="nav-item text-gray-600 cursor-not-allowed">住之江（準備中）</a>
+                <a href="#" class="nav-item text-gray-600 cursor-not-allowed">平和島（準備中）</a>
+                <a href="#" class="nav-item text-gray-600 cursor-not-allowed">全24場対応予定</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="p-8 text-center mb-4">
+        <h1 class="text-3xl font-black italic tracking-widest yellow-accent uppercase">Miyajima 5-Master</h1>
+        <p class="text-gray-400 text-xs mt-2 font-bold tracking-tighter">【宮島専用】5号艇1着分析シミュレーター</p>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 space-y-10">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-1">
+                <div class="data-card p-6 rounded-2xl shadow-xl border-t-4 border-yellow-400">
+                    <h2 class="text-lg font-bold mb-6 flex items-center">条件シミュレーター</h2>
+                    <div class="space-y-4 text-sm">
+                        <div>
+                            <label class="text-gray-400 block mb-1">風速条件</label>
+                            <select id="wind" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="strong">強風 (3m以上)</option>
+                                <option value="light">弱風 (1-2m)</option>
+                                <option value="none">無風 (0m)</option>
+                            </select>
+                        </div>
+                        <button onclick="calc()" class="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-black py-4 rounded-xl mt-4 shadow-lg shadow-yellow-900/20">解析実行</button>
+                    </div>
+                </div>
+            </div>
+            <div class="lg:col-span-2">
+                <div id="result-area" class="data-card p-8 rounded-2xl h-full relative overflow-hidden shadow-2xl min-h-[300px]">
+                    <h3 class="text-gray-400 font-bold text-sm uppercase">算出された1着期待度</h3>
+                    <div class="flex items-baseline gap-2 mt-4">
+                        <span id="res-percent" class="text-8xl font-black yellow-accent tracking-tighter">--.-</span>
+                        <span class="text-3xl font-bold yellow-accent">%</span>
+                    </div>
+                    <div id="res-comment" class="mt-8 p-4 bg-slate-900/50 border-l-4 border-yellow-400 text-sm italic text-gray-200">
+                        解析ボタンを押すと、画像データに基づいたコメントが表示されます。
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="max-w-4xl mx-auto">
+            <div class="w-full h-24 bg-slate-800 rounded flex items-center justify-center border border-slate-700 border-dashed">
+                <p class="text-gray-600 text-xs italic">Advertisement (Google AdSense予定地)</p>
+            </div>
+        </section>
+
+        </main>
+
+    <footer class="mt-20 p-8 border-t border-slate-800 text-center text-gray-600 text-xs">
+        &copy; 2026 5枠突破診断所. All Rights Reserved.
+    </footer>
+
+    <script>
+        // 前回のcalc関数をここに配置
+        function calc() {
+            const wind = document.getElementById('wind').value;
+            let score = 6.22; 
+            if (wind === 'strong') score += 1.03; 
+            document.getElementById('res-percent').innerText = score.toFixed(2);
+            document.getElementById('res-comment').innerText = "【分析完了】宮島(17)の統計に基づいた数値です。";
+        }
+    </script>
+</body>
+</html>
