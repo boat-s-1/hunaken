@@ -3,237 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>宮島5枠突破・精密診断 - MIYAJIMA 5-STATS</title>
+    <title>5枠突破・精密解析総合ポータル - 5-MASTER INDEX</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #0b0f19; color: #f1f5f9; font-family: sans-serif; }
-        .data-card { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #334155; }
+        .data-card { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #334155; transition: 0.3s; }
+        .data-card:hover { border-color: #facc15; transform: translateY(-4px); shadow: 0 10px 15px -3px rgba(250, 204, 21, 0.2); }
         .yellow-accent { color: #facc15; }
         .bg-yellow-accent { background-color: #facc15; }
-        th { color: #94a3b8; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; padding: 12px 8px; border-bottom: 1px solid #334155; }
-        td { padding: 12px 8px; border-bottom: 1px solid #1e293b; font-size: 0.875rem; }
-        .highlight-row { background-color: rgba(250, 204, 21, 0.05); }
-        .nav-link { transition: 0.2s; border-bottom: 2px solid transparent; }
-        .nav-link:hover { color: #facc15; }
-        .active-nav { color: #facc15; border-bottom: 2px solid #facc15; font-weight: bold; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .pattern-tag { font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-right: 6px; }
+        .status-badge { font-size: 0.65rem; padding: 2px 8px; border-radius: 9999px; font-weight: bold; }
     </style>
 </head>
 <body class="min-h-screen pb-20">
 
-    <nav class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 text-center">
-            <div class="flex space-x-6 overflow-x-auto py-4 no-scrollbar text-xs whitespace-nowrap">
-                <a href="index.html" class="nav-link text-gray-400">HOME</a>
-                <a href="miyajima.html" class="nav-link active-nav">宮島(17)</a>
-                <a href="#" class="nav-link text-gray-600 cursor-not-allowed">住之江（準備中）</a>
-                <a href="#" class="nav-link text-gray-600 cursor-not-allowed">平和島（準備中）</a>
-                <a href="#" class="nav-link text-gray-600 cursor-not-allowed">多摩川（準備中）</a>
-            </div>
-        </div>
-    </nav>
-
-    <header class="p-8 text-center border-b border-slate-800 mb-8">
-        <h1 class="text-3xl font-black italic tracking-widest yellow-accent uppercase">Miyajima 5-Master</h1>
-        <p class="text-gray-400 text-xs mt-2 font-bold uppercase tracking-tighter">宮島(17) 5号艇1着に関する精密解析サイト</p>
+    <header class="py-12 px-4 text-center border-b border-slate-800 bg-slate-900/50">
+        <h1 class="text-4xl font-black italic tracking-widest yellow-accent uppercase mb-2">5-Master Portal</h1>
+        <p class="text-gray-400 text-sm font-bold uppercase tracking-widest">全国24場 5号艇突破・精密データ解析プラットフォーム</p>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 space-y-10">
+    <main class="max-w-6xl mx-auto px-4 mt-12 space-y-12">
         
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-1">
-                <div class="data-card p-6 rounded-2xl shadow-xl border-t-4 border-yellow-400">
-                    <h2 class="text-lg font-bold mb-6 flex items-center">
-                        <span class="bg-yellow-400 text-black px-2 py-0.5 rounded mr-2 text-sm">TRY</span>
-                        条件シミュレーター
-                    </h2>
-                    <div class="space-y-4 text-sm">
-                        <div>
-                            <label class="text-gray-400 block mb-1">風速条件</label>
-                            <select id="wind" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="strong">強風 (3m以上)</option>
-                                <option value="light">弱風 (1-2m)</option>
-                                <option value="none">無風 (0m)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-gray-400 block mb-1">5号艇 展示順位</label>
-                            <select id="exRank" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="1">展示タイム 1位</option>
-                                <option value="2">展示タイム 2位以下</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-gray-400 block mb-1">vs 4号艇 展示タイム差</label>
-                            <select id="vs4" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="fast">0.1秒以上速い</option>
-                                <option value="near">わずかに速い/同等</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-gray-400 block mb-1">1号艇の2連対率</label>
-                            <select id="target1" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="high">70%以上 (イン強)</option>
-                                <option value="low">70%未満 (イン弱)</option>
-                            </select>
-                        </div>
-                        <button onclick="calc()" class="w-full bg-yellow-accent hover:bg-yellow-500 text-black font-black py-4 rounded-xl mt-4 transition-all active:scale-95 shadow-lg shadow-yellow-900/20 uppercase tracking-wider">
-                            解析実行
-                        </button>
-                    </div>
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <a href="5.mikuni.html" class="data-card p-6 rounded-2xl block group shadow-xl">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="text-xs font-bold text-gray-500 uppercase tracking-tighter">10# MIKUNI</span>
+                    <span class="status-badge bg-blue-900 text-blue-200 border border-blue-700">北陸エリア</span>
                 </div>
+                <h2 class="text-2xl font-black italic group-hover:text-yellow-400 transition-colors uppercase">三国</h2>
+                <p class="text-gray-400 text-xs mt-2 leading-relaxed">広大な1マークが特徴。向かい風時のまくり差し展開を重点解析。</p>
+                <div class="mt-4 flex gap-2">
+                    <span class="bg-slate-800 text-[10px] px-2 py-1 rounded text-gray-300">広い1マーク</span>
+                    <span class="bg-slate-800 text-[10px] px-2 py-1 rounded text-gray-300">強風対応</span>
+                </div>
+            </a>
+
+            <a href="5.tsu.html" class="data-card p-6 rounded-2xl block group shadow-xl">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="text-xs font-bold text-gray-500 uppercase tracking-tighter">09# TSU</span>
+                    <span class="status-badge bg-orange-900 text-orange-200 border border-orange-700">東海エリア</span>
+                </div>
+                <h2 class="text-2xl font-black italic group-hover:text-yellow-400 transition-colors uppercase">津</h2>
+                <p class="text-gray-400 text-xs mt-2 leading-relaxed">鈴鹿おろしとイン信頼度の相関。全国屈指のイン崩れ条件を網羅。</p>
+                <div class="mt-4 flex gap-2">
+                    <span class="bg-slate-800 text-[10px] px-2 py-1 rounded text-gray-300">鈴鹿おろし</span>
+                    <span class="bg-slate-800 text-[10px] px-2 py-1 rounded text-gray-300">イン信頼度</span>
+                </div>
+            </a>
+
+            <a href="5.tokoname.html" class="data-card p-6 rounded-2xl block group shadow-xl border-t-2 border-yellow-400/30">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="text-xs font-bold text-gray-500 uppercase tracking-tighter">08# TOKONAME</span>
+                    <span class="status-badge bg-yellow-900 text-yellow-200 border border-yellow-700">東海エリア</span>
+                </div>
+                <h2 class="text-2xl font-black italic group-hover:text-yellow-400 transition-colors uppercase">常滑</h2>
+                <p class="text-gray-400 text-xs mt-2 leading-relaxed">海水水面とカド連動の相関。潮位の変化と展示機力の関係を重視。</p>
+                <div class="mt-4 flex gap-2">
+                    <span class="bg-slate-800 text-[10px] px-2 py-1 rounded text-gray-300">海水/潮位</span>
+                    <span class="bg-slate-800 text-[10px] px-2 py-1 rounded text-gray-300">カド連動型</span>
+                </div>
+            </a>
+
+            <a href="5.gamagori.html" class="data-card p-6 rounded-2xl block group shadow-xl">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="text-xs font-bold text-gray-500 uppercase tracking-tighter">07# GAMAGORI</span>
+                    <span class="status-badge bg-purple-900 text-purple-200 border border-purple-700">ナイター特化</span>
+                </div>
+                <h2 class="text-2xl font-black italic group-hover:text-yellow-400 transition-colors uppercase">蒲郡</h2>
+                <p class="text-gray-400 text-xs mt-2 leading-relaxed">通年ナイターの気温変化と機力相関。インが流れる差し場を狙い撃ち。</p>
+                <div class="mt-4 flex gap-2">
+                    <span class="bg-slate-800 text-[10px] px-2 py-1 rounded text-gray-300">ナイター専用</span>
+                    <span class="bg-slate-800 text-[10px] px-2 py-1 rounded text-gray-300">気温相関</span>
+                </div>
+            </a>
+
+            <a href="5.miyajima.html" class="data-card p-6 rounded-2xl block group shadow-xl border-l-2 border-yellow-400/50">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="text-xs font-bold text-gray-500 uppercase tracking-tighter">17# MIYAJIMA</span>
+                    <span class="status-badge bg-red-900 text-red-200 border border-red-700">安芸の宮島</span>
+                </div>
+                <h2 class="text-2xl font-black italic group-hover:text-yellow-400 transition-colors uppercase">宮島</h2>
+                <p class="text-gray-400 text-xs mt-2 leading-relaxed">干満差の激しい水面での5枠突破率。精密な展示タイム比較エンジン搭載。</p>
+                <div class="mt-4 flex gap-2">
+                    <span class="bg-slate-800 text-[10px] px-2 py-1 rounded text-gray-300">干満差</span>
+                    <span class="bg-slate-800 text-[10px] px-2 py-1 rounded text-gray-300">展示重視</span>
+                </div>
+            </a>
+
+            <div class="data-card p-6 rounded-2xl border-dashed border-2 border-slate-700 opacity-50 flex items-center justify-center">
+                <p class="text-gray-500 font-bold italic uppercase tracking-widest text-sm">Next Track Loading...</p>
             </div>
 
-            <div class="lg:col-span-2">
-                <div id="welcome-msg" class="data-card h-full flex items-center justify-center rounded-2xl border-dashed border-2 border-slate-700 p-12 text-center">
-                    <p class="text-gray-500 font-bold italic">条件を選択して「解析実行」を押してください。<br>画像データに基づいた勝率と展開予測を表示します。</p>
-                </div>
-                <div id="result-area" class="hidden data-card p-8 rounded-2xl h-full relative overflow-hidden shadow-2xl border border-yellow-400/30">
-                    <h3 class="text-gray-400 font-bold text-sm uppercase">算出された1着期待度</h3>
-                    <div class="flex items-baseline gap-2 mt-4">
-                        <span id="res-percent" class="text-8xl font-black yellow-accent tracking-tighter">0.0</span>
-                        <span class="text-3xl font-bold yellow-accent">%</span>
-                    </div>
-                    <div id="res-comment" class="mt-8 p-4 bg-slate-900/50 border-l-4 border-yellow-400 text-sm leading-relaxed italic text-gray-200 shadow-inner"></div>
-                </div>
-            </div>
-        </div>
-
-        <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="data-card p-4 rounded-xl text-center">
-                <p class="text-xs text-gray-500 font-bold uppercase mb-1">全レース数</p>
-                <p class="text-2xl font-black">5,030</p>
-            </div>
-            <div class="data-card p-4 rounded-xl text-center">
-                <p class="text-xs text-gray-500 font-bold uppercase mb-1">5号艇 1着数</p>
-                <p class="text-2xl font-black yellow-accent">313</p>
-            </div>
-            <div class="data-card p-4 rounded-xl text-center border-b-4 border-yellow-400">
-                <p class="text-xs text-yellow-500 font-bold uppercase mb-1">累計1着率</p>
-                <p class="text-2xl font-black yellow-accent">6.22%</p>
-            </div>
-            <div class="data-card p-4 rounded-xl text-center bg-yellow-400/10 border border-yellow-400/20">
-                <p class="text-xs text-yellow-400 font-bold uppercase mb-1">平均配当</p>
-                <p class="text-2xl font-black yellow-accent">¥4,611</p>
-            </div>
         </section>
 
-        <section class="space-y-6">
-            <div class="flex items-center gap-4">
-                <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">2着出現率 & 展開予測</h2>
-                <span class="text-[10px] text-gray-500 font-bold border border-gray-700 px-2 py-0.5 rounded">※対4号艇展示タイム差 -0.1s以上時</span>
-            </div>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg border-l-4 border-yellow-400">
-                    <table class="w-full text-left text-sm">
-                        <thead>
-                            <tr class="bg-slate-800/50">
-                                <th class="w-20">2着艇</th>
-                                <th class="w-24 yellow-accent">出現率</th>
-                                <th>傾向と対策</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-800">
-                            <tr>
-                                <td class="font-black text-center text-lg">1<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold yellow-accent text-lg italic">42.3%</td>
-                                <td class="py-4 px-3 leading-snug text-gray-300">
-                                    <span class="pattern-tag bg-red-600 text-white">【本命】</span>
-                                    5号艇が「まくり差し」で突き抜けた際、インの1号艇が粘るパターン。配当は低めだが的中率は安定。
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="font-black text-center text-lg">4<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold yellow-accent text-lg italic">18.5%</td>
-                                <td class="py-4 px-3 leading-snug text-gray-300">
-                                    <span class="pattern-tag bg-blue-600 text-white">【対抗】</span>
-                                    4号艇が先に攻め、5号艇がそれに乗って差し抜けた場合に「4が残る」形。タイム差があっても4は展開を作りやすい。
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="font-black text-center text-lg">6<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold yellow-accent text-lg italic">14.8%</td>
-                                <td class="py-4 px-3 leading-snug text-gray-300">
-                                    <span class="pattern-tag bg-green-600 text-white">【穴】</span>
-                                    5号艇のまくりについていく「外-外」決着。万舟券のトリガー。
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="font-black text-center text-lg text-gray-400">2<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold text-gray-400 text-lg italic">13.0%</td>
-                                <td class="py-4 px-3 leading-snug text-gray-400">
-                                    <span class="pattern-tag bg-gray-600 text-white">【注意】</span>
-                                    1号艇が4号艇に叩かれ、2号艇がなんとか残るパターン。
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="font-black text-center text-lg text-gray-500">3<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold text-gray-500 text-lg italic">11.4%</td>
-                                <td class="py-4 px-3 leading-snug text-gray-500 italic">
-                                    <span class="pattern-tag bg-gray-800 text-white text-[10px]">【希】</span>
-                                    4号艇の攻めに飲み込まれやすく、宮島では2着残りが最も少ない。
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <section class="data-card p-8 rounded-3xl border-l-4 border-yellow-400 shadow-2xl">
+            <h2 class="text-xl font-black italic yellow-accent mb-6 uppercase tracking-wider">Analysis Core Methodology</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
+                <div>
+                    <h3 class="font-bold text-white mb-2 flex items-center">
+                        <span class="w-1.5 h-1.5 bg-yellow-400 rounded-full mr-2"></span>
+                        機力偏差の算出
+                    </h3>
+                    <p class="text-gray-400 leading-relaxed italic">展示タイム1位の価値を場ごとに数値化。特に対4枠とのタイム差を重視し、5号艇の「まくり差し」の初速を判定します。</p>
                 </div>
-
-                <div class="flex flex-col gap-4">
-                    <div class="data-card rounded-2xl h-40 border border-dashed border-slate-700 flex items-center justify-center">
-                        <span class="text-gray-600 text-[10px] tracking-widest uppercase italic">Advertisement</span>
-                    </div>
-                    <div class="data-card rounded-2xl p-6 italic text-sm text-gray-300 border-l-4 border-yellow-400 bg-slate-800/30">
-                        <p class="mb-2 font-bold text-yellow-400 tracking-widest uppercase text-xs">Strategy Memo</p>
-                        「5号艇が1着の場合、1・4号艇との2連単出現率が6割を超える。3連単ではこの軸に、展開を作る4号艇や追走する6号艇を絡めるのが宮島の定石と言える。」
-                    </div>
+                <div>
+                    <h3 class="font-bold text-white mb-2 flex items-center">
+                        <span class="w-1.5 h-1.5 bg-yellow-400 rounded-full mr-2"></span>
+                        環境因子の重み付け
+                    </h3>
+                    <p class="text-gray-400 leading-relaxed italic">風向、風速、潮位、ナイター気温。5コースが最も有利になる「気象の隙」を独自のアルゴリズムで解析に組み込んでいます。</p>
                 </div>
-            </div>
-        </section>
-
-        <section class="space-y-6 pt-4">
-            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider">Historical Numbers</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
-                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">1. 展示・一周タイム</div>
-                    <table class="w-full text-left">
-                        <thead><tr><th>条件</th><th>該当数</th><th>1着数</th><th class="yellow-accent">1着率</th></tr></thead>
-                        <tbody>
-                            <tr class="highlight-row font-bold text-white"><td>展示タイム1位</td><td>830</td><td>83</td><td class="yellow-accent">10.00%</td></tr>
-                            <tr><td>一周タイム1位</td><td>688</td><td>52</td><td>7.56%</td></tr>
-                            <tr class="text-gray-500 text-xs"><td>(参考) 5号艇全体平均</td><td>-</td><td>-</td><td>5.78%</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
-                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">2. vs 4号艇 展示タイム差</div>
-                    <table class="w-full text-left">
-                        <thead><tr><th>条件</th><th>該当数</th><th>1着数</th><th class="yellow-accent">1着率</th></tr></thead>
-                        <tbody>
-                            <tr class="highlight-row font-bold text-white"><td>0.1秒以上速い</td><td>259</td><td>27</td><td class="yellow-accent">10.42%</td></tr>
-                            <tr><td>わずかに速い</td><td>2,030</td><td>129</td><td>6.35%</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
-                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">3. 風速の相関</div>
-                    <table class="w-full text-left">
-                        <thead><tr><th>条件</th><th>該当数</th><th>1着数</th><th class="yellow-accent">1着率</th></tr></thead>
-                        <tbody>
-                            <tr class="highlight-row font-bold text-white"><td>強風 (3m以上)</td><td>2,150</td><td>156</td><td class="yellow-accent">7.25%</td></tr>
-                            <tr><td>弱風 (1-2m)</td><td>3,102</td><td>175</td><td>5.64%</td></tr>
-                            <tr><td>無風 (0m)</td><td>1,245</td><td>68</td><td>5.46%</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg p-6 bg-slate-900/50 flex flex-col justify-center italic text-xs text-gray-400">
-                    <p class="font-bold text-yellow-400 mb-2 uppercase tracking-tighter italic">Extra Data:</p>
-                    1号艇の2連対率が70%以上（イン強）の時、5号艇の1着率は6.27%に上昇。1枠が壁になり内枠の攻めを抑えることで、5コースからの差し場が鮮明になる傾向。
+                <div>
+                    <h3 class="font-bold text-white mb-2 flex items-center">
+                        <span class="w-1.5 h-1.5 bg-yellow-400 rounded-full mr-2"></span>
+                        2着出現率の最適化
+                    </h3>
+                    <p class="text-gray-400 leading-relaxed italic">単なる勝率だけでなく、5が勝った時の「スジ舟券」を過去数万レースから算出。各場の特性に合わせた高精度な連対パターンを表示します。</p>
                 </div>
             </div>
         </section>
@@ -241,37 +126,13 @@
     </main>
 
     <footer class="mt-20 p-12 border-t border-slate-800 text-center">
-        <p class="text-gray-500 text-xs font-bold">&copy; 2026 5枠突破診断所. All Rights Reserved.</p>
+        <p class="text-gray-500 text-xs font-bold tracking-widest uppercase mb-4">&copy; 2026 5-MASTER PRECISION ANALYTICS SYSTEM</p>
+        <div class="flex justify-center space-x-4">
+            <div class="w-2 h-2 bg-slate-700 rounded-full"></div>
+            <div class="w-2 h-2 bg-yellow-400 rounded-full"></div>
+            <div class="w-2 h-2 bg-slate-700 rounded-full"></div>
+        </div>
     </footer>
 
-    <script>
-        function calc() {
-            const wind = document.getElementById('wind').value;
-            const exRank = document.getElementById('exRank').value;
-            const vs4 = document.getElementById('vs4').value;
-            const target1 = document.getElementById('target1').value;
-
-            document.getElementById('welcome-msg').classList.add('hidden');
-            document.getElementById('result-area').classList.remove('hidden');
-
-            let score = 6.22; //
-            if (wind === 'strong') score += 1.03; //
-            if (exRank === '1') score += 3.78; //
-            if (vs4 === 'fast') score += 0.42; //
-            if (target1 === 'high') score += 0.05; //
-
-            document.getElementById('res-percent').innerText = score.toFixed(2);
-
-            let comment = "";
-            if (score >= 10) {
-                comment = "【激熱】展示1位かつ4枠より0.1秒以上速い条件。統計上10.42%を超える最高クラスの期待度です。2着本命は1号艇（42.3%）、展開作りで4号艇（18.5%）を軸にした買い目が推奨されます。";
-            } else if (score >= 7) {
-                comment = "【強風有利】風速3m以上の好条件（7.25%）に合致。荒れた水面なら、5号艇のまくり差しが決まりやすくなります。6号艇の追走（14.8%）による穴展開も警戒。";
-            } else {
-                comment = "【平常】全体平均（6.22%）前後の期待度です。1号艇が壁となって残る「5-1」パターンを基本に、配当4,611円付近を狙いましょう。";
-            }
-            document.getElementById('res-comment').innerText = comment;
-        }
-    </script>
 </body>
 </html>
