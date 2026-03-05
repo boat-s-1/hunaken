@@ -40,7 +40,7 @@
 
     <header class="p-8 text-center border-b border-slate-800 mb-8">
         <h1 class="text-3xl font-black italic tracking-widest yellow-accent uppercase">Tsu 5-Master</h1>
-        <p class="text-gray-400 text-xs mt-2 font-bold uppercase tracking-tighter">津(09) 鈴鹿おろし×イン信頼度相関 5号艇精密解析</p>
+        <p class="text-gray-400 text-xs mt-2 font-bold uppercase tracking-tighter">津(09) イン信頼度×鈴鹿おろし 5号艇精密解析</p>
     </header>
 
     <main class="max-w-6xl mx-auto px-4 space-y-10">
@@ -62,11 +62,11 @@
                             </select>
                         </div>
                         <div>
-                            <label class="text-gray-400 block mb-1">風条件 (鈴鹿おろし等)</label>
+                            <label class="text-gray-400 block mb-1">風条件</label>
                             <select id="wind" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="head_strong">向かい風 4m以上 (波乱◎)</option>
-                                <option value="tail">追い風 (差し有利)</option>
-                                <option value="calm">弱風 2m以下 (イン鉄板)</option>
+                                <option value="head">向かい風 4m以上 (波乱)</option>
+                                <option value="tail">追い風 3m以上 (差し)</option>
+                                <option value="calm">弱風 2m以下 (イン安定)</option>
                             </select>
                         </div>
                         <div>
@@ -92,7 +92,7 @@
 
             <div class="lg:col-span-2">
                 <div id="welcome-msg" class="data-card h-full flex items-center justify-center rounded-2xl border-dashed border-2 border-slate-700 p-12 text-center">
-                    <p class="text-gray-500 font-bold italic">津の「強風時のイン崩れ」をロジック化。<br>1号艇の信頼度と風速から5枠の突破率を算出します。</p>
+                    <p class="text-gray-500 font-bold italic">津の強風とイン強度の相関を反映。<br>4枠との機力差から5コース突破率を算出します。</p>
                 </div>
                 <div id="result-area" class="hidden data-card p-8 rounded-2xl h-full relative overflow-hidden shadow-2xl border border-yellow-400/30">
                     <h3 class="text-gray-400 font-bold text-sm uppercase">算出された1着期待度</h3>
@@ -105,50 +105,98 @@
             </div>
         </div>
 
-        <section class="space-y-6 pt-4">
-            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">Tsu Strategic Database</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
-                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">1. イン信頼度 vs 5枠期待値</div>
-                    <table class="w-full text-left">
-                        <thead><tr><th>1号艇 2連対率</th><th>5枠1着率</th><th>波乱度</th></tr></thead>
-                        <tbody>
-                            <tr class="highlight-row font-bold text-white"><td>60%未満</td><td class="yellow-accent">9.15%</td><td>高 (センターまくり多発)</td></tr>
-                            <tr><td>60〜75%</td><td>5.20%</td><td>中 (カド連動型)</td></tr>
-                            <tr><td>75%以上</td><td>2.85%</td><td>低 (イン逃げ盤石)</td></tr>
+        <section class="space-y-6">
+            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">2着出現率 & 展開予測 (5頭時)</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border-l-4 border-yellow-400">
+                    <table class="w-full text-left text-sm">
+                        <thead>
+                            <tr class="bg-slate-800/50">
+                                <th class="w-20">2着艇</th>
+                                <th class="w-24 yellow-accent">出現率</th>
+                                <th>傾向と対策</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800">
+                            <tr>
+                                <td class="font-black text-center text-lg text-white">1<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">34.8%</td>
+                                <td class="py-3 px-3 leading-snug text-gray-300">
+                                    <span class="pattern-tag bg-red-600 text-white">本命</span>
+                                    5がまくり差しても、広い1マークを利して1が2着に残る「5-1」が主軸。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-black text-center text-lg text-white">4<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">20.5%</td>
+                                <td class="py-3 px-3 leading-snug text-gray-300">
+                                    <span class="pattern-tag bg-blue-600 text-white">連動</span>
+                                    4が攻めて5が展開を突く形。向かい風時は「5-4」の比率が上昇。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-black text-center text-lg text-white">2<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">13.2%</td>
+                                <td class="py-3 px-3 leading-snug text-gray-300">
+                                    <span class="pattern-tag bg-black border border-gray-600 text-white">差し</span>
+                                    内を突く2が2着。5-2は中穴の定番。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-black text-center text-lg text-white">6<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">12.1%</td>
+                                <td class="py-3 px-3 leading-snug text-gray-300">
+                                    <span class="pattern-tag bg-green-600 text-white">外枠</span>
+                                    5号艇に連動。外枠決着「5-6」は高配当の使者。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-black text-center text-lg text-white">3<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">11.4%</td>
+                                <td class="py-3 px-3 leading-snug text-gray-300">
+                                    <span class="pattern-tag bg-red-400 text-white">中枠</span>
+                                    3が1マークで抵抗しつつも、バックで伸びて2着争い。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-black text-center text-lg text-white">5<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold text-gray-500 text-lg italic">- %</td>
+                                <td class="py-3 px-3 leading-snug text-gray-400 italic text-xs text-center">
+                                    (Self)
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
-
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
-                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">2. 風速別 5枠1着率</div>
-                    <table class="w-full text-left">
-                        <thead><tr><th>風条件</th><th>5枠1着率</th><th>決まり手</th></tr></thead>
-                        <tbody>
-                            <tr class="highlight-row font-bold text-white"><td>向かい風 4m~</td><td class="yellow-accent">8.80%</td><td>まくり差し (カド連動)</td></tr>
-                            <tr><td>追い風 4m~</td><td>6.25%</td><td>差し (イン流れ)</td></tr>
-                            <tr><td>弱風 (0-2m)</td><td>4.10%</td><td>抜き/展開待ち</td></tr>
-                        </tbody>
-                    </table>
+                <div class="data-card rounded-2xl p-6 italic text-sm text-gray-300 border-l-4 border-yellow-400 bg-slate-800/30">
+                    <p class="mb-2 font-bold text-yellow-400 tracking-widest uppercase text-xs">Tsu Insight</p>
+                    「津はイン逃げ率が高い分、5号艇が勝つ際は『1号艇を沈めるまくり』よりも『間を抜くまくり差し』が多くなります。そのため、1号艇が2着を死守する確率が全国平均より高く、5-1の信頼度が厚いのが特徴です。」
                 </div>
             </div>
         </section>
 
-        <section class="space-y-6">
-            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">2着出現率 (5頭時)</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="data-card p-4 rounded-xl text-center border-l-4 border-red-600">
-                    <p class="text-[10px] text-gray-500 font-bold mb-1">1号艇 (残し)</p>
-                    <p class="text-2xl font-black yellow-accent">34.8%</p>
+        <section class="space-y-6 pt-4">
+            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">Wind & Machine Stats</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">1. 風条件別 1着率</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>条件</th><th>1着率</th><th>期待値ランク</th></tr></thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold text-white"><td>向かい風 4m~</td><td class="yellow-accent">8.80%</td><td>S (波乱条件)</td></tr>
+                            <tr><td>追い風 3m~</td><td>6.25%</td><td>B (イン流れ期待)</td></tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="data-card p-4 rounded-xl text-center border-l-4 border-blue-600">
-                    <p class="text-[10px] text-gray-500 font-bold mb-1">4号艇 (連動)</p>
-                    <p class="text-2xl font-black yellow-accent">20.5%</p>
-                </div>
-                <div class="data-card p-4 rounded-xl text-center border-l-4 border-yellow-600">
-                    <p class="text-[10px] text-gray-500 font-bold mb-1">2号艇 (差し)</p>
-                    <p class="text-2xl font-black yellow-accent">13.2%</p>
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">2. vs 4号艇 展示タイム相関</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>条件</th><th>1着率</th><th>展開期待</th></tr></thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold text-white"><td>0.1秒以上速い</td><td class="yellow-accent">10.15%</td><td>突き抜け◎</td></tr>
+                            <tr><td>同等以下</td><td>3.85%</td><td>展開待ち</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </section>
@@ -170,33 +218,24 @@
             document.getElementById('result-area').classList.remove('hidden');
 
             let score = 5.20; 
-            
-            // イン信頼度補正
             if (target1 === 'low') score += 3.95; 
             if (target1 === 'high') score -= 2.35;
-
-            // 風補正
-            if (wind === 'head_strong') score += 2.60; 
+            if (wind === 'head') score += 2.60; 
             if (wind === 'tail') score += 0.85;
-
-            // 展示機力
             if (exRank === '1') score += 3.80; 
             if (vs4 === 'fast') score += 1.75;
 
-            // 調整
-            if (score > 12) score = 12.45; // 津の5枠MAX値付近
+            if (score > 12.5) score = 12.45;
 
             document.getElementById('res-percent').innerText = score.toFixed(2);
 
             let comment = "";
             if (score >= 10.5) {
-                comment = "【津・波乱警報】強い向かい風でインの1着率が急落中。機力上位の5号艇が4枠のまくりに乗って突き抜けます。5-1, 5-4。";
+                comment = "【津・波乱警報】イン不安かつ向かい風の黄金条件。機力上位の5号艇が突き抜けます。2着は粘る1（34.8%）を本線に。";
             } else if (score >= 8.0) {
-                comment = "【中穴気配】インにやや不安あり。展示1位の5号艇が道中の混戦を捌いて頭まで届く機力を持っています。";
-            } else if (score <= 4.0) {
-                comment = "【イン盤石】鉄板インに加え、風も穏やか。5号艇は頭までは厳しく、3着ヒモとしての検討が妥当。";
+                comment = "【中穴有望】機力が裏打ちされています。インが強い津ですが、道中の捌きで頭まで届く可能性があります。";
             } else {
-                comment = "【平常・標準イン】1マークで4枠が攻めきれない場合、5号艇は展開待ちとなります。連軸候補。";
+                comment = "【イン盤石】鉄板イン条件。5号艇は頭までは厳しく、3着までのヒモとして検討してください。";
             }
             document.getElementById('res-comment').innerText = comment;
         }
