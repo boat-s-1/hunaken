@@ -3,38 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>5枠突破・機力ブースト解析 - 5-MASTER INDEX</title>
+    <title>5枠突破・24場完全解析 - 5-MASTER INDEX</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #0b0f19; color: #f1f5f9; font-family: sans-serif; }
         .data-card { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #334155; }
         .yellow-accent { color: #facc15; }
+        .green-accent { color: #22c55e; }
         
         /* アコーディオン制御 */
-        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; }
-        .accordion-content.open { max-height: 2000px; transition: max-height 0.8s ease-in; }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .accordion-content.open { max-height: 3000px; }
         .arrow-icon { transition: transform 0.3s; }
         .arrow-icon.rotate { transform: rotate(180deg); }
 
         /* テーブルスタイル */
-        .stats-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+        .stats-table { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
         .stats-table th { 
-            color: #94a3b8; font-size: 0.75rem; text-transform: uppercase; 
-            padding: 16px 12px; border-bottom: 2px solid #334155; 
+            color: #94a3b8; font-size: 0.7rem; text-transform: uppercase; 
+            padding: 14px 8px; border-bottom: 2px solid #334155; 
             text-align: left; cursor: pointer; position: relative;
+            white-space: nowrap;
         }
         .stats-table th:hover { background-color: rgba(250, 204, 21, 0.1); color: #fff; }
-        .stats-table td { padding: 12px; border-bottom: 1px solid #1e293b; font-size: 0.8rem; transition: 0.2s; }
-        .stats-table tr:hover td { background-color: rgba(250, 204, 21, 0.05); color: #facc15; }
+        .stats-table td { padding: 10px 8px; border-bottom: 1px solid #1e293b; font-size: 0.75rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .stats-table tr:hover td { background-color: rgba(255, 255, 255, 0.03); }
         
-        .boost-high { color: #22c55e; font-weight: bold; text-shadow: 0 0 8px rgba(34, 197, 94, 0.4); }
-        .rank-gold { color: #facc15; font-weight: bold; }
+        .rank-high { color: #facc15; font-weight: bold; }
+        .boost-high { color: #22c55e; font-weight: bold; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body class="min-h-screen pb-20">
 
     <header class="py-12 px-4 text-center border-b border-slate-800 bg-slate-900/50">
+        <h1 class="text-4xl font-black italic tracking-widest yellow-accent uppercase mb-2">5-Master Database</h1>
+        <p class="text-gray-400 text-[10px] font-bold uppercase tracking-[0.4em]">全国24場 5号艇・精密統計＆機力相関データ 2026 Edition</p>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-2 mt-8 space-y-6">
+
+        <section class="data-card rounded-2xl overflow-hidden shadow-2xl border border-slate-700">
+            <div onclick="toggleAccordion('table-stats', 'arrow-stats')" class="p-5 flex justify-between items-center cursor-pointer hover:bg-slate-800/50">
+                <h2 class="text-base font-black italic yellow-accent flex items-center gap-2 uppercase tracking-wider">
+                    <span class="bg-yellow-400 w-1 h-5 block"></span>
+                    全国24場 5枠通常統計 (ALL TRACKS)
+                </h2>
+                <svg id="arrow-stats" class="arrow-icon w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
+            <div id="table-stats" class="accordion-content">
+                <div class="overflow-x-auto no-scrollbar border-t border-slate-700">
+                    <table class="stats-table">
+                        <thead>
+                            <tr>
+                                <th class="w-24" onclick="sortTable('tableBodyStats', 0, 'string')">場名</th>
+                                <th class="w-20" onclick="sortTable('tableBodyStats', 1, 'float')">1着率</th>
+                                <th class="w-24" onclick="sortTable('tableBodyStats', 2, 'int')">平均配当</th>
+                                <th>最強相関条件</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBodyStats">
+                            <tr><td>01# 桐生</td><td>4.5%</td><td>3850</td><td>冬の赤城おろし/荒れ水面</td></tr>
+                            <tr><td>02# 戸田</td><td>5.1%</td><td>4100</td><td>狭い1マーク/カド攻め連動</td></tr>
+                            <tr><td>03# 江戸川</td><td>4.8%</td><td>4350</td><td>上げ潮×向かい風（波乱）</td></tr>
+                            <tr><td>04# 平和島</td><td>5.5%</td><td>4520</td><td>バック伸び/差し抜け</td></tr>
+                            <tr><td>05# 多摩川</td><td>4.9%</td><td>3980</td><td>日本一の静水面/展示1位</td></tr>
+                            <tr><td>06# 浜名湖</td><td>4.7%</td><td>3750</td><td>広い1マーク/展示重視</td></tr>
+                            <tr><td>07# 蒲郡</td><td>5.1%</td><td>4020</td><td>ナイター気温低下/差し場</td></tr>
+                            <tr><td>08# 常滑</td><td>5.7%</td><td>4165</td><td>追い風3m以上/カド連動</td></tr>
+                            <tr><td>09# 津</td><td>5.1%</td><td>4280</td><td>鈴鹿おろし/1マークもつれ</td></tr>
+                            <tr><td>10# 三国</td><td>5.2%</td><td>4215</td><td>向かい風4m以上/まくり差し</td></tr>
+                            <tr><td>11# びわこ</td><td>5.4%</td><td>4410</td><td>うねり/水位変動時の波乱</td></tr>
+                            <tr><td>12# 住之江</td><td>5.8%</td><td>4480</td><td>聖地ナイター/4カド仕掛け</td></tr>
+                            <tr><td>13# 尼崎</td><td>4.3%</td><td>3650</td><td>センター勢競り合い時の差し</td></tr>
+                            <tr><td>14# 鳴門</td><td>5.2%</td><td>4320</td><td>狭い旋回域/潮流影響</td></tr>
+                            <tr><td>15# 丸亀</td><td>5.2%</td><td>4080</td><td>潮位変化/ナイター特化</td></tr>
+                            <tr><td>16# 児島</td><td>4.8%</td><td>3910</td><td>瀬戸内潮位/展示上位必須</td></tr>
+                            <tr><td>17# 宮島</td><td>6.2%</td><td>4611</td><td>干満差/展示タイム差重視</td></tr>
+                            <tr><td>18# 徳山</td><td>4.0%</td><td>3200</td><td>イン強固/展開の紛れ待ち</td></tr>
+                            <tr><td>19# 下関</td><td>4.1%</td><td>3450</td><td>ナイター/展示機力優勢時</td></tr>
+                            <tr><td>20# 若松</td><td>4.9%</td><td>3950</td><td>夜間の差し/満潮時の有利</td></tr>
+                            <tr><td>21# 芦屋</td><td>4.5%</td><td>3892</td><td>一般戦混戦番組のまくり差し</td></tr>
+                            <tr><td>22# 福岡</td><td>3.8%</td><td>4310</td><td>独特のうねり/抜きの技術</td></tr>
+                            <tr><td>23# 唐津</td><td>4.8%</td><td>3964</td><td>展示タイム差(-0.08以上)</td></tr>
+                            <tr><td>24# 大村</td><td>4.6%</td><td>3478</td><td>海風影響時のイン崩れ</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section class="data-card rounded-2xl overflow-hidden shadow-2xl border border-slate-700">
+            <div onclick="toggleAccordion('table-boost', 'arrow-boost')" class="p-5 flex justify-between items-center cursor-pointer hover:bg-slate-800/50">
+                <h2 class="text-base font-black italic text-green-400 flex items-center gap-2 uppercase tracking-wider">
+                    <span class="bg-green-500 w-1 h-5 block"></span>
+                    展示ブースト解析 (24場完全版)
+                </h2>
+                <svg id="arrow-boost" class="arrow-icon w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
+            <div id="table-boost" class="accordion-content">
+                <div class="overflow-x-auto no-scrollbar border-t border-slate-700">
+                    <table class="stats-table">
+                        <thead>
+                            <tr>
+                                <th class="w-24" onclick="sortTable('tableBodyBoost', 0, 'string')">場名</th>
+                                <th class="w-20" onclick="sortTable('tableBodyBoost', 1, 'float')">ブースト率</th>
+                                <th class="w-20" onclick="sortTable('tableBodyBoost', 2, 'float')">上昇倍率</th>
+                                <th>ブーストロジック</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBodyBoost">
+                            <tr><td>17# 宮島</td><td class="boost-high">12.4%</td><td>2.0倍</td><td>まくり差し初速の圧倒的優位</td></tr>
+                            <tr><td>04# 平和島</td><td class="boost-high">11.8%</td><td>2.1倍</td><td>直線の伸びでバック逆転</td></tr>
+                            <tr><td>12# 住之江</td><td class="boost-high">10.5%</td><td>1.8倍</td><td>スリット後の伸び返し</td></tr>
+                            <tr><td>02# 戸田</td><td class="boost-high">9.8%</td><td>1.9倍</td><td>狭い1マークへの先制攻撃</td></tr>
+                            <tr><td>08# 常滑</td><td class="boost-high">9.2%</td><td>1.6倍</td><td>スピードターンの維持力</td></tr>
+                            <tr><td>11# びわこ</td><td>8.7%</td><td>1.6倍</td><td>波を超えるトルクの差</td></tr>
+                            <tr><td>10# 三国</td><td>8.2%</td><td>1.5倍</td><td>直線の絶対速度差</td></tr>
+                            <tr><td>15# 丸亀</td><td>8.0%</td><td>1.5倍</td><td>ナイター重厚機力の差</td></tr>
+                            <tr><td>23# 唐津</td><td>7.8%</td><td>1.6倍</td><td>全速時の出口の押し</td></tr>
+                            <tr><td>01# 桐生</td><td>7.5%</td><td>1.6倍</td><td>冷気による燃焼効率差</td></tr>
+                            <tr><td>09# 津</td><td>7.3%</td><td>1.4倍</td><td>強風下でのスリット安定</td></tr>
+                            <tr><td>03# 江戸川</td><td>7.1%</td><td>1.4倍</td><td>波乗りでの失速回避</td></tr>
+                            <tr><td>05# 多摩川</td><td>6.8%</td><td>1.3倍</td><td>スピードの絶対値優位</td></tr>
+                            <tr><td>14# 鳴門</td><td>6.5%</td><td>1.2倍</td><td>引き波を切り裂く足</td></tr>
+                            <tr><td>16# 児島</td><td>6.2%</td><td>1.3倍</td><td>出足性能の顕著な差</td></tr>
+                            <tr><td>20# 若松</td><td>6.0%</td><td>1.2倍</td><td>夜間の機力突出</td></tr>
+                            <tr><td>06# 浜名湖</td><td>5.8%</td><td>1.2倍</td><td>長いバックでの追い上げ</td></tr>
+                            <tr><td>21# 芦屋</td><td>5.5%</td><td>1.2倍</td><td>まくり差し軌道の確保</td></tr>
+                            <tr><td>24# 大村</td><td>5.3%</td><td>1.1倍</td><td>最内差しへの入り込み</td></tr>
+                            <tr><td>19# 下関</td><td>5.1%</td><td>1.2倍</td><td>行き足の優劣による先制</td></tr>
+                            <tr><td>13# 尼崎</td><td>4.9%</td><td>1.1倍</td><td>センター競り勝ち後の展開</td></tr>
+                            <tr><td>18# 徳山</td><td>4.5%</td><td>1.1倍</td><td>差し抜けの鋭さ</td></tr>
+                            <tr><td>22# 福岡</td><td>4.2%</td><td>1.1倍</td><td>うねり耐性の差</td></tr>
+                            <tr><td>07# 蒲郡</td><td>4.0%</td><td>0.8倍</td><td>旋回半径の差（ブースト弱）</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        function toggleAccordion(contentId, arrowId) {
+            const content = document.getElementById(contentId);
+            const arrow = document.getElementById(arrowId);
+            content.classList.toggle('open');
+            arrow.classList.toggle('rotate');
+        }
+
+        function sortTable(bodyId, colIndex, type) {
+            const tableBody = document.getElementById(bodyId);
+            const rows = Array.from(tableBody.querySelectorAll('tr'));
+            const currentDir = tableBody.getAttribute('data-dir-' + colIndex) === 'asc' ? 'desc' : 'asc';
+            
+            const sortedRows = rows.sort((a, b) => {
+                let valA = a.cells[colIndex].innerText.replace(/[%,¥,倍]/g, '');
+                let valB = b.cells[colIndex].innerText.replace(/[%,¥,倍]/g, '');
+                if (type === 'float' || type === 'int') {
+                    return currentDir === 'asc' ? parseFloat(valA) - parseFloat(valB) : parseFloat(valB) - parseFloat(valA);
+                } else {
+                    return currentDir === 'asc' ? valA.localeCompare(valB, 'ja') : valB.localeCompare(valA, 'ja');
+                }
+            });
+
+            tableBody.setAttribute('data-dir-' + colIndex, currentDir);
+            tableBody.innerHTML = '';
+            sortedRows.forEach(row => {
+                // 数値に応じたハイライト色を再適用
+                const val = parseFloat(row.cells[1].innerText);
+                if(bodyId === 'tableBodyStats') row.cells[1].className = val >= 5.5 ? 'rank-high' : '';
+                if(bodyId === 'tableBodyBoost') row.cells[1].className = val >= 9.0 ? 'boost-high' : '';
+                tableBody.appendChild(row);
+            });
+        }
+
+        // 初期状態で高い順にソート
+        window.onload = () => { 
+            sortTable('tableBodyStats', 1, 'float'); 
+            sortTable('tableBodyBoost', 1, 'float'); 
+        };
+    </script>
+</body>
+</html>    <header class="py-12 px-4 text-center border-b border-slate-800 bg-slate-900/50">
         <h1 class="text-4xl font-black italic tracking-widest yellow-accent uppercase mb-2">5-Master Analytics</h1>
         <p class="text-gray-400 text-xs font-bold uppercase tracking-[0.3em]">全国24場 5号艇突破・機力相関データベース</p>
     </header>
