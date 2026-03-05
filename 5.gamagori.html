@@ -39,7 +39,7 @@
 
     <header class="p-8 text-center border-b border-slate-800 mb-8">
         <h1 class="text-3xl font-black italic tracking-widest yellow-accent uppercase">Gamagori Night-Master</h1>
-        <p class="text-gray-400 text-xs mt-2 font-bold uppercase tracking-tighter">蒲郡(07) 通年ナイター専用・5号艇精密解析</p>
+        <p class="text-gray-400 text-xs mt-2 font-bold uppercase tracking-tighter">蒲郡(07) 風速相関×通年ナイター専用解析</p>
     </header>
 
     <main class="max-w-6xl mx-auto px-4 space-y-10">
@@ -53,10 +53,11 @@
                     </h2>
                     <div class="space-y-4 text-sm">
                         <div>
-                            <label class="text-gray-400 block mb-1">外気温（モーター出力）</label>
-                            <select id="temp" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="low">15度以下 (冬場/深夜：機力MAX)</option>
-                                <option value="high">15度超 (夏場/夕暮：機力並)</option>
+                            <label class="text-gray-400 block mb-1">風向・風速</label>
+                            <select id="wind" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="tail">追い風 3m以上 (差し有利)</option>
+                                <option value="head">向かい風 3m以上 (まくり有利)</option>
+                                <option value="calm">弱風 2m以下 (イン安定)</option>
                             </select>
                         </div>
                         <div>
@@ -74,10 +75,10 @@
                             </select>
                         </div>
                         <div>
-                            <label class="text-gray-400 block mb-1">安定板の使用</label>
-                            <select id="plate" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="none">なし (通常水面)</option>
-                                <option value="on">あり (強風・波乱条件)</option>
+                            <label class="text-gray-400 block mb-1">外気温</label>
+                            <select id="temp" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="low">15度以下 (機力UP)</option>
+                                <option value="high">15度超 (機力並)</option>
                             </select>
                         </div>
                         <button onclick="calc()" class="w-full bg-yellow-accent hover:bg-yellow-500 text-black font-black py-4 rounded-xl mt-4 transition-all active:scale-95 shadow-lg shadow-yellow-900/20 uppercase tracking-wider">
@@ -89,7 +90,7 @@
 
             <div class="lg:col-span-2">
                 <div id="welcome-msg" class="data-card h-full flex items-center justify-center rounded-2xl border-dashed border-2 border-slate-700 p-12 text-center">
-                    <p class="text-gray-500 font-bold italic">蒲郡ナイター特有の「気温低下による機力上昇」を考慮。<br>高速水面での5コース突破率を精密に算出します。</p>
+                    <p class="text-gray-500 font-bold italic">蒲郡ナイターの風速・機力相関を完全網羅。<br>高速水面での5コース勝率を算出します。</p>
                 </div>
                 <div id="result-area" class="hidden data-card p-8 rounded-2xl h-full relative overflow-hidden shadow-2xl border border-yellow-400/30">
                     <h3 class="text-gray-400 font-bold text-sm uppercase">算出された1着期待度</h3>
@@ -102,142 +103,87 @@
             </div>
         </div>
 
-        <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="data-card p-4 rounded-xl text-center">
-                <p class="text-xs text-gray-500 font-bold uppercase mb-1">ナイター平均</p>
-                <p class="text-2xl font-black yellow-accent">5.82%</p>
-            </div>
-            <div class="data-card p-4 rounded-xl text-center border-b-4 border-yellow-400">
-                <p class="text-xs text-yellow-500 font-bold uppercase mb-1">展示1位時</p>
-                <p class="text-2xl font-black yellow-accent">10.15%</p>
-            </div>
-            <div class="data-card p-4 rounded-xl text-center">
-                <p class="text-xs text-gray-500 font-bold uppercase mb-1">対4枠 0.1s差</p>
-                <p class="text-2xl font-black yellow-accent">10.95%</p>
-            </div>
-            <div class="data-card p-4 rounded-xl text-center bg-yellow-400/10 border border-yellow-400/20">
-                <p class="text-xs text-yellow-400 font-bold uppercase mb-1">気温10度以下</p>
-                <p class="text-2xl font-black yellow-accent">7.40%</p>
+        <section class="space-y-6 pt-4">
+            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">Wind & Environment Data</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic">5号艇 風向き別1着率</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>風条件</th><th>1着率</th><th>主な決まり手</th></tr></thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold text-white"><td>追い風 3m~</td><td class="yellow-accent">8.25%</td><td>差し (イン流れを突く)</td></tr>
+                            <tr><td>向かい風 3m~</td><td>7.40%</td><td>まくり (カド連動)</td></tr>
+                            <tr><td>弱風 (0-2m)</td><td>5.12%</td><td>抜き/差し</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic">タイム差・気温相関</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>条件</th><th>1着率</th><th>期待値ランク</th></tr></thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold text-white"><td>対4枠 0.1s速い</td><td class="yellow-accent">10.95%</td><td>S (突き抜け)</td></tr>
+                            <tr><td>気温10度以下</td><td>7.40%</td><td>A (機力勝負)</td></tr>
+                            <tr><td>安定板あり</td><td>8.95%</td><td>A (波乱決着)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
 
         <section class="space-y-6">
             <div class="flex items-center gap-4">
-                <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">2着出現率 & 展開予測</h2>
+                <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">2着出現率 (5頭時)</h2>
             </div>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg border-l-4 border-yellow-400">
-                    <table class="w-full text-left text-sm">
-                        <thead>
-                            <tr class="bg-slate-800/50">
-                                <th class="w-20">2着艇</th>
-                                <th class="w-24 yellow-accent">出現率</th>
-                                <th>傾向と対策</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-800">
-                            <tr>
-                                <td class="font-black text-center text-lg text-white">1<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold yellow-accent text-lg italic">39.2%</td>
-                                <td class="py-4 px-3 leading-snug text-gray-300">
-                                    <span class="pattern-tag bg-red-600 text-white">【本命】</span>
-                                    蒲郡はインが最強。5が突き抜けても1が2着を死守する「5-1」が黄金。
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="font-black text-center text-lg text-white">4<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold yellow-accent text-lg italic">17.5%</td>
-                                <td class="py-4 px-3 leading-snug text-gray-300">
-                                    <span class="pattern-tag bg-blue-600 text-white">【対抗】</span>
-                                    カド4が攻めて、5がまくり差しで捉える「5-4」の展開。
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="font-black text-center text-lg text-white">6<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold yellow-accent text-lg italic">15.1%</td>
-                                <td class="py-4 px-3 leading-snug text-gray-300">
-                                    <span class="pattern-tag bg-green-600 text-white">【連動】</span>
-                                    外枠連動。5が1マークでスペースを空けた際に6が最内を拾う。
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="data-card p-4 rounded-xl text-center">
+                    <p class="text-[10px] text-gray-500 font-bold mb-1">1号艇 (残し)</p>
+                    <p class="text-2xl font-black yellow-accent">39.2%</p>
                 </div>
-
-                <div class="flex flex-col gap-4">
-                    <div class="data-card rounded-2xl p-6 italic text-sm text-gray-300 border-l-4 border-yellow-400 bg-slate-800/30">
-                        <p class="mb-2 font-bold text-yellow-400 tracking-widest uppercase text-xs">Night Tactics</p>
-                        「蒲郡の夜はインが強く、5コースが勝つには『鋭い差し』が必要です。気温が下がるとモーターがしっかり回転するため、展示タイムが良い時の信頼度は全国トップレベルに跳ね上がります。」
-                    </div>
+                <div class="data-card p-4 rounded-xl text-center">
+                    <p class="text-[10px] text-gray-500 font-bold mb-1">4号艇 (連動)</p>
+                    <p class="text-2xl font-black yellow-accent">17.5%</p>
                 </div>
-            </div>
-        </section>
-
-        <section class="space-y-6 pt-4">
-            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider">Night Stats Detail</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
-                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">1. vs 4号艇 展示タイム相関</div>
-                    <table class="w-full text-left">
-                        <thead><tr><th>条件</th><th>1着率</th><th>決まり手傾向</th></tr></thead>
-                        <tbody>
-                            <tr class="highlight-row font-bold text-white"><td>0.1秒以上速い</td><td class="yellow-accent">10.95%</td><td>まくり差し(48%)</td></tr>
-                            <tr><td>わずかに優勢</td><td>6.25%</td><td>差し(35%)</td></tr>
-                            <tr><td>劣勢</td><td>2.10%</td><td>恵まれ/抜き</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
-                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">2. 気温・安定板の影響</div>
-                    <table class="w-full text-left">
-                        <thead><tr><th>環境</th><th>5枠1着率</th><th>期待値</th></tr></thead>
-                        <tbody>
-                            <tr class="highlight-row font-bold text-white"><td>気温10度以下</td><td class="yellow-accent">7.40%</td><td>機力勝負◎</td></tr>
-                            <tr><td>安定板装着時</td><td>8.95%</td><td>波乱・旋回力戦</td></tr>
-                        </tbody>
-                    </table>
+                <div class="data-card p-4 rounded-xl text-center">
+                    <p class="text-[10px] text-gray-500 font-bold mb-1">6号艇 (外枠連)</p>
+                    <p class="text-2xl font-black yellow-accent">15.1%</p>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <footer class="mt-20 p-12 border-t border-slate-800 text-center text-gray-500 text-xs font-bold">
-        &copy; 2026 5枠突破診断所. All Rights Reserved.
-    </footer>
-
     <script>
         function calc() {
-            const temp = document.getElementById('temp').value;
+            const wind = document.getElementById('wind').value;
             const exRank = document.getElementById('exRank').value;
             const vs4 = document.getElementById('vs4').value;
-            const plate = document.getElementById('plate').value;
+            const temp = document.getElementById('temp').value;
 
             document.getElementById('welcome-msg').classList.add('hidden');
             document.getElementById('result-area').classList.remove('hidden');
 
             let score = 5.82; 
-            if (temp === 'low') score += 1.58; 
+            if (wind === 'tail') score += 2.43; 
+            if (wind === 'head') score += 1.58; 
             if (exRank === '1') score += 4.33; 
-            if (vs4 === 'fast') score += 1.85;
-            if (plate === 'on') score += 2.20; 
+            if (vs4 === 'fast') score += 2.15;
+            if (temp === 'low') score += 1.58; 
 
             // 展示1位かつ対4枠0.1s以上の黄金補正
             if (exRank === '1' && vs4 === 'fast') score = Math.max(score, 10.95);
-            if (temp === 'low' && exRank === '1' && vs4 === 'fast') score += 1.5;
 
             document.getElementById('res-percent').innerText = score.toFixed(2);
 
             let comment = "";
-            if (score >= 12) {
-                comment = "【蒲郡・極寒の黄金条件】機力が最高潮に達する気温条件と展示タイム1位。5-1（39.2%）のまくり差しが本線。安定板使用中ならさらに期待度UP。";
-            } else if (score >= 9.5) {
-                comment = "【ナイト・まくり差し機動】展示タイム1位（10.15%）の裏付けあり。1が最強の蒲郡でも、この機力なら最内を突き抜けます。";
+            if (score >= 11) {
+                comment = "【蒲郡・風と機力の共鳴】追い風条件でインが流れる中、展示1位のパワーで最内を差し抜けます。5-1（39.2%）の決着が濃厚。";
+            } else if (score >= 9) {
+                comment = "【好機到来】気温が低くモーターが回っています。展示1位なら広い1マークを自在に立ち回れるでしょう。";
             } else {
-                comment = "【平常・イン絶対】全体平均（5.82%）付近。インが強固な蒲郡では、5号艇は連軸（2・3着）が現実的な狙い目です。";
+                comment = "【平常・イン強勢】蒲郡の静かな水面ではインの逃げが強力。5号艇は無理せず2・3着の連軸として。";
             }
             document.getElementById('res-comment').innerText = comment;
         }
