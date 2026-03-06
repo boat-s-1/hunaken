@@ -37,6 +37,27 @@
             transition: all 0.2s ease; text-decoration: none;
         }
         .track-link:hover { background: #facc15; color: #0b0f19; transform: translateY(-2px); }
+
+        /* --- 文字を流す（マーキー）アニメーション設定 --- */
+        .marquee-container {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+        }
+        .marquee-text {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee-scroll 15s linear infinite;
+        }
+        @keyframes marquee-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        /* マウスを乗せると止まる設定 */
+        .marquee-container:hover .marquee-text {
+            animation-play-state: paused;
+        }
     </style>
 </head>
     
@@ -49,8 +70,10 @@
 
     <main class="max-w-6xl mx-auto px-2 mt-8 space-y-6">
 
-        <div id="today-recommend-msg" class="bg-yellow-400 text-slate-900 p-4 rounded-xl font-bold text-center mb-4">
-            Loading status...
+        <div class="bg-yellow-400 text-slate-900 p-4 rounded-xl font-bold mb-4 marquee-container">
+            <span id="today-recommend-msg" class="marquee-text text-lg">
+                Loading status...
+            </span>
         </div>
 
         <section class="data-card rounded-2xl overflow-hidden shadow-2xl border-l-4 border-yellow-400 my-8">
@@ -204,7 +227,7 @@
                     <tr><td>06# 浜名湖</td><td>5.8%</td><td>1.2倍</td><td>長い直線での逆転</td></tr>
                     <tr><td>21# 芦屋</td><td>5.5%</td><td>1.2倍</td><td>攻めのバリエーション</td></tr>
                     <tr><td>24# 大村</td><td>5.3%</td><td>1.1倍</td><td>最内差し成功率</td></tr>
-                    <tr><td>19# 下関</td><td>5.1%</td><td>1.2倍</td><td>行き足の優位性</td></tr>
+                    <tr><td>19# 下関</td><td>4.87%</td><td>1.2倍</td><td>行き足の優位性</td></tr>
                     <tr><td>13# 尼崎</td><td>4.9%</td><td>1.1倍</td><td>センター競り勝ち</td></tr>
                     <tr><td>18# 徳山</td><td>4.5%</td><td>1.1倍</td><td>差し抜けの威力</td></tr>
                     <tr><td>22# 福岡</td><td>4.2%</td><td>1.1倍</td><td>うねり回避性能</td></tr>
@@ -214,84 +237,43 @@
         </div>
     </div>
 </section>
-<script>
-    // 並び替えロジック
-    function sortTable(bodyId, colIndex, type) {
-        const tableBody = document.getElementById(bodyId);
-        const rows = Array.from(tableBody.querySelectorAll('tr'));
-        
-        // 現在のソート方向を確認（未設定なら降順からスタート）
-        const currentDir = tableBody.getAttribute('data-dir-' + colIndex) || 'desc';
-        const nextDir = currentDir === 'asc' ? 'desc' : 'asc';
-        
-        const sortedRows = rows.sort((a, b) => {
-            let valA = a.cells[colIndex].innerText.replace(/[%,¥, ]/g, '');
-            let valB = b.cells[colIndex].innerText.replace(/[%,¥, ]/g, '');
-            
-            if (type === 'float' || type === 'int') {
-                const nA = parseFloat(valA) || 0;
-                const nB = parseFloat(valB) || 0;
-                return nextDir === 'asc' ? nA - nB : nB - nA;
-            } else {
-                return nextDir === 'asc' 
-                    ? valA.localeCompare(valB, 'ja') 
-                    : valB.localeCompare(valA, 'ja');
-            }
-        });
-
-        // 属性を更新
-        tableBody.setAttribute('data-dir-' + colIndex, nextDir);
-        
-        // テーブルを再描画
-        tableBody.innerHTML = '';
-        sortedRows.forEach(row => tableBody.appendChild(row));
-    }
-
-    // アコーディオン開閉
-    function toggleAccordion(contentId, arrowId) {
-        const content = document.getElementById(contentId);
-        const arrow = document.getElementById(arrowId);
-        content.classList.toggle('open');
-        arrow.classList.toggle('rotate');
-    }
-</script>
-
-    <script>
-        // 初期ソート実行用（1着率が高い順に並べる）
-        window.addEventListener('DOMContentLoaded', () => {
-            sortTable('tableBodyStats', 1, 'float'); // 1着率(インデックス1)でソート
-        });
-
-        function sortTable(bodyId, colIndex, type) {
-            const tableBody = document.getElementById(bodyId);
-            const rows = Array.from(tableBody.querySelectorAll('tr'));
-            // 初回は降順(高い順)にするためのフラグ管理
-            const isAsc = tableBody.getAttribute('data-dir-' + colIndex) === 'asc';
-            const direction = isAsc ? 'desc' : 'asc';
-            
-            const sortedRows = rows.sort((a, b) => {
-                let valA = a.cells[colIndex].innerText.replace(/[%,¥,倍]/g, '');
-                let valB = b.cells[colIndex].innerText.replace(/[%,¥,倍]/g, '');
-                
-                if (type === 'float' || type === 'int') {
-                    const nA = parseFloat(valA);
-                    const nB = parseFloat(valB);
-                    return direction === 'asc' ? nA - nB : nB - nA;
-                } else {
-                    return direction === 'asc' ? valA.localeCompare(valB, 'ja') : valB.localeCompare(valA, 'ja');
-                }
-            });
-
-            tableBody.setAttribute('data-dir-' + colIndex, direction);
-            tableBody.innerHTML = '';
-            sortedRows.forEach(row => tableBody.appendChild(row));
-        }
-    </script>
 
     </main>
 
     <script>
-        // 1. アコーディオン
+        // 並び替えロジック
+        function sortTable(bodyId, colIndex, type) {
+            const tableBody = document.getElementById(bodyId);
+            const rows = Array.from(tableBody.querySelectorAll('tr'));
+            
+            // 現在のソート方向を確認
+            const currentDir = tableBody.getAttribute('data-dir-' + colIndex) || 'desc';
+            const nextDir = currentDir === 'asc' ? 'desc' : 'asc';
+            
+            const sortedRows = rows.sort((a, b) => {
+                let valA = a.cells[colIndex].innerText.replace(/[%,¥,倍, ]/g, '');
+                let valB = b.cells[colIndex].innerText.replace(/[%,¥,倍, ]/g, '');
+                
+                if (type === 'float' || type === 'int') {
+                    const nA = parseFloat(valA) || 0;
+                    const nB = parseFloat(valB) || 0;
+                    return nextDir === 'asc' ? nA - nB : nB - nA;
+                } else {
+                    return nextDir === 'asc' 
+                        ? valA.localeCompare(valB, 'ja') 
+                        : valB.localeCompare(valA, 'ja');
+                }
+            });
+
+            // 属性を更新
+            tableBody.setAttribute('data-dir-' + colIndex, nextDir);
+            
+            // テーブルを再描画
+            tableBody.innerHTML = '';
+            sortedRows.forEach(row => tableBody.appendChild(row));
+        }
+
+        // アコーディオン開閉
         function toggleAccordion(contentId, arrowId) {
             const content = document.getElementById(contentId);
             const arrow = document.getElementById(arrowId);
@@ -299,9 +281,13 @@
             arrow.classList.toggle('rotate');
         }
 
+        // 初期ソート実行用（1着率が高い順に並べる）
+        window.addEventListener('DOMContentLoaded', () => {
+            sortTable('tableBodyStats', 1, 'float'); 
+        });
+
         // 2. スプレッドシート読み込み
         (function() {
-            // スプレッドシートURLを「CSV出力形式」に強制変換する関数
             const rawUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS8TZBz25NV_h-lj_Vc59n5UhUpv3VWdOTb8mwqCRgJ5cexIgbWPVDEy2PqqMDS4nf-v-cdM97tdSaE/pubhtml?gid=0&single=true';
             const CSV_URL = rawUrl.replace('/pubhtml', '/pub').split('?')[0] + '?output=csv&gid=0';
 
@@ -372,13 +358,14 @@
             }
         }
 
-        // 4. 自動メッセージ
+        // 4. 自動メッセージ（流れるアニメーション用に文言を微調整）
         window.onload = () => {
             const hour = new Date().getHours();
-            let msg = "明日のレースに向け、マスターテーブルで予習せよ。";
-            if (hour < 10) msg = "【モーニング】朝イチの展示タイム差をチェック！";
-            else if (hour < 15) msg = "【デイレース】干潮に向かう時間帯の5号艇は鉄板！";
-            else if (hour < 21) msg = "【ナイター】4カドが攻める展開を狙い撃て！";
+            let msg = "本日の全レース終了。明日のレースに向け、マスターデータベースで予習せよ。　　　　";
+            if (hour < 10) msg = "【モーニング】朝イチの展示タイム差をチェック！ 5号艇の機力がスリット後にどう伸びるかが鍵。　　　　";
+            else if (hour < 15) msg = "【デイレース】宮島・江戸川など干満差や潮流に注目。干潮に向かう時間帯の5号艇差し抜けは鉄板パターン！　　　　";
+            else if (hour < 21) msg = "【ナイター】住之江・若松など。4カドが攻める展開からの5号艇連動を狙い撃て！　　　　";
+            
             document.getElementById('today-recommend-msg').innerText = msg;
         };
     </script>
