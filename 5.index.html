@@ -261,7 +261,100 @@
             sortTable('tableBodyBoost', 1, 'float'); 
         };
     </script>
+<section class="data-card rounded-2xl overflow-hidden shadow-2xl border-2 border-yellow-500/30 my-10">
+    <div class="p-6 bg-slate-900/80">
+        <h2 class="text-xl font-black italic yellow-accent mb-6 flex items-center gap-2 uppercase">
+            <span class="bg-yellow-400 w-1.5 h-6 block"></span>
+            5-Master リアルタイム判定機
+        </h2>
 
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+                <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Select Track / 会場</label>
+                <select id="track-select" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white focus:border-yellow-400 outline-none">
+                    <option value="6.22">17# 宮島 (基礎 6.2%)</option>
+                    <option value="5.82">12# 住之江 (基礎 5.8%)</option>
+                    <option value="5.50">04# 平和島 (基礎 5.5%)</option>
+                    <option value="5.67">08# 常滑 (基礎 5.7%)</option>
+                    <option value="5.10">02# 戸田 (基礎 5.1%)</option>
+                    <option value="4.50">その他 (平均 4.5%)</option>
+                </select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-[10px] font-bold text-gray-400 mb-2 uppercase">4号艇 展示</label>
+                    <input type="number" id="tenji-4" step="0.01" placeholder="6.70" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white outline-none">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-gray-400 mb-2 uppercase">5号艇 展示</label>
+                    <input type="number" id="tenji-5" step="0.01" placeholder="6.60" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white outline-none">
+                </div>
+            </div>
+
+            <div class="flex items-end">
+                <button onclick="calculateBoost()" class="w-full bg-yellow-400 hover:bg-yellow-300 text-slate-900 font-black py-3 rounded-lg transition-all shadow-lg shadow-yellow-400/20 uppercase italic">
+                    Analyze / 判定実行
+                </button>
+            </div>
+        </div>
+
+        <div id="result-display" class="hidden mt-8 p-6 rounded-xl border border-dashed border-slate-600 bg-slate-800/50 text-center">
+            <div class="text-sm text-gray-400 mb-1 uppercase font-bold tracking-widest">Estimated Win Rate</div>
+            <div id="final-rate" class="text-5xl font-black italic yellow-accent mb-4">--%</div>
+            <div id="judgment-tag" class="inline-block px-6 py-1 rounded-full text-sm font-black uppercase mb-4">---</div>
+            <p id="judgment-comment" class="text-gray-300 text-sm italic"></p>
+        </div>
+    </div>
+</section>
+
+<script>
+function calculateBoost() {
+    const baseRate = parseFloat(document.getElementById('track-select').value);
+    const t4 = parseFloat(document.getElementById('tenji-4').value);
+    const t5 = parseFloat(document.getElementById('tenji-5').value);
+    const resultDiv = document.getElementById('result-display');
+
+    if (isNaN(t4) || isNaN(t5)) {
+        alert("展示タイムを入力してください");
+        return;
+    }
+
+    resultDiv.classList.remove('hidden');
+    const diff = t4 - t5; // 5号艇がどれだけ速いか
+    let boost = 1.0;
+
+    // ブーストロジック：0.1s差で倍増、それ以上でさらにUP
+    if (diff >= 0.15) boost = 2.5;
+    else if (diff >= 0.10) boost = 2.0;
+    else if (diff >= 0.05) boost = 1.4;
+    else if (diff > 0) boost = 1.1;
+    else if (diff < 0) boost = 0.6; // 4の方が速い場合は大幅ダウン
+
+    const finalRate = (baseRate * boost).toFixed(1);
+    
+    // 表示更新
+    const rateEl = document.getElementById('final-rate');
+    const tagEl = document.getElementById('judgment-tag');
+    const commentEl = document.getElementById('judgment-comment');
+
+    rateEl.innerText = finalRate + "%";
+
+    if (finalRate >= 12) {
+        tagEl.innerText = "CRITICAL: 勝負！";
+        tagEl.className = "inline-block px-6 py-1 rounded-full text-sm font-black uppercase mb-4 bg-red-600 text-white animate-pulse";
+        commentEl.innerText = "展示差圧倒的。4が壁になり5が突き抜ける黄金パターンです。";
+    } else if (finalRate >= 8) {
+        tagEl.innerText = "CHANCE: 狙い目";
+        tagEl.className = "inline-block px-6 py-1 rounded-full text-sm font-black uppercase mb-4 bg-yellow-400 text-slate-900";
+        commentEl.innerText = "期待値十分。ヒモを広めに取って高配当を狙いましょう。";
+    } else {
+        tagEl.innerText = "STAY: 静観";
+        tagEl.className = "inline-block px-6 py-1 rounded-full text-sm font-black uppercase mb-4 bg-slate-700 text-gray-300";
+        commentEl.innerText = "無理な勝負は禁物。展開を待つか、他のレースを検討してください。";
+    }
+}
+</script>
     <section class="py-12 border-y border-slate-800">
     <h2 class="text-2xl font-black italic yellow-accent mb-10 uppercase tracking-widest text-center">
         結局、5号艇が「一番うまい」理由
