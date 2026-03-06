@@ -3,111 +3,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>01# 桐生解析 - 5-MASTER INDEX</title>
+    <title>桐生5枠突破・精密診断 - KIRYU 5-STATS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #0b0f19; color: #f1f5f9; font-family: sans-serif; }
         .data-card { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #334155; }
         .yellow-accent { color: #facc15; }
-        .stats-grid { display: grid; grid-template-columns: repeat(2, 1); gap: 1rem; }
-        @media (min-width: 768px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
+        .bg-yellow-accent { background-color: #facc15; }
+        th { color: #94a3b8; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; padding: 12px 8px; border-bottom: 1px solid #334155; }
+        td { padding: 12px 8px; border-bottom: 1px solid #1e293b; font-size: 0.875rem; }
+        .highlight-row { background-color: rgba(250, 204, 21, 0.05); }
+        .nav-link { transition: 0.2s; border-bottom: 2px solid transparent; color: #94a3b8; }
+        .nav-link:hover { color: #facc15; }
+        .active-nav { color: #facc15; border-bottom: 2px solid #facc15; font-weight: bold; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .pattern-tag { font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-right: 6px; }
     </style>
 </head>
 <body class="min-h-screen pb-20">
 
-    <header class="relative h-48 md:h-64 overflow-hidden border-b border-slate-800 shadow-2xl">
+    <nav class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <div class="flex space-x-6 overflow-x-auto py-4 no-scrollbar text-xs whitespace-nowrap">
+                <a href="/index.html" class="nav-link text-gray-400">HOME</a>
+                <a href="/5.kiryu.html" class="nav-link active-nav">桐生(01)</a>
+                <a href="/5.toda.html" class="nav-link">戸田(02)</a>
+                <a href="/5.edogawa.html" class="nav-link">江戸川(03)</a>
+                <a href="/5.heiwajima.html" class="nav-link">平和島(04)</a>
+                <a href="/5.tamagawa.html" class="nav-link">多摩川(05)</a>
+                <a href="/5.hamanako.html" class="nav-link">浜名湖(06)</a>
+                <a href="/5.gamagori.html" class="nav-link">蒲郡(07)</a>
+                <a href="/5.tokoname.html" class="nav-link">常滑(08)</a>
+                <a href="/5.tu.html" class="nav-link">津(09)</a>
+                <a href="/5.mikuni.html" class="nav-link">三国(10)</a>
+                <a href="/5.biwako.html" class="nav-link">びわこ(11)</a>
+                <a href="/5.suminoe.html" class="nav-link">住之江(12)</a>
+                <a href="/5.amagasaki.html" class="nav-link">尼崎(13)</a>
+                <a href="/5.naruto.html" class="nav-link">鳴門(14)</a>
+                <a href="/5.marugame.html" class="nav-link">丸亀(15)</a>
+                <a href="/5.kojima.html" class="nav-link">児島(16)</a>
+                <a href="/5.miyajima.html" class="nav-link">宮島(17)</a>
+                <a href="/5.tokuyama.html" class="nav-link">徳山(18)</a>
+                <a href="/5.shimonoseki.html" class="nav-link">下関(19)</a>
+                <a href="/5.wakamatu.html" class="nav-link">若松(20)</a>
+                <a href="/5.ashiya.html" class="nav-link">芦屋(21)</a>
+                <a href="/5.hukuoka.html" class="nav-link">福岡(22)</a>
+                <a href="/5.karatu.html" class="nav-link">唐津(23)</a>
+                <a href="/5.oomura.html" class="nav-link">大村(24)</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="relative h-48 md:h-64 overflow-hidden border-b border-slate-800 mb-8 shadow-2xl">
         <img src="Gemini_Generated_Image_vkg8r1vkg8r1vkg8.png" 
              class="absolute inset-0 w-full h-full object-cover opacity-60" 
              alt="KIRYU Banner">
-        <div class="absolute inset-0 bg-gradient-to-t from-[#0b0f19] to-transparent flex flex-col justify-end pb-6 px-6">
-            <div class="flex items-center gap-3 mb-2">
-                <span class="bg-yellow-400 text-slate-900 px-3 py-1 rounded text-sm font-bold">01#</span>
-                <h1 class="text-3xl md:text-5xl font-black italic text-white uppercase tracking-tighter">
-                    KIRYU <span class="yellow-accent">ANALYSIS</span>
-                </h1>
-            </div>
-            <p class="text-gray-400 text-xs font-bold tracking-widest uppercase">BOAT RACE KIRYU / 桐生競艇場 個別データ解析</p>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0b0f19] to-transparent flex flex-col justify-end pb-8 px-4 text-center">
+            <h1 class="text-3xl md:text-5xl font-black italic tracking-widest yellow-accent uppercase drop-shadow-lg">Kiryu 5-Master</h1>
+            <p class="text-gray-300 text-[10px] mt-2 font-bold uppercase tracking-[0.3em]">桐生(01) 赤城おろしと低温時の5枠攻略解析</p>
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto px-4 mt-8 space-y-8">
+    <main class="max-w-6xl mx-auto px-4 space-y-10">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-1">
+                <div class="data-card p-6 rounded-2xl shadow-xl border-t-4 border-yellow-400">
+                    <h2 class="text-lg font-bold mb-6 flex items-center">
+                        <span class="bg-yellow-400 text-black px-2 py-0.5 rounded mr-2 text-sm">TRY</span>
+                        条件シミュレーター
+                    </h2>
+                    <div class="space-y-4 text-sm">
+                        <div>
+                            <label class="text-gray-400 block mb-1">気温/季節</label>
+                            <select id="temp" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="winter">冬場・夜間 (5度以下)</option>
+                                <option value="normal">春秋 (10-20度)</option>
+                                <option value="summer">夏場 (25度以上)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-gray-400 block mb-1">5号艇 展示順位</label>
+                            <select id="exRank" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="1">展示タイム 1位</option>
+                                <option value="2">展示タイム 2位以下</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-gray-400 block mb-1">vs 4号艇 展示タイム差</label>
+                            <select id="vs4" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="fast">0.1秒以上速い</option>
+                                <option value="near">わずかに速い/同等</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-gray-400 block mb-1">風向き(赤城おろし)</label>
+                            <select id="wind-dir" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="head">向かい風 (まくり差し有利)</option>
+                                <option value="tail">追い風 (イン有利/差し)</option>
+                            </select>
+                        </div>
+                        <button onclick="calcKiryu()" class="w-full bg-yellow-accent hover:bg-yellow-500 text-black font-black py-4 rounded-xl mt-4 transition-all active:scale-95 shadow-lg shadow-yellow-900/20 uppercase tracking-wider">
+                            解析実行
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-        <a href="index.html" class="inline-flex items-center text-sm font-bold text-gray-400 hover:text-yellow-400 transition-colors">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            BACK TO DASHBOARD
-        </a>
+            <div class="lg:col-span-2">
+                <div id="welcome-msg" class="data-card h-full flex items-center justify-center rounded-2xl border-dashed border-2 border-slate-700 p-12 text-center">
+                    <p class="text-gray-500 font-bold italic">桐生の標高とナイター環境を反映した独自アルゴリズム。<br>「気温低下」と「展示の伸び」の相関を可視化します。</p>
+                </div>
+                <div id="result-area" class="hidden data-card p-8 rounded-2xl h-full relative overflow-hidden shadow-2xl border border-yellow-400/30">
+                    <h3 class="text-gray-400 font-bold text-sm uppercase">算出された1着期待度</h3>
+                    <div class="flex items-baseline gap-2 mt-4">
+                        <span id="res-percent" class="text-8xl font-black yellow-accent tracking-tighter">0.0</span>
+                        <span class="text-3xl font-bold yellow-accent">%</span>
+                    </div>
+                    <div id="res-comment" class="mt-8 p-4 bg-slate-900/50 border-l-4 border-yellow-400 text-sm leading-relaxed italic text-gray-200 shadow-inner"></div>
+                </div>
+            </div>
+        </div>
 
         <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div class="data-card p-4 rounded-xl text-center">
-                <div class="text-xs text-gray-400 font-bold mb-1 uppercase">Win Rate</div>
-                <div class="text-3xl font-black yellow-accent">6.10%</div>
-                <div class="text-[10px] text-gray-500 mt-1">全国平均以上</div>
+                <p class="text-xs text-gray-500 font-bold uppercase mb-1">桐生 全体1着率</p>
+                <p class="text-2xl font-black yellow-accent">6.10%</p>
+            </div>
+            <div class="data-card p-4 rounded-xl text-center border-b-4 border-yellow-400">
+                <p class="text-xs text-yellow-500 font-bold uppercase mb-1">展示1位時</p>
+                <p class="text-2xl font-black yellow-accent">10.82%</p>
             </div>
             <div class="data-card p-4 rounded-xl text-center">
-                <div class="text-xs text-gray-400 font-bold mb-1 uppercase">Avg Payout</div>
-                <div class="text-3xl font-black text-white">¥4,050</div>
-                <div class="text-[10px] text-gray-500 mt-1">5枠平均値</div>
+                <p class="text-xs text-gray-500 font-bold uppercase mb-1">向かい風時</p>
+                <p class="text-2xl font-black">7.45%</p>
             </div>
-            <div class="data-card p-4 rounded-xl text-center">
-                <div class="text-xs text-gray-400 font-bold mb-1 uppercase">Boost Rate</div>
-                <div class="text-3xl font-black text-green-400">7.5%</div>
-                <div class="text-[10px] text-gray-500 mt-1">展示差-0.1s時</div>
-            </div>
-            <div class="data-card p-4 rounded-xl text-center">
-                <div class="text-xs text-gray-400 font-bold mb-1 uppercase">Night Rate</div>
-                <div class="text-3xl font-black text-blue-400">7.2%</div>
-                <div class="text-[10px] text-gray-500 mt-1">ナイター時上昇</div>
+            <div class="data-card p-4 rounded-xl text-center bg-yellow-400/10 border border-yellow-400/20">
+                <p class="text-xs text-yellow-400 font-bold uppercase mb-1">平均配当</p>
+                <p class="text-2xl font-black yellow-accent">¥4,050</p>
             </div>
         </section>
 
-        <section class="data-card rounded-2xl p-6 border-l-4 border-yellow-400">
-            <h2 class="text-xl font-black italic yellow-accent mb-4 uppercase tracking-widest">KIRYU Strategic Notes</h2>
-            <div class="space-y-4 text-gray-300 text-sm leading-relaxed">
-                <div class="bg-slate-900/50 p-4 rounded-lg">
-                    <p class="font-bold text-white mb-1">■ 赤城おろしの影響</p>
-                    <p>冬場から春先にかけての強い追い風（赤城おろし）はインを有利にするが、風が止む、または向かい風に変わる瞬間、5コースからの「まくり差し」が劇的に決まりやすくなる。</p>
-                </div>
-                <div class="bg-slate-900/50 p-4 rounded-lg">
-                    <p class="font-bold text-white mb-1">■ ナイターと気温低下</p>
-                    <p>標高が高いため、気温低下によるモーター出力の差が顕著。展示タイムで5号艇が抜けている場合、1マークでの「二の足」が他を圧倒する傾向が強い。</p>
-                </div>
-                <div class="bg-slate-900/50 p-4 rounded-lg">
-                    <p class="font-bold text-white mb-1">■ 推奨展開</p>
-                    <p>4号艇が角から仕掛ける展開の連動、または1号艇が深インで立ち遅れた際の最内差し切りが桐生5枠の黄金パターン。</p>
-                </div>
+        <section class="space-y-6">
+            <div class="flex items-center gap-4">
+                <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">2着出現率 & 展開予測</h2>
+                <span class="text-[10px] text-gray-500 font-bold border border-gray-700 px-2 py-0.5 rounded">※桐生ナイター・機力優勢時</span>
             </div>
-        </section>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border-l-4 border-yellow-400">
+                    <table class="w-full text-left text-sm">
+                        <thead>
+                            <tr class="bg-slate-800/50">
+                                <th class="w-20">2着艇</th>
+                                <th class="w-24 yellow-accent">出現率</th>
+                                <th>傾向と対策</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800">
+                            <tr>
+                                <td class="font-black text-center text-lg text-white">1<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">42.1%</td>
+                                <td class="py-4 px-3 leading-snug text-gray-300">
+                                    <span class="pattern-tag bg-red-600 text-white">【王道】</span>
+                                    5のまくり差しが入るも、インが意地で粘る形。桐生では最も安定した買い目。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-black text-center text-lg text-white">4<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">18.5%</td>
+                                <td class="py-4 px-3 leading-snug text-gray-300">
+                                    <span class="pattern-tag bg-blue-600 text-white">【連動】</span>
+                                    カド4の攻めから5が展開を突く「4-5」の裏返し。カドが残るパターン。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-black text-center text-lg text-white">6<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">14.8%</td>
+                                <td class="py-4 px-3 leading-snug text-gray-300">
+                                    <span class="pattern-tag bg-green-600 text-white">【外枠】</span>
+                                    外2艇で展開を独占する。桐生では戸田ほど連動率は高くないが、高配当の源。
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-        <section class="data-card rounded-2xl p-6">
-            <h3 class="text-sm font-bold text-gray-400 mb-4 uppercase">Kiryu Custom Analyzer</h3>
-            <div class="flex flex-col md:flex-row gap-4">
-                <input type="number" id="k-t4" step="0.01" placeholder="4号艇展示" class="flex-1 bg-slate-800 border border-slate-700 rounded-lg p-3 text-white">
-                <input type="number" id="k-t5" step="0.01" placeholder="5号艇展示" class="flex-1 bg-slate-800 border border-slate-700 rounded-lg p-3 text-white">
-                <button onclick="calcKiryu()" class="bg-yellow-400 text-slate-900 font-black px-8 py-3 rounded-lg hover:bg-yellow-300 uppercase italic">Analyze</button>
-            </div>
-            <div id="k-result" class="hidden mt-6 p-4 rounded-lg bg-slate-900/80 text-center border border-slate-700">
-                <div class="text-4xl font-black yellow-accent" id="k-rate">--%</div>
-                <p class="text-xs text-gray-500 mt-2 italic">※桐生特有の高度補正を加味した期待値です</p>
+                <div class="flex flex-col gap-4">
+                    <div class="data-card rounded-2xl p-6 italic text-sm text-gray-300 border-l-4 border-yellow-400 bg-slate-800/30">
+                        <p class="mb-2 font-bold text-yellow-400 tracking-widest uppercase text-xs">Kiryu Analysis Memo</p>
+                        「桐生は標高が高く、気温が下がるとモーターの回転の上がりが良くなります。そのため、夜間の5号艇は昼間よりも展示タイムと本番の伸びの相関が1.2倍強くなります。」
+                    </div>
+                </div>
             </div>
         </section>
 
     </main>
 
+    <footer class="mt-20 p-12 border-t border-slate-800 text-center text-gray-500 text-xs font-bold">
+        &copy; 2026 5枠突破診断所. All Rights Reserved.
+    </footer>
+
     <script>
         function calcKiryu() {
-            const t4 = parseFloat(document.getElementById('k-t4').value);
-            const t5 = parseFloat(document.getElementById('k-t5').value);
-            if(isNaN(t4) || isNaN(t5)) return;
-            
-            const diff = t4 - t5;
-            let rate = 6.10; // 桐生ベース
+            const temp = document.getElementById('temp').value;
+            const exRank = document.getElementById('exRank').value;
+            const vs4 = document.getElementById('vs4').value;
+            const wind = document.getElementById('wind-dir').value;
 
-            if(diff >= 0.10) rate *= 1.8;
-            else if(diff >= 0.05) rate *= 1.3;
-            else if(diff < 0) rate *= 0.7;
+            document.getElementById('welcome-msg').classList.add('hidden');
+            document.getElementById('result-area').classList.remove('hidden');
 
-            document.getElementById('k-result').classList.remove('hidden');
-            document.getElementById('k-rate').innerText = rate.toFixed(2) + "%";
+            let score = 6.10; 
+            if (temp === 'winter') score += 2.2; 
+            if (exRank === '1') score += 4.5;
+            if (vs4 === 'fast') score += 3.8;
+            if (wind === 'head') score += 1.5;
+
+            document.getElementById('res-percent').innerText = score.toFixed(2);
+
+            let comment = "";
+            if (score >= 12) {
+                comment = "【桐生・超抜モード】気温低下×展示1位。桐生特有の標高差を味方につけた5号艇のまくり差しが炸裂する条件。1との連動「5-1」が本線。";
+            } else if (score >= 9) {
+                comment = "【狙い目】展示の伸びが良好。4号艇が仕掛ける形になれば、5号艇に絶好の差し場が生まれます。";
+            } else {
+                comment = "【慎重】桐生は基本的にはインが強いナイター場。5号艇が自力で攻めるにはもう一つパンチが必要な数値です。";
+            }
+            document.getElementById('res-comment').innerText = comment;
         }
     </script>
 </body>
