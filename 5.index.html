@@ -162,7 +162,58 @@
         </div>
     </div>
 </section>
-
+<section class="data-card rounded-2xl overflow-hidden shadow-2xl border border-slate-700">
+    <div onclick="toggleAccordion('table-boost', 'arrow-boost')" class="p-6 flex justify-between items-center cursor-pointer hover:bg-slate-800/50">
+        <h2 class="text-lg font-black italic text-green-400 flex items-center gap-3 uppercase tracking-widest">
+            <span class="bg-green-500 w-1.5 h-6 block"></span>
+            展示タイム差(-0.1s以上) ブーストランキング
+        </h2>
+        <svg id="arrow-boost" class="arrow-icon w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+    </div>
+    <div id="table-boost" class="accordion-content">
+        <div class="p-4 bg-green-500/5 text-[10px] text-green-300 italic border-t border-slate-700 uppercase">
+            ※5号艇が4号艇より展示タイムで0.1秒以上速い時の1着率。機力差が結果に直結する場のランキング。
+        </div>
+        <div class="overflow-x-auto no-scrollbar">
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th onclick="sortTable('tableBodyBoost', 0, 'string')">場名</th>
+                        <th onclick="sortTable('tableBodyBoost', 1, 'float')">ブースト1着率</th>
+                        <th onclick="sortTable('tableBodyBoost', 2, 'float')">上昇倍率</th>
+                        <th>機力反映メカニズム</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBodyBoost">
+                    <tr><td>17# 宮島</td><td class="boost-high">12.4%</td><td>2.0倍</td><td>まくり差し初速への直結</td></tr>
+                    <tr><td>04# 平和島</td><td class="boost-high">11.8%</td><td>2.1倍</td><td>バックストレッチの伸び</td></tr>
+                    <tr><td>12# 住之江</td><td class="boost-high">10.5%</td><td>1.8倍</td><td>スリット後の二の足</td></tr>
+                    <tr><td>02# 戸田</td><td class="boost-high">9.8%</td><td>1.9倍</td><td>1マーク到達までの加速</td></tr>
+                    <tr><td>08# 常滑</td><td class="boost-high">9.2%</td><td>1.6倍</td><td>広い旋回域での伸び</td></tr>
+                    <tr><td>11# びわこ</td><td>8.7%</td><td>1.6倍</td><td>波を超えるトルク差</td></tr>
+                    <tr><td>10# 三国</td><td>8.2%</td><td>1.5倍</td><td>直線勝負の明暗</td></tr>
+                    <tr><td>15# 丸亀</td><td>8.0%</td><td>1.5倍</td><td>ナイター機力突出</td></tr>
+                    <tr><td>23# 唐津</td><td>7.8%</td><td>1.6倍</td><td>全速ターンの押し</td></tr>
+                    <tr><td>01# 桐生</td><td>7.5%</td><td>1.6倍</td><td>冷気による出力差</td></tr>
+                    <tr><td>09# 津</td><td>7.3%</td><td>1.4倍</td><td>強風下での安定感</td></tr>
+                    <tr><td>03# 江戸川</td><td>7.1%</td><td>1.4倍</td><td>波乗り性能の差</td></tr>
+                    <tr><td>05# 多摩川</td><td>6.8%</td><td>1.3倍</td><td>スピードの絶対値</td></tr>
+                    <tr><td>14# 鳴門</td><td>6.5%</td><td>1.2倍</td><td>引き波を越える足</td></tr>
+                    <tr><td>16# 児島</td><td>6.2%</td><td>1.3倍</td><td>出足・行き足の差</td></tr>
+                    <tr><td>20# 若松</td><td>6.0%</td><td>1.2倍</td><td>夜間機力維持</td></tr>
+                    <tr><td>06# 浜名湖</td><td>5.8%</td><td>1.2倍</td><td>長い直線での逆転</td></tr>
+                    <tr><td>21# 芦屋</td><td>5.5%</td><td>1.2倍</td><td>攻めのバリエーション</td></tr>
+                    <tr><td>24# 大村</td><td>5.3%</td><td>1.1倍</td><td>最内差し成功率</td></tr>
+                    <tr><td>19# 下関</td><td>5.1%</td><td>1.2倍</td><td>行き足の優位性</td></tr>
+                    <tr><td>13# 尼崎</td><td>4.9%</td><td>1.1倍</td><td>センター競り勝ち</td></tr>
+                    <tr><td>18# 徳山</td><td>4.5%</td><td>1.1倍</td><td>差し抜けの威力</td></tr>
+                    <tr><td>22# 福岡</td><td>4.2%</td><td>1.1倍</td><td>うねり回避性能</td></tr>
+                    <tr><td>07# 蒲郡</td><td>4.0%</td><td>0.8倍</td><td>旋回スピード勝負</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
 <script>
     // 並び替えロジック
     function sortTable(bodyId, colIndex, type) {
