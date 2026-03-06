@@ -168,7 +168,66 @@
                 </div>
             </div>
         </section>
+<section class="data-card rounded-2xl overflow-hidden shadow-2xl border border-yellow-500/50 my-8">
+    <div class="bg-slate-900/90 p-4 border-b border-slate-700 flex justify-between items-center">
+        <h2 class="text-lg font-black italic yellow-accent uppercase tracking-tighter">
+            Today's 5-Master Pick / 本日の狙い目
+        </h2>
+        <span id="update-time" class="text-[10px] text-gray-500 font-mono">Loading...</span>
+    </div>
+    
+    <div id="recommend-container" class="p-4 space-y-4">
+        <p class="text-center text-gray-500 py-10 italic">データを取得中...</p>
+    </div>
+</section>
 
+<script>
+    // 先ほどコピーした「ウェブに公開(CSV)」のURLをここに貼り付け
+    const SPREADSHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS8TZBz25NV_h-lj_Vc59n5UhUpv3VWdOTb8mwqCRgJ5cexIgbWPVDEy2PqqMDS4nf-v-cdM97tdSaE/pub?gid=0&single=true&output=csv'; 
+
+    async function fetchRecommendedRaces() {
+        try {
+            const response = await fetch(SPREADSHEET_CSV_URL);
+            const data = await response.text();
+            const rows = data.split('\n').slice(1); // ヘッダーを除外
+            
+            const container = document.getElementById('recommend-container');
+            container.innerHTML = ''; // 読み込み中表示を消去
+            
+            rows.forEach(row => {
+                const cols = row.split(',');
+                if (cols.length < 3) return; // 空行対策
+
+                const [track, race, comment, rank] = cols;
+                const stars = '★'.repeat(parseInt(rank) || 0);
+
+                const html = `
+                    <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700 flex flex-col md:flex-row gap-4 items-center">
+                        <div class="text-center md:border-r border-slate-600 md:pr-6">
+                            <div class="text-xs text-yellow-400 font-bold">${track}</div>
+                            <div class="text-2xl font-black text-white italic">${race}</div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="text-yellow-400 text-xs mb-1">${stars}</div>
+                            <p class="text-gray-200 text-sm font-bold">${comment}</p>
+                        </div>
+                        <div class="shrink-0">
+                            <span class="text-[10px] bg-yellow-400 text-slate-900 px-2 py-1 rounded font-black uppercase">勝負レース</span>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+            
+            document.getElementById('update-time').innerText = 'Last Updated: ' + new Date().toLocaleTimeString();
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('recommend-container').innerHTML = '<p class="text-red-500 text-center">データの取得に失敗しました</p>';
+        }
+    }
+
+    fetchRecommendedRaces();
+</script>
         <section class="data-card rounded-2xl overflow-hidden shadow-2xl border border-slate-700">
             <div onclick="toggleAccordion('table-boost', 'arrow-boost')" class="p-5 flex justify-between items-center cursor-pointer hover:bg-slate-800/50">
                 <h2 class="text-base font-black italic text-green-400 flex items-center gap-2 uppercase tracking-wider">
