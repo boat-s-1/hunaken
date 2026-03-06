@@ -9,7 +9,6 @@
         body { background-color: #0b0f19; color: #f1f5f9; font-family: sans-serif; }
         .data-card { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #334155; }
         .yellow-accent { color: #facc15; }
-        .green-accent { color: #22c55e; }
         
         /* アコーディオン制御 */
         .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
@@ -18,20 +17,26 @@
         .arrow-icon.rotate { transform: rotate(180deg); }
 
         /* テーブルスタイル */
-        .stats-table { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+        .stats-table { width: 100%; border-collapse: separate; border-spacing: 0; }
         .stats-table th { 
             color: #94a3b8; font-size: 0.7rem; text-transform: uppercase; 
             padding: 14px 8px; border-bottom: 2px solid #334155; 
-            text-align: left; cursor: pointer; position: relative;
-            white-space: nowrap;
+            text-align: left; cursor: pointer;
         }
-        .stats-table th:hover { background-color: rgba(250, 204, 21, 0.1); color: #fff; }
-        .stats-table td { padding: 10px 8px; border-bottom: 1px solid #1e293b; font-size: 0.75rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .stats-table tr:hover td { background-color: rgba(255, 255, 255, 0.03); }
+        .stats-table td { padding: 10px 8px; border-bottom: 1px solid #1e293b; font-size: 0.75rem; }
         
         .rank-high { color: #facc15; font-weight: bold; }
         .boost-high { color: #22c55e; font-weight: bold; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
+
+        .track-link {
+            display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid #334155; border-radius: 8px;
+            padding: 12px 5px; color: #94a3b8; font-size: 0.85rem; font-weight: bold;
+            transition: all 0.2s ease; text-decoration: none;
+        }
+        .track-link:hover { background: #facc15; color: #0b0f19; transform: translateY(-2px); }
     </style>
 </head>
     
@@ -39,234 +44,98 @@
 
     <header class="py-12 px-4 text-center border-b border-slate-800 bg-slate-900/50">
         <h1 class="text-4xl font-black italic tracking-widest yellow-accent uppercase mb-2">5-Master Database</h1>
-        <p class="text-gray-400 text-[10px] font-bold uppercase tracking-[0.4em]">全国24場 5号艇・精密統計＆機力相関データ 2026 Edition</p>
+        <p class="text-gray-400 text-[10px] font-bold uppercase tracking-[0.4em]">全国24場 5号艇・精密統計 2026 Edition</p>
     </header>
 
-<section class="mt-12 mb-20">
-    <div class="flex justify-between items-end mb-6 px-2">
-        <h2 class="text-xl font-black italic yellow-accent flex items-center gap-3 uppercase tracking-widest">
-            <span class="bg-yellow-400 w-2 h-8 block"></span>
-            24場 個別解析ログ
-        </h2>
-        <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Select Track</span>
-    </div>
-
-    <div class="grid grid-cols-4 gap-2 md:gap-4">
-        <a href="/5.kiryu.html" class="track-link">桐生</a>
-        <a href="/5.toda.html" class="track-link">戸田</a>
-        <a href="/5.edogawa.html" class="track-link">江戸川</a>
-        <a href="/5.heiwajima.html" class="track-link">平和島</a>
-        
-        <a href="/5.tamagawa.html" class="track-link">多摩川</a>
-        <a href="/5.hamanako.html" class="track-link">浜名湖</a>
-        <a href="/5.gamagori.html" class="track-link">蒲郡</a>
-        <a href="/5.tokoname.html" class="track-link">常滑</a>
-
-        <a href="/5.tu.html" class="track-link">津</a>
-        <a href="/5.mikuni.html" class="track-link">三国</a>
-        <a href="/5.biwako.html" class="track-link">びわこ</a>
-        <a href="/5.suminoe.html" class="track-link">住之江</a>
-
-        <a href="/5.amagasaki.html" class="track-link">尼崎</a>
-        <a href="/5.naruto.html" class="track-link">鳴門</a>
-        <a href="/5.marugame.html" class="track-link">丸亀</a>
-        <a href="/5.kojima.html" class="track-link">児島</a>
-
-        <a href="/5.miyajima.html" class="track-link">宮島</a>
-        <a href="/5.tokuyama.html" class="track-link">徳山</a>
-        <a href="/5.shimonoseki.html" class="track-link">下関</a>
-        <a href="/5.wakamatsu.html" class="track-link">若松</a>
-
-        <a href="/5.ashiya.html" class="track-link">芦屋</a>
-        <a href="/5.fukuoka.html" class="track-link">福岡</a>
-        <a href="/5.karatsu.html" class="track-link">唐津</a>
-        <a href="/5.omura.html" class="track-link">大村</a>
-    </div>
-</section>
-
-<style>
-    /* リンクボタンのスタイリング */
-    .track-link {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(145deg, #1e293b, #0f172a);
-        border: 1px solid #334155;
-        border-radius: 8px;
-        padding: 12px 5px;
-        color: #94a3b8;
-        font-size: 0.85rem;
-        font-weight: bold;
-        transition: all 0.2s ease;
-        text-decoration: none;
-        text-align: center;
-    }
-
-    .track-link:hover {
-        background: #facc15;
-        color: #0b0f19;
-        border-color: #facc15;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(250, 204, 21, 0.3);
-    }
-
-    /* アクティブな場や特定の場を強調したい場合用 */
-    .track-link:active {
-        transform: translateY(0);
-    }
-</style>
-    
-
     <main class="max-w-6xl mx-auto px-2 mt-8 space-y-6">
+
+        <div id="today-recommend-msg" class="bg-yellow-400 text-slate-900 p-4 rounded-xl font-bold text-center mb-4">
+            Loading status...
+        </div>
+
+        <section class="data-card rounded-2xl overflow-hidden shadow-2xl border-l-4 border-yellow-400 my-8">
+            <div class="bg-slate-900/90 p-4 border-b border-slate-700">
+                <h2 class="text-lg font-black italic yellow-accent uppercase tracking-wider">Today's Picks / 今日の狙い目</h2>
+            </div>
+            <div id="recommend-container" class="p-4 space-y-6 bg-slate-800/30">
+                <p class="text-center text-gray-500 py-10 italic">データを読み込み中...</p>
+            </div>
+        </section>
+
+        <section class="my-12">
+            <h2 class="text-xl font-black italic yellow-accent mb-6 px-2 uppercase tracking-widest flex items-center gap-3">
+                <span class="bg-yellow-400 w-2 h-8 block"></span> 24場 個別解析ログ
+            </h2>
+            <div class="grid grid-cols-4 gap-2 md:gap-4 font-sans text-center">
+                <a href="/5.kiryu.html" class="track-link">桐生</a><a href="/5.toda.html" class="track-link">戸田</a>
+                <a href="/5.edogawa.html" class="track-link">江戸川</a><a href="/5.heiwajima.html" class="track-link">平和島</a>
+                <a href="/5.tamagawa.html" class="track-link">多摩川</a><a href="/5.hamanako.html" class="track-link">浜名湖</a>
+                <a href="/5.gamagori.html" class="track-link">蒲郡</a><a href="/5.tokoname.html" class="track-link">常滑</a>
+                <a href="/5.tu.html" class="track-link">津</a><a href="/5.mikuni.html" class="track-link">三国</a>
+                <a href="/5.biwako.html" class="track-link">びわこ</a><a href="/5.suminoe.html" class="track-link">住之江</a>
+                <a href="/5.amagasaki.html" class="track-link">尼崎</a><a href="/5.naruto.html" class="track-link">鳴門</a>
+                <a href="/5.marugame.html" class="track-link">丸亀</a><a href="/5.kojima.html" class="track-link">児島</a>
+                <a href="/5.miyajima.html" class="track-link">宮島</a><a href="/5.tokuyama.html" class="track-link">徳山</a>
+                <a href="/5.shimonoseki.html" class="track-link">下関</a><a href="/5.wakamatsu.html" class="track-link">若松</a>
+                <a href="/5.ashiya.html" class="track-link">芦屋</a><a href="/5.fukuoka.html" class="track-link">福岡</a>
+                <a href="/5.karatsu.html" class="track-link">唐津</a><a href="/5.omura.html" class="track-link">大村</a>
+            </div>
+        </section>
+
+        <section class="data-card rounded-2xl overflow-hidden shadow-2xl border-2 border-yellow-500/30 my-10 p-6">
+            <h2 class="text-xl font-black italic yellow-accent mb-6 flex items-center gap-2 uppercase">
+                <span class="bg-yellow-400 w-1.5 h-6 block"></span> 5-Master リアルタイム判定機
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Select Track / 会場</label>
+                    <select id="track-select" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white outline-none">
+                        <option value="7.51">02# 戸田 (基礎 7.5%)</option>
+                        <option value="6.93">14# 鳴門 (基礎 6.9%)</option>
+                        <option value="6.81">04# 平和島 (基礎 6.8%)</option>
+                        <option value="6.22">17# 宮島 (基礎 6.2%)</option>
+                        <option value="5.28">12# 住之江 (基礎 5.3%)</option>
+                        <option value="4.50">その他 (平均 4.5%)</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="number" id="tenji-4" step="0.01" placeholder="4号艇展示" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white outline-none">
+                    <input type="number" id="tenji-5" step="0.01" placeholder="5号艇展示" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white outline-none">
+                </div>
+                <button onclick="calculateBoost()" class="bg-yellow-400 text-slate-900 font-black py-3 rounded-lg hover:bg-yellow-300 uppercase italic">Analyze / 判定実行</button>
+            </div>
+            <div id="result-display" class="hidden mt-8 p-6 rounded-xl border border-dashed border-slate-600 bg-slate-800/50 text-center">
+                <div class="text-5xl font-black italic yellow-accent mb-4" id="final-rate">--%</div>
+                <div id="judgment-tag" class="inline-block px-6 py-1 rounded-full text-sm font-black uppercase mb-4">---</div>
+                <p id="judgment-comment" class="text-gray-300 text-sm italic"></p>
+            </div>
+        </section>
 
         <section class="data-card rounded-2xl overflow-hidden shadow-2xl border border-slate-700">
             <div onclick="toggleAccordion('table-stats', 'arrow-stats')" class="p-5 flex justify-between items-center cursor-pointer hover:bg-slate-800/50">
                 <h2 class="text-base font-black italic yellow-accent flex items-center gap-2 uppercase tracking-wider">
-                    <span class="bg-yellow-400 w-1 h-5 block"></span>
-                    全国24場 5枠通常統計 (ALL TRACKS)
+                    <span class="bg-yellow-400 w-1 h-5 block"></span> 全国24場 5枠通常統計 (ALL TRACKS)
                 </h2>
                 <svg id="arrow-stats" class="arrow-icon w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </div>
             <div id="table-stats" class="accordion-content">
-                <div class="overflow-x-auto no-scrollbar border-t border-slate-700">
-                    <table class="stats-table">
+                <div class="overflow-x-auto border-t border-slate-700">
+                    <table class="stats-table min-w-[600px]">
                         <thead>
                             <tr>
-                                <th class="w-24" onclick="sortTable('tableBodyStats', 0, 'string')">場名</th>
-                                <th class="w-20" onclick="sortTable('tableBodyStats', 1, 'float')">1着率</th>
-                                <th class="w-24" onclick="sortTable('tableBodyStats', 2, 'int')">平均配当</th>
+                                <th onclick="sortTable('tableBodyStats', 0, 'string')">場名</th>
+                                <th onclick="sortTable('tableBodyStats', 1, 'float')">1着率</th>
+                                <th onclick="sortTable('tableBodyStats', 2, 'int')">平均配当</th>
                                 <th>最強相関条件</th>
                             </tr>
                         </thead>
                         <tbody id="tableBodyStats">
-                            <tr><td>01# 桐生</td><td>4.5%</td><td>3850</td><td>冬の赤城おろし/荒れ水面</td></tr>
-                            <tr><td>02# 戸田</td><td>5.1%</td><td>4100</td><td>狭い1マーク/カド攻め連動</td></tr>
-                            <tr><td>03# 江戸川</td><td>4.8%</td><td>4350</td><td>上げ潮×向かい風（波乱）</td></tr>
-                            <tr><td>04# 平和島</td><td>5.5%</td><td>4520</td><td>バック伸び/差し抜け</td></tr>
-                            <tr><td>05# 多摩川</td><td>4.9%</td><td>3980</td><td>日本一の静水面/展示1位</td></tr>
-                            <tr><td>06# 浜名湖</td><td>4.7%</td><td>3750</td><td>広い1マーク/展示重視</td></tr>
-                            <tr><td>07# 蒲郡</td><td>5.1%</td><td>4020</td><td>ナイター気温低下/差し場</td></tr>
-                            <tr><td>08# 常滑</td><td>5.7%</td><td>4165</td><td>追い風3m以上/カド連動</td></tr>
-                            <tr><td>09# 津</td><td>5.1%</td><td>4280</td><td>鈴鹿おろし/1マークもつれ</td></tr>
-                            <tr><td>10# 三国</td><td>5.2%</td><td>4215</td><td>向かい風4m以上/まくり差し</td></tr>
-                            <tr><td>11# びわこ</td><td>5.4%</td><td>4410</td><td>うねり/水位変動時の波乱</td></tr>
-                            <tr><td>12# 住之江</td><td>5.8%</td><td>4480</td><td>聖地ナイター/4カド仕掛け</td></tr>
-                            <tr><td>13# 尼崎</td><td>4.3%</td><td>3650</td><td>センター勢競り合い時の差し</td></tr>
-                            <tr><td>14# 鳴門</td><td>5.2%</td><td>4320</td><td>狭い旋回域/潮流影響</td></tr>
-                            <tr><td>15# 丸亀</td><td>5.2%</td><td>4080</td><td>潮位変化/ナイター特化</td></tr>
-                            <tr><td>16# 児島</td><td>4.8%</td><td>3910</td><td>瀬戸内潮位/展示上位必須</td></tr>
-                            <tr><td>17# 宮島</td><td>6.2%</td><td>4611</td><td>干満差/展示タイム差重視</td></tr>
-                            <tr><td>18# 徳山</td><td>4.0%</td><td>3200</td><td>イン強固/展開の紛れ待ち</td></tr>
-                            <tr><td>19# 下関</td><td>4.1%</td><td>3450</td><td>ナイター/展示機力優勢時</td></tr>
-                            <tr><td>20# 若松</td><td>4.9%</td><td>3950</td><td>夜間の差し/満潮時の有利</td></tr>
-                            <tr><td>21# 芦屋</td><td>4.5%</td><td>3892</td><td>一般戦混戦番組のまくり差し</td></tr>
-                            <tr><td>22# 福岡</td><td>3.8%</td><td>4310</td><td>独特のうねり/抜きの技術</td></tr>
-                            <tr><td>23# 唐津</td><td>4.8%</td><td>3964</td><td>展示タイム差(-0.08以上)</td></tr>
-                            <tr><td>24# 大村</td><td>4.6%</td><td>3478</td><td>海風影響時のイン崩れ</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-<section class="data-card rounded-2xl overflow-hidden shadow-2xl border-l-4 border-yellow-400 my-8">
-    <div class="bg-slate-900/90 p-4 border-b border-slate-700 flex justify-between items-center">
-        <h2 class="text-lg font-black italic yellow-accent uppercase tracking-wider">
-            Today's Picks / 今日の狙い目
-        </h2>
-    </div>
-    
-    <div id="recommend-container" class="p-4 space-y-6 bg-slate-800/30">
-        <p class="text-center text-gray-500 py-10 italic">データを読み込み中...</p>
-    </div>
-</section>
-
-<div id="today-pick-section" class="data-card rounded-2xl border-l-4 border-yellow-400 bg-slate-900/50 my-8 p-4">
-    <h2 class="text-lg font-black italic text-yellow-400 mb-4 uppercase">Today's Picks</h2>
-    <div id="recommend-container" class="space-y-4">
-        </div>
-</div>
-
-<script>
-    (function() {
-        const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS8TZBz25NV_h-lj_Vc59n5UhUpv3VWdOTb8mwqCRgJ5cexIgbWPVDEy2PqqMDS4nf-v-cdM97tdSaE/pubhtml?gid=0&single=true';
-
-        async function loadPicks() {
-            try {
-                const res = await fetch(CSV_URL);
-                const text = await res.text();
-                const rows = text.split('\n').slice(1);
-                const container = document.getElementById('recommend-container');
-                container.innerHTML = '';
-
-                rows.forEach(row => {
-                    const cols = row.split(',').map(c => c.trim().replace(/"/g, ''));
-                    if (cols.length < 4 || !cols[0]) return;
-
-                    const [date, track, race, comment, rank] = cols;
-                    const stars = '★'.repeat(Math.min(5, parseInt(rank) || 0));
-
-                    container.innerHTML += `
-                        <div class="border-b border-slate-800 pb-3 last:border-0">
-                            <div class="flex gap-2 items-baseline">
-                                <span class="text-white font-bold">${date}</span>
-                                <span class="text-yellow-400 font-black text-xl">${track}${race}</span>
-                            </div>
-                            <div class="text-yellow-500 text-xs">${stars}</div>
-                            <div class="mt-2 text-gray-300 text-sm bg-slate-800 p-3 rounded-lg">${comment}</div>
-                        </div>
-                    `;
-                });
-            } catch (e) {
-                console.error("読み込み失敗", e);
-            }
-        }
-        loadPicks();
-    })();
-</script>
-        <section class="data-card rounded-2xl overflow-hidden shadow-2xl border border-slate-700">
-            <div onclick="toggleAccordion('table-boost', 'arrow-boost')" class="p-5 flex justify-between items-center cursor-pointer hover:bg-slate-800/50">
-                <h2 class="text-base font-black italic text-green-400 flex items-center gap-2 uppercase tracking-wider">
-                    <span class="bg-green-500 w-1 h-5 block"></span>
-                    展示ブースト解析 (24場完全版)
-                </h2>
-                <svg id="arrow-boost" class="arrow-icon w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-            </div>
-            <div id="table-boost" class="accordion-content">
-                <div class="overflow-x-auto no-scrollbar border-t border-slate-700">
-                    <table class="stats-table">
-                        <thead>
-                            <tr>
-                                <th class="w-24" onclick="sortTable('tableBodyBoost', 0, 'string')">場名</th>
-                                <th class="w-20" onclick="sortTable('tableBodyBoost', 1, 'float')">ブースト率</th>
-                                <th class="w-20" onclick="sortTable('tableBodyBoost', 2, 'float')">上昇倍率</th>
-                                <th>ブーストロジック</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBodyBoost">
-                            <tr><td>17# 宮島</td><td class="boost-high">12.4%</td><td>2.0倍</td><td>まくり差し初速の圧倒的優位</td></tr>
-                            <tr><td>04# 平和島</td><td class="boost-high">11.8%</td><td>2.1倍</td><td>直線の伸びでバック逆転</td></tr>
-                            <tr><td>12# 住之江</td><td class="boost-high">10.5%</td><td>1.8倍</td><td>スリット後の伸び返し</td></tr>
-                            <tr><td>02# 戸田</td><td class="boost-high">9.8%</td><td>1.9倍</td><td>狭い1マークへの先制攻撃</td></tr>
-                            <tr><td>08# 常滑</td><td class="boost-high">9.2%</td><td>1.6倍</td><td>スピードターンの維持力</td></tr>
-                            <tr><td>11# びわこ</td><td>8.7%</td><td>1.6倍</td><td>波を超えるトルクの差</td></tr>
-                            <tr><td>10# 三国</td><td>8.2%</td><td>1.5倍</td><td>直線の絶対速度差</td></tr>
-                            <tr><td>15# 丸亀</td><td>8.0%</td><td>1.5倍</td><td>ナイター重厚機力の差</td></tr>
-                            <tr><td>23# 唐津</td><td>7.8%</td><td>1.6倍</td><td>全速時の出口の押し</td></tr>
-                            <tr><td>01# 桐生</td><td>7.5%</td><td>1.6倍</td><td>冷気による燃焼効率差</td></tr>
-                            <tr><td>09# 津</td><td>7.3%</td><td>1.4倍</td><td>強風下でのスリット安定</td></tr>
-                            <tr><td>03# 江戸川</td><td>7.1%</td><td>1.4倍</td><td>波乗りでの失速回避</td></tr>
-                            <tr><td>05# 多摩川</td><td>6.8%</td><td>1.3倍</td><td>スピードの絶対値優位</td></tr>
-                            <tr><td>14# 鳴門</td><td>6.5%</td><td>1.2倍</td><td>引き波を切り裂く足</td></tr>
-                            <tr><td>16# 児島</td><td>6.2%</td><td>1.3倍</td><td>出足性能の顕著な差</td></tr>
-                            <tr><td>20# 若松</td><td>6.0%</td><td>1.2倍</td><td>夜間の機力突出</td></tr>
-                            <tr><td>06# 浜名湖</td><td>5.8%</td><td>1.2倍</td><td>長いバックでの追い上げ</td></tr>
-                            <tr><td>21# 芦屋</td><td>5.5%</td><td>1.2倍</td><td>まくり差し軌道の確保</td></tr>
-                            <tr><td>24# 大村</td><td>5.3%</td><td>1.1倍</td><td>最内差しへの入り込み</td></tr>
-                            <tr><td>19# 下関</td><td>5.1%</td><td>1.2倍</td><td>行き足の優劣による先制</td></tr>
-                            <tr><td>13# 尼崎</td><td>4.9%</td><td>1.1倍</td><td>センター競り勝ち後の展開</td></tr>
-                            <tr><td>18# 徳山</td><td>4.5%</td><td>1.1倍</td><td>差し抜けの鋭さ</td></tr>
-                            <tr><td>22# 福岡</td><td>4.2%</td><td>1.1倍</td><td>うねり耐性の差</td></tr>
-                            <tr><td>07# 蒲郡</td><td>4.0%</td><td>0.8倍</td><td>旋回半径の差（ブースト弱）</td></tr>
+                            <tr><td>01# 桐生</td><td>6.1%</td><td>4050</td><td>冬の赤城おろし/荒れ水面</td></tr>
+                            <tr><td>02# 戸田</td><td>7.5%</td><td>3964</td><td>狭い1マーク/カド攻め連動</td></tr>
+                            <tr><td>17# 宮島</td><td>6.2%</td><td>4611</td><td>展示タイム差重視</td></tr>
+                            <tr><td>14# 鳴門</td><td>6.9%</td><td>4230</td><td>狭い旋回域/潮流影響</td></tr>
+                            <tr><td>04# 平和島</td><td>6.8%</td><td>3820</td><td>バック伸び/差し抜け</td></tr>
+                            <tr><td>12# 住之江</td><td>5.3%</td><td>4480</td><td>聖地ナイター/4カド仕掛け</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -276,6 +145,7 @@
     </main>
 
     <script>
+        // 1. アコーディオン
         function toggleAccordion(contentId, arrowId) {
             const content = document.getElementById(contentId);
             const arrow = document.getElementById(arrowId);
@@ -283,190 +153,88 @@
             arrow.classList.toggle('rotate');
         }
 
-        function sortTable(bodyId, colIndex, type) {
-            const tableBody = document.getElementById(bodyId);
-            const rows = Array.from(tableBody.querySelectorAll('tr'));
-            const currentDir = tableBody.getAttribute('data-dir-' + colIndex) === 'asc' ? 'desc' : 'asc';
-            
-            const sortedRows = rows.sort((a, b) => {
-                let valA = a.cells[colIndex].innerText.replace(/[%,¥,倍]/g, '');
-                let valB = b.cells[colIndex].innerText.replace(/[%,¥,倍]/g, '');
-                if (type === 'float' || type === 'int') {
-                    return currentDir === 'asc' ? parseFloat(valA) - parseFloat(valB) : parseFloat(valB) - parseFloat(valA);
-                } else {
-                    return currentDir === 'asc' ? valA.localeCompare(valB, 'ja') : valB.localeCompare(valA, 'ja');
-                }
-            });
+        // 2. スプレッドシート読み込み
+        (function() {
+            // スプレッドシートURLを「CSV出力形式」に強制変換する関数
+            const rawUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS8TZBz25NV_h-lj_Vc59n5UhUpv3VWdOTb8mwqCRgJ5cexIgbWPVDEy2PqqMDS4nf-v-cdM97tdSaE/pubhtml?gid=0&single=true';
+            const CSV_URL = rawUrl.replace('/pubhtml', '/pub').split('?')[0] + '?output=csv&gid=0';
 
-            tableBody.setAttribute('data-dir-' + colIndex, currentDir);
-            tableBody.innerHTML = '';
-            sortedRows.forEach(row => {
-                // 数値に応じたハイライト色を再適用
-                const val = parseFloat(row.cells[1].innerText);
-                if(bodyId === 'tableBodyStats') row.cells[1].className = val >= 5.5 ? 'rank-high' : '';
-                if(bodyId === 'tableBodyBoost') row.cells[1].className = val >= 9.0 ? 'boost-high' : '';
-                tableBody.appendChild(row);
-            });
+            async function loadPicks() {
+                try {
+                    const res = await fetch(CSV_URL);
+                    const text = await res.text();
+                    const rows = text.split('\n').slice(1);
+                    const container = document.getElementById('recommend-container');
+                    container.innerHTML = '';
+
+                    rows.forEach(row => {
+                        const cols = row.split(',').map(c => c.trim().replace(/"/g, ''));
+                        if (cols.length < 4 || !cols[0]) return;
+
+                        const [date, track, race, comment, rank] = cols;
+                        const stars = '★'.repeat(Math.min(5, parseInt(rank) || 0));
+
+                        container.innerHTML += `
+                            <div class="border-b border-slate-700/50 pb-4 last:border-0 last:pb-0 text-left">
+                                <div class="flex items-baseline gap-2 mb-1">
+                                    <span class="text-white font-bold text-lg">${date}</span>
+                                    <span class="text-yellow-400 font-black text-xl">${track}${race}</span>
+                                </div>
+                                <div class="text-yellow-400 text-sm tracking-widest mb-2">${stars}</div>
+                                <div class="bg-slate-900/50 p-3 rounded-lg border border-slate-700 text-gray-300 text-sm leading-relaxed whitespace-pre-wrap">${comment}</div>
+                            </div>
+                        `;
+                    });
+                } catch (e) {
+                    console.error("読み込み失敗", e);
+                    document.getElementById('recommend-container').innerHTML = '<p class="text-gray-500">現在、狙い目レースはありません。</p>';
+                }
+            }
+            loadPicks();
+        })();
+
+        // 3. リアルタイム判定機
+        function calculateBoost() {
+            const baseRate = parseFloat(document.getElementById('track-select').value);
+            const t4 = parseFloat(document.getElementById('tenji-4').value);
+            const t5 = parseFloat(document.getElementById('tenji-5').value);
+            const resultDiv = document.getElementById('result-display');
+
+            if (isNaN(t4) || isNaN(t5)) { alert("展示タイムを入力してください"); return; }
+
+            resultDiv.classList.remove('hidden');
+            const diff = (t4 - t5).toFixed(2);
+            let boost = 1.0;
+            if (diff >= 0.10) boost = 2.0;
+            else if (diff >= 0.05) boost = 1.4;
+            else if (diff > 0) boost = 1.1;
+            else if (diff < 0) boost = 0.6;
+
+            const finalRate = (baseRate * boost).toFixed(1);
+            document.getElementById('final-rate').innerText = finalRate + "%";
+            
+            const tag = document.getElementById('judgment-tag');
+            if (finalRate >= 12) {
+                tag.innerText = "CRITICAL: 勝負！";
+                tag.className = "inline-block px-6 py-1 rounded-full text-sm font-black uppercase mb-4 bg-red-600 text-white animate-pulse";
+            } else if (finalRate >= 8) {
+                tag.innerText = "CHANCE: 狙い目";
+                tag.className = "inline-block px-6 py-1 rounded-full text-sm font-black uppercase mb-4 bg-yellow-400 text-slate-900";
+            } else {
+                tag.innerText = "STAY: 静観";
+                tag.className = "inline-block px-6 py-1 rounded-full text-sm font-black uppercase mb-4 bg-slate-700 text-gray-300";
+            }
         }
 
-        // 初期状態で高い順にソート
-        window.onload = () => { 
-            sortTable('tableBodyStats', 1, 'float'); 
-            sortTable('tableBodyBoost', 1, 'float'); 
+        // 4. 自動メッセージ
+        window.onload = () => {
+            const hour = new Date().getHours();
+            let msg = "明日のレースに向け、マスターテーブルで予習せよ。";
+            if (hour < 10) msg = "【モーニング】朝イチの展示タイム差をチェック！";
+            else if (hour < 15) msg = "【デイレース】干潮に向かう時間帯の5号艇は鉄板！";
+            else if (hour < 21) msg = "【ナイター】4カドが攻める展開を狙い撃て！";
+            document.getElementById('today-recommend-msg').innerText = msg;
         };
     </script>
-    <script>
-    const recommends = [
-        "【モーニング】唐津：朝イチの展示タイム差をチェック！",
-        "【デイレース】宮島：干潮に向かう時間帯の5号艇は鉄板！",
-        "【ナイター】住之江：4カドが攻める展開を狙い撃て！",
-        "【荒天注目】江戸川：風が強い今日は5枠の差し抜け注意！"
-    ];
-
-    // 時間帯によってメッセージを自動切り替え
-    const hour = new Date().getHours();
-    let msg = "";
-    if (hour < 10) msg = recommends[0];
-    else if (hour < 15) msg = recommends[1];
-    else if (hour < 21) msg = recommends[2];
-    else msg = "明日のレースに向け、マスターテーブルで予習せよ。";
-
-    document.getElementById('today-recommend').innerText = msg;
-</script>
-<section class="data-card rounded-2xl overflow-hidden shadow-2xl border-2 border-yellow-500/30 my-10">
-    <div class="p-6 bg-slate-900/80">
-        <h2 class="text-xl font-black italic yellow-accent mb-6 flex items-center gap-2 uppercase">
-            <span class="bg-yellow-400 w-1.5 h-6 block"></span>
-            5-Master リアルタイム判定機
-        </h2>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-                <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Select Track / 会場</label>
-                <select id="track-select" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white focus:border-yellow-400 outline-none">
-                    <option value="6.22">17# 宮島 (基礎 6.2%)</option>
-                    <option value="5.82">12# 住之江 (基礎 5.8%)</option>
-                    <option value="5.50">04# 平和島 (基礎 5.5%)</option>
-                    <option value="5.67">08# 常滑 (基礎 5.7%)</option>
-                    <option value="5.10">02# 戸田 (基礎 5.1%)</option>
-                    <option value="4.50">その他 (平均 4.5%)</option>
-                </select>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-[10px] font-bold text-gray-400 mb-2 uppercase">4号艇 展示</label>
-                    <input type="number" id="tenji-4" step="0.01" placeholder="6.70" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white outline-none">
-                </div>
-                <div>
-                    <label class="block text-[10px] font-bold text-gray-400 mb-2 uppercase">5号艇 展示</label>
-                    <input type="number" id="tenji-5" step="0.01" placeholder="6.60" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white outline-none">
-                </div>
-            </div>
-
-            <div class="flex items-end">
-                <button onclick="calculateBoost()" class="w-full bg-yellow-400 hover:bg-yellow-300 text-slate-900 font-black py-3 rounded-lg transition-all shadow-lg shadow-yellow-400/20 uppercase italic">
-                    Analyze / 判定実行
-                </button>
-            </div>
-        </div>
-
-        <div id="result-display" class="hidden mt-8 p-6 rounded-xl border border-dashed border-slate-600 bg-slate-800/50 text-center">
-            <div class="text-sm text-gray-400 mb-1 uppercase font-bold tracking-widest">Estimated Win Rate</div>
-            <div id="final-rate" class="text-5xl font-black italic yellow-accent mb-4">--%</div>
-            <div id="judgment-tag" class="inline-block px-6 py-1 rounded-full text-sm font-black uppercase mb-4">---</div>
-            <p id="judgment-comment" class="text-gray-300 text-sm italic"></p>
-        </div>
-    </div>
-</section>
-
-<script>
-function calculateBoost() {
-    const baseRate = parseFloat(document.getElementById('track-select').value);
-    const t4 = parseFloat(document.getElementById('tenji-4').value);
-    const t5 = parseFloat(document.getElementById('tenji-5').value);
-    const resultDiv = document.getElementById('result-display');
-
-    if (isNaN(t4) || isNaN(t5)) {
-        alert("展示タイムを入力してください");
-        return;
-    }
-
-    resultDiv.classList.remove('hidden');
-    const diff = t4 - t5; // 5号艇がどれだけ速いか
-    let boost = 1.0;
-
-    // ブーストロジック：0.1s差で倍増、それ以上でさらにUP
-    if (diff >= 0.15) boost = 2.5;
-    else if (diff >= 0.10) boost = 2.0;
-    else if (diff >= 0.05) boost = 1.4;
-    else if (diff > 0) boost = 1.1;
-    else if (diff < 0) boost = 0.6; // 4の方が速い場合は大幅ダウン
-
-    const finalRate = (baseRate * boost).toFixed(1);
-    
-    // 表示更新
-    const rateEl = document.getElementById('final-rate');
-    const tagEl = document.getElementById('judgment-tag');
-    const commentEl = document.getElementById('judgment-comment');
-
-    rateEl.innerText = finalRate + "%";
-
-    if (finalRate >= 12) {
-        tagEl.innerText = "CRITICAL: 勝負！";
-        tagEl.className = "inline-block px-6 py-1 rounded-full text-sm font-black uppercase mb-4 bg-red-600 text-white animate-pulse";
-        commentEl.innerText = "展示差圧倒的。4が壁になり5が突き抜ける黄金パターンです。";
-    } else if (finalRate >= 8) {
-        tagEl.innerText = "CHANCE: 狙い目";
-        tagEl.className = "inline-block px-6 py-1 rounded-full text-sm font-black uppercase mb-4 bg-yellow-400 text-slate-900";
-        commentEl.innerText = "期待値十分。ヒモを広めに取って高配当を狙いましょう。";
-    } else {
-        tagEl.innerText = "STAY: 静観";
-        tagEl.className = "inline-block px-6 py-1 rounded-full text-sm font-black uppercase mb-4 bg-slate-700 text-gray-300";
-        commentEl.innerText = "無理な勝負は禁物。展開を待つか、他のレースを検討してください。";
-    }
-}
-</script>
-    <section class="py-12 border-y border-slate-800">
-    <h2 class="text-2xl font-black italic yellow-accent mb-10 uppercase tracking-widest text-center">
-        結局、5号艇が「一番うまい」理由
-    </h2>
-    
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="bg-slate-900/60 p-6 rounded-2xl border-l-4 border-yellow-400 relative">
-            <h3 class="text-xl font-bold text-white mb-4">① 「コスパ」が神がかってる</h3>
-            <p class="text-gray-400 text-sm leading-relaxed">
-                1号艇を頭で買って1,000円。ハズれたらダメージでかいですよね？<br>
-                5号艇なら、1枚（100円）が<span class="yellow-accent font-bold">4,000円や5,000円</span>に化けるのは日常茶飯事。的中率が低くても、一発でこれまでの負けを「なかったこと」にできる破壊力。これが5枠の魅力です。
-            </p>
-        </div>
-
-        <div class="bg-slate-900/60 p-6 rounded-2xl border-l-4 border-yellow-400 relative">
-            <h3 class="text-xl font-bold text-white mb-4">② 4が攻めれば「ご馳走」確定</h3>
-            <p class="text-gray-400 text-sm leading-relaxed">
-                みんな大好きな「4のカドまくり」。でも、4が無理やり攻めると内側は全滅します。その時、一番おいしい思いをするのが外側の5号艇。<br>
-                <span class="yellow-accent font-bold">「4が掃除して、5が拾う」</span>。この展開を覚えるだけで、舟券の収支は劇的に変わります。
-            </p>
-        </div>
-
-        <div class="bg-slate-900/60 p-6 rounded-2xl border-l-4 border-yellow-400 relative">
-            <h3 class="text-xl font-bold text-white mb-4">③ 「展示」は嘘をつかない</h3>
-            <p class="text-gray-400 text-sm leading-relaxed">
-                「なんとなく」で穴は獲れません。でも、5号艇が4号艇より展示タイムで<span class="yellow-accent font-bold">0.1秒速いとき</span>、それはもう「事件」です。物理的に伸びが違うのに、オッズは放置されている……。そんな「バレていない宝」を拾いに行く作業です。
-            </p>
-        </div>
-    </div>
-
-    <div class="mt-10 text-center">
-        <p class="text-gray-500 italic text-sm">
-            「本命でコツコツ負けるより、5枠の一撃でドカンと回収する。」<br>
-            この快感を知ったら、もうイン戦のガチガチ舟券には戻れません。
-        </p>
-    </div>
-</section>
-    <div id="today-recommend" class="bg-yellow-400 text-slate-900 p-4 rounded-xl font-bold text-center mb-8">
-    </div>
-
-
 </body>
 </html>
