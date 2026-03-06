@@ -93,7 +93,56 @@
                 <p class="text-center text-gray-500 py-10 italic">データを読み込み中...</p>
             </div>
         </section>
+<section class="max-w-6xl mx-auto px-4 mb-10">
+    <div class="data-card rounded-2xl p-6 border-l-4 border-red-600 shadow-2xl">
+        <div class="flex items-center gap-3 mb-6">
+            <span class="bg-red-600 text-white text-[10px] font-black px-2 py-1 rounded animate-pulse uppercase">Live Sheet Link</span>
+            <h2 class="text-xl font-black italic yellow-accent uppercase tracking-widest">5-Winners Realtime Log</h2>
+        </div>
 
+        <div id="log-container" class="space-y-2">
+            <p class="text-gray-500 italic text-sm text-center">Loading latest results...</p>
+        </div>
+    </div>
+</section>
+
+<script>
+// スプレッドシートのCSV URL（ここに貼り付け）
+const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQcPLflnMRZNmwk3DmWPbHIV-J15ndKVfqx4cfyEMySiVm6dM_qMYLXLnv5j-KnwZfW7X1y-CPgLok3/pubhtml?gid=0&single=true';
+
+async function fetchLog() {
+    try {
+        const response = await fetch(csvUrl);
+        const data = await response.text();
+        const rows = data.split('\n').slice(1); // ヘッダーを除外
+        const container = document.getElementById('log-container');
+        container.innerHTML = ''; // クリア
+
+        rows.reverse().forEach(row => { // 新しい順に表示
+            const [date, venue, race, result, payout] = row.split(',');
+            if (!date) return;
+
+            const html = `
+                <div class="flex items-center justify-between bg-slate-900/50 p-3 rounded-lg border border-slate-800">
+                    <div class="flex items-center gap-4">
+                        <span class="text-gray-500 font-bold text-xs uppercase">${date}</span>
+                        <span class="bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded font-black">${venue} ${race}</span>
+                        <span class="text-white font-black italic tracking-tighter">${result}</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="yellow-accent font-black text-lg">${payout}</span>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+        });
+    } catch (error) {
+        console.error('Error loading sheet:', error);
+    }
+}
+
+fetchLog();
+</script>
         <section class="my-12">
             <h2 class="text-xl font-black italic yellow-accent mb-6 px-2 uppercase tracking-widest flex items-center gap-3">
                 <span class="bg-yellow-400 w-2 h-8 block"></span> 24場 個別解析ログ
