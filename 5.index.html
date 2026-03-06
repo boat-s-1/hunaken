@@ -114,23 +114,35 @@ async function fetchLog() {
     try {
         const response = await fetch(csvUrl);
         const data = await response.text();
-        const rows = data.split('\n').slice(1); // ヘッダーを除外
+        // 行に分割し、空行を除外
+        const rows = data.split(/\r?\n/).filter(row => row.trim() !== "").slice(1);
         const container = document.getElementById('log-container');
-        container.innerHTML = ''; // クリア
+        container.innerHTML = ''; 
 
-        rows.reverse().forEach(row => { // 新しい順に表示
+        rows.reverse().forEach(row => { 
             const [date, venue, race, result, payout] = row.split(',');
             if (!date) return;
 
+            // 数値を「12,400」のようなカンマ区切り形式に変換（数値でない場合はそのまま表示）
+            const formattedPayout = isNaN(payout) ? payout : Number(payout).toLocaleString();
+
             const html = `
-                <div class="flex items-center justify-between bg-slate-900/50 p-3 rounded-lg border border-slate-800">
-                    <div class="flex items-center gap-4">
-                        <span class="text-gray-500 font-bold text-xs uppercase">${date}</span>
-                        <span class="bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded font-black">${venue} ${race}</span>
-                        <span class="text-white font-black italic tracking-tighter">${result}</span>
+                <div class="flex items-center justify-between bg-slate-900/80 p-4 rounded-xl border border-slate-800 hover:border-yellow-400/50 transition-all shadow-lg border-l-4 border-l-blue-600">
+                    <div class="space-y-1 text-left">
+                        <div class="flex items-center gap-2">
+                            <span class="text-gray-500 font-bold text-[10px] uppercase tracking-widest">${date}</span>
+                            <span class="text-blue-400 font-black text-sm tracking-tighter">${venue} ${race}</span>
+                        </div>
+                        <div class="text-2xl font-black italic tracking-widest text-white leading-none">
+                            ${result}
+                        </div>
                     </div>
+                    
                     <div class="text-right">
-                        <span class="yellow-accent font-black text-lg">${payout}</span>
+                        <p class="text-[9px] text-gray-500 font-bold uppercase mb-1 tracking-tighter">PAYOUT</p>
+                        <span class="text-yellow-400 font-black text-2xl italic tracking-tighter leading-none">
+                            <span class="text-sm mr-0.5">¥</span>${formattedPayout}
+                        </span>
                     </div>
                 </div>
             `;
@@ -138,6 +150,7 @@ async function fetchLog() {
         });
     } catch (error) {
         console.error('Error loading sheet:', error);
+        document.getElementById('log-container').innerHTML = '<p class="text-red-500 text-center text-xs">データの読み込みに失敗しました。</p>';
     }
 }
 
