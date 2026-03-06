@@ -180,54 +180,48 @@
     </div>
 </section>
 
+<div id="today-pick-section" class="data-card rounded-2xl border-l-4 border-yellow-400 bg-slate-900/50 my-8 p-4">
+    <h2 class="text-lg font-black italic text-yellow-400 mb-4 uppercase">Today's Picks</h2>
+    <div id="recommend-container" class="space-y-4">
+        </div>
+</div>
+
 <script>
-    // 公開したCSVのURLをここに貼り付け
-    const SPREADSHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS8TZBz25NV_h-lj_Vc59n5UhUpv3VWdOTb8mwqCRgJ5cexIgbWPVDEy2PqqMDS4nf-v-cdM97tdSaE/pubhtml?gid=0&single=true'; 
+    (function() {
+        const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS8TZBz25NV_h-lj_Vc59n5UhUpv3VWdOTb8mwqCRgJ5cexIgbWPVDEy2PqqMDS4nf-v-cdM97tdSaE/pubhtml?gid=0&single=true';
 
-    async function fetchRecommendedRaces() {
-        try {
-            const response = await fetch(SPREADSHEET_CSV_URL);
-            const data = await response.text();
-            const rows = data.split('\n').slice(1); 
-            
-            const container = document.getElementById('recommend-container');
-            container.innerHTML = ''; 
-            
-            rows.forEach(row => {
-                // CSVのカンマ区切りを配列に。トリムして余計な空白を消す
-                const cols = row.split(',').map(c => c.trim());
-                if (cols.length < 4 || !cols[0]) return; 
+        async function loadPicks() {
+            try {
+                const res = await fetch(CSV_URL);
+                const text = await res.text();
+                const rows = text.split('\n').slice(1);
+                const container = document.getElementById('recommend-container');
+                container.innerHTML = '';
 
-                const [date, track, race, comment, rank] = cols;
-                const stars = '★'.repeat(parseInt(rank) || 0);
+                rows.forEach(row => {
+                    const cols = row.split(',').map(c => c.trim().replace(/"/g, ''));
+                    if (cols.length < 4 || !cols[0]) return;
 
-                const html = `
-                    <div class="border-b border-slate-700/50 pb-4 last:border-0 last:pb-0">
-                        <div class="flex items-baseline gap-2 mb-1">
-                            <span class="text-white font-bold text-lg">${date}</span>
-                            <span class="text-yellow-400 font-black text-xl">${track}${race}</span>
+                    const [date, track, race, comment, rank] = cols;
+                    const stars = '★'.repeat(Math.min(5, parseInt(rank) || 0));
+
+                    container.innerHTML += `
+                        <div class="border-b border-slate-800 pb-3 last:border-0">
+                            <div class="flex gap-2 items-baseline">
+                                <span class="text-white font-bold">${date}</span>
+                                <span class="text-yellow-400 font-black text-xl">${track}${race}</span>
+                            </div>
+                            <div class="text-yellow-500 text-xs">${stars}</div>
+                            <div class="mt-2 text-gray-300 text-sm bg-slate-800 p-3 rounded-lg">${comment}</div>
                         </div>
-                        <div class="text-yellow-400 text-sm tracking-widest mb-2">${stars}</div>
-                        <div class="bg-slate-900/50 p-3 rounded-lg border border-slate-700 text-gray-300 text-sm leading-relaxed whitespace-pre-wrap">
-                            ${comment}
-                        </div>
-                    </div>
-                `;
-                container.innerHTML += html;
-            });
-
-            if (container.innerHTML === '') {
-                container.innerHTML = '<p class="text-center text-gray-500 py-10">本日の公開レースはまだありません。</p>';
+                    `;
+                });
+            } catch (e) {
+                console.error("読み込み失敗", e);
             }
-            
-        } catch (error) {
-            console.error('Error:', error);
-            document.getElementById('recommend-container').innerHTML = '<p class="text-red-500 text-center">データの取得に失敗しました</p>';
         }
-    }
-
-    fetchRecommendedRaces();
-</script>
+        loadPicks();
+    })();
 </script>
         <section class="data-card rounded-2xl overflow-hidden shadow-2xl border border-slate-700">
             <div onclick="toggleAccordion('table-boost', 'arrow-boost')" class="p-5 flex justify-between items-center cursor-pointer hover:bg-slate-800/50">
