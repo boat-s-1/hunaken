@@ -111,36 +111,86 @@
             </div>
         </section>
 
-        <section class="data-card rounded-2xl overflow-hidden shadow-2xl border border-slate-700">
+       <section class="data-card rounded-2xl overflow-hidden shadow-2xl border border-slate-700">
             <div onclick="toggleAccordion('table-stats', 'arrow-stats')" class="p-5 flex justify-between items-center cursor-pointer hover:bg-slate-800/50">
                 <h2 class="text-base font-black italic yellow-accent flex items-center gap-2 uppercase tracking-wider">
                     <span class="bg-yellow-400 w-1 h-5 block"></span> 全国24場 5枠通常統計 (ALL TRACKS)
                 </h2>
-                <svg id="arrow-stats" class="arrow-icon w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                <svg id="arrow-stats" class="arrow-icon w-5 h-5 text-yellow-400 rotate" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </div>
-            <div id="table-stats" class="accordion-content">
-                <div class="overflow-x-auto border-t border-slate-700">
-                    <table class="stats-table min-w-[600px]">
+            <div id="table-stats" class="accordion-content open">
+                <div class="overflow-x-auto border-t border-slate-700 no-scrollbar">
+                    <table class="stats-table min-w-[700px]">
                         <thead>
                             <tr>
-                                <th onclick="sortTable('tableBodyStats', 0, 'string')">場名</th>
-                                <th onclick="sortTable('tableBodyStats', 1, 'float')">1着率</th>
-                                <th onclick="sortTable('tableBodyStats', 2, 'int')">平均配当</th>
-                                <th>最強相関条件</th>
+                                <th class="w-32" onclick="sortTable('tableBodyStats', 0, 'string')">場名</th>
+                                <th class="w-20" onclick="sortTable('tableBodyStats', 1, 'float')">1着率</th>
+                                <th class="w-24" onclick="sortTable('tableBodyStats', 2, 'int')">平均配当</th>
+                                <th>最強相関条件（狙い目）</th>
                             </tr>
                         </thead>
                         <tbody id="tableBodyStats">
-                            <tr><td>01# 桐生</td><td>6.1%</td><td>4050</td><td>冬の赤城おろし/荒れ水面</td></tr>
-                            <tr><td>02# 戸田</td><td>7.5%</td><td>3964</td><td>狭い1マーク/カド攻め連動</td></tr>
-                            <tr><td>17# 宮島</td><td>6.2%</td><td>4611</td><td>展示タイム差重視</td></tr>
-                            <tr><td>14# 鳴門</td><td>6.9%</td><td>4230</td><td>狭い旋回域/潮流影響</td></tr>
-                            <tr><td>04# 平和島</td><td>6.8%</td><td>3820</td><td>バック伸び/差し抜け</td></tr>
-                            <tr><td>12# 住之江</td><td>5.3%</td><td>4480</td><td>聖地ナイター/4カド仕掛け</td></tr>
+                            <tr><td>02# 戸田</td><td class="rank-high">7.51%</td><td>¥3,964</td><td>狭い1M/4カド攻め連動の差し</td></tr>
+                            <tr><td>14# 鳴門</td><td class="rank-high">6.93%</td><td>¥4,230</td><td>狭い旋回域/潮流影響でのもつれ</td></tr>
+                            <tr><td>04# 平和島</td><td class="rank-high">6.81%</td><td>¥3,820</td><td>バックストレッチの伸び/差し抜け</td></tr>
+                            <tr><td>11# びわこ</td><td class="rank-high">6.67%</td><td>¥4,076</td><td>うねり・水位変動時の外枠強襲</td></tr>
+                            <tr><td>03# 江戸川</td><td class="rank-high">6.66%</td><td>¥4,067</td><td>上げ潮×向かい風時の波乱展開</td></tr>
+                            <tr><td>06# 浜名湖</td><td>6.43%</td><td>¥4,220</td><td>広い1M/展示タイム差重視</td></tr>
+                            <tr><td>09# 津</td><td>6.40%</td><td>¥4,042</td><td>鈴鹿おろし(強風)時の1Mもつれ</td></tr>
+                            <tr><td>05# 多摩川</td><td>6.33%</td><td>¥4,142</td><td>日本一の静水面/展示1位の伸び</td></tr>
+                            <tr><td>17# 宮島</td><td class="rank-high">6.22%</td><td>¥4,611</td><td>干満差大/展示タイム差-0.1s以上</td></tr>
+                            <tr><td>01# 桐生</td><td>6.10%</td><td>¥4,050</td><td>冬の赤城おろし/気温低下時の出足</td></tr>
+                            <tr><td>20# 若松</td><td>5.83%</td><td>¥4,393</td><td>夜間の差し/満潮時の有利性</td></tr>
+                            <tr><td>08# 常滑</td><td>5.67%</td><td>¥4,165</td><td>追い風3m以上/カド連動の展開</td></tr>
+                            <tr><td>15# 丸亀</td><td>5.45%</td><td>¥4,057</td><td>潮位変化があるナイター特化型</td></tr>
+                            <tr><td>13# 尼崎</td><td>5.44%</td><td>¥4,343</td><td>センター競り合い時の最内差し</td></tr>
+                            <tr><td>16# 児島</td><td>5.40%</td><td>¥4,212</td><td>瀬戸内の潮位変化/展示機力優勢時</td></tr>
+                            <tr><td>07# 蒲郡</td><td>5.35%</td><td>¥3,892</td><td>ナイター気温低下時の差し場</td></tr>
+                            <tr><td>12# 住之江</td><td>5.28%</td><td>¥4,480</td><td>聖地ナイター/4カド仕掛け連動</td></tr>
+                            <tr><td>10# 三国</td><td>5.23%</td><td>¥4,215</td><td>向かい風4m以上/まくり差し</td></tr>
+                            <tr><td>23# 唐津</td><td>5.05%</td><td>¥3,964</td><td>展示タイム差(-0.08以上)必須</td></tr>
+                            <tr><td>19# 下関</td><td>4.87%</td><td>¥3,912</td><td>ナイター/行き足の優劣による先制</td></tr>
+                            <tr><td>21# 芦屋</td><td>4.27%</td><td>¥4,054</td><td>一般戦混戦番組のまくり差し</td></tr>
+                            <tr><td>22# 福岡</td><td>3.81%</td><td>¥4,310</td><td>独特のうねり/抜き・二の足の技術</td></tr>
+                            <tr><td>18# 徳山</td><td>3.44%</td><td>¥4,275</td><td>イン強固場ゆえの展開紛れ待ち</td></tr>
+                            <tr><td>24# 大村</td><td>3.01%</td><td>¥3,854</td><td>海風影響時のイン崩れ・最内差し</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </section>
+
+    <script>
+        // 初期ソート実行用（1着率が高い順に並べる）
+        window.addEventListener('DOMContentLoaded', () => {
+            sortTable('tableBodyStats', 1, 'float'); // 1着率(インデックス1)でソート
+        });
+
+        function sortTable(bodyId, colIndex, type) {
+            const tableBody = document.getElementById(bodyId);
+            const rows = Array.from(tableBody.querySelectorAll('tr'));
+            // 初回は降順(高い順)にするためのフラグ管理
+            const isAsc = tableBody.getAttribute('data-dir-' + colIndex) === 'asc';
+            const direction = isAsc ? 'desc' : 'asc';
+            
+            const sortedRows = rows.sort((a, b) => {
+                let valA = a.cells[colIndex].innerText.replace(/[%,¥,倍]/g, '');
+                let valB = b.cells[colIndex].innerText.replace(/[%,¥,倍]/g, '');
+                
+                if (type === 'float' || type === 'int') {
+                    const nA = parseFloat(valA);
+                    const nB = parseFloat(valB);
+                    return direction === 'asc' ? nA - nB : nB - nA;
+                } else {
+                    return direction === 'asc' ? valA.localeCompare(valB, 'ja') : valB.localeCompare(valA, 'ja');
+                }
+            });
+
+            tableBody.setAttribute('data-dir-' + colIndex, direction);
+            tableBody.innerHTML = '';
+            sortedRows.forEach(row => tableBody.appendChild(row));
+        }
+    </script>
 
     </main>
 
