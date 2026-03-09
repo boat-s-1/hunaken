@@ -1,48 +1,174 @@
-<div class="menu-container">
-  <div class="menu-item">
-    <span class="icon">🛒</span>
-    <p>購入済み</p>
-  </div>
-  <div class="menu-item">
-    <span class="icon">📁</span>
-    <p>保存済み</p>
-  </div>
-  </div>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta name="google-adsense-account" content="ca-pub-9145518658275668">
+    <title>舟券メーカー | SNS用投稿画作成ツール</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9145518658275668" crossorigin="anonymous"></script>
+    <meta name="google-site-verification" content="gjZSAf-F1sn_m4mb6Yjjv4CrGE83tJfvrFHbAy7P00s" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root { 
+            --bg-dark: #0b111a;    /* 深海のような濃紺 */
+            --card-bg: #162130;    /* カードの背景 */
+            --br-blue: #00d2ff;    /* 鮮やかなライトブルー */
+            --br-gold: #ffcc00;    /* アクセントのゴールド */
+            --text-gray: #b0b8c1;
+        }
 
-<style>
-/* CSSで見た目を整える */
-.menu-container {
-  display: flex; /* 横並びにする */
-  border: 1px solid #eee; /* 外枠 */
-  border-radius: 8px;
-  overflow: hidden;
-}
+        body { 
+            font-family: 'Helvetica Neue', Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: var(--bg-dark); 
+            color: #eee; 
+        }
 
-.menu-item {
-  flex: 1; /* 均等な幅にする */
-  text-align: center;
-  padding: 15px 0;
-  border-right: 1px solid #eee; /* 区切り線 */
-  cursor: pointer;
-  transition: background 0.3s;
-}
+        header { 
+            background: linear-gradient(180deg, #001529 0%, var(--bg-dark) 100%);
+            color: #fff; 
+            padding: 40px 20px; 
+            text-align: center; 
+            border-bottom: 2px solid var(--br-blue);
+        }
 
-.menu-item:last-child {
-  border-right: none;
-}
+        header h1 { 
+            margin: 0; 
+            font-size: 2.2rem; 
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px var(--br-blue);
+        }
 
-.menu-item:hover {
-  background-color: #fff5f5; /* ホバー時に少し赤らめる */
-}
+        header p { font-size: 0.9em; color: var(--text-gray); margin: 10px 0 0; }
 
-.icon {
-  font-size: 24px;
-  color: #ff6b6b; /* 競艇ならここを青や緑にしても◎ */
-}
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
 
-.menu-item p {
-  font-size: 12px;
-  margin-top: 5px;
-  font-weight: bold;
-}
-</style>
+        /* メニューグリッド - BOAT STRIKE風 */
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+        
+        .menu-item { 
+            background: var(--card-bg); 
+            border: 1px solid rgba(0, 210, 255, 0.3); 
+            border-radius: 12px; 
+            padding: 20px 10px; 
+            text-align: center; 
+            text-decoration: none; 
+            color: #fff; 
+            font-weight: bold; 
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .menu-item:hover { 
+            transform: translateY(-5px); 
+            border-color: var(--br-blue);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+            background: #1c2d41;
+        }
+
+        .menu-item span { 
+            display: block; 
+            font-size: 0.75em; 
+            color: var(--br-blue); 
+            margin-top: 8px; 
+            font-weight: normal;
+        }
+
+        /* コンテンツセクション */
+        .content-section { 
+            background: var(--card-bg); 
+            padding: 25px; 
+            border-radius: 12px; 
+            line-height: 1.8; 
+            margin-bottom: 20px; 
+            border-left: 4px solid var(--br-gold);
+        }
+
+        .content-section h2 { 
+            margin-top: 0;
+            font-size: 1.2em; 
+            color: var(--br-gold); 
+            letter-spacing: 1px;
+        }
+
+        .content-section p { font-size: 0.95em; color: #ccc; }
+
+        .feature-list { padding-left: 20px; font-size: 0.9em; color: #ccc; }
+        .feature-list li { margin-bottom: 8px; }
+        .feature-list strong { color: var(--br-blue); }
+
+        footer { 
+            text-align: center; 
+            padding: 40px; 
+            background: #000;
+            color: var(--text-gray);
+            font-size: 11px; 
+        }
+
+        footer a { color: var(--br-blue); text-decoration: none; margin: 0 10px; }
+        
+        /* 装飾用の光るライン */
+        .glow-line {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--br-blue), transparent);
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>舟券メーカー</h1>
+    <p>DIGITAL LOGIC & DATA VISUALIZE</p>
+    <p>ボートレース予想を、一瞬で「形」にする。</p>
+</header>
+
+<div class="container">
+    <div class="glow-line"></div>
+
+    <div class="menu-grid">
+        <a href="2.3.box.html" class="menu-item">
+            <div style="font-size: 1.2rem; margin-bottom: 5px;">2/3連単 BOX</div>
+            <span>点数計算＆画像生成</span>
+        </a>
+        <a href="hunaken3.html" class="menu-item">
+            <div style="font-size: 1.2rem; margin-bottom: 5px;">3連単 (F)</div>
+            <span>フォーメーション専用</span>
+        </a>
+        <a href="2rentan3.html" class="menu-item">
+            <div style="font-size: 1.2rem; margin-bottom: 5px;">2連単 (F)</div>
+            <span>2連単特化ツール</span>
+        </a>
+        <a href="hunaken1.html" class="menu-item">
+            <div style="font-size: 1.2rem; margin-bottom: 5px;">SIMPLE TYPE</div>
+            <span>簡易版入力</span>
+        </a>
+    </div>
+
+    <section class="content-section">
+        <h2>MISSION</h2>
+        <p>当サイトは、全国24会場で開催されるボートレースの予想を、プロフェッショナルな視覚画像へ変換する無料ツール集です。</p>
+        <p>データ分析をスマートに共有。SNSでの発信力を最大化します。</p>
+    </section>
+
+    <section class="content-section">
+        <h2>FEATURES</h2>
+        <ul class="feature-list">
+            <li><strong>INSTANT CALC：</strong> 買い目を選択するだけで合計金額を瞬時に算出。</li>
+            <li><strong>VISUALIZE：</strong> リアルな舟券イメージを生成。</li>
+            <li><strong>SOCIAL SHARE：</strong> 𝕏などのSNSへ最適化された画像出力。</li>
+        </ul>
+    </section>
+</div>
+
+<footer>
+    <p>&copy; 2026 舟券メーカー P-STAR</p>
+    <a href="info.html">USAGE</a> | 
+    <a href="info.html">TERMS</a> | 
+    <a href="info.html">PRIVACY POLICY</a>
+</footer>
+
+</body>
+</html>
