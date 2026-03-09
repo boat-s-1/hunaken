@@ -17,7 +17,6 @@
         .nav-link:hover { color: #facc15; }
         .active-nav { color: #facc15; border-bottom: 2px solid #facc15; font-weight: bold; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        .pattern-tag { font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-right: 6px; }
     </style>
 </head>
 <body class="min-h-screen pb-20">
@@ -25,23 +24,18 @@
     <nav class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 text-center">
             <div class="flex space-x-6 overflow-x-auto py-4 no-scrollbar text-xs whitespace-nowrap">
-                <a href="/5.index.html" class="nav-link text-gray-400">HOME</a>
-                <a href="/5.hamanako.html" class="nav-link">浜名湖(06)</a>
+                <a href="/index.html" class="nav-link">HOME</a>
+                <a href="/5.hamana.html" class="nav-link">浜名湖(06)</a>
                 <a href="/5.gamagori.html" class="nav-link active-nav">蒲郡(07)</a>
-                <a href="/5.tokoname.html" class="nav-link">常滑(08)</a>
-                <a href="/5.tu.html" class="nav-link">津(09)</a>
-                </div>
+                <a href="/5.fukuoka.html" class="nav-link">福岡(22)</a>
+                <a href="/5.karatsu.html" class="nav-link">唐津(23)</a>
+            </div>
         </div>
     </nav>
 
-    <header class="relative h-48 md:h-64 overflow-hidden border-b border-slate-800 mb-8 shadow-2xl">
-        <img src="gamagori_night_view.png" 
-             class="absolute inset-0 w-full h-full object-cover opacity-60" 
-             alt="GAMAGORI Night Banner">
-        <div class="absolute inset-0 bg-gradient-to-t from-[#0b0f19] to-transparent flex flex-col justify-end pb-8 px-4 text-center">
-            <h1 class="text-3xl md:text-5xl font-black italic tracking-widest yellow-accent uppercase drop-shadow-lg">Gamagori 5-Master</h1>
-            <p class="text-gray-300 text-[10px] mt-2 font-bold uppercase tracking-[0.3em]">蒲郡(07) ナイター×広い1マーク 5号艇精密解析</p>
-        </div>
+    <header class="p-8 text-center border-b border-slate-800 mb-8">
+        <h1 class="text-3xl font-black italic tracking-widest yellow-accent uppercase">Gamagori 5-Master</h1>
+        <p class="text-gray-400 text-xs mt-2 font-bold uppercase tracking-tighter">蒲郡(07) 旋回域の広さ×ナイター特有の伸び足 精密解析</p>
     </header>
 
     <main class="max-w-6xl mx-auto px-4 space-y-10">
@@ -51,36 +45,35 @@
                 <div class="data-card p-6 rounded-2xl shadow-xl border-t-4 border-yellow-400">
                     <h2 class="text-lg font-bold mb-6 flex items-center">
                         <span class="bg-yellow-400 text-black px-2 py-0.5 rounded mr-2 text-sm">TRY</span>
-                        蒲郡・条件シミュレーター
+                        条件シミュレーター
                     </h2>
                     <div class="space-y-4 text-sm">
                         <div>
-                            <label class="text-gray-400 block mb-1">風向・風速</label>
-                            <select id="wind" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="tail">追い風 3m以上 (イン流れ・差し期待)</option>
-                                <option value="head">向かい風 3m以上 (まくり連動)</option>
-                                <option value="calm">弱風 2m以下 (イン安定傾向)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-gray-400 block mb-1">5号艇 展示順位</label>
+                            <label class="text-gray-400 block mb-1">展示順位(5枠)</label>
                             <select id="exRank" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="1">展示タイム 1位</option>
-                                <option value="2">展示タイム 2位以下</option>
+                                <option value="1">1位 (最高評価)</option>
+                                <option value="2">2位以下</option>
                             </select>
                         </div>
                         <div>
-                            <label class="text-gray-400 block mb-1">vs 4号艇 展示タイム差</label>
+                            <label class="text-gray-400 block mb-1">vs 4号艇 タイム差</label>
                             <select id="vs4" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="fast">0.1秒以上速い</option>
-                                <option value="near">同等程度</option>
+                                <option value="win">0.10秒以上速い</option>
+                                <option value="draw">同等 / 劣勢</option>
                             </select>
                         </div>
                         <div>
-                            <label class="text-gray-400 block mb-1">外気温 (ナイター機力影響)</label>
-                            <select id="temp" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="low">15度以下 (出足・伸びUP)</option>
-                                <option value="high">15度超 (通常機力)</option>
+                            <label class="text-gray-400 block mb-1">時間帯</label>
+                            <select id="time" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="night">ナイター(気温低下で伸び強化)</option>
+                                <option value="day">デイ/夕刻(イン安定)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-gray-400 block mb-1">風速</label>
+                            <select id="wind" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="strong">風速4m以上 (波乱・差し)</option>
+                                <option value="calm">穏やか (スピード決着)</option>
                             </select>
                         </div>
                         <button onclick="calc()" class="w-full bg-yellow-accent hover:bg-yellow-500 text-black font-black py-4 rounded-xl mt-4 transition-all active:scale-95 shadow-lg shadow-yellow-900/20 uppercase tracking-wider">
@@ -91,158 +84,102 @@
             </div>
 
             <div class="lg:col-span-2">
-                <div id="welcome-msg" class="data-card h-full flex items-center justify-center rounded-2xl border-dashed border-2 border-slate-700 p-12 text-center">
-                    <p class="text-gray-500 font-bold italic">蒲郡ナイター特有の「広大な1マーク」と「展示タイム」を解析。<br>追い風時のイン流れを突く5コース勝率を算出します。</p>
-                </div>
-                <div id="result-area" class="hidden data-card p-8 rounded-2xl h-full relative overflow-hidden shadow-2xl border border-yellow-400/30">
+                <div id="result-area" class="data-card p-8 rounded-2xl h-full relative overflow-hidden shadow-2xl border border-yellow-400/30">
                     <h3 class="text-gray-400 font-bold text-sm uppercase">算出された1着期待度</h3>
                     <div class="flex items-baseline gap-2 mt-4">
-                        <span id="res-percent" class="text-8xl font-black yellow-accent tracking-tighter">0.0</span>
+                        <span id="res-percent" class="text-8xl font-black yellow-accent tracking-tighter">4.90</span>
                         <span class="text-3xl font-bold yellow-accent">%</span>
                     </div>
-                    <div id="res-comment" class="mt-8 p-4 bg-slate-900/50 border-l-4 border-yellow-400 text-sm leading-relaxed italic text-gray-200 shadow-inner"></div>
+                    <div id="res-comment" class="mt-8 p-4 bg-slate-900/50 border-l-4 border-yellow-400 text-sm leading-relaxed italic text-gray-200 shadow-inner">
+                        蒲郡は全国でも有数の広い水面で、全力旋回が可能です。特に気温が下がるナイター時間帯はモーターの体積効率が上がり、5号艇の伸び足が破壊力を増します。
+                    </div>
                 </div>
             </div>
         </div>
 
-        <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="data-card p-4 rounded-xl text-center">
-                <p class="text-xs text-gray-500 font-bold uppercase mb-1">ナイター平均</p>
-                <p class="text-2xl font-black yellow-accent">5.82%</p>
-            </div>
-            <div class="data-card p-4 rounded-xl text-center border-b-4 border-yellow-400">
-                <p class="text-xs text-yellow-500 font-bold uppercase mb-1">展示1位時</p>
-                <p class="text-2xl font-black yellow-accent">10.15%</p>
-            </div>
-            <div class="data-card p-4 rounded-xl text-center">
-                <p class="text-xs text-gray-500 font-bold uppercase mb-1">対4枠 0.1s差</p>
-                <p class="text-2xl font-black yellow-accent">10.95%</p>
-            </div>
-            <div class="data-card p-4 rounded-xl text-center bg-yellow-400/10 border border-yellow-400/20">
-                <p class="text-xs text-yellow-400 font-bold uppercase mb-1">追い風3m~ 勝率</p>
-                <p class="text-2xl font-black yellow-accent">8.25%</p>
-            </div>
-        </section>
-
         <section class="space-y-6">
-            <div class="flex items-center gap-4">
-                <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">2着出現率 & 展開予測</h2>
-            </div>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg border-l-4 border-yellow-400">
-                    <table class="w-full text-left text-sm">
-                        <thead>
-                            <tr class="bg-slate-800/50">
-                                <th class="w-20">2着艇</th>
-                                <th class="w-24 yellow-accent">出現率</th>
-                                <th>傾向と対策</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-800">
-                            <tr>
-                                <td class="font-black text-center text-lg text-white">1<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold yellow-accent text-lg italic">39.2%</td>
-                                <td class="py-4 px-3 leading-snug text-gray-300">
-                                    <span class="pattern-tag bg-red-600 text-white">【本命】</span>
-                                    蒲郡は1の粘りが強力。5のまくり差しが入っても1が2着に残る5-1が鉄板。
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="font-black text-center text-lg text-white">4<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold yellow-accent text-lg italic">17.5%</td>
-                                <td class="py-4 px-3 leading-snug text-gray-300">
-                                    <span class="pattern-tag bg-blue-600 text-white">【対抗】</span>
-                                    4のカド攻めに乗り、外を回すか差し込む連動パターン。
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="font-black text-center text-lg text-white">6<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold yellow-accent text-lg italic">15.1%</td>
-                                <td class="py-4 px-3 leading-snug text-gray-300">
-                                    <span class="pattern-tag bg-green-600 text-white">【注】</span>
-                                    外枠同士の決着。5が作った展開を大外6が拾う形。
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="flex flex-col gap-4">
-                    <div class="data-card rounded-2xl p-6 italic text-sm text-gray-300 border-l-4 border-yellow-400 bg-slate-800/30">
-                        <p class="mb-2 font-bold text-yellow-400 tracking-widest uppercase text-xs">Gamagori Insight</p>
-                        「蒲郡は日本一広い1マークを持ち、ナイターでインが強い水面ですが、追い風時はその広さが災いしてインが大きく流れます。機力がタイムに素直に反映されるため、対4枠でタイム優勢なら『突き抜け』のチャンス。」
-                    </div>
-                </div>
+            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">2着出現率：蒲郡ターゲット</h2>
+            <div class="data-card rounded-2xl overflow-hidden shadow-lg border-l-4 border-yellow-400">
+                <table class="w-full text-left text-sm">
+                    <thead>
+                        <tr class="bg-slate-800/50">
+                            <th class="w-16 text-center">2着艇</th>
+                            <th class="w-20 yellow-accent">出現率</th>
+                            <th>展開メカニズム</th>
+                            <th class="text-right px-4">推奨スジ</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800">
+                        <tr>
+                            <td class="font-black text-center text-lg bg-white/5">1</td>
+                            <td class="font-bold yellow-accent text-lg italic">41.2%</td>
+                            <td class="py-3 px-3 text-gray-400">5のまくり差しを1が受けて残す。蒲郡の最も標準的な決着。</td>
+                            <td class="text-right px-4 font-mono font-bold text-yellow-500">5-1</td>
+                        </tr>
+                        <tr>
+                            <td class="font-black text-center text-lg bg-blue-600/10">4</td>
+                            <td class="font-bold yellow-accent text-lg italic">19.8%</td>
+                            <td class="py-3 px-3 text-gray-400">カド4号艇の仕掛けに連動。スピード感ある外枠独占。</td>
+                            <td class="text-right px-4 font-mono font-bold text-yellow-500">5-4</td>
+                        </tr>
+                        <tr>
+                            <td class="font-black text-center text-lg bg-black/20">2</td>
+                            <td class="font-bold yellow-accent text-lg italic">14.5%</td>
+                            <td class="py-3 px-3 text-gray-400">内がもつれた隙を2が差し込み、5が外から呑み込む。</td>
+                            <td class="text-right px-4 font-mono font-bold text-yellow-500">5-2</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </section>
 
         <section class="space-y-6 pt-4">
-            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">Gamagori Detailed Database</h2>
-            
+            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">Gamagori Correlation Data</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
-                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">1. vs 4号艇 展示タイム差</div>
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400 uppercase text-xs">展示順位と連対率</div>
                     <table class="w-full text-left">
-                        <thead><tr><th>条件</th><th>1着率</th><th>期待値</th></tr></thead>
+                        <thead><tr><th>展示順位</th><th>1着率</th><th>期待値</th></tr></thead>
                         <tbody>
-                            <tr class="highlight-row font-bold text-white"><td>0.1秒以上速い</td><td class="yellow-accent">10.95%</td><td>Sランク</td></tr>
-                            <tr><td>わずかに速い/同等</td><td>6.25%</td><td>Bランク</td></tr>
-                            <tr><td>劣勢</td><td>2.10%</td><td>Dランク</td></tr>
+                            <tr class="highlight-row font-bold"><td>1位</td><td>8.5%</td><td class="yellow-accent">特A</td></tr>
+                            <tr><td>2位</td><td>5.2%</td><td>B+</td></tr>
+                            <tr><td>3位以下</td><td>2.1%</td><td>D</td></tr>
                         </tbody>
                     </table>
                 </div>
-
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
-                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">2. 風速別 決まり手傾向</div>
-                    <table class="w-full text-left">
-                        <thead><tr><th>風条件</th><th>1着率</th><th>最多決まり手</th></tr></thead>
-                        <tbody>
-                            <tr class="highlight-row font-bold text-white"><td>追い風 3m以上</td><td class="yellow-accent">8.25%</td><td>差し (イン流れを突く)</td></tr>
-                            <tr><td>向かい風 3m以上</td><td>7.40%</td><td>まくり (4枠連動)</td></tr>
-                            <tr><td>無風・弱風</td><td>4.10%</td><td>差し (展開待ち)</td></tr>
-                        </tbody>
-                    </table>
+                <div class="data-card rounded-2xl p-8 flex flex-col justify-center border-dashed border border-slate-700 text-center">
+                    <p class="text-yellow-400 font-bold mb-1 uppercase text-xs italic">蒲郡5枠 最終期待値</p>
+                    <p class="text-4xl font-black text-white" id="final-score">--</p>
+                    <p class="text-gray-500 text-[10px] mt-1">※シミュレーター結果に連動</p>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <footer class="mt-20 p-12 border-t border-slate-800 text-center text-gray-500 text-xs font-bold">
-        &copy; 2026 5枠突破診断所. All Rights Reserved.
-    </footer>
-
     <script>
         function calc() {
-            const wind = document.getElementById('wind').value;
             const exRank = document.getElementById('exRank').value;
             const vs4 = document.getElementById('vs4').value;
-            const temp = document.getElementById('temp').value;
+            const time = document.getElementById('time').value;
+            const wind = document.getElementById('wind').value;
 
-            document.getElementById('welcome-msg').classList.add('hidden');
-            document.getElementById('result-area').classList.remove('hidden');
-
-            let score = 5.82; // 蒲郡基礎勝率
-            if (wind === 'tail') score += 2.43; 
-            if (wind === 'head') score += 1.58; 
-            if (exRank === '1') score += 4.33; 
-            if (vs4 === 'fast') score += 2.15;
-            if (temp === 'low') score += 1.58; 
-
-            // 特殊補正
-            if (exRank === '1' && vs4 === 'fast') score = Math.max(score, 10.95);
-            if (temp === 'low' && exRank === '1' && vs4 === 'fast') score += 1.2;
+            let score = 4.90; // 蒲郡5枠平均1着率
+            if (exRank === '1') score += 3.60;
+            if (vs4 === 'win') score += 1.80;
+            if (time === 'night') score += 1.10;
+            if (wind === 'strong') score += 0.50;
 
             document.getElementById('res-percent').innerText = score.toFixed(2);
+            document.getElementById('final-score').innerText = score.toFixed(2) + "%";
 
             let comment = "";
-            if (score >= 11.0) {
-                comment = "【蒲郡・ナイト黄金条件】追い風でインが流れる中、展示1位の圧倒的パワー（10.95%）を記録。2着は粘る1（39.2%）を本線に。";
-            } else if (score >= 9.0) {
-                comment = "【スピード戦有望】展示1位（10.15%）かつ気温が味方しています。まくり差しから頭まで狙える機力です。";
+            if (score >= 10) {
+                comment = "【蒲郡の極上スジ】ナイター、展示抜群、vs4枠勝利。広い1マークをフルスロットルでまくり差す、蒲郡らしい豪快な決着が期待できます。";
+            } else if (score >= 7) {
+                comment = "【好気配】条件は整っています。4号艇が攻めて内を叩けば、5号艇に絶好のまくり差しコースが開きます。";
             } else {
-                comment = "【平常・イン絶対】インが強固な蒲郡。無理な頭狙いより、連軸（2・3着）での検討が賢明です。";
+                comment = "【イン盤石か】広い蒲郡でも足が足りない場合は1枠の逃げが有力。5枠は3着ヒモ穴としての評価に留めるべき。";
             }
             document.getElementById('res-comment').innerText = comment;
         }
