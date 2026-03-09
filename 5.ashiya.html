@@ -25,22 +25,43 @@
     <nav class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 text-center">
             <div class="flex space-x-6 overflow-x-auto py-4 no-scrollbar text-xs whitespace-nowrap">
-                <a href="/index.html" class="nav-link">HOME</a>
+                <a href="/5.index.html" class="nav-link text-gray-400">HOME</a>
                 <a href="/5.kiryu.html" class="nav-link">桐生(01)</a>
+                <a href="/5.toda.html" class="nav-link">戸田(02)</a>
+                <a href="/5.edogawa.html" class="nav-link">江戸川(03)</a>
+                <a href="/5.heiwajima.html" class="nav-link">平和島(04)</a>
+                <a href="/5.tamagawa.html" class="nav-link">多摩川(05)</a>
+                <a href="/5.hamanako.html" class="nav-link">浜名湖(06)</a>
+                <a href="/5.gamagori.html" class="nav-link">蒲郡(07)</a>
+                <a href="/5.tokoname.html" class="nav-link">常滑(08)</a>
+                <a href="/5.tu.html" class="nav-link">津(09)</a>
+                <a href="/5.mikuni.html" class="nav-link">三国(10)</a>
+                <a href="/5.biwako.html" class="nav-link">びわこ(11)</a>
                 <a href="/5.suminoe.html" class="nav-link">住之江(12)</a>
-                <a href="/5.shimonoseki.html" class="nav-link">下関(19)</a>
-                <a href="/5.wakamatsu.html" class="nav-link">若松(20)</a>
-                <a href="/5.ashiya.html" class="nav-link active-nav">芦屋(21)</a>
-                <a href="/5.fukuoka.html" class="nav-link">福岡(22)</a>
-                <a href="/5.karatsu.html" class="nav-link">唐津(23)</a>
+                <a href="/5.amagasaki.html" class="nav-link">尼崎(13)</a>
+                <a href="/5.naruto.html" class="nav-link">鳴門(14)</a>
+                <a href="/5.marugame.html" class="nav-link">丸亀(15)</a>
+                <a href="/5.kojima.html" class="nav-link">児島(16)</a>
                 <a href="/5.miyajima.html" class="nav-link">宮島(17)</a>
+                <a href="/5.tokuyama.html" class="nav-link">徳山(18)</a>
+                <a href="/5.shimonoseki.html" class="nav-link">下関(19)</a>
+                <a href="/5.wakamatu.html" class="nav-link">若松(20)</a>
+                <a href="/5.ashiya.html" class="nav-link active-nav">芦屋(21)</a>
+                <a href="/5.hukuoka.html" class="nav-link">福岡(22)</a>
+                <a href="/5.karatu.html" class="nav-link">唐津(23)</a>
+                <a href="/5.oomura.html" class="nav-link">大村(24)</a>
             </div>
         </div>
     </nav>
 
-    <header class="p-8 text-center border-b border-slate-800 mb-8">
-        <h1 class="text-3xl font-black italic tracking-widest yellow-accent uppercase">Ashiya 5-Master</h1>
-        <p class="text-gray-400 text-xs mt-2 font-bold uppercase tracking-tighter">芦屋(21) 企画レースの静寂×静水の全速戦 精密解析</p>
+    <header class="relative h-48 md:h-64 overflow-hidden border-b border-slate-800 mb-8 shadow-2xl">
+        <img src="Gemini_Generated_Image_ashiya_banner.png" 
+             class="absolute inset-0 w-full h-full object-cover opacity-60" 
+             alt="ASHIYA Banner">
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0b0f19] to-transparent flex flex-col justify-end pb-8 px-4 text-center">
+            <h1 class="text-3xl md:text-5xl font-black italic tracking-widest yellow-accent uppercase drop-shadow-lg">Ashiya 5-Sunrise</h1>
+            <p class="text-gray-300 text-[10px] mt-2 font-bold uppercase tracking-[0.3em]">芦屋(21) モーニング要塞×静水面のスピード戦 5枠攻略解析</p>
+        </div>
     </header>
 
     <main class="max-w-6xl mx-auto px-4 space-y-10">
@@ -50,14 +71,14 @@
                 <div class="data-card p-6 rounded-2xl shadow-xl border-t-4 border-yellow-400">
                     <h2 class="text-lg font-bold mb-6 flex items-center">
                         <span class="bg-yellow-400 text-black px-2 py-0.5 rounded mr-2 text-sm">TRY</span>
-                        条件シミュレーター
+                        芦屋・条件シミュレーター
                     </h2>
                     <div class="space-y-4 text-sm">
                         <div>
-                            <label class="text-gray-400 block mb-1">企画番組の有無</label>
+                            <label class="text-gray-400 block mb-1">レース種別</label>
                             <select id="raceType" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="morning">サンライズ(1-5R) ※イン極強</option>
-                                <option value="standard">一般番組 (6R以降)</option>
+                                <option value="morning">企画レース (サンライズ1-7R)</option>
+                                <option value="general">一般予選・選抜 (8-12R)</option>
                             </select>
                         </div>
                         <div>
@@ -68,17 +89,17 @@
                             </select>
                         </div>
                         <div>
-                            <label class="text-gray-400 block mb-1">風の影響</label>
-                            <select id="wind" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="calm">無風・微風 (イン有利)</option>
-                                <option value="head">向かい風 (まくり差しチャンス)</option>
+                            <label class="text-gray-400 block mb-1">スリット気配</label>
+                            <select id="slit" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="good">出ていく感じがある</option>
+                                <option value="normal">他と変わらない</option>
                             </select>
                         </div>
                         <div>
-                            <label class="text-gray-400 block mb-1">4号艇のスタート気配</label>
-                            <select id="vs4" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="fast">4が覗く気配あり</option>
-                                <option value="normal">4が壁になる気配</option>
+                            <label class="text-gray-400 block mb-1">風条件</label>
+                            <select id="wind" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="head">向かい風 (ダッシュの出番)</option>
+                                <option value="tail">追い風 (インの逃げ鉄板)</option>
                             </select>
                         </div>
                         <button onclick="calc()" class="w-full bg-yellow-accent hover:bg-yellow-500 text-black font-black py-4 rounded-xl mt-4 transition-all active:scale-95 shadow-lg shadow-yellow-900/20 uppercase tracking-wider">
@@ -90,7 +111,7 @@
 
             <div class="lg:col-span-2">
                 <div id="welcome-msg" class="data-card h-full flex items-center justify-center rounded-2xl border-dashed border-2 border-slate-700 p-12 text-center">
-                    <p class="text-gray-500 font-bold italic">「芦屋の5枠は、静水面を切り裂くスピード勝負。」<br>番組構成と足の仕上がりを計算します。</p>
+                    <p class="text-gray-500 font-bold italic">「モーニングの壁」を突き破るスピードを。<br>イン有利な番組構成の中で、5枠が主役を奪う条件を算出します。</p>
                 </div>
                 <div id="result-area" class="hidden data-card p-8 rounded-2xl h-full relative overflow-hidden shadow-2xl border border-yellow-400/30">
                     <h3 class="text-gray-400 font-bold text-sm uppercase">算出された1着期待度</h3>
@@ -105,27 +126,29 @@
 
         <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div class="data-card p-4 rounded-xl text-center">
-                <p class="text-xs text-gray-500 font-bold uppercase mb-1">全レース数</p>
-                <p class="text-2xl font-black">4,714</p>
-            </div>
-            <div class="data-card p-4 rounded-xl text-center">
-                <p class="text-xs text-gray-500 font-bold uppercase mb-1">5号艇 1着数</p>
-                <p class="text-2xl font-black yellow-accent">210</p>
+                <p class="text-xs text-gray-500 font-bold uppercase mb-1">芦屋 平均勝率</p>
+                <p class="text-2xl font-black yellow-accent">4.90%</p>
             </div>
             <div class="data-card p-4 rounded-xl text-center border-b-4 border-yellow-400">
-                <p class="text-xs text-yellow-500 font-bold uppercase mb-1">累計1着率</p>
-                <p class="text-2xl font-black yellow-accent">4.45%</p>
+                <p class="text-xs text-yellow-500 font-bold uppercase mb-1">展示1位×一般戦</p>
+                <p class="text-2xl font-black yellow-accent">9.45%</p>
+            </div>
+            <div class="data-card p-4 rounded-xl text-center">
+                <p class="text-xs text-gray-500 font-bold uppercase mb-1">向かい風時</p>
+                <p class="text-2xl font-black yellow-accent">6.80%</p>
             </div>
             <div class="data-card p-4 rounded-xl text-center bg-yellow-400/10 border border-yellow-400/20">
-                <p class="text-xs text-yellow-400 font-bold uppercase mb-1">平均配当</p>
-                <p class="text-2xl font-black yellow-accent">¥3,892</p>
+                <p class="text-xs text-yellow-400 font-bold uppercase mb-1">まくり差し決着率</p>
+                <p class="text-2xl font-black yellow-accent">54.2%</p>
             </div>
         </section>
 
         <section class="space-y-6">
             <div class="flex items-center gap-4">
-                <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">Ashiya Tactics</h2>
+                <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">2着出現率 & 展開予測</h2>
+                <span class="text-[10px] text-gray-500 font-bold border border-gray-700 px-2 py-0.5 rounded">※スピードが死なない芦屋の2マーク</span>
             </div>
+            
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div class="data-card rounded-2xl overflow-hidden shadow-lg border-l-4 border-yellow-400">
                     <table class="w-full text-left text-sm">
@@ -133,62 +156,132 @@
                             <tr class="bg-slate-800/50">
                                 <th class="w-20">2着艇</th>
                                 <th class="w-24 yellow-accent">出現率</th>
-                                <th>特徴</th>
+                                <th>傾向と対策</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-800">
                             <tr>
-                                <td class="font-black text-center text-lg">1<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold yellow-accent text-lg italic">41.2%</td>
+                                <td class="font-black text-center text-lg text-white">1<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">46.5%</td>
                                 <td class="py-4 px-3 leading-snug text-gray-300">
-                                    まくり差されても、広い水面で逃げ場を見つけ残る形。
+                                    <span class="pattern-tag bg-red-600 text-white">【王道】</span>
+                                    芦屋で5が勝つなら、1との折り返し(5-1)は絶対条件。
                                 </td>
                             </tr>
                             <tr>
-                                <td class="font-black text-center text-lg">2<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold yellow-accent text-lg italic">16.8%</td>
+                                <td class="font-black text-center text-lg text-white">2<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">14.8%</td>
                                 <td class="py-4 px-3 leading-snug text-gray-300">
-                                    内側の競り合いを5がまくり、2が差し残す展開。
+                                    <span class="pattern-tag bg-black text-white">【内枠】</span>
+                                    5がまくり差し、1が外へ飛ばされた懐を2が差す展開。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-black text-center text-lg text-white">4<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">15.2%</td>
+                                <td class="py-4 px-3 leading-snug text-gray-300">
+                                    <span class="pattern-tag bg-blue-600 text-white">【カド】</span>
+                                    カドの4が全速で行き、5が最内から突き抜ける(5-4)。
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="data-card rounded-2xl p-6 italic text-sm text-gray-300 border-l-4 border-yellow-400 bg-slate-800/30">
-                    <p class="mb-2 font-bold text-yellow-400 tracking-widest uppercase text-xs">Morning Data</p>
-                    「芦屋のサンライズレース（企画）ではA級が1枠に構えるため、5枠の1着率は1〜2%台まで低下する。狙うなら昼以降の一般戦。特にスピードの乗る展示タイム1位の若手選手が5枠にいる時は波乱の予感。」
+
+                <div class="flex flex-col gap-4">
+                    <div class="data-card rounded-2xl p-6 italic text-sm text-gray-300 border-l-4 border-yellow-400 bg-slate-800/30">
+                        <p class="mb-2 font-bold text-yellow-400 tracking-widest uppercase text-xs">Ashiya Insight</p>
+                        「芦屋は全国でも有数のスピード水面です。企画レース（モーニング）は1枠にA級選手、他はB級選手という構成が多いため、5枠の勝率は極端に下がります。勝負所は8R以降。実力が拮抗し、展示タイムが良い5号艇が『まくり差し』で高配当を演出します。」
+                    </div>
                 </div>
             </div>
         </section>
 
+        <section class="space-y-6 pt-4">
+            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">Ashiya Detailed Database</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
+                
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">1. 展示1位の信頼度 (芦屋)</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>条件</th><th>1着率</th><th>期待値</th></tr></thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold text-white"><td>一般戦 + 展示1位</td><td class="yellow-accent">9.45%</td><td>Sランク</td></tr>
+                            <tr><td>企画レース + 展示3位以下</td><td>1.85%</td><td>Eランク</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">2. 風向きと5枠の連動</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>風条件</th><th>5枠勝率</th><th>理由</th></tr></thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold text-white"><td>向かい風 3m以上</td><td class="yellow-accent">+1.6%</td><td>カド・5枠の自力攻めが増加</td></tr>
+                            <tr><td>追い風 2m以上</td><td>-0.8%</td><td>インがさらに盤石になる</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">3. コース別の決まり手</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>戦法</th><th>比率</th><th>備考</th></tr></thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold text-white"><td>まくり差し</td><td class="yellow-accent">54.2%</td><td>広い1マークを利用した一撃</td></tr>
+                            <tr><td>差し</td><td>28.5%</td><td>内枠の競り合いを突く</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">4. 芦屋特有の「水面質」</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>要素</th><th>5枠への影響</th><th>詳細</th></tr></thead>
+                        <tbody>
+                            <tr><td>淡水に近い水質</td><td>浮力が少なくスピード型に有利</td><td>若手選手の台頭多し</td></tr>
+                            <tr class="highlight-row font-bold text-white"><td>広いバック</td><td class="yellow-accent">逆転のチャンスあり</td><td>2マークでの全速旋回</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </section>
     </main>
+
+    <footer class="mt-20 p-12 border-t border-slate-800 text-center text-gray-500 text-xs font-bold uppercase tracking-widest">
+        &copy; 2026 5枠突破診断所. Data Powered by BOAT STRIKE.
+    </footer>
 
     <script>
         function calc() {
             const raceType = document.getElementById('raceType').value;
             const exRank = document.getElementById('exRank').value;
+            const slit = document.getElementById('slit').value;
             const wind = document.getElementById('wind').value;
-            const vs4 = document.getElementById('vs4').value;
 
             document.getElementById('welcome-msg').classList.add('hidden');
             document.getElementById('result-area').classList.remove('hidden');
 
-            let score = 4.45; 
-            if (raceType === 'morning') score -= 2.00;
-            if (raceType === 'standard') score += 1.00;
-            if (exRank === '1') score += 3.20;
-            if (wind === 'head') score += 0.70;
-            if (vs4 === 'fast') score += 1.50;
+            let score = 4.90; // 芦屋 基礎勝率
+            if (raceType === 'general') score += 2.10; 
+            if (exRank === '1') score += 2.45; 
+            if (slit === 'good') score += 1.55;
+            if (wind === 'head') score += 0.90;
+
+            // 芦屋の最高期待値補正
+            if (raceType === 'general' && exRank === '1' && slit === 'good') score = Math.max(score, 10.15);
 
             document.getElementById('res-percent').innerText = score.toFixed(2);
 
             let comment = "";
-            if (score >= 8) {
-                comment = "【スピード突破】広い芦屋の水面を活かした全速まくり差しが期待できます。展示タイムが良いなら5-1, 5-2が有力スジ。";
-            } else if (score >= 5) {
-                comment = "【展開待ち】企画外レースならチャンスあり。4のカド攻めに連動して、バックの伸び勝負に持ち込めれば面白い。";
+            if (score >= 9.5) {
+                comment = "【芦屋・要塞陥落の予感】一般戦で展示1位、スリット気配も上々。インが強い芦屋ですが、この条件なら5のまくり差しが鋭く突き刺さります。5-1を本線に。";
+            } else if (score >= 7.5) {
+                comment = "【スピード期待】向かい風の一般戦なら5にもチャンス。スリットから少しでも覗けば、スピードを生かして1マークを攻略できます。";
             } else {
-                comment = "【インの聖地】芦屋のモーニングらしい、インが盤石の気配。5枠の出番は薄く、3着までのヒモ狙いが妥当。";
+                comment = "【モーニングの壁】企画レースかつ追い風の芦屋は、1枠A級選手の『逃げ鉄板』。5は3着争いに絡めるかどうかの厳しい戦いです。";
             }
             document.getElementById('res-comment').innerText = comment;
         }
