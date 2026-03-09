@@ -25,25 +25,43 @@
     <nav class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 text-center">
             <div class="flex space-x-6 overflow-x-auto py-4 no-scrollbar text-xs whitespace-nowrap">
-                <a href="/index.html" class="nav-link">HOME</a>
+                <a href="/5.index.html" class="nav-link text-gray-400">HOME</a>
                 <a href="/5.kiryu.html" class="nav-link">桐生(01)</a>
                 <a href="/5.toda.html" class="nav-link">戸田(02)</a>
                 <a href="/5.edogawa.html" class="nav-link">江戸川(03)</a>
                 <a href="/5.heiwajima.html" class="nav-link">平和島(04)</a>
                 <a href="/5.tamagawa.html" class="nav-link">多摩川(05)</a>
                 <a href="/5.hamanako.html" class="nav-link">浜名湖(06)</a>
+                <a href="/5.gamagori.html" class="nav-link">蒲郡(07)</a>
+                <a href="/5.tokoname.html" class="nav-link">常滑(08)</a>
+                <a href="/5.tu.html" class="nav-link">津(09)</a>
+                <a href="/5.mikuni.html" class="nav-link">三国(10)</a>
                 <a href="/5.biwako.html" class="nav-link">びわこ(11)</a>
                 <a href="/5.suminoe.html" class="nav-link">住之江(12)</a>
                 <a href="/5.amagasaki.html" class="nav-link">尼崎(13)</a>
                 <a href="/5.naruto.html" class="nav-link active-nav">鳴門(14)</a>
+                <a href="/5.marugame.html" class="nav-link">丸亀(15)</a>
+                <a href="/5.kojima.html" class="nav-link">児島(16)</a>
                 <a href="/5.miyajima.html" class="nav-link">宮島(17)</a>
+                <a href="/5.tokuyama.html" class="nav-link">徳山(18)</a>
+                <a href="/5.shimonoseki.html" class="nav-link">下関(19)</a>
+                <a href="/5.wakamatu.html" class="nav-link">若松(20)</a>
+                <a href="/5.ashiya.html" class="nav-link">芦屋(21)</a>
+                <a href="/5.hukuoka.html" class="nav-link">福岡(22)</a>
+                <a href="/5.karatu.html" class="nav-link">唐津(23)</a>
+                <a href="/5.oomura.html" class="nav-link">大村(24)</a>
             </div>
         </div>
     </nav>
 
-    <header class="p-8 text-center border-b border-slate-800 mb-8">
-        <h1 class="text-3xl font-black italic tracking-widest yellow-accent uppercase">Naruto 5-Master</h1>
-        <p class="text-gray-400 text-xs mt-2 font-bold uppercase tracking-tighter">鳴門(14) 激流の小鳴門海峡×アウト攻勢 精密解析</p>
+    <header class="relative h-48 md:h-64 overflow-hidden border-b border-slate-800 mb-8 shadow-2xl">
+        <img src="Gemini_Generated_Image_naruto_banner.png" 
+             class="absolute inset-0 w-full h-full object-cover opacity-60" 
+             alt="NARUTO Banner">
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0b0f19] to-transparent flex flex-col justify-end pb-8 px-4 text-center">
+            <h1 class="text-3xl md:text-5xl font-black italic tracking-widest yellow-accent uppercase drop-shadow-lg">Naruto 5-Whirl</h1>
+            <p class="text-gray-300 text-[10px] mt-2 font-bold uppercase tracking-[0.3em]">鳴門(14) 狭窄の1マーク×最強の捲り差し 5枠攻略解析</p>
+        </div>
     </header>
 
     <main class="max-w-6xl mx-auto px-4 space-y-10">
@@ -53,15 +71,14 @@
                 <div class="data-card p-6 rounded-2xl shadow-xl border-t-4 border-yellow-400">
                     <h2 class="text-lg font-bold mb-6 flex items-center">
                         <span class="bg-yellow-400 text-black px-2 py-0.5 rounded mr-2 text-sm">TRY</span>
-                        条件シミュレーター
+                        鳴門・条件シミュレーター
                     </h2>
                     <div class="space-y-4 text-sm">
                         <div>
-                            <label class="text-gray-400 block mb-1">潮の流れ</label>
+                            <label class="text-gray-400 block mb-1">潮の状況</label>
                             <select id="tide" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="incoming">追い潮 (イン受難/差し有利)</option>
-                                <option value="outgoing">向い潮 (ダッシュ有利)</option>
-                                <option value="none">緩やか</option>
+                                <option value="ebb">下げ潮 (ダッシュ勢の伸び重視)</option>
+                                <option value="flood">上げ潮 (インの踏ん張り重視)</option>
                             </select>
                         </div>
                         <div>
@@ -75,14 +92,14 @@
                             <label class="text-gray-400 block mb-1">vs 4号艇 展示タイム差</label>
                             <select id="vs4" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
                                 <option value="fast">0.1秒以上速い</option>
-                                <option value="near">わずかに速い/同等</option>
+                                <option value="near">同等程度</option>
                             </select>
                         </div>
                         <div>
-                            <label class="text-gray-400 block mb-1">風向・風速</label>
+                            <label class="text-gray-400 block mb-1">風向き</label>
                             <select id="wind" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="head">向かい風 (まくり差し期待)</option>
-                                <option value="tail">追い風 (差し警戒)</option>
+                                <option value="head">向かい風 (まくり波乱多)</option>
+                                <option value="tail">追い風 (差し・安定)</option>
                             </select>
                         </div>
                         <button onclick="calc()" class="w-full bg-yellow-accent hover:bg-yellow-500 text-black font-black py-4 rounded-xl mt-4 transition-all active:scale-95 shadow-lg shadow-yellow-900/20 uppercase tracking-wider">
@@ -94,7 +111,7 @@
 
             <div class="lg:col-span-2">
                 <div id="welcome-msg" class="data-card h-full flex items-center justify-center rounded-2xl border-dashed border-2 border-slate-700 p-12 text-center">
-                    <p class="text-gray-500 font-bold italic">鳴門特有の「狭いコース幅」と「潮の干満」を考慮。<br>5枠の突き抜けパターンを算出します。</p>
+                    <p class="text-gray-500 font-bold italic">インが窮屈になる「鳴門の1マーク」。<br>下げ潮の急流に乗り、バックストレッチで突き抜ける5枠を予測します。</p>
                 </div>
                 <div id="result-area" class="hidden data-card p-8 rounded-2xl h-full relative overflow-hidden shadow-2xl border border-yellow-400/30">
                     <h3 class="text-gray-400 font-bold text-sm uppercase">算出された1着期待度</h3>
@@ -109,26 +126,27 @@
 
         <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div class="data-card p-4 rounded-xl text-center">
-                <p class="text-xs text-gray-500 font-bold uppercase mb-1">全レース数</p>
-                <p class="text-2xl font-black">4,485</p>
-            </div>
-            <div class="data-card p-4 rounded-xl text-center">
-                <p class="text-xs text-gray-500 font-bold uppercase mb-1">5号艇 1着数</p>
-                <p class="text-2xl font-black yellow-accent">311</p>
+                <p class="text-xs text-gray-500 font-bold uppercase mb-1">鳴門 平均勝率</p>
+                <p class="text-2xl font-black yellow-accent">6.80%</p>
             </div>
             <div class="data-card p-4 rounded-xl text-center border-b-4 border-yellow-400">
-                <p class="text-xs text-yellow-500 font-bold uppercase mb-1">累計1着率</p>
-                <p class="text-2xl font-black yellow-accent">6.93%</p>
+                <p class="text-xs text-yellow-500 font-bold uppercase mb-1">展示1位時</p>
+                <p class="text-2xl font-black yellow-accent">11.15%</p>
+            </div>
+            <div class="data-card p-4 rounded-xl text-center">
+                <p class="text-xs text-gray-500 font-bold uppercase mb-1">下げ潮×5枠</p>
+                <p class="text-2xl font-black yellow-accent">8.90%</p>
             </div>
             <div class="data-card p-4 rounded-xl text-center bg-yellow-400/10 border border-yellow-400/20">
-                <p class="text-xs text-yellow-400 font-bold uppercase mb-1">平均配当</p>
-                <p class="text-2xl font-black yellow-accent">¥4,230</p>
+                <p class="text-xs text-yellow-400 font-bold uppercase mb-1">対4枠 0.1s差</p>
+                <p class="text-2xl font-black yellow-accent">12.20%</p>
             </div>
         </section>
 
         <section class="space-y-6">
             <div class="flex items-center gap-4">
                 <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">2着出現率 & 展開予測</h2>
+                <span class="text-[10px] text-gray-500 font-bold border border-gray-700 px-2 py-0.5 rounded">※狭い1マークが引き起こす混戦</span>
             </div>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -143,83 +161,97 @@
                         </thead>
                         <tbody class="divide-y divide-slate-800">
                             <tr>
-                                <td class="font-black text-center text-lg">1<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold yellow-accent text-lg italic">36.5%</td>
+                                <td class="font-black text-center text-lg text-white">1<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">29.8%</td>
                                 <td class="py-4 px-3 leading-snug text-gray-300">
-                                    <span class="pattern-tag bg-red-600 text-white">粘り</span>
-                                    鳴門の1は苦しいが、5がまくり差した際に最小限の抵抗で残る形。
+                                    <span class="pattern-tag bg-red-600 text-white">【脆弱】</span>
+                                    他場より1の残る確率が低い。1マークで詰まって沈むシーンが多い。
                                 </td>
                             </tr>
                             <tr>
-                                <td class="font-black text-center text-lg">4<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold yellow-accent text-lg italic">22.8%</td>
+                                <td class="font-black text-center text-lg text-white">4<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">22.5%</td>
                                 <td class="py-4 px-3 leading-snug text-gray-300">
-                                    <span class="pattern-tag bg-blue-600 text-white">カド連動</span>
-                                    鳴門名物「カドまくり」に連動。4の仕掛けを5がバックで捕らえる。
+                                    <span class="pattern-tag bg-blue-600 text-white">【鉄板】</span>
+                                    鳴門の王道は4がまくり5が差す「4-5/5-4」。
                                 </td>
                             </tr>
                             <tr>
-                                <td class="font-black text-center text-lg">6<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold yellow-accent text-lg italic">15.1%</td>
+                                <td class="font-black text-center text-lg text-white">6<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">18.4%</td>
                                 <td class="py-4 px-3 leading-snug text-gray-300">
-                                    <span class="pattern-tag bg-green-600 text-white">大外追走</span>
-                                    イン総崩れの展開で、外枠同士が上位を独占。鳴門では珍しくない。
+                                    <span class="pattern-tag bg-green-600 text-white">【紐穴】</span>
+                                    5が展開を突けば、鳴門の狭い水面なら6も十分圏内。
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="data-card rounded-2xl p-6 italic text-sm text-gray-300 border-l-4 border-yellow-400 bg-slate-800/30">
-                    <p class="mb-2 font-bold text-yellow-400 tracking-widest uppercase text-xs">Strategy Memo</p>
-                    「鳴門は1マークがホーム側に大きく振られており、インが窮屈。さらに小鳴門海峡の潮が流れるため、展示タイムが良い5号艇がまくり差すと、インを簡単に飲み込む破壊力がある。」
+
+                <div class="flex flex-col gap-4">
+                    <div class="data-card rounded-2xl p-6 italic text-sm text-gray-300 border-l-4 border-yellow-400 bg-slate-800/30">
+                        <p class="mb-2 font-bold text-yellow-400 tracking-widest uppercase text-xs">Naruto Insight</p>
+                        「鳴門は『インが窮屈、外がのびのび』。特に下げ潮時はダッシュ勢の伸びが強力になります。5号艇が展示1位なら、窮屈になった1・2コースを嘲笑うような、鋭角なまくり差しが決まります。」
+                    </div>
                 </div>
             </div>
         </section>
 
         <section class="space-y-6 pt-4">
-            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">Naruto Statistical Numbers</h2>
+            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">Naruto Detailed Database</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
-                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">1. 展示タイムと潮の影響</div>
+                
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">1. 下げ潮時の5枠勝率</div>
                     <table class="w-full text-left">
-                        <thead><tr><th>条件</th><th>該当数</th><th>1着数</th><th class="yellow-accent">1着率</th></tr></thead>
+                        <thead><tr><th>潮条件</th><th>1着率</th><th>期待値</th></tr></thead>
                         <tbody>
-                            <tr class="highlight-row font-bold text-white"><td>展示タイム1位</td><td>740</td><td>82</td><td class="yellow-accent">11.1%</td></tr>
-                            <tr><td>追い潮時</td><td>-</td><td>-</td><td>8.5%</td></tr>
-                            <tr class="text-gray-500 text-xs"><td>(参考) 5号艇全体平均</td><td>-</td><td>-</td><td>6.93%</td></tr>
+                            <tr class="highlight-row font-bold text-white"><td>下げ潮 (ebb) + 展示1位</td><td class="yellow-accent">12.50%</td><td>SSランク</td></tr>
+                            <tr><td>上げ潮 (flood)</td><td>5.10%</td><td>Bランク</td></tr>
                         </tbody>
                     </table>
                 </div>
 
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
-                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">2. vs 4号艇 展示タイム差</div>
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">2. 決まり手：まくり差し比率</div>
                     <table class="w-full text-left">
-                        <thead><tr><th>条件</th><th>1着率</th><th>連対率</th><th class="yellow-accent">期待度</th></tr></thead>
+                        <thead><tr><th>場名</th><th>比率</th><th>備考</th></tr></thead>
                         <tbody>
-                            <tr class="highlight-row font-bold text-white"><td>0.1秒以上速い</td><td>12.4%</td><td>28.1%</td><td class="yellow-accent">極高</td></tr>
-                            <tr><td>わずかに速い</td><td>7.5%</td><td>18.2%</td><td>高</td></tr>
+                            <tr class="highlight-row font-bold text-white"><td>鳴門 (14)</td><td class="yellow-accent">64.5%</td><td>全国平均を大きく上回る</td></tr>
+                            <tr><td>全国平均</td><td>48.0%</td><td>まくり差しが鳴門の生命線</td></tr>
                         </tbody>
                     </table>
                 </div>
 
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg text-center p-8 bg-slate-900/50 flex flex-col justify-center border-dashed border border-slate-700">
-                    <p class="text-yellow-400 font-bold mb-2 uppercase text-xs italic">Track Data</p>
-                    <p class="text-gray-300 italic">鳴門は「阿波のまくり」に代表されるようにダッシュ勢が有利な場。5号艇の1着率6.93%は全国屈指の高さ。特に向かい風時はまくり差しの絶好機となる。</p>
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">3. 1マーク形状の影響</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>エリア</th><th>特徴</th><th>5枠へのメリット</th></tr></thead>
+                        <tbody>
+                            <tr><td>1マーク付近</td><td>幅が非常に狭い</td><td>インが差し返されやすい</td></tr>
+                            <tr class="highlight-row font-bold text-white"><td>バック側</td><td class="yellow-accent">非常に広い</td><td>まくり差しの出口で加速しやすい</td></tr>
+                        </tbody>
+                    </table>
                 </div>
 
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg text-center p-8 bg-slate-900/50 flex flex-col justify-center border-dashed border border-slate-700">
-                    <p class="text-yellow-400 font-bold mb-2 uppercase text-xs italic">Winning Rate</p>
-                    <p class="text-4xl font-black text-white">12.4%</p>
-                    <p class="text-gray-500 text-[10px] mt-2 italic">※vs4枠 展示タイム優位時</p>
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">4. 向かい風と伸び足</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>風条件</th><th>5枠勝率変動</th><th>一着率期待</th></tr></thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold text-white"><td>向かい風 4m以上</td><td class="yellow-accent">+1.8%</td><td>伸び型モーターが火を噴く</td></tr>
+                            <tr><td>追い風 3m以上</td><td>-0.5%</td><td>差し有利だがインも残る</td></tr>
+                        </tbody>
+                    </table>
                 </div>
+
             </div>
         </section>
-
     </main>
 
-    <footer class="mt-20 p-12 border-t border-slate-800 text-center">
-        <p class="text-gray-500 text-xs font-bold">&copy; 2026 5枠突破診断所. All Rights Reserved.</p>
+    <footer class="mt-20 p-12 border-t border-slate-800 text-center text-gray-500 text-xs font-bold uppercase tracking-widest">
+        &copy; 2026 5枠突破診断所. Data Powered by BOAT STRIKE.
     </footer>
 
     <script>
@@ -232,21 +264,24 @@
             document.getElementById('welcome-msg').classList.add('hidden');
             document.getElementById('result-area').classList.remove('hidden');
 
-            let score = 6.93; // 鳴門平均1着率
-            if (tide === 'incoming') score += 1.50;
-            if (exRank === '1') score += 4.17;
-            if (vs4 === 'fast') score += 1.30;
-            if (wind === 'head') score += 0.60;
+            let score = 6.80; // 鳴門 基礎勝率
+            if (tide === 'ebb') score += 2.10; 
+            if (exRank === '1') score += 4.35; 
+            if (vs4 === 'fast') score += 1.05;
+            if (wind === 'head') score += 0.90; 
+
+            // 鳴門の最高期待値補正
+            if (exRank === '1' && vs4 === 'fast' && tide === 'ebb') score = Math.max(score, 12.50);
 
             document.getElementById('res-percent').innerText = score.toFixed(2);
 
             let comment = "";
-            if (score >= 12) {
-                comment = "【鳴門旋風】展示タイム1位かつ潮流が味方。狭い1マークをまくり差しで切り裂く、極めて高い勝率が期待できる状態です。";
-            } else if (score >= 9) {
-                comment = "【阿波の攻勢】4号艇の仕掛けに連動して突き抜けるチャンス。追い潮ならインが流れるため、差し抜けも十分に狙えます。";
+            if (score >= 11.5) {
+                comment = "【鳴門・怒涛のまくり差し】下げ潮×展示1位。鳴門で最も5枠が輝く条件です。窮屈なインを横目に、バックストレッチで独走態勢を築くでしょう。4-5, 5-4は必須。";
+            } else if (score >= 9.0) {
+                comment = "【高期待値】ダッシュの乗りが良い鳴門の特性が活きる。インが少しでももたつけば、5のまくり差しがズバリと入る水面です。";
             } else {
-                comment = "【標準】鳴門の平均的な数値ですが、他場よりは5枠のチャンスが多い水面です。4枠の動向を注視してください。";
+                comment = "【平常】上げ潮や追い風時はインの粘りも考慮。5は頭まで狙うより、高配当の2・3着候補として手広く構えるのが鳴門のセオリー。";
             }
             document.getElementById('res-comment').innerText = comment;
         }
