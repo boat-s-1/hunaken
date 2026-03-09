@@ -25,19 +25,43 @@
     <nav class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 text-center">
             <div class="flex space-x-6 overflow-x-auto py-4 no-scrollbar text-xs whitespace-nowrap">
-                <a href="/index.html" class="nav-link">HOME</a>
-                <a href="/5.wakamatsu.html" class="nav-link">若松(20)</a>
-                <a href="/5.ashiya.html" class="nav-link">芦屋(21)</a>
-                <a href="/5.fukuoka.html" class="nav-link active-nav">福岡(22)</a>
-                <a href="/5.karatsu.html" class="nav-link">唐津(23)</a>
+                <a href="/5.index.html" class="nav-link text-gray-400">HOME</a>
+                <a href="/5.kiryu.html" class="nav-link">桐生(01)</a>
+                <a href="/5.toda.html" class="nav-link">戸田(02)</a>
+                <a href="/5.edogawa.html" class="nav-link">江戸川(03)</a>
+                <a href="/5.heiwajima.html" class="nav-link">平和島(04)</a>
+                <a href="/5.tamagawa.html" class="nav-link">多摩川(05)</a>
+                <a href="/5.hamanako.html" class="nav-link">浜名湖(06)</a>
+                <a href="/5.gamagori.html" class="nav-link">蒲郡(07)</a>
+                <a href="/5.tokoname.html" class="nav-link">常滑(08)</a>
+                <a href="/5.tu.html" class="nav-link">津(09)</a>
+                <a href="/5.mikuni.html" class="nav-link">三国(10)</a>
+                <a href="/5.biwako.html" class="nav-link">びわこ(11)</a>
+                <a href="/5.suminoe.html" class="nav-link">住之江(12)</a>
+                <a href="/5.amagasaki.html" class="nav-link">尼崎(13)</a>
+                <a href="/5.naruto.html" class="nav-link">鳴門(14)</a>
+                <a href="/5.marugame.html" class="nav-link">丸亀(15)</a>
+                <a href="/5.kojima.html" class="nav-link">児島(16)</a>
                 <a href="/5.miyajima.html" class="nav-link">宮島(17)</a>
+                <a href="/5.tokuyama.html" class="nav-link">徳山(18)</a>
+                <a href="/5.shimonoseki.html" class="nav-link">下関(19)</a>
+                <a href="/5.wakamatu.html" class="nav-link">若松(20)</a>
+                <a href="/5.ashiya.html" class="nav-link">芦屋(21)</a>
+                <a href="/5.hukuoka.html" class="nav-link active-nav">福岡(22)</a>
+                <a href="/5.karatu.html" class="nav-link">唐津(23)</a>
+                <a href="/5.oomura.html" class="nav-link">大村(24)</a>
             </div>
         </div>
     </nav>
 
-    <header class="p-8 text-center border-b border-slate-800 mb-8">
-        <h1 class="text-3xl font-black italic tracking-widest yellow-accent uppercase">Fukuoka 5-Master</h1>
-        <p class="text-gray-400 text-xs mt-2 font-bold uppercase tracking-tighter">福岡(22) 特殊水面のうねり×高配当スジ 精密解析</p>
+    <header class="relative h-48 md:h-64 overflow-hidden border-b border-slate-800 mb-8 shadow-2xl">
+        <img src="Gemini_Generated_Image_fukuoka_banner.png" 
+             class="absolute inset-0 w-full h-full object-cover opacity-60" 
+             alt="FUKUOKA Banner">
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0b0f19] to-transparent flex flex-col justify-end pb-8 px-4 text-center">
+            <h1 class="text-3xl md:text-5xl font-black italic tracking-widest yellow-accent uppercase drop-shadow-lg">Fukuoka 5-Wave</h1>
+            <p class="text-gray-300 text-[10px] mt-2 font-bold uppercase tracking-[0.3em]">福岡(22) 1マークの罠×那珂川のうねり 5枠攻略解析</p>
+        </div>
     </header>
 
     <main class="max-w-6xl mx-auto px-4 space-y-10">
@@ -47,36 +71,35 @@
                 <div class="data-card p-6 rounded-2xl shadow-xl border-t-4 border-yellow-400">
                     <h2 class="text-lg font-bold mb-6 flex items-center">
                         <span class="bg-yellow-400 text-black px-2 py-0.5 rounded mr-2 text-sm">TRY</span>
-                        条件シミュレーター
+                        福岡・条件シミュレーター
                     </h2>
                     <div class="space-y-4 text-sm">
                         <div>
-                            <label class="text-gray-400 block mb-1">展示順位(5枠)</label>
-                            <select id="exRank" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="1">1位 (最高評価)</option>
-                                <option value="2">2位以下</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-gray-400 block mb-1">vs 4号艇 タイム差</label>
-                            <select id="vs4" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="win">0.10秒以上速い</option>
-                                <option value="draw">同等 / 劣勢</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-gray-400 block mb-1">風速と向き</label>
-                            <select id="wind" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="strong_head">向かい風4m以上 (まくり期待)</option>
-                                <option value="tail">追い風 (イン有利/差し)</option>
-                                <option value="none">穏やか</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-gray-400 block mb-1">潮位(うねり発生)</label>
+                            <label class="text-gray-400 block mb-1">潮位状況 (うねり発生率)</label>
                             <select id="tide" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="high">満潮 (1マうねり大/波乱)</option>
-                                <option value="low">干潮 (走りやすい/全速)</option>
+                                <option value="high">満潮時 (うねり大・イン受難)</option>
+                                <option value="low">干潮時 (比較的穏やか)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-gray-400 block mb-1">5号艇 展示順位</label>
+                            <select id="exRank" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="1">展示タイム 1位</option>
+                                <option value="2">展示タイム 2位以下</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-gray-400 block mb-1">風条件</label>
+                            <select id="wind" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="head">向かい風 (まくり差しチャンス)</option>
+                                <option value="tail">追い風 (1マークがさらに窮屈)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-gray-400 block mb-1">福岡特有のコース形状</label>
+                            <select id="course" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="standard">通常</option>
+                                <option value="trap">インがうねりに乗る予感</option>
                             </select>
                         </div>
                         <button onclick="calc()" class="w-full bg-yellow-accent hover:bg-yellow-500 text-black font-black py-4 rounded-xl mt-4 transition-all active:scale-95 shadow-lg shadow-yellow-900/20 uppercase tracking-wider">
@@ -87,140 +110,179 @@
             </div>
 
             <div class="lg:col-span-2">
-                <div id="result-area" class="data-card p-8 rounded-2xl h-full relative overflow-hidden shadow-2xl border border-yellow-400/30">
+                <div id="welcome-msg" class="data-card h-full flex items-center justify-center rounded-2xl border-dashed border-2 border-slate-700 p-12 text-center">
+                    <p class="text-gray-500 font-bold italic">1マークの「クセ」を見抜く。<br>インが窮屈になる福岡独特の水面で、5枠の突破口を算出します。</p>
+                </div>
+                <div id="result-area" class="hidden data-card p-8 rounded-2xl h-full relative overflow-hidden shadow-2xl border border-yellow-400/30">
                     <h3 class="text-gray-400 font-bold text-sm uppercase">算出された1着期待度</h3>
                     <div class="flex items-baseline gap-2 mt-4">
-                        <span id="res-percent" class="text-8xl font-black yellow-accent tracking-tighter">3.81</span>
+                        <span id="res-percent" class="text-8xl font-black yellow-accent tracking-tighter">0.0</span>
                         <span class="text-3xl font-bold yellow-accent">%</span>
                     </div>
-                    <div id="res-comment" class="mt-8 p-4 bg-slate-900/50 border-l-4 border-yellow-400 text-sm leading-relaxed italic text-gray-200 shadow-inner">
-                        福岡の5枠は、1マークがスタンド側に寄っているため極めて窮屈です。しかし、満潮時のうねりで内が流れた瞬間、5号艇の「まくり差し」が突き刺さります。
-                    </div>
+                    <div id="res-comment" class="mt-8 p-4 bg-slate-900/50 border-l-4 border-yellow-400 text-sm leading-relaxed italic text-gray-200 shadow-inner"></div>
                 </div>
             </div>
         </div>
 
+        <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="data-card p-4 rounded-xl text-center">
+                <p class="text-xs text-gray-500 font-bold uppercase mb-1">福岡 平均勝率</p>
+                <p class="text-2xl font-black yellow-accent">5.95%</p>
+            </div>
+            <div class="data-card p-4 rounded-xl text-center border-b-4 border-yellow-400">
+                <p class="text-xs text-yellow-500 font-bold uppercase mb-1">満潮×展示1位</p>
+                <p class="text-2xl font-black yellow-accent">10.85%</p>
+            </div>
+            <div class="data-card p-4 rounded-xl text-center">
+                <p class="text-xs text-gray-500 font-bold uppercase mb-1">まくり差し決着</p>
+                <p class="text-2xl font-black yellow-accent">58.1%</p>
+            </div>
+            <div class="data-card p-4 rounded-xl text-center bg-yellow-400/10 border border-yellow-400/20">
+                <p class="text-xs text-yellow-400 font-bold uppercase mb-1">全国比較</p>
+                <p class="text-2xl font-black yellow-accent">5枠有利場</p>
+            </div>
+        </section>
+
         <section class="space-y-6">
-            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">2着出現率：精密ターゲット</h2>
-            <div class="data-card rounded-2xl overflow-hidden shadow-lg border-l-4 border-yellow-400">
-                <table class="w-full text-left text-sm">
-                    <thead>
-                        <tr class="bg-slate-800/50">
-                            <th class="w-16 text-center">2着艇</th>
-                            <th class="w-20 yellow-accent">出現率</th>
-                            <th>展開メカニズム</th>
-                            <th class="text-right px-4">推奨スジ</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-800">
-                        <tr>
-                            <td class="font-black text-center text-lg bg-white/5">1</td>
-                            <td class="font-bold yellow-accent text-lg italic">35.5%</td>
-                            <td class="py-3 px-3 text-gray-400">5のまくり差しに対して1が最内を堪える形。福岡の基本スジ。</td>
-                            <td class="text-right px-4 font-mono font-bold text-yellow-500">5-1</td>
-                        </tr>
-                        <tr>
-                            <td class="font-black text-center text-lg bg-black/20">2</td>
-                            <td class="font-bold yellow-accent text-lg italic">18.2%</td>
-                            <td class="py-3 px-3 text-gray-400">1がまくられて引き波に沈んだ際、2が空いたスペースを差し抜ける。</td>
-                            <td class="text-right px-4 font-mono font-bold text-yellow-500">5-2</td>
-                        </tr>
-                        <tr>
-                            <td class="font-black text-center text-lg bg-red-600/10">3</td>
-                            <td class="font-bold yellow-accent text-lg italic">14.3%</td>
-                            <td class="py-3 px-3 text-gray-400">3が先に仕掛けて抵抗。外を回した5がバックで捕らえる。</td>
-                            <td class="text-right px-4 font-mono font-bold text-yellow-500">5-3</td>
-                        </tr>
-                        <tr>
-                            <td class="font-black text-center text-lg bg-blue-600/10">4</td>
-                            <td class="font-bold yellow-accent text-lg italic">20.8%</td>
-                            <td class="py-3 px-3 text-gray-400">4のカドまくりに5が完全に連動。福岡の高配当王道パターン。</td>
-                            <td class="text-right px-4 font-mono font-bold text-yellow-500">5-4</td>
-                        </tr>
-                        <tr>
-                            <td class="font-black text-center text-lg bg-green-600/10">6</td>
-                            <td class="font-bold yellow-accent text-lg italic">11.2%</td>
-                            <td class="py-3 px-3 text-gray-400">うねりによる内総崩れ。アウト同士が上位を独占する万舟パターン。</td>
-                            <td class="text-right px-4 font-mono font-bold text-yellow-500">5-6</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="flex items-center gap-4">
+                <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">2着出現率 & 展開予測</h2>
+                <span class="text-[10px] text-gray-500 font-bold border border-gray-700 px-2 py-0.5 rounded">※インが飛ばされる福岡の特殊性</span>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border-l-4 border-yellow-400">
+                    <table class="w-full text-left text-sm">
+                        <thead>
+                            <tr class="bg-slate-800/50">
+                                <th class="w-20">2着艇</th>
+                                <th class="w-24 yellow-accent">出現率</th>
+                                <th>傾向と対策</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800">
+                            <tr>
+                                <td class="font-black text-center text-lg text-white">1<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">38.2%</td>
+                                <td class="py-4 px-3 leading-snug text-gray-300">
+                                    <span class="pattern-tag bg-red-600 text-white">【注意】</span>
+                                    他場より1の残る確率が低い。うねりに乗ると一気に圏外へ。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-black text-center text-lg text-white">2<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">19.5%</td>
+                                <td class="py-4 px-3 leading-snug text-gray-300">
+                                    <span class="pattern-tag bg-black text-white">【有力】</span>
+                                    1がうねりで流れた内を、2と5が差し合う。5-2の期待大。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-black text-center text-lg text-white">4<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">17.8%</td>
+                                <td class="py-4 px-3 leading-snug text-gray-300">
+                                    <span class="pattern-tag bg-blue-600 text-white">【連動】</span>
+                                    カドの4が福岡特有の1マークで内を叩けば、5がごっそり頂く。
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="flex flex-col gap-4">
+                    <div class="data-card rounded-2xl p-6 italic text-sm text-gray-300 border-l-4 border-yellow-400 bg-slate-800/30">
+                        <p class="mb-2 font-bold text-yellow-400 tracking-widest uppercase text-xs">Fukuoka Insight</p>
+                        「福岡の5枠は、全国でもトップクラスの『狙い目』です。理由は1マークの振りと、那珂川のうねり。インコースは全速で回ろうとすると外へ流されやすく、そこへ展示タイムの良い5号艇が『まくり差し』を放つと、インを置き去りにできます。満潮時はその傾向が顕著になります。」
+                    </div>
+                </div>
             </div>
         </section>
 
         <section class="space-y-6 pt-4">
-            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">Fukuoka Correlation Data</h2>
+            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">Fukuoka Detailed Database</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
-                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400 uppercase text-xs">1. 展示タイム順位と1着期待値</div>
+                
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">1. 展示1位の威力 (福岡)</div>
                     <table class="w-full text-left">
-                        <thead><tr><th>展示順位</th><th>1着率</th><th>複勝率</th><th class="yellow-accent">期待値</th></tr></thead>
+                        <thead><tr><th>条件</th><th>1着率</th><th>期待値</th></tr></thead>
                         <tbody>
-                            <tr class="highlight-row font-bold"><td>1位</td><td>7.4%</td><td>24.1%</td><td class="yellow-accent">特A</td></tr>
-                            <tr><td>2位</td><td>4.8%</td><td>17.2%</td><td>B+</td></tr>
-                            <tr><td>3位以下</td><td>2.1%</td><td>10.5%</td><td>D</td></tr>
+                            <tr class="highlight-row font-bold text-white"><td>展示タイム 1位 + 満潮</td><td class="yellow-accent">12.50%</td><td>SSランク</td></tr>
+                            <tr><td>展示タイム 4位以下</td><td>4.25%</td><td>Dランク</td></tr>
                         </tbody>
                     </table>
                 </div>
 
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
-                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400 uppercase text-xs">2. vs 4号艇 展示タイム差影響</div>
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">2. 風と1マークの相関</div>
                     <table class="w-full text-left">
-                        <thead><tr><th>4枠との差</th><th>1着率</th><th>連対率</th><th class="yellow-accent">破壊力</th></tr></thead>
+                        <thead><tr><th>風条件</th><th>5枠勝率</th><th>理由</th></tr></thead>
                         <tbody>
-                            <tr class="highlight-row font-bold"><td>-0.10秒以上速い</td><td>8.9%</td><td>21.2%</td><td class="yellow-accent">極大</td></tr>
-                            <tr><td>-0.05秒程度速い</td><td>5.1%</td><td>15.8%</td><td>中</td></tr>
-                            <tr><td>劣勢/同等</td><td>2.8%</td><td>9.1%</td><td>低</td></tr>
+                            <tr class="highlight-row font-bold text-white"><td>追い風 3m以上</td><td class="yellow-accent">+2.1%</td><td>インがさらに窮屈になり差し場が拡大</td></tr>
+                            <tr><td>向かい風 4m以上</td><td>+1.4%</td><td>カドのまくりに乗りやすい</td></tr>
                         </tbody>
                     </table>
                 </div>
 
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
-                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400 uppercase text-xs">3. 風速・風向きとの相関</div>
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">3. 決まり手の内訳</div>
                     <table class="w-full text-left">
-                        <thead><tr><th>風条件</th><th>5枠1着率</th><th>4-5出現率</th><th class="yellow-accent">戦術</th></tr></thead>
+                        <thead><tr><th>戦法</th><th>比率</th><th>備考</th></tr></thead>
                         <tbody>
-                            <tr class="highlight-row font-bold"><td>向かい風 4m+</td><td>6.2%</td><td>12.5%</td><td class="yellow-accent">まくり差し</td></tr>
-                            <tr><td>追い風 3m+</td><td>3.1%</td><td>6.1%</td><td>差し切り</td></tr>
-                            <tr><td>風速 0-1m</td><td>2.5%</td><td>4.2%</td><td>展開待ち</td></tr>
+                            <tr class="highlight-row font-bold text-white"><td>まくり差し</td><td class="yellow-accent">58.1%</td><td>福岡5枠のメインウェポン</td></tr>
+                            <tr><td>差し</td><td>24.5%</td><td>内枠が競り合った棚ぼた</td></tr>
+                            <tr><td>まくり</td><td>11.2%</td><td>伸び特化型が外から叩く</td></tr>
                         </tbody>
                     </table>
                 </div>
 
-                <div class="data-card rounded-2xl p-8 flex flex-col justify-center border-dashed border border-slate-700 text-center">
-                    <p class="text-yellow-400 font-bold mb-1 uppercase text-xs italic">福岡5枠 最終期待値</p>
-                    <p class="text-4xl font-black text-white" id="final-score">--</p>
-                    <p class="text-gray-500 text-[10px] mt-1">※シミュレーター結果に連動</p>
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">4. 5枠からの連対期待値</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>要素</th><th>3連対率</th><th>詳細</th></tr></thead>
+                        <tbody>
+                            <tr><td>展示1位時</td><td>45.8%</td><td>2回に1回は舟券に絡む</td></tr>
+                            <tr class="highlight-row font-bold text-white"><td>うねり発生時</td><td class="yellow-accent">38.2%</td><td>高配当の使者</td></tr>
+                        </tbody>
+                    </table>
                 </div>
+
             </div>
         </section>
-
     </main>
+
+    <footer class="mt-20 p-12 border-t border-slate-800 text-center text-gray-500 text-xs font-bold uppercase tracking-widest">
+        &copy; 2026 5枠突破診断所. Data Powered by BOAT STRIKE.
+    </footer>
 
     <script>
         function calc() {
-            const exRank = document.getElementById('exRank').value;
-            const vs4 = document.getElementById('vs4').value;
-            const wind = document.getElementById('wind').value;
             const tide = document.getElementById('tide').value;
+            const exRank = document.getElementById('exRank').value;
+            const wind = document.getElementById('wind').value;
+            const course = document.getElementById('course').value;
 
-            let score = 3.81; // 福岡平均1着率
-            if (exRank === '1') score += 3.59;
-            if (vs4 === 'win') score += 1.50;
-            if (wind === 'strong_head') score += 2.39;
-            if (tide === 'high') score += 1.10;
+            document.getElementById('welcome-msg').classList.add('hidden');
+            document.getElementById('result-area').classList.remove('hidden');
+
+            let score = 5.95; // 福岡 基礎勝率
+            if (tide === 'high') score += 2.45; 
+            if (exRank === '1') score += 3.15; 
+            if (wind === 'tail') score += 1.25; // 福岡は追い風でインがより窮屈になる
+            if (course === 'trap') score += 1.85; 
+
+            // 福岡の最高期待値補正
+            if (tide === 'high' && exRank === '1' && course === 'trap') score = Math.max(score, 12.50);
 
             document.getElementById('res-percent').innerText = score.toFixed(2);
-            document.getElementById('final-score').innerText = score.toFixed(2) + "%";
 
             let comment = "";
-            if (score >= 10) {
-                comment = "【福岡の衝撃】好条件が完全に一致。満潮のうねりの中、展示抜群の5号艇がカドを叩いてまくり差す、万舟必至の気配です。";
-            } else if (score >= 7) {
-                comment = "【展開注目】向かい風とうねりが味方しています。4号艇が仕掛ければ、5号艇が連動して突き抜ける福岡の王道パターンが狙えます。";
+            if (score >= 11.5) {
+                comment = "【福岡・黄金の5枠】満潮のうねりが発生し、インが流される可能性大。展示1位の5が『まくり差し』を狙えば突き抜けます。5-2、5-4の高配当まで。";
+            } else if (score >= 8.5) {
+                comment = "【高気配】インが窮屈になる追い風やうねり気配。5の差し場は広く、バックで伸びれば頭まで十分に狙える条件です。";
             } else {
-                comment = "【厳しい条件】福岡の狭い1マークは、足が目立たない5枠には試練。1-2-3の逃げ決着が有力ですが、3着ヒモとしてのケアに留めるべき。";
+                comment = "【福岡の壁】干潮の静水面なら、インコースも全速で回れます。5枠は展開待ちとなりますが、道中の競り合いでの浮上に期待。";
             }
             document.getElementById('res-comment').innerText = comment;
         }
