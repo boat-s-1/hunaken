@@ -59,7 +59,7 @@
              class="absolute inset-0 w-full h-full object-cover opacity-60" 
              alt="HAMANAKO Banner">
         <div class="absolute inset-0 bg-gradient-to-t from-[#0b0f19] to-transparent flex flex-col justify-end pb-8 px-4 text-center">
-            <h1 class="text-3xl md:text-5xl font-black italic tracking-widest yellow-accent uppercase drop-shadow-lg">Hamanako 5-Master</h1>
+            <h1 class="text-3xl md:text-5xl font-black italic tracking-widest yellow-accent uppercase drop-shadow-lg">　</h1>
             <p class="text-gray-300 text-[10px] mt-2 font-bold uppercase tracking-[0.3em]">浜名湖(06) 広大な水面と追い風時の5枠攻略解析</p>
         </div>
     </header>
@@ -206,11 +206,12 @@
             </div>
         </section>
 
-        <section class="space-y-6 pt-4">
-            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider">Hamanako Detailed Database</h2>
+   <section class="space-y-6 pt-4">
+            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">Hamanako Detailed Database</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
+                
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
                     <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">1. vs 4号艇 展示タイム差</div>
                     <table class="w-full text-left">
                         <thead><tr><th>条件</th><th>1着率</th><th>期待値</th></tr></thead>
@@ -222,7 +223,7 @@
                     </table>
                 </div>
 
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
                     <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">2. 風速別 決まり手傾向</div>
                     <table class="w-full text-left">
                         <thead><tr><th>風条件</th><th>1着率</th><th>最多決まり手</th></tr></thead>
@@ -231,7 +232,10 @@
                             <tr><td>向かい風 3m以上</td><td>7.10%</td><td>まくり(45%)</td></tr>
                             <tr><td>無風・弱風</td><td>5.20%</td><td>差し(30%)</td></tr>
                         </tbody>
-                    </table><div class="data-card rounded-2xl overflow-hidden shadow-lg">
+                    </table>
+                </div>
+
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
                     <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">3. 季節別 5枠連対期待値</div>
                     <table class="w-full text-left">
                         <thead><tr><th>季節</th><th>1着率</th><th>特記事項</th></tr></thead>
@@ -243,7 +247,7 @@
                     </table>
                 </div>
 
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
                     <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">4. 水面状況と進入影響</div>
                     <table class="w-full text-left">
                         <thead><tr><th>条件</th><th>5枠連対率</th><th>戦略</th></tr></thead>
@@ -254,11 +258,20 @@
                         </tbody>
                     </table>
                 </div>
-                </div>
-                
-            </div>
-        </section>
 
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">5. 5号艇 モーター連対率別</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>モーター2連率</th><th>1着期待度</th><th>5枠勝率変動</th></tr></thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold text-white"><td>45%以上 (超抜)</td><td class="yellow-accent">極高</td><td>+4.2%</td></tr>
+                            <tr><td>35%〜45% (良好)</td><td>中</td><td>+1.5%</td></tr>
+                            <tr><td>35%未満 (普通下)</td><td>低</td><td>±0.0%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div> </section>
     </main>
 
     <footer class="mt-20 p-12 border-t border-slate-800 text-center text-gray-500 text-xs font-bold">
