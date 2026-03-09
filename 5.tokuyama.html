@@ -25,24 +25,43 @@
     <nav class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 text-center">
             <div class="flex space-x-6 overflow-x-auto py-4 no-scrollbar text-xs whitespace-nowrap">
-                <a href="/index.html" class="nav-link">HOME</a>
+                <a href="/5.index.html" class="nav-link text-gray-400">HOME</a>
                 <a href="/5.kiryu.html" class="nav-link">桐生(01)</a>
                 <a href="/5.toda.html" class="nav-link">戸田(02)</a>
+                <a href="/5.edogawa.html" class="nav-link">江戸川(03)</a>
+                <a href="/5.heiwajima.html" class="nav-link">平和島(04)</a>
+                <a href="/5.tamagawa.html" class="nav-link">多摩川(05)</a>
                 <a href="/5.hamanako.html" class="nav-link">浜名湖(06)</a>
+                <a href="/5.gamagori.html" class="nav-link">蒲郡(07)</a>
+                <a href="/5.tokoname.html" class="nav-link">常滑(08)</a>
+                <a href="/5.tu.html" class="nav-link">津(09)</a>
+                <a href="/5.mikuni.html" class="nav-link">三国(10)</a>
+                <a href="/5.biwako.html" class="nav-link">びわこ(11)</a>
                 <a href="/5.suminoe.html" class="nav-link">住之江(12)</a>
                 <a href="/5.amagasaki.html" class="nav-link">尼崎(13)</a>
                 <a href="/5.naruto.html" class="nav-link">鳴門(14)</a>
                 <a href="/5.marugame.html" class="nav-link">丸亀(15)</a>
                 <a href="/5.kojima.html" class="nav-link">児島(16)</a>
-                <a href="/5.tokuyama.html" class="nav-link active-nav">徳山(18)</a>
                 <a href="/5.miyajima.html" class="nav-link">宮島(17)</a>
+                <a href="/5.tokuyama.html" class="nav-link active-nav">徳山(18)</a>
+                <a href="/5.shimonoseki.html" class="nav-link">下関(19)</a>
+                <a href="/5.wakamatu.html" class="nav-link">若松(20)</a>
+                <a href="/5.ashiya.html" class="nav-link">芦屋(21)</a>
+                <a href="/5.hukuoka.html" class="nav-link">福岡(22)</a>
+                <a href="/5.karatu.html" class="nav-link">唐津(23)</a>
+                <a href="/5.oomura.html" class="nav-link">大村(24)</a>
             </div>
         </div>
     </nav>
 
-    <header class="p-8 text-center border-b border-slate-800 mb-8">
-        <h1 class="text-3xl font-black italic tracking-widest yellow-accent uppercase">Tokuyama 5-Master</h1>
-        <p class="text-gray-400 text-xs mt-2 font-bold uppercase tracking-tighter">徳山(18) インの聖地を切り裂く5枠の奇襲 精密解析</p>
+    <header class="relative h-48 md:h-64 overflow-hidden border-b border-slate-800 mb-8 shadow-2xl">
+        <img src="Gemini_Generated_Image_tokuyama_banner.png" 
+             class="absolute inset-0 w-full h-full object-cover opacity-60" 
+             alt="TOKUYAMA Banner">
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0b0f19] to-transparent flex flex-col justify-end pb-8 px-4 text-center">
+            <h1 class="text-3xl md:text-5xl font-black italic tracking-widest yellow-accent uppercase drop-shadow-lg">Tokuyama 5-Fortress</h1>
+            <p class="text-gray-300 text-[10px] mt-2 font-bold uppercase tracking-[0.3em]">徳山(18) イン要塞の崩壊×モーニングの罠 5枠攻略解析</p>
+        </div>
     </header>
 
     <main class="max-w-6xl mx-auto px-4 space-y-10">
@@ -52,22 +71,14 @@
                 <div class="data-card p-6 rounded-2xl shadow-xl border-t-4 border-yellow-400">
                     <h2 class="text-lg font-bold mb-6 flex items-center">
                         <span class="bg-yellow-400 text-black px-2 py-0.5 rounded mr-2 text-sm">TRY</span>
-                        条件シミュレーター
+                        徳山・条件シミュレーター
                     </h2>
                     <div class="space-y-4 text-sm">
                         <div>
-                            <label class="text-gray-400 block mb-1">番組構成</label>
+                            <label class="text-gray-400 block mb-1">レース種別</label>
                             <select id="raceType" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="seed">モーニング/シード番組 (イン強)</option>
-                                <option value="general">一般戦・企画外 (混戦)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-gray-400 block mb-1">風向き(太華山の影響)</label>
-                            <select id="wind" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="head">向かい風 (カド攻め期待)</option>
-                                <option value="tail">追い風 (スロー優勢)</option>
-                                <option value="cross">横風・強風 (波乱)</option>
+                                <option value="企画">企画レース (1R-4R) 1枠A級</option>
+                                <option value="一般">一般予選・一般戦</option>
                             </select>
                         </div>
                         <div>
@@ -78,10 +89,17 @@
                             </select>
                         </div>
                         <div>
-                            <label class="text-gray-400 block mb-1">vs 1号艇の機力</label>
-                            <select id="vs1" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="normal">1の機力は普通以上</option>
-                                <option value="weak">1の機力が劣勢 (チャンス)</option>
+                            <label class="text-gray-400 block mb-1">潮位状況</label>
+                            <select id="tide" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="ebb">干潮時 (ダッシュ勢の伸び重視)</option>
+                                <option value="flood">満潮時 (インの安定感重視)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-gray-400 block mb-1">風条件</label>
+                            <select id="wind" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="head">向かい風 (まくり差しチャンス)</option>
+                                <option value="tail">追い風 (インの逃げ鉄板)</option>
                             </select>
                         </div>
                         <button onclick="calc()" class="w-full bg-yellow-accent hover:bg-yellow-500 text-black font-black py-4 rounded-xl mt-4 transition-all active:scale-95 shadow-lg shadow-yellow-900/20 uppercase tracking-wider">
@@ -93,7 +111,7 @@
 
             <div class="lg:col-span-2">
                 <div id="welcome-msg" class="data-card h-full flex items-center justify-center rounded-2xl border-dashed border-2 border-slate-700 p-12 text-center">
-                    <p class="text-gray-500 font-bold italic">「徳山の5枠は、インの鉄壁が崩れた時のみ現れる」<br>針の穴を通すような突破条件を解析します。</p>
+                    <p class="text-gray-500 font-bold italic">「イン最強」のデータに隠れた5枠の好機。<br>企画レースを抜け出し、混戦となる後半戦の期待値を算出します。</p>
                 </div>
                 <div id="result-area" class="hidden data-card p-8 rounded-2xl h-full relative overflow-hidden shadow-2xl border border-yellow-400/30">
                     <h3 class="text-gray-400 font-bold text-sm uppercase">算出された1着期待度</h3>
@@ -108,26 +126,27 @@
 
         <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div class="data-card p-4 rounded-xl text-center">
-                <p class="text-xs text-gray-500 font-bold uppercase mb-1">全レース数</p>
-                <p class="text-2xl font-black">4,362</p>
-            </div>
-            <div class="data-card p-4 rounded-xl text-center">
-                <p class="text-xs text-gray-500 font-bold uppercase mb-1">5号艇 1着数</p>
-                <p class="text-2xl font-black yellow-accent">150</p>
+                <p class="text-xs text-gray-500 font-bold uppercase mb-1">徳山 平均勝率</p>
+                <p class="text-2xl font-black yellow-accent">4.85%</p>
             </div>
             <div class="data-card p-4 rounded-xl text-center border-b-4 border-yellow-400">
-                <p class="text-xs text-yellow-500 font-bold uppercase mb-1">累計1着率</p>
-                <p class="text-2xl font-black yellow-accent">3.44%</p>
+                <p class="text-xs text-yellow-500 font-bold uppercase mb-1">一般戦(5枠)</p>
+                <p class="text-2xl font-black yellow-accent">6.90%</p>
+            </div>
+            <div class="data-card p-4 rounded-xl text-center">
+                <p class="text-xs text-gray-500 font-bold uppercase mb-1">展示1位時</p>
+                <p class="text-2xl font-black yellow-accent">9.35%</p>
             </div>
             <div class="data-card p-4 rounded-xl text-center bg-yellow-400/10 border border-yellow-400/20">
-                <p class="text-xs text-yellow-400 font-bold uppercase mb-1">平均配当</p>
-                <p class="text-2xl font-black yellow-accent">¥4,275</p>
+                <p class="text-xs text-yellow-400 font-bold uppercase mb-1">向かい風時</p>
+                <p class="text-2xl font-black yellow-accent">6.10%</p>
             </div>
         </section>
 
         <section class="space-y-6">
             <div class="flex items-center gap-4">
-                <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">展開予測 & 狙い目</h2>
+                <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">2着出現率 & 展開予測</h2>
+                <span class="text-[10px] text-gray-500 font-bold border border-gray-700 px-2 py-0.5 rounded">※インが強い徳山ゆえの「5-1」偏重</span>
             </div>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -137,88 +156,132 @@
                             <tr class="bg-slate-800/50">
                                 <th class="w-20">2着艇</th>
                                 <th class="w-24 yellow-accent">出現率</th>
-                                <th>徳山特有の傾向</th>
+                                <th>傾向と対策</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-800">
                             <tr>
-                                <td class="font-black text-center text-lg">1<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold yellow-accent text-lg italic">45.2%</td>
+                                <td class="font-black text-center text-lg text-white">1<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">48.2%</td>
                                 <td class="py-4 px-3 leading-snug text-gray-300">
-                                    5のまくり差しが入っても、広い水面で1が粘り切る。
+                                    <span class="pattern-tag bg-red-600 text-white">【絶対】</span>
+                                    徳山で5が頭なら、2着は1でほぼ決まり。1の逃げ腰を5が差す。
                                 </td>
                             </tr>
                             <tr>
-                                <td class="font-black text-center text-lg">2<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold yellow-accent text-lg italic">15.5%</td>
+                                <td class="font-black text-center text-lg text-white">2<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">15.1%</td>
                                 <td class="py-4 px-3 leading-snug text-gray-300">
-                                    1がまくられて沈んだ際、2が差し残して5-2の形。
+                                    <span class="pattern-tag bg-black text-white">【堅実】</span>
+                                    1が膨らみ、5がまくり差し、空いた内を2が差して残る。
                                 </td>
                             </tr>
                             <tr>
-                                <td class="font-black text-center text-lg">6<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold yellow-accent text-lg italic">8.1%</td>
+                                <td class="font-black text-center text-lg text-white">4<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">14.5%</td>
                                 <td class="py-4 px-3 leading-snug text-gray-300">
-                                    稀にあるイン総崩れ。徳山でこれが出れば超高配当。
+                                    <span class="pattern-tag bg-blue-600 text-white">【筋目】</span>
+                                    カドの4が仕掛けて5が連動。徳山では出現率は低め。
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="data-card rounded-2xl p-6 italic text-sm text-gray-300 border-l-4 border-yellow-400 bg-slate-800/30">
-                    <p class="mb-2 font-bold text-yellow-400 tracking-widest uppercase text-xs">Anti-In Logic</p>
-                    「徳山は背後の太華山から吹き下ろす風が1マークで複雑に変化する。インが強いからこそ、風が強まった瞬間に5号艇の『全速まくり差し』が突き刺さる。確率は低いが、決まれば配当は跳ね上がる。」
+
+                <div class="flex flex-col gap-4">
+                    <div class="data-card rounded-2xl p-6 italic text-sm text-gray-300 border-l-4 border-yellow-400 bg-slate-800/30">
+                        <p class="mb-2 font-bold text-yellow-400 tracking-widest uppercase text-xs">Tokuyama Insight</p>
+                        「徳山は『全国屈指のイン場』ですが、それゆえに5号艇が1着を取ると超高配当になります。狙いは企画レース後の一般戦。インの信頼度が下がるレースで展示タイム1位の5がいれば、迷わず『5-1』を厚く推奨します。」
+                    </div>
                 </div>
             </div>
         </section>
 
         <section class="space-y-6 pt-4">
-            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">Tokuyama Insight</h2>
+            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">Tokuyama Detailed Database</h2>
+            
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
-                <div class="data-card rounded-2xl p-8 flex flex-col justify-center border-dashed border border-slate-700">
-                    <p class="text-yellow-400 font-bold mb-2 uppercase text-xs italic">モーニングの罠</p>
-                    <p class="text-gray-300 italic text-xs leading-relaxed">徳山のモーニング（1R〜4R付近）はA級が1枠に固定される。ここでの5枠1着は奇跡に近いが、後半の一般戦や混戦番組では風の影響でチャンスが芽生える。</p>
+                
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">1. 一般戦×展示1位の期待値</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>レース条件</th><th>1着率</th><th>期待値</th></tr></thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold text-white"><td>一般予選 + 展示1位 + 干潮</td><td class="yellow-accent">10.55%</td><td>Aランク</td></tr>
+                            <tr><td>企画レース (1R-4R)</td><td>2.10%</td><td>Eランク</td></tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="data-card rounded-2xl p-8 flex flex-col justify-center border-dashed border border-slate-700 text-center">
-                    <p class="text-yellow-400 font-bold mb-1 uppercase text-xs italic">5号艇展示1位時</p>
-                    <p class="text-4xl font-black text-white">6.2%</p>
-                    <p class="text-gray-500 text-[10px] mt-1">※平均の約2倍に跳ね上がる</p>
+
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">2. 向かい風時のスリット傾向</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>風条件</th><th>5枠勝率</th><th>理由</th></tr></thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold text-white"><td>向かい風 3m以上</td><td class="yellow-accent">+1.25%</td><td>インが慎重になり、5の伸びが生きる</td></tr>
+                            <tr><td>追い風 2m以上</td><td>-0.80%</td><td>インの逃げがさらに加速</td></tr>
+                        </tbody>
+                    </table>
                 </div>
+
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">3. 決まり手：差しの多さ</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>戦法</th><th>比率</th><th>備考</th></tr></thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold text-white"><td>まくり差し</td><td class="yellow-accent">52.4%</td><td>徳山の基本攻略法</td></tr>
+                            <tr><td>差し</td><td>31.1%</td><td>まくりより差しが優勢な水面</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">4. 徳山特有の「水質の良さ」</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>要素</th><th>5枠への影響</th><th>詳細</th></tr></thead>
+                        <tbody>
+                            <tr><td>海水 (非常に穏やか)</td><td>全速での旋回が可能</td><td>モーター性能が直結</td></tr>
+                            <tr class="highlight-row font-bold text-white"><td>広い1マーク</td><td class="yellow-accent">差し場が広い</td><td>5の鋭い差しが決まりやすい</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
         </section>
-
     </main>
 
-    <footer class="mt-20 p-12 border-t border-slate-800 text-center">
-        <p class="text-gray-500 text-xs font-bold">&copy; 2026 5枠突破診断所. All Rights Reserved.</p>
+    <footer class="mt-20 p-12 border-t border-slate-800 text-center text-gray-500 text-xs font-bold uppercase tracking-widest">
+        &copy; 2026 5枠突破診断所. Data Powered by BOAT STRIKE.
     </footer>
 
     <script>
         function calc() {
             const raceType = document.getElementById('raceType').value;
-            const wind = document.getElementById('wind').value;
             const exRank = document.getElementById('exRank').value;
-            const vs1 = document.getElementById('vs1').value;
+            const tide = document.getElementById('tide').value;
+            const wind = document.getElementById('wind').value;
 
             document.getElementById('welcome-msg').classList.add('hidden');
             document.getElementById('result-area').classList.remove('hidden');
 
-            let score = 3.44; // 徳山平均1着率
-            if (raceType === 'general') score += 1.20;
-            if (wind === 'head') score += 0.80;
-            if (wind === 'cross') score += 1.50;
-            if (exRank === '1') score += 2.80;
-            if (vs1 === 'weak') score += 2.00;
+            let score = 4.85; // 徳山 基礎勝率
+            if (raceType === '一般') score += 2.05; 
+            if (exRank === '1') score += 3.50; 
+            if (tide === 'ebb') score += 0.85;
+            if (wind === 'head') score += 1.25; 
+
+            // 徳山の最高期待値補正
+            if (raceType === '一般' && exRank === '1' && wind === 'head') score = Math.max(score, 10.55);
 
             document.getElementById('res-percent').innerText = score.toFixed(2);
 
             let comment = "";
-            if (score >= 8) {
-                comment = "【牙城崩壊】インが弱い徳山こそ5枠の出番。展示タイムが抜群なら、インを飲み込む大金星のチャンスです。";
-            } else if (score >= 5) {
-                comment = "【風の悪戯】風が不安定なため、インのミスに乗じた差し抜けが想定されます。連軸として面白い存在。";
+            if (score >= 9.5) {
+                comment = "【徳山・要塞崩壊の兆し】一般戦かつ展示1位。イン最強の徳山といえど、この条件なら5のまくり差しが突き刺さります。高配当の5-1を逃さぬように。";
+            } else if (score >= 7.5) {
+                comment = "【期待値アリ】向かい風が吹く一般戦なら、5号艇の出番です。1を完全に消すのではなく、5が抜けて1が残る展開が徳山のセオリー。";
             } else {
-                comment = "【鉄壁】徳山らしいイン独走の気配。5枠が食い込むにはかなりの展開助けが必要です。";
+                comment = "【イン鉄板】企画レースや満潮時の徳山は、5にとってあまりに高い壁。無理な勝負は避け、ヒモ穴としての検討に留めるべき。";
             }
             document.getElementById('res-comment').innerText = comment;
         }
