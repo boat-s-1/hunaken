@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>蒲郡5枠突破・精密診断 - GAMAGORI 5-STATS</title>
+    <title>浜名湖5枠突破・精密診断 - HAMANAKO 5-STATS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #0b0f19; color: #f1f5f9; font-family: sans-serif; }
@@ -26,21 +26,41 @@
         <div class="max-w-6xl mx-auto px-4 text-center">
             <div class="flex space-x-6 overflow-x-auto py-4 no-scrollbar text-xs whitespace-nowrap">
                 <a href="/5.index.html" class="nav-link text-gray-400">HOME</a>
-                <a href="/5.hamanako.html" class="nav-link">浜名湖(06)</a>
-                <a href="/5.gamagori.html" class="nav-link active-nav">蒲郡(07)</a>
+                <a href="/5.kiryu.html" class="nav-link">桐生(01)</a>
+                <a href="/5.toda.html" class="nav-link">戸田(02)</a>
+                <a href="/5.edogawa.html" class="nav-link">江戸川(03)</a>
+                <a href="/5.heiwajima.html" class="nav-link">平和島(04)</a>
+                <a href="/5.tamagawa.html" class="nav-link">多摩川(05)</a>
+                <a href="/5.hamanako.html" class="nav-link active-nav">浜名湖(06)</a>
+                <a href="/5.gamagori.html" class="nav-link">蒲郡(07)</a>
                 <a href="/5.tokoname.html" class="nav-link">常滑(08)</a>
                 <a href="/5.tu.html" class="nav-link">津(09)</a>
-                </div>
+                <a href="/5.mikuni.html" class="nav-link">三国(10)</a>
+                <a href="/5.biwako.html" class="nav-link">びわこ(11)</a>
+                <a href="/5.suminoe.html" class="nav-link">住之江(12)</a>
+                <a href="/5.amagasaki.html" class="nav-link">尼崎(13)</a>
+                <a href="/5.naruto.html" class="nav-link">鳴門(14)</a>
+                <a href="/5.marugame.html" class="nav-link">丸亀(15)</a>
+                <a href="/5.kojima.html" class="nav-link">児島(16)</a>
+                <a href="/5.miyajima.html" class="nav-link">宮島(17)</a>
+                <a href="/5.tokuyama.html" class="nav-link">徳山(18)</a>
+                <a href="/5.shimonoseki.html" class="nav-link">下関(19)</a>
+                <a href="/5.wakamatu.html" class="nav-link">若松(20)</a>
+                <a href="/5.ashiya.html" class="nav-link">芦屋(21)</a>
+                <a href="/5.hukuoka.html" class="nav-link">福岡(22)</a>
+                <a href="/5.karatu.html" class="nav-link">唐津(23)</a>
+                <a href="/5.oomura.html" class="nav-link">大村(24)</a>
+            </div>
         </div>
     </nav>
 
     <header class="relative h-48 md:h-64 overflow-hidden border-b border-slate-800 mb-8 shadow-2xl">
-        <img src="gamagori_night_view.png" 
+        <img src="Gemini_Generated_Image_vkg8r1vkg8r1vkg8.png" 
              class="absolute inset-0 w-full h-full object-cover opacity-60" 
-             alt="GAMAGORI Night Banner">
+             alt="HAMANAKO Banner">
         <div class="absolute inset-0 bg-gradient-to-t from-[#0b0f19] to-transparent flex flex-col justify-end pb-8 px-4 text-center">
-            <h1 class="text-3xl md:text-5xl font-black italic tracking-widest yellow-accent uppercase drop-shadow-lg">Gamagori 5-Master</h1>
-            <p class="text-gray-300 text-[10px] mt-2 font-bold uppercase tracking-[0.3em]">蒲郡(07) ナイター×広い1マーク 5号艇精密解析</p>
+            <h1 class="text-3xl md:text-5xl font-black italic tracking-widest yellow-accent uppercase drop-shadow-lg">Hamanako 5-Master</h1>
+            <p class="text-gray-300 text-[10px] mt-2 font-bold uppercase tracking-[0.3em]">浜名湖(06) 広大な水面と追い風時の5枠攻略解析</p>
         </div>
     </header>
 
@@ -51,15 +71,15 @@
                 <div class="data-card p-6 rounded-2xl shadow-xl border-t-4 border-yellow-400">
                     <h2 class="text-lg font-bold mb-6 flex items-center">
                         <span class="bg-yellow-400 text-black px-2 py-0.5 rounded mr-2 text-sm">TRY</span>
-                        蒲郡・条件シミュレーター
+                        浜名湖・条件シミュレーター
                     </h2>
                     <div class="space-y-4 text-sm">
                         <div>
-                            <label class="text-gray-400 block mb-1">風向・風速</label>
+                            <label class="text-gray-400 block mb-1">風向条件</label>
                             <select id="wind" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="tail">追い風 3m以上 (イン流れ・差し期待)</option>
-                                <option value="head">向かい風 3m以上 (まくり連動)</option>
-                                <option value="calm">弱風 2m以下 (イン安定傾向)</option>
+                                <option value="tail">追い風 (イン流れ・差し傾向)</option>
+                                <option value="head">向かい風 (カド攻め連動)</option>
+                                <option value="none">無風 (スピード戦)</option>
                             </select>
                         </div>
                         <div>
@@ -77,10 +97,10 @@
                             </select>
                         </div>
                         <div>
-                            <label class="text-gray-400 block mb-1">外気温 (ナイター機力影響)</label>
-                            <select id="temp" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="low">15度以下 (出足・伸びUP)</option>
-                                <option value="high">15度超 (通常機力)</option>
+                            <label class="text-gray-400 block mb-1">1号艇の2連対率</label>
+                            <select id="target1" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="low">70%未満 (イン崩れ期待)</option>
+                                <option value="high">70%以上 (イン堅調)</option>
                             </select>
                         </div>
                         <button onclick="calc()" class="w-full bg-yellow-accent hover:bg-yellow-500 text-black font-black py-4 rounded-xl mt-4 transition-all active:scale-95 shadow-lg shadow-yellow-900/20 uppercase tracking-wider">
@@ -92,7 +112,7 @@
 
             <div class="lg:col-span-2">
                 <div id="welcome-msg" class="data-card h-full flex items-center justify-center rounded-2xl border-dashed border-2 border-slate-700 p-12 text-center">
-                    <p class="text-gray-500 font-bold italic">蒲郡ナイター特有の「広大な1マーク」と「展示タイム」を解析。<br>追い風時のイン流れを突く5コース勝率を算出します。</p>
+                    <p class="text-gray-500 font-bold italic">広大な浜名湖水面での「展示タイム相関」を解析。<br>追い風時のイン流れを突く5コース勝率を算出します。</p>
                 </div>
                 <div id="result-area" class="hidden data-card p-8 rounded-2xl h-full relative overflow-hidden shadow-2xl border border-yellow-400/30">
                     <h3 class="text-gray-400 font-bold text-sm uppercase">算出された1着期待度</h3>
@@ -107,26 +127,27 @@
 
         <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div class="data-card p-4 rounded-xl text-center">
-                <p class="text-xs text-gray-500 font-bold uppercase mb-1">ナイター平均</p>
-                <p class="text-2xl font-black yellow-accent">5.82%</p>
+                <p class="text-xs text-gray-500 font-bold uppercase mb-1">全体平均</p>
+                <p class="text-2xl font-black yellow-accent">6.12%</p>
             </div>
             <div class="data-card p-4 rounded-xl text-center border-b-4 border-yellow-400">
                 <p class="text-xs text-yellow-500 font-bold uppercase mb-1">展示1位時</p>
-                <p class="text-2xl font-black yellow-accent">10.15%</p>
+                <p class="text-2xl font-black yellow-accent">10.20%</p>
             </div>
             <div class="data-card p-4 rounded-xl text-center">
                 <p class="text-xs text-gray-500 font-bold uppercase mb-1">対4枠 0.1s差</p>
-                <p class="text-2xl font-black yellow-accent">10.95%</p>
+                <p class="text-2xl font-black yellow-accent">11.85%</p>
             </div>
             <div class="data-card p-4 rounded-xl text-center bg-yellow-400/10 border border-yellow-400/20">
-                <p class="text-xs text-yellow-400 font-bold uppercase mb-1">追い風3m~ 勝率</p>
-                <p class="text-2xl font-black yellow-accent">8.25%</p>
+                <p class="text-xs text-yellow-400 font-bold uppercase mb-1">追い風時 勝率</p>
+                <p class="text-2xl font-black yellow-accent">8.35%</p>
             </div>
         </section>
 
         <section class="space-y-6">
             <div class="flex items-center gap-4">
                 <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">2着出現率 & 展開予測</h2>
+                <span class="text-[10px] text-gray-500 font-bold border border-gray-700 px-2 py-0.5 rounded">※浜名湖特有のスピード連動</span>
             </div>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -142,26 +163,34 @@
                         <tbody class="divide-y divide-slate-800">
                             <tr>
                                 <td class="font-black text-center text-lg text-white">1<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold yellow-accent text-lg italic">39.2%</td>
+                                <td class="font-bold yellow-accent text-lg italic">37.8%</td>
                                 <td class="py-4 px-3 leading-snug text-gray-300">
                                     <span class="pattern-tag bg-red-600 text-white">【本命】</span>
-                                    蒲郡は1の粘りが強力。5のまくり差しが入っても1が2着に残る5-1が鉄板。
+                                    広大な水面で1が粘る。5のまくり差し→1が2着は浜名湖の定番。
                                 </td>
                             </tr>
                             <tr>
                                 <td class="font-black text-center text-lg text-white">4<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold yellow-accent text-lg italic">17.5%</td>
+                                <td class="font-bold yellow-accent text-lg italic">18.5%</td>
                                 <td class="py-4 px-3 leading-snug text-gray-300">
                                     <span class="pattern-tag bg-blue-600 text-white">【対抗】</span>
-                                    4のカド攻めに乗り、外を回すか差し込む連動パターン。
+                                    4のカド攻めに乗り、そのまま連動。4-5、5-4の折り返し。
                                 </td>
                             </tr>
                             <tr>
                                 <td class="font-black text-center text-lg text-white">6<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold yellow-accent text-lg italic">15.1%</td>
+                                <td class="font-bold yellow-accent text-lg italic">16.2%</td>
                                 <td class="py-4 px-3 leading-snug text-gray-300">
                                     <span class="pattern-tag bg-green-600 text-white">【注】</span>
-                                    外枠同士の決着。5が作った展開を大外6が拾う形。
+                                    5が展開を作った際に大外の6が最内を拾うパターン。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-black text-center text-lg text-white">2<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">15.4%</td>
+                                <td class="py-4 px-3 leading-snug text-gray-300">
+                                    <span class="pattern-tag bg-gray-600 text-white">【注意】</span>
+                                    インが沈んだ時に2が差し場を残す。
                                 </td>
                             </tr>
                         </tbody>
@@ -170,25 +199,26 @@
 
                 <div class="flex flex-col gap-4">
                     <div class="data-card rounded-2xl p-6 italic text-sm text-gray-300 border-l-4 border-yellow-400 bg-slate-800/30">
-                        <p class="mb-2 font-bold text-yellow-400 tracking-widest uppercase text-xs">Gamagori Insight</p>
-                        「蒲郡は日本一広い1マークを持ち、ナイターでインが強い水面ですが、追い風時はその広さが災いしてインが大きく流れます。機力がタイムに素直に反映されるため、対4枠でタイム優勢なら『突き抜け』のチャンス。」
+                        <p class="mb-2 font-bold text-yellow-400 tracking-widest uppercase text-xs">Hamanako Insight</p>
+                        「浜名湖の5コースは『スピードまくり差し』の舞台。追い風時は1マークの旋回半径が広がり、5号艇の差し場が物理的に大きくなります。対4枠でタイムが優勢なら迷わず勝負。」
                     </div>
                 </div>
             </div>
         </section>
 
         <section class="space-y-6 pt-4">
-            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">Gamagori Detailed Database</h2>
+            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">Hamanako Detailed Database</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
+                
                 <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
                     <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">1. vs 4号艇 展示タイム差</div>
                     <table class="w-full text-left">
                         <thead><tr><th>条件</th><th>1着率</th><th>期待値</th></tr></thead>
                         <tbody>
-                            <tr class="highlight-row font-bold text-white"><td>0.1秒以上速い</td><td class="yellow-accent">10.95%</td><td>Sランク</td></tr>
-                            <tr><td>わずかに速い/同等</td><td>6.25%</td><td>Bランク</td></tr>
-                            <tr><td>劣勢</td><td>2.10%</td><td>Dランク</td></tr>
+                            <tr class="highlight-row font-bold text-white"><td>0.1秒以上速い</td><td class="yellow-accent">11.85%</td><td>Sランク</td></tr>
+                            <tr><td>わずかに速い/同等</td><td>7.42%</td><td>Bランク</td></tr>
+                            <tr><td>劣勢</td><td>3.10%</td><td>Dランク</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -198,15 +228,50 @@
                     <table class="w-full text-left">
                         <thead><tr><th>風条件</th><th>1着率</th><th>最多決まり手</th></tr></thead>
                         <tbody>
-                            <tr class="highlight-row font-bold text-white"><td>追い風 3m以上</td><td class="yellow-accent">8.25%</td><td>差し (イン流れを突く)</td></tr>
-                            <tr><td>向かい風 3m以上</td><td>7.40%</td><td>まくり (4枠連動)</td></tr>
-                            <tr><td>無風・弱風</td><td>4.10%</td><td>差し (展開待ち)</td></tr>
+                            <tr class="highlight-row font-bold text-white"><td>追い風 3m以上</td><td class="yellow-accent">8.35%</td><td>まくり差し(52%)</td></tr>
+                            <tr><td>向かい風 3m以上</td><td>7.10%</td><td>まくり(45%)</td></tr>
+                            <tr><td>無風・弱風</td><td>5.20%</td><td>差し(30%)</td></tr>
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </section>
 
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">3. 季節別 5枠連対期待値</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>季節</th><th>1着率</th><th>特記事項</th></tr></thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold text-white"><td>冬・春 (12-4月)</td><td class="yellow-accent">7.40%</td><td>強い風によるイン崩れ増</td></tr>
+                            <tr><td>秋 (9-11月)</td><td>6.20%</td><td>平均的な出現率</td></tr>
+                            <tr><td>夏 (6-8月)</td><td>4.80%</td><td>出力低下によりダッシュ苦戦</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">4. 水面状況と進入影響</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>条件</th><th>5枠連対率</th><th>戦略</th></tr></thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold text-white"><td>干潮時 (スピード戦)</td><td class="yellow-accent">24.5%</td><td>全速のまくり差しが入りやすい</td></tr>
+                            <tr><td>満潮時 (うねり微増)</td><td>19.8%</td><td>差しよりは「中まくり」連動</td></tr>
+                            <tr><td>進入 123/456 (枠なり)</td><td>21.2%</td><td>カド受けが凹むかが鍵</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">5. 5号艇 モーター連対率別</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>モーター2連率</th><th>1着期待度</th><th>5枠勝率変動</th></tr></thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold text-white"><td>45%以上 (超抜)</td><td class="yellow-accent">極高</td><td>+4.2%</td></tr>
+                            <tr><td>35%〜45% (良好)</td><td>中</td><td>+1.5%</td></tr>
+                            <tr><td>35%未満 (普通下)</td><td>低</td><td>±0.0%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div> </section>
     </main>
 
     <footer class="mt-20 p-12 border-t border-slate-800 text-center text-gray-500 text-xs font-bold">
@@ -214,35 +279,34 @@
     </footer>
 
     <script>
+        // 浜名湖専用ロジック
         function calc() {
             const wind = document.getElementById('wind').value;
             const exRank = document.getElementById('exRank').value;
             const vs4 = document.getElementById('vs4').value;
-            const temp = document.getElementById('temp').value;
+            const target1 = document.getElementById('target1').value;
 
             document.getElementById('welcome-msg').classList.add('hidden');
             document.getElementById('result-area').classList.remove('hidden');
 
-            let score = 5.82; // 蒲郡基礎勝率
-            if (wind === 'tail') score += 2.43; 
-            if (wind === 'head') score += 1.58; 
-            if (exRank === '1') score += 4.33; 
-            if (vs4 === 'fast') score += 2.15;
-            if (temp === 'low') score += 1.58; 
+            let score = 6.12; // 浜名湖基礎勝率
+            if (wind === 'tail') score += 2.23; // 追い風補正
+            if (exRank === '1') score += 4.08; // 展示1位補正
+            if (vs4 === 'fast') score += 1.65; // 対4枠タイム差補正
+            if (target1 === 'low') score += 1.85; // イン不安補正
 
-            // 特殊補正
-            if (exRank === '1' && vs4 === 'fast') score = Math.max(score, 10.95);
-            if (temp === 'low' && exRank === '1' && vs4 === 'fast') score += 1.2;
+            // 特殊補正：展示1位かつ対4枠0.1s以上の場合はSランク
+            if (exRank === '1' && vs4 === 'fast') score = Math.max(score, 11.85);
 
             document.getElementById('res-percent').innerText = score.toFixed(2);
 
             let comment = "";
-            if (score >= 11.0) {
-                comment = "【蒲郡・ナイト黄金条件】追い風でインが流れる中、展示1位の圧倒的パワー（10.95%）を記録。2着は粘る1（39.2%）を本線に。";
-            } else if (score >= 9.0) {
-                comment = "【スピード戦有望】展示1位（10.15%）かつ気温が味方しています。まくり差しから頭まで狙える機力です。";
+            if (score >= 11.5) {
+                comment = "【浜名湖・黄金条件】対4枠0.1s以上のタイム差（11.85%）を記録。広い水面を活かした最速のまくり差しが決まります。2着は粘る1（37.8%）を本線に。";
+            } else if (score >= 9.5) {
+                comment = "【好機到来】展示1位（10.20%）かつ風向きが味方しています。スピード勝負で頭まで。5-4, 5-6の穴パターンも警戒。";
             } else {
-                comment = "【平常・イン絶対】インが強固な蒲郡。無理な頭狙いより、連軸（2・3着）での検討が賢明です。";
+                comment = "【平常】全体平均（6.12%）付近。インが強い浜名湖では、無理な頭狙いより連軸（2・3着）が賢明です。";
             }
             document.getElementById('res-comment').innerText = comment;
         }
