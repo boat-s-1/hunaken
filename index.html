@@ -1,96 +1,177 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta name="google-adsense-account" content="ca-pub-9145518658275668">
-    <title>舟券メーカー | SNS用投稿画作成ツール</title>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9145518658275668" crossorigin="anonymous"></script>
-    <meta name="google-site-verification" content="gjZSAf-F1sn_m4mb6Yjjv4CrGE83tJfvrFHbAy7P00s" />
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>舟券メーカー | 競艇予想ツールポータル</title>
     <style>
-        :root { --br-blue: #2c559b; --br-orange: #f39800; }
-        body { font-family: sans-serif; margin: 0; padding: 0; background: #f4f4f4; color: #333; }
-        header { background: var(--br-blue); color: #fff; padding: 20px; text-align: center; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        
-        /* ツール一覧のデザイン */
-        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
-        .menu-item { background: #fff; border: 2px solid var(--br-orange); border-radius: 10px; padding: 15px; text-align: center; text-decoration: none; color: #333; font-weight: bold; transition: 0.2s; box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
-        .menu-item:hover { transform: translateY(-3px); background: #fffbf0; }
-        .menu-item span { display: block; font-size: 0.8em; color: #666; margin-top: 5px; }
+        :root {
+            --main-bg: #050a0f;
+            --card-bg: #0f1722;
+            --accent-blue: #00e5ff;
+            --accent-gold: #ffc107;
+            --text-main: #ffffff;
+            --text-sub: #94a3b8;
+        }
 
-        /* --- ここが審査対策用の追加テキストエリア --- */
-        .content-section { background: #fff; padding: 20px; border-radius: 8px; line-height: 1.8; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .content-section h2 { border-bottom: 3px solid var(--br-blue); padding-bottom: 5px; font-size: 1.2em; color: var(--br-blue); }
-        .content-section p { font-size: 0.95em; }
-        .feature-list { padding-left: 20px; font-size: 0.9em; }
+        body {
+            background-color: var(--main-bg);
+            color: var(--text-main);
+            font-family: 'Avenir Next', 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
 
-        footer { text-align: center; padding: 30px; border-top: 1px solid #ccc; font-size: 12px; }
-        footer a { color: #666; text-decoration: none; margin: 0 10px; }
+        /* ヒーローセクション（BOAT STRIKE風） */
+        .hero {
+            padding: 60px 20px;
+            text-align: center;
+            background: radial-gradient(circle at top, #1e293b 0%, var(--main-bg) 70%);
+            border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            letter-spacing: 4px;
+            background: linear-gradient(to right, #fff, var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+        }
+
+        /* ツールグループのタイトル */
+        .section-title {
+            font-size: 0.9rem;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 40px 0 20px;
+            padding-left: 10px;
+            border-left: 3px solid var(--accent-gold);
+        }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+
+        /* ツールグリッド */
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .tool-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 25px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--accent-blue);
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .tool-card:hover {
+            transform: translateX(5px);
+            background: #162130;
+            border-color: rgba(0, 229, 255, 0.4);
+        }
+
+        .tool-card:hover::before { opacity: 1; }
+
+        .tool-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .tool-desc {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            line-height: 1.5;
+        }
+
+        .badge {
+            background: var(--accent-blue);
+            color: #000;
+            font-size: 0.6rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            vertical-align: middle;
+        }
+
+        /* お知らせ・解析エリア */
+        .info-panel {
+            margin-top: 50px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 20px;
+            font-size: 0.9rem;
+            border: 1px dashed rgba(148, 163, 184, 0.2);
+        }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>舟券メーカー</h1>
-    <p>ボートレース予想オリジナル舟券で共有</p>
-    <p>デザイン随時追加中</p>
+<header class="hero">
+    <h1>Boat Strike Tools</h1>
+    <p style="color: var(--accent-blue); font-weight: bold; margin-top: 10px;">舟券メーカー 統合ポータル</p>
 </header>
 
 <div class="container">
 
-    <div class="menu-grid">
-        <a href="2.3.box.html" class="menu-item">🔥 2/3連単(BOX)<span>フォーメーションも対応</span></a>
-        <a href="hunaken3.html" class="menu-item">⛵ 3連単(F)<span>専用フォーメーション</span></a>
-        <a href="2rentan3.html" class="menu-item">🚤 2連単(F)<span>2連単特化ツール</span></a>
-        <a href="hunaken1.html" class="menu-item">✅ 簡易版①<span>シンプル入力</span></a>
-        <a href="hunaken2.html" class="menu-item">✅ 簡易版②<span>シンプルデザイン</span></a>
+    <h2 class="section-title">Formation Tools</h2>
+    <div class="tool-grid">
+        <a href="hunaken3.html" class="tool-card">
+            <div class="tool-name">3連単フォーメーション <span class="badge">POPULAR</span></div>
+            <div class="tool-desc">専用の入力インターフェースで、複雑な3連単予想を素早く画像化します。</div>
+        </a>
+        <a href="2rentan3.html" class="tool-card">
+            <div class="tool-name">2連単フォーメーション</div>
+            <div class="tool-desc">2連単に特化した最適化レイアウト。無駄を省いたスピード重視設計。</div>
+        </a>
+        <a href="2.3.box.html" class="tool-card">
+            <div class="tool-name">2/3連単 BOX</div>
+            <div class="tool-desc">BOX買いおよび変則フォーメーションに対応。点数計算も自動。</div>
+        </a>
     </div>
 
-    <section class="content-section">
-        <h2>舟券メーカーとは？</h2>
-        <p>当サイトは、全国24会場で開催されるボートレース（競艇）の予想を、誰でも簡単に視覚化・点数計算できる無料ツール集です。</p>
-        <p>「フォーメーションを組むと点数がわからなくなる」「SNSでカッコよく予想を公開したい」という競艇ファンの声から生まれました。</p>
-    </section>
+    <h2 class="section-title">Simple Tools</h2>
+    <div class="tool-grid">
+        <a href="hunaken1.html" class="tool-card">
+            <div class="tool-name">簡易版メーカー ①</div>
+            <div class="tool-desc">直感的な操作で、初心者でも迷わず予想画像を作成可能。</div>
+        </a>
+        <a href="hunaken2.html" class="tool-card">
+            <div class="tool-name">簡易版メーカー ②</div>
+            <div class="tool-desc">余計な装飾を排除した、シンプルかつ視認性の高いデザイン。</div>
+        </a>
+    </div>
 
-    <section class="content-section">
-        <h2>主な機能とメリット</h2>
-        <ul class="feature-list">
-            <li><strong>自動点数計算：</strong> 買い目を選ぶだけで合計金額を瞬時に算出。資金配分に役立ちます。</li>
-            <li><strong>本物風の舟券画像生成：</strong> 予想をリアルな舟券イメージとして保存可能。</li>
-            <li><strong>SNS連携：</strong> 𝕏（旧Twitter）へワンタップで予想内容を投稿できます。</li>
-            <li><strong>全24場対応：</strong> 平和島から大村まで、全会場のデータを反映。</li>
-        </ul>
-    </section>
-
-    <section class="content-section">
-        <h2>なぜ点数計算が重要なのか</h2>
-        <p>ボートレースにおいて、合成オッズの把握と点数の管理は収支安定の第一歩です。多点買いになりがちな3連単フォーメーションも、当ツールで事前に計算することで、無駄な「トリガミ（的中しても赤字）」を防ぐシミュレーションが可能です。</p>
-    </section>
+    <div class="info-panel">
+        <p style="color: var(--accent-gold); font-weight: bold;">[Update Information]</p>
+        <p>・2026.03.09: サーバーの最適化により画像生成速度を向上させました。</p>
+        <p>・全24場データ同期完了。最新の会場名に対応しています。</p>
+    </div>
 
 </div>
-<!-- admax -->
-<script src="https://adm.shinobi.jp/s/7376cf1f6fa98b33f8f15e0342936071"></script>
-<!-- admax -->
-<footer>
-    <p>&copy; 2026 舟券メーカー P-STAR</p>
-    <a href="info.html">ツールの使い方</a> | 
-    <a href="info.html">免責事項</a> | 
-    <a href="info.html">プライバシーポリシー</a>
+
+<footer style="text-align: center; padding: 60px 20px; color: var(--text-sub); font-size: 0.8rem;">
+    <p>&copy; 2026 BOAT STRIKE PROJECT - P-STAR</p>
 </footer>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
