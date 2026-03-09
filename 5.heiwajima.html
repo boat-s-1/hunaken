@@ -1,7 +1,278 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <meta charset="UTF-8"><!DOCTYPE html>
+<html lang="ja">
+<head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>平和島5枠突破・精密診断 - HEIWAJIMA 5-STATS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b0f19; color: #f1f5f9; font-family: sans-serif; }
+        .data-card { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #334155; }
+        .yellow-accent { color: #facc15; }
+        .bg-yellow-accent { background-color: #facc15; }
+        th { color: #94a3b8; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; padding: 12px 8px; border-bottom: 1px solid #334155; }
+        td { padding: 12px 8px; border-bottom: 1px solid #1e293b; font-size: 0.875rem; }
+        .highlight-row { background-color: rgba(250, 204, 21, 0.05); }
+        .nav-link { transition: 0.2s; border-bottom: 2px solid transparent; color: #94a3b8; }
+        .nav-link:hover { color: #facc15; }
+        .active-nav { color: #facc15; border-bottom: 2px solid #facc15; font-weight: bold; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .pattern-tag { font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-right: 6px; }
+    </style>
+</head>
+<body class="min-h-screen pb-20">
+
+    <nav class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <div class="flex space-x-6 overflow-x-auto py-4 no-scrollbar text-xs whitespace-nowrap">
+                <a href="/5.index.html" class="nav-link">HOME</a>
+                <a href="/5.kiryu.html" class="nav-link">桐生(01)</a>
+                <a href="/5.toda.html" class="nav-link">戸田(02)</a>
+                <a href="/5.edogawa.html" class="nav-link">江戸川(03)</a>
+                <a href="/5.heiwajima.html" class="nav-link active-nav">平和島(04)</a>
+                <a href="/5.tamagawa.html" class="nav-link">多摩川(05)</a>
+                <a href="/5.hamanako.html" class="nav-link">浜名湖(06)</a>
+                <a href="/5.gamagori.html" class="nav-link">蒲郡(07)</a>
+                <a href="/5.tokoname.html" class="nav-link">常滑(08)</a>
+                <a href="/5.tu.html" class="nav-link">津(09)</a>
+                <a href="/5.mikuni.html" class="nav-link">三国(10)</a>
+                <a href="/5.biwako.html" class="nav-link">びわこ(11)</a>
+                <a href="/5.suminoe.html" class="nav-link">住之江(12)</a>
+                <a href="/5.amagasaki.html" class="nav-link">尼崎(13)</a>
+                <a href="/5.naruto.html" class="nav-link">鳴門(14)</a>
+                <a href="/5.marugame.html" class="nav-link">丸亀(15)</a>
+                <a href="/5.kojima.html" class="nav-link">児島(16)</a>
+                <a href="/5.miyajima.html" class="nav-link">宮島(17)</a>
+                <a href="/5.tokuyama.html" class="nav-link">徳山(18)</a>
+                <a href="/5.shimonoseki.html" class="nav-link">下関(19)</a>
+                <a href="/5.wakamatu.html" class="nav-link">若松(20)</a>
+                <a href="/5.ashiya.html" class="nav-link">芦屋(21)</a>
+                <a href="/5.hukuoka.html" class="nav-link">福岡(22)</a>
+                <a href="/5.karatu.html" class="nav-link">唐津(23)</a>
+                <a href="/5.oomura.html" class="nav-link">大村(24)</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="relative h-48 md:h-64 overflow-hidden border-b border-slate-800 mb-8 shadow-2xl">
+        <img src="Gemini_Generated_Image_vkg8r1vkg8r1vkg8.png" 
+             class="absolute inset-0 w-full h-full object-cover opacity-60" 
+             alt="HEIWAJIMA Banner">
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0b0f19] to-transparent flex flex-col justify-end pb-8 px-4 text-center">
+            <h1 class="text-3xl md:text-5xl font-black italic tracking-widest yellow-accent uppercase drop-shadow-lg">Heiwajima 5-Master</h1>
+            <p class="text-gray-300 text-[10px] mt-2 font-bold uppercase tracking-[0.3em]">平和島(04) イン弱の聖地・外枠連動の精密解析</p>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 space-y-10">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-1">
+                <div class="data-card p-6 rounded-2xl shadow-xl border-t-4 border-yellow-400">
+                    <h2 class="text-lg font-bold mb-6 flex items-center">
+                        <span class="bg-yellow-400 text-black px-2 py-0.5 rounded mr-2 text-sm">TRY</span>
+                        条件シミュレーター
+                    </h2>
+                    <div class="space-y-4 text-sm">
+                        <div>
+                            <label class="text-gray-400 block mb-1">風速条件</label>
+                            <select id="wind" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="strong">強風 (3m以上)</option>
+                                <option value="light">無風〜弱風 (0-2m)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-gray-400 block mb-1">5号艇 展示順位</label>
+                            <select id="exRank" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="1">展示タイム 1位</option>
+                                <option value="2">展示タイム 2位以下</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-gray-400 block mb-1">vs 4号艇 展示タイム差</label>
+                            <select id="vs4" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="fast">0.1秒以上速い</option>
+                                <option value="near">わずかに速い/同等</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-gray-400 block mb-1">1号艇の2連対率</label>
+                            <select id="target1" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="low">70%未満 (平和島名物・イン陥落期待)</option>
+                                <option value="high">70%以上 (イン堅実)</option>
+                            </select>
+                        </div>
+                        <button onclick="calc()" class="w-full bg-yellow-accent hover:bg-yellow-500 text-black font-black py-4 rounded-xl mt-4 transition-all active:scale-95 shadow-lg shadow-yellow-900/20 uppercase tracking-wider">
+                            解析実行
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2">
+                <div id="welcome-msg" class="data-card h-full flex items-center justify-center rounded-2xl border-dashed border-2 border-slate-700 p-12 text-center">
+                    <p class="text-gray-500 font-bold italic">「東のメッカ」平和島の最新統計を反映。<br>特有の「5-6」外枠連動と、強風時のカマシ期待値を算出します。</p>
+                </div>
+                <div id="result-area" class="hidden data-card p-8 rounded-2xl h-full relative overflow-hidden shadow-2xl border border-yellow-400/30">
+                    <h3 class="text-gray-400 font-bold text-sm uppercase">算出された1着期待度</h3>
+                    <div class="flex items-baseline gap-2 mt-4">
+                        <span id="res-percent" class="text-8xl font-black yellow-accent tracking-tighter">0.0</span>
+                        <span class="text-3xl font-bold yellow-accent">%</span>
+                    </div>
+                    <div id="res-comment" class="mt-8 p-4 bg-slate-900/50 border-l-4 border-yellow-400 text-sm leading-relaxed italic text-gray-200 shadow-inner"></div>
+                </div>
+            </div>
+        </div>
+
+        <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="data-card p-4 rounded-xl text-center">
+                <p class="text-xs text-gray-500 font-bold uppercase mb-1">平和島 全体平均</p>
+                <p class="text-2xl font-black yellow-accent">9.10%</p>
+            </div>
+            <div class="data-card p-4 rounded-xl text-center border-b-4 border-yellow-400">
+                <p class="text-xs text-yellow-500 font-bold uppercase mb-1">展示1位時</p>
+                <p class="text-2xl font-black yellow-accent">12.75%</p>
+            </div>
+            <div class="data-card p-4 rounded-xl text-center">
+                <p class="text-xs text-gray-500 font-bold uppercase mb-1">強風時 勝率</p>
+                <p class="text-2xl font-black">10.85%</p>
+            </div>
+            <div class="data-card p-4 rounded-xl text-center bg-yellow-400/10 border border-yellow-400/20">
+                <p class="text-xs text-yellow-400 font-bold uppercase mb-1">5頭平均配当</p>
+                <p class="text-2xl font-black yellow-accent">¥5,120</p>
+            </div>
+        </section>
+
+        <section class="space-y-6">
+            <div class="flex items-center gap-4">
+                <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">2着出現率 & 展開予測</h2>
+                <span class="text-[10px] text-gray-500 font-bold border border-gray-700 px-2 py-0.5 rounded">※平和島名物：外枠連動の相関</span>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border-l-4 border-yellow-400">
+                    <table class="w-full text-left text-sm">
+                        <thead>
+                            <tr class="bg-slate-800/50">
+                                <th class="w-20">2着艇</th>
+                                <th class="w-24 yellow-accent">出現率</th>
+                                <th>傾向と対策</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800">
+                            <tr>
+                                <td class="font-black text-center text-lg text-white">1<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">35.0%</td>
+                                <td class="py-4 px-3 leading-snug text-gray-300">
+                                    <span class="pattern-tag bg-red-600 text-white">【基本】</span>
+                                    5号艇が最内を差して1号艇が粘る「5-1」。広い平和島では差しの有効度が高い。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-black text-center text-lg text-white">6<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">22.4%</td>
+                                <td class="py-4 px-3 leading-snug text-gray-300">
+                                    <span class="pattern-tag bg-green-600 text-white">【連動】</span>
+                                    平和島といえば「5-6」。5が作った展開を大外が拾う形は常に警戒。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-black text-center text-lg text-white">4<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">16.2%</td>
+                                <td class="py-4 px-3 leading-snug text-gray-300">
+                                    <span class="pattern-tag bg-blue-600 text-white">【カド裏】</span>
+                                    4が攻めきれず、その上を叩くか内を突いた5に4が続く「5-4」。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-black text-center text-lg text-white">2<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">14.5%</td>
+                                <td class="py-4 px-3 leading-snug text-gray-300">
+                                    <span class="pattern-tag bg-gray-600 text-white">【差し】</span>
+                                    インが潰れた際、2コースが小回りで残る形。
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="flex flex-col gap-4">
+                    <div class="data-card rounded-2xl p-6 italic text-sm text-gray-300 border-l-4 border-yellow-400 bg-slate-800/30">
+                        <p class="mb-2 font-bold text-yellow-400 tracking-widest uppercase text-xs">Heiwajima Insight</p>
+                        「平和島は全国でもトップクラスにインが弱い水面。5号艇の1着率は、向かい風なら『まくり』、追い風なら『まくり差し』と、風向き一つで決まり手が変わります。特に展示タイムが良い5枠は逆転の主役です。」
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="space-y-6 pt-4">
+            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider">Historical Database</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">1. 平和島 5枠展示の影響</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>条件</th><th>該当数</th><th>1着数</th><th class="yellow-accent">1着率</th></tr></thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold text-white"><td>展示タイム1位</td><td>792</td><td>101</td><td class="yellow-accent">12.75%</td></tr>
+                            <tr><td>一周タイム1位</td><td>715</td><td>88</td><td>12.31%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">2. 風速の威力</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>風速</th><th>5枠1着率</th><th>傾向</th></tr></thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold text-white"><td>強風 (3m以上)</td><td class="yellow-accent">10.85%</td><td>カマシ展開急増</td></tr>
+                            <tr><td>無風〜弱風</td><td>8.40%</td><td>イン・センター主体</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-20 p-12 border-t border-slate-800 text-center text-gray-500 text-xs font-bold">
+        &copy; 2026 5枠突破診断所. All Rights Reserved.
+    </footer>
+
+    <script>
+        function calc() {
+            const wind = document.getElementById('wind').value;
+            const exRank = document.getElementById('exRank').value;
+            const vs4 = document.getElementById('vs4').value;
+            const target1 = document.getElementById('target1').value;
+
+            document.getElementById('welcome-msg').classList.add('hidden');
+            document.getElementById('result-area').classList.remove('hidden');
+
+            let score = 9.10; 
+            if (wind === 'strong') score += 1.75; 
+            if (exRank === '1') score += 3.65; 
+            if (vs4 === 'fast') score += 5.12;
+            if (target1 === 'low') score += 2.99; 
+
+            document.getElementById('res-percent').innerText = score.toFixed(2);
+
+            let comment = "";
+            if (score >= 14) {
+                comment = "【平和島・爆発】イン弱番組かつ、4枠を上回る超抜時計。平和島特有のカマシ水面を5号艇が支配します。5-6の外枠連動（22.4%）も非常に強力。";
+            } else if (score >= 11) {
+                comment = "【勝負気配】展示1位（12.75%）以上のパワー。向かい風なら『5-全』の総まくりまで考慮。インが粘る『5-1』を軸に高配当を狙えます。";
+            } else {
+                comment = "【平均】平和島の平均値（9.10%）程度。インの2連対率が高い場合は、5号艇が無理に攻めて展開が外に逃げるリスクもあります。";
+            }
+            document.getElementById('res-comment').innerText = comment;
+        }
+    </script>
+</body>
+</html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>平和島5枠突破・精密診断 - HEIWAJIMA 5-STATS</title>
     <script src="https://cdn.tailwindcss.com"></script>
