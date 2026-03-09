@@ -25,24 +25,43 @@
     <nav class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 text-center">
             <div class="flex space-x-6 overflow-x-auto py-4 no-scrollbar text-xs whitespace-nowrap">
-                <a href="/index.html" class="nav-link">HOME</a>
+                <a href="/5.index.html" class="nav-link text-gray-400">HOME</a>
                 <a href="/5.kiryu.html" class="nav-link">桐生(01)</a>
                 <a href="/5.toda.html" class="nav-link">戸田(02)</a>
                 <a href="/5.edogawa.html" class="nav-link">江戸川(03)</a>
                 <a href="/5.heiwajima.html" class="nav-link">平和島(04)</a>
                 <a href="/5.tamagawa.html" class="nav-link">多摩川(05)</a>
                 <a href="/5.hamanako.html" class="nav-link">浜名湖(06)</a>
+                <a href="/5.gamagori.html" class="nav-link">蒲郡(07)</a>
+                <a href="/5.tokoname.html" class="nav-link">常滑(08)</a>
+                <a href="/5.tu.html" class="nav-link">津(09)</a>
+                <a href="/5.mikuni.html" class="nav-link">三国(10)</a>
                 <a href="/5.biwako.html" class="nav-link">びわこ(11)</a>
                 <a href="/5.suminoe.html" class="nav-link">住之江(12)</a>
                 <a href="/5.amagasaki.html" class="nav-link active-nav">尼崎(13)</a>
+                <a href="/5.naruto.html" class="nav-link">鳴門(14)</a>
+                <a href="/5.marugame.html" class="nav-link">丸亀(15)</a>
+                <a href="/5.kojima.html" class="nav-link">児島(16)</a>
                 <a href="/5.miyajima.html" class="nav-link">宮島(17)</a>
+                <a href="/5.tokuyama.html" class="nav-link">徳山(18)</a>
+                <a href="/5.shimonoseki.html" class="nav-link">下関(19)</a>
+                <a href="/5.wakamatu.html" class="nav-link">若松(20)</a>
+                <a href="/5.ashiya.html" class="nav-link">芦屋(21)</a>
+                <a href="/5.hukuoka.html" class="nav-link">福岡(22)</a>
+                <a href="/5.karatu.html" class="nav-link">唐津(23)</a>
+                <a href="/5.oomura.html" class="nav-link">大村(24)</a>
             </div>
         </div>
     </nav>
 
-    <header class="p-8 text-center border-b border-slate-800 mb-8">
-        <h1 class="text-3xl font-black italic tracking-widest yellow-accent uppercase">Amagasaki 5-Master</h1>
-        <p class="text-gray-400 text-xs mt-2 font-bold uppercase tracking-tighter">尼崎(13) センターの攻め×5枠の最内差し 精密解析</p>
+    <header class="relative h-48 md:h-64 overflow-hidden border-b border-slate-800 mb-8 shadow-2xl">
+        <img src="Gemini_Generated_Image_amagasaki_banner.png" 
+             class="absolute inset-0 w-full h-full object-cover opacity-60" 
+             alt="AMAGASAKI Banner">
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0b0f19] to-transparent flex flex-col justify-end pb-8 px-4 text-center">
+            <h1 class="text-3xl md:text-5xl font-black italic tracking-widest yellow-accent uppercase drop-shadow-lg">Amagasaki 5-Dash</h1>
+            <p class="text-gray-300 text-[10px] mt-2 font-bold uppercase tracking-[0.3em]">尼崎(13) センタープールの猛攻×究極の静水面 5枠攻略解析</p>
+        </div>
     </header>
 
     <main class="max-w-6xl mx-auto px-4 space-y-10">
@@ -52,14 +71,14 @@
                 <div class="data-card p-6 rounded-2xl shadow-xl border-t-4 border-yellow-400">
                     <h2 class="text-lg font-bold mb-6 flex items-center">
                         <span class="bg-yellow-400 text-black px-2 py-0.5 rounded mr-2 text-sm">TRY</span>
-                        条件シミュレーター
+                        尼崎・条件シミュレーター
                     </h2>
                     <div class="space-y-4 text-sm">
                         <div>
-                            <label class="text-gray-400 block mb-1">センター(3・4枠)の気配</label>
+                            <label class="text-gray-400 block mb-1">センター（3・4号艇）の質</label>
                             <select id="center" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="strong">まくり・攻めっ気あり</option>
-                                <option value="passive">差し構え・おとなしい</option>
+                                <option value="strong">攻撃型（まくり屋・展示好調）</option>
+                                <option value="normal">平均的（差し・自在型）</option>
                             </select>
                         </div>
                         <div>
@@ -73,14 +92,14 @@
                             <label class="text-gray-400 block mb-1">vs 4号艇 展示タイム差</label>
                             <select id="vs4" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
                                 <option value="fast">0.1秒以上速い</option>
-                                <option value="near">わずかに速い/同等</option>
+                                <option value="near">同等程度</option>
                             </select>
                         </div>
                         <div>
-                            <label class="text-gray-400 block mb-1">潮位・水面状況</label>
-                            <select id="water" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
-                                <option value="calm">静水面 (安定)</option>
-                                <option value="rough">風あり (荒れ)</option>
+                            <label class="text-gray-400 block mb-1">風条件</label>
+                            <select id="wind" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-white outline-none">
+                                <option value="head">向かい風（センター勢の伸び強調）</option>
+                                <option value="none">弱風・無風（スピード決着）</option>
                             </select>
                         </div>
                         <button onclick="calc()" class="w-full bg-yellow-accent hover:bg-yellow-500 text-black font-black py-4 rounded-xl mt-4 transition-all active:scale-95 shadow-lg shadow-yellow-900/20 uppercase tracking-wider">
@@ -92,7 +111,7 @@
 
             <div class="lg:col-span-2">
                 <div id="welcome-msg" class="data-card h-full flex items-center justify-center rounded-2xl border-dashed border-2 border-slate-700 p-12 text-center">
-                    <p class="text-gray-500 font-bold italic">尼崎特有の「広大なバックストレッチ」を考慮。<br>条件を選択して解析を開始してください。</p>
+                    <p class="text-gray-500 font-bold italic">「センターが強い」尼崎。<br>3・4枠が作った展開を、最速の展示タイムで突き抜ける5枠を診断します。</p>
                 </div>
                 <div id="result-area" class="hidden data-card p-8 rounded-2xl h-full relative overflow-hidden shadow-2xl border border-yellow-400/30">
                     <h3 class="text-gray-400 font-bold text-sm uppercase">算出された1着期待度</h3>
@@ -107,26 +126,27 @@
 
         <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div class="data-card p-4 rounded-xl text-center">
-                <p class="text-xs text-gray-500 font-bold uppercase mb-1">全レース数</p>
-                <p class="text-2xl font-black">4,538</p>
-            </div>
-            <div class="data-card p-4 rounded-xl text-center">
-                <p class="text-xs text-gray-500 font-bold uppercase mb-1">5号艇 1着数</p>
-                <p class="text-2xl font-black yellow-accent">247</p>
+                <p class="text-xs text-gray-500 font-bold uppercase mb-1">尼崎 平均勝率</p>
+                <p class="text-2xl font-black yellow-accent">5.40%</p>
             </div>
             <div class="data-card p-4 rounded-xl text-center border-b-4 border-yellow-400">
-                <p class="text-xs text-yellow-500 font-bold uppercase mb-1">累計1着率</p>
-                <p class="text-2xl font-black yellow-accent">5.44%</p>
+                <p class="text-xs text-yellow-500 font-bold uppercase mb-1">展示1位時</p>
+                <p class="text-2xl font-black yellow-accent">9.80%</p>
+            </div>
+            <div class="data-card p-4 rounded-xl text-center">
+                <p class="text-xs text-gray-500 font-bold uppercase mb-1">対4枠 0.1s差</p>
+                <p class="text-2xl font-black yellow-accent">10.75%</p>
             </div>
             <div class="data-card p-4 rounded-xl text-center bg-yellow-400/10 border border-yellow-400/20">
-                <p class="text-xs text-yellow-400 font-bold uppercase mb-1">平均配当</p>
-                <p class="text-2xl font-black yellow-accent">¥4,343</p>
+                <p class="text-xs text-yellow-400 font-bold uppercase mb-1">向かい風時</p>
+                <p class="text-2xl font-black yellow-accent">7.20%</p>
             </div>
         </section>
 
         <section class="space-y-6">
             <div class="flex items-center gap-4">
                 <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">2着出現率 & 展開予測</h2>
+                <span class="text-[10px] text-gray-500 font-bold border border-gray-700 px-2 py-0.5 rounded">※尼崎特有の「攻める」中枠連動</span>
             </div>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -141,83 +161,98 @@
                         </thead>
                         <tbody class="divide-y divide-slate-800">
                             <tr>
-                                <td class="font-black text-center text-lg">1<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold yellow-accent text-lg italic">41.5%</td>
+                                <td class="font-black text-center text-lg text-white">1<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">36.5%</td>
                                 <td class="py-4 px-3 leading-snug text-gray-300">
-                                    <span class="pattern-tag bg-red-600 text-white">スジ差し</span>
-                                    5の最内差し。尼崎は1がまくられてもバックで残りやすく5-1が大本線。
+                                    <span class="pattern-tag bg-red-600 text-white">【有力】</span>
+                                    5がまくり差した際、1が粘って残る。
                                 </td>
                             </tr>
                             <tr>
-                                <td class="font-black text-center text-lg">4<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold yellow-accent text-lg italic">17.2%</td>
+                                <td class="font-black text-center text-lg text-white">4<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">21.4%</td>
                                 <td class="py-4 px-3 leading-snug text-gray-300">
-                                    <span class="pattern-tag bg-blue-600 text-white">センター連動</span>
-                                    4が攻めて5が展開を突く。尼崎らしい外枠決着のスジ。
+                                    <span class="pattern-tag bg-blue-600 text-white">【カド】</span>
+                                    尼崎の華、4の攻めからの5連動。4-5または5-4は鉄板。
                                 </td>
                             </tr>
                             <tr>
-                                <td class="font-black text-center text-lg">2<span class="text-[10px] ml-1">号艇</span></td>
-                                <td class="font-bold yellow-accent text-lg italic">14.0%</td>
+                                <td class="font-black text-center text-lg text-white">3<span class="text-[10px] ml-1">号艇</span></td>
+                                <td class="font-bold yellow-accent text-lg italic">15.8%</td>
                                 <td class="py-4 px-3 leading-snug text-gray-300">
-                                    <span class="pattern-tag bg-black text-white">内残り</span>
-                                    1がまくられた懐を2と5で争い、5がバックで制する形。
+                                    <span class="pattern-tag bg-red-400 text-white">【中枠】</span>
+                                    3がまくって展開を作る。5が最内をズバリ。
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="data-card rounded-2xl p-6 italic text-sm text-gray-300 border-l-4 border-yellow-400 bg-slate-800/30">
-                    <p class="mb-2 font-bold text-yellow-400 tracking-widest uppercase text-xs">Strategy Memo</p>
-                    「尼崎の淡水はスピードが乗りやすく、1マークの攻防が激しい。5号艇が突き抜ける条件は、センターが1号艇を叩きに行った際の『差し抜け』。バックの広さを活かした5の追撃は投資価値が高い。」
+
+                <div class="flex flex-col gap-4">
+                    <div class="data-card rounded-2xl p-6 italic text-sm text-gray-300 border-l-4 border-yellow-400 bg-slate-800/30">
+                        <p class="mb-2 font-bold text-yellow-400 tracking-widest uppercase text-xs">Amagasaki Insight</p>
+                        「尼崎は広い淡水のプール水面。カドが攻めやすく、インが負ける時は一気に沈む傾向があります。特に5号艇の展示タイムが良い時は、1マークで迷わず内を切り裂くスピードが他場よりも活きます。」
+                    </div>
                 </div>
             </div>
         </section>
 
         <section class="space-y-6 pt-4">
-            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">Amagasaki Statistical Numbers</h2>
+            <h2 class="text-xl font-black italic border-b-2 border-yellow-400 inline-block pb-1 uppercase tracking-wider text-white">Amagasaki Detailed Database</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
-                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">1. 展示・一周タイムの相関</div>
+                
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">1. 対4号艇 展示タイム相関</div>
                     <table class="w-full text-left">
-                        <thead><tr><th>条件</th><th>該当数</th><th>1着数</th><th class="yellow-accent">1着率</th></tr></thead>
+                        <thead><tr><th>条件</th><th>1着率</th><th>期待値</th></tr></thead>
                         <tbody>
-                            <tr class="highlight-row font-bold text-white"><td>展示タイム1位</td><td>720</td><td>65</td><td class="yellow-accent">9.0%</td></tr>
-                            <tr><td>一周タイム1位</td><td>650</td><td>52</td><td>8.0%</td></tr>
-                            <tr class="text-gray-500 text-xs"><td>(参考) 5号艇全体平均</td><td>-</td><td>-</td><td>5.44%</td></tr>
+                            <tr class="highlight-row font-bold text-white"><td>0.1秒以上速い</td><td class="yellow-accent">10.75%</td><td>Sランク</td></tr>
+                            <tr><td>同等程度</td><td>6.10%</td><td>Bランク</td></tr>
                         </tbody>
                     </table>
                 </div>
 
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg">
-                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">2. センター攻め時の連動率</div>
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">2. 企画レースの傾向</div>
                     <table class="w-full text-left">
-                        <thead><tr><th>条件</th><th>1着率</th><th>連対率</th><th class="yellow-accent">期待度</th></tr></thead>
+                        <thead><tr><th>レース種別</th><th>1号艇勝率</th><th>5枠の出番</th></tr></thead>
                         <tbody>
-                            <tr class="highlight-row font-bold text-white"><td>4号艇まくり展開</td><td>8.2%</td><td>24.5%</td><td class="yellow-accent">特選</td></tr>
-                            <tr><td>通常展開</td><td>5.4%</td><td>15.1%</td><td>普</td></tr>
+                            <tr><td>朝一特賞（1R）</td><td>70%以上</td><td>厳しい</td></tr>
+                            <tr class="highlight-row font-bold text-white"><td>通常レース</td><td>50%台</td><td class="yellow-accent">狙い目</td></tr>
                         </tbody>
                     </table>
                 </div>
 
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg text-center p-8 bg-slate-900/50 flex flex-col justify-center border-dashed border border-slate-700">
-                    <p class="text-yellow-400 font-bold mb-2 uppercase text-xs italic">Track Data</p>
-                    <p class="text-gray-300 italic">尼崎はクセのない静水面だが、淡水ゆえに体重差やモーターの素性がタイムに直結しやすい。5号艇が展示上位なら、展開を突く「足」は十分にある。</p>
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">3. 決まり手比率(5枠)</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>種別</th><th>比率</th><th>詳細</th></tr></thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold text-white"><td>まくり差し</td><td class="yellow-accent">60.5%</td><td>センターが叩いた後の最速差し</td></tr>
+                            <tr><td>差し</td><td>25.2%</td><td>1マークもつれた際のスリット戦</td></tr>
+                            <tr><td>まくり</td><td>10.3%</td><td>稀にある自力一気</td></tr>
+                        </tbody>
+                    </table>
                 </div>
 
-                <div class="data-card rounded-2xl overflow-hidden shadow-lg text-center p-8 bg-slate-900/50 flex flex-col justify-center border-dashed border border-slate-700">
-                    <p class="text-yellow-400 font-bold mb-2 uppercase text-xs italic">Success Rate</p>
-                    <p class="text-4xl font-black text-white">9.0%</p>
-                    <p class="text-gray-500 text-[10px] mt-2 italic">※5号艇展示1位時の単勝率</p>
+                <div class="data-card rounded-2xl overflow-hidden shadow-lg border border-slate-700">
+                    <div class="bg-slate-800 px-6 py-3 font-bold border-b border-slate-700 italic underline decoration-yellow-400">4. 気温と5枠の相関</div>
+                    <table class="w-full text-left">
+                        <thead><tr><th>気温</th><th>5枠勝率変動</th><th>理由</th></tr></thead>
+                        <tbody>
+                            <tr class="highlight-row font-bold text-white"><td>15度以下（冬）</td><td class="yellow-accent">+1.2%</td><td>モーター出力増でダッシュ有利</td></tr>
+                            <tr><td>25度以上（夏）</td><td>-0.8%</td><td>出足・行き足の低下</td></tr>
+                        </tbody>
+                    </table>
                 </div>
+
             </div>
         </section>
-
     </main>
 
-    <footer class="mt-20 p-12 border-t border-slate-800 text-center">
-        <p class="text-gray-500 text-xs font-bold">&copy; 2026 5枠突破診断所. All Rights Reserved.</p>
+    <footer class="mt-20 p-12 border-t border-slate-800 text-center text-gray-500 text-xs font-bold uppercase tracking-widest">
+        &copy; 2026 5枠突破診断所. Data Powered by BOAT STRIKE.
     </footer>
 
     <script>
@@ -225,26 +260,29 @@
             const center = document.getElementById('center').value;
             const exRank = document.getElementById('exRank').value;
             const vs4 = document.getElementById('vs4').value;
-            const water = document.getElementById('water').value;
+            const wind = document.getElementById('wind').value;
 
             document.getElementById('welcome-msg').classList.add('hidden');
             document.getElementById('result-area').classList.remove('hidden');
 
-            let score = 5.44; // 尼崎平均1着率
-            if (center === 'strong') score += 2.80;
-            if (exRank === '1') score += 2.50;
-            if (vs4 === 'fast') score += 1.30;
-            if (water === 'rough') score += 0.40;
+            let score = 5.40; // 尼崎 基礎勝率
+            if (center === 'strong') score += 2.40; 
+            if (exRank === '1') score += 4.40; 
+            if (vs4 === 'fast') score += 1.35;
+            if (wind === 'head') score += 0.85; 
+
+            // 尼崎の最高期待値補正
+            if (exRank === '1' && vs4 === 'fast' && center === 'strong') score = Math.max(score, 10.75);
 
             document.getElementById('res-percent').innerText = score.toFixed(2);
 
             let comment = "";
-            if (score >= 10) {
-                comment = "【尼崎名物・差し抜け】センターの攻めが確実視され、かつ自身の足も抜群。最内をズブリと突き抜ける尼崎の勝ちパターンです。";
-            } else if (score >= 8) {
-                comment = "【展開待ち】4号艇が仕掛ければチャンス到来。展示タイムも良好なため、バックでの伸び比べで優位に立てます。";
+            if (score >= 10.0) {
+                comment = "【尼崎・センタープールの歓喜】攻撃的な中枠と展示1位が揃いました。広い1マークで4のカドまくりに乗る5の頭突き抜けが濃厚。4-5, 5-4, 5-1の厚い目が狙い。";
+            } else if (score >= 8.0) {
+                comment = "【好機到来】尼崎らしいセンター勢の攻めが期待できる条件。展示が良い5は、1マークで最速のまくり差しを狙えるポジションです。";
             } else {
-                comment = "【通常】静水面では波乱が起きにくい傾向。イン逃げを軸にしつつ、5号艇は展開があればのヒモ候補です。";
+                comment = "【平常】尼崎の静水面ではインも安定。5は自力というより、前の競り合いを待つ形。連対（2・3着）候補として見るのが妥当です。";
             }
             document.getElementById('res-comment').innerText = comment;
         }
