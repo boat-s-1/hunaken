@@ -87,12 +87,29 @@
 }
         }
         
-        .t-header { display: flex; align-items: center; border-bottom: 2px solid var(--br-pink-deep); padding-bottom: 5px; margin-bottom: 8px; z-index: 1; }
+        .t-header { 
+    display: flex; 
+    align-items: center; 
+    border-bottom: 2px solid var(--br-pink-deep); 
+    padding-bottom: 5px; 
+    margin-bottom: 8px; 
+    position: relative; /* 追記：位置固定の基準にする */
+    z-index: 5;         /* 追記：画像(0)より確実に上にする */
+}
         .t-br-logo { font-size: 10px; font-weight: bold; color: var(--br-pink-deep); line-height: 1.1; margin-right: 15px; }
         /* 舟券の文字を女の子に合わせて紫色に */
         .t-main-place { font-size: 30px; font-weight: 700; color: var(--p-star-purple); font-family: 'M PLUS Rounded 1c', sans-serif; }
-        .t-form-box { margin-left: auto; background: var(--br-pink-deep); color: #fff; padding: 3px 8px; font-size: 11px; font-weight: bold; border-radius: 20px; }
-        
+        .t-form-box { 
+    position: absolute;   /* 追記：絶対位置指定に変更 */
+    right: 0;            /* 追記：右端に固定 */
+    top: 5px;            /* 調整：上下位置 */
+    background: var(--br-pink-deep); 
+    color: #fff; 
+    padding: 3px 12px;   /* 少し横幅を広げると可愛くなります */
+    font-size: 11px; 
+    font-weight: bold; 
+    border-radius: 20px; 
+}
         .t-body { display: flex; flex: 1; z-index: 1; }
         .t-left { width: 130px; display: flex; flex-direction: column; padding-top: 5px; }
         .t-sub-place { border: 2px solid var(--br-pink-deep); color: var(--p-star-purple); padding: 3px 5px; font-size: 14px; font-weight: bold; text-align: center; border-radius: 10px; margin-bottom: 8px; }
