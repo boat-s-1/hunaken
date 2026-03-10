@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BOAT STRIKE | 舟券メーカーポータル</title>
+    <title>BOAT STRIKE | 競艇予想ツールポータル</title>
     <style>
         :root {
             --main-bg: #050a0f;
             --card-bg: #0f1722;
             --accent-blue: #00e5ff;
             --accent-gold: #ffc107;
-            --accent-pink: #ff66aa; /* 初音ちゃん用 */
             --text-main: #ffffff;
             --text-sub: #94a3b8;
         }
@@ -19,101 +18,176 @@
             background-color: var(--main-bg);
             color: var(--text-main);
             font-family: 'Avenir Next', 'Helvetica Neue', Arial, sans-serif;
-            margin: 0; padding: 0; line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
         }
 
-        /* ヘッダー画像 */
+        /* --- ヘッダー画像エリア --- */
         .hero-banner {
-            width: 100%; height: 300px; overflow: hidden;
-            border-bottom: 2px solid var(--accent-blue);
-        }
-        .hero-banner img { width: 100%; height: 100%; object-fit: cover; }
-
-        @media (max-width: 600px) { .hero-banner { height: 160px; } }
-
-        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
-
-        /* --- 2人のナビゲーターセクション --- */
-        .duo-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin: -40px 0 30px 0; /* ヘッダーに少し被せる */
+            width: 100%;
+            height: 350px;
+            overflow: hidden;
             position: relative;
-            z-index: 10;
-        }
-
-        .char-card {
-            background: rgba(15, 23, 34, 0.95);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 15px;
-            text-align: center;
-            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--accent-blue);
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .char-card.kiina { border-top: 4px solid var(--accent-gold); }
-        .char-card.hatsune { border-top: 4px solid var(--accent-pink); }
-
-        .char-avatar {
-            width: 80px; height: 80px;
-            border-radius: 50%;
-            margin: 0 auto 10px;
-            border: 2px solid #fff;
-            overflow: hidden;
-            background: #000;
-        }
-        .char-avatar img { width: 100%; height: 100%; object-fit: cover; }
-
-        .char-name { font-weight: bold; font-size: 1.1rem; margin-bottom: 5px; }
-        .char-tag { font-size: 0.7rem; padding: 2px 8px; border-radius: 10px; margin-bottom: 10px; display: inline-block; }
-        
-        .kiina .char-tag { background: var(--accent-gold); color: #000; }
-        .hatsune .char-tag { background: var(--accent-pink); color: #fff; }
-
-        .char-msg { font-size: 0.75rem; color: #ccc; min-height: 3em; margin-bottom: 15px; }
-
-        .sns-btn-mini {
+        .hero-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 20%;
             display: block;
-            padding: 8px;
-            border-radius: 5px;
+        }
+
+        @media (max-width: 600px) {
+            .hero-banner { height: 200px; }
+        }
+
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 20px; 
+        }
+
+        /* --- ナビゲーター紹介セクション --- */
+        .char-profile {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #162130 0%, #050a0f 100%);
+            border-radius: 20px;
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.1);
+        }
+
+        .char-img-container {
+            width: 120px;
+            height: 120px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--accent-blue);
+        }
+
+        .char-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top;
+        }
+
+        .char-info { margin-left: 20px; }
+        .char-info h3 { color: var(--accent-gold); margin: 0 0 5px 0; font-size: 1.2rem; }
+        .char-info p { font-size: 0.85rem; margin: 0; color: #ccc; }
+
+        .sns-links { margin-top: 12px; }
+        .sns-btn {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 4px;
             text-decoration: none;
             font-weight: bold;
-            font-size: 0.7rem;
-            margin-bottom: 5px;
-            transition: 0.2s;
+            font-size: 0.75rem;
+            margin-right: 8px;
+            transition: opacity 0.2s;
         }
-        .kiina .sns-btn-mini { background: #ff0000; color: #fff; }
-        .hatsune .sns-btn-mini { background: #00f2ea; color: #000; } /* TikTok風カラー */
+        .btn-youtube { background: #ff0000; color: #fff; }
+        .btn-tiktok { background: #fff; color: #000; }
+        .sns-btn:hover { opacity: 0.8; }
 
-        /* ツールセクション */
+        @media (max-width: 600px) {
+            .char-profile { flex-direction: column; text-align: center; }
+            .char-info { margin-left: 0; margin-top: 15px; }
+        }
+
+        /* --- ツールグリッド & カード --- */
         .section-title {
-            font-size: 0.9rem; color: var(--accent-gold);
-            text-transform: uppercase; letter-spacing: 2px;
-            margin: 40px 0 20px; padding-left: 15px; border-left: 4px solid var(--accent-gold);
+            font-size: 0.9rem;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 40px 0 20px;
+            padding-left: 15px;
+            border-left: 4px solid var(--accent-gold);
         }
 
-        .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
 
         .tool-card {
-            background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 16px; padding: 15px; text-decoration: none; color: inherit;
-            transition: 0.3s;
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 20px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            display: block;
         }
-        .tool-card:hover { transform: translateY(-5px); border-color: var(--accent-blue); }
 
+        .tool-card:hover {
+            transform: translateY(-5px);
+            background: #162130;
+            border-color: var(--accent-blue);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        /* カード内サムネイル画像 */
         .tool-thumb {
-            width: 100%; height: 120px; background: #050a0f;
-            border-radius: 10px; margin-bottom: 12px; overflow: hidden;
+            width: 100%;
+            height: 140px;
+            background: #050a0f;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .tool-thumb img { width: 100%; height: 100%; object-fit: cover; }
 
-        .tool-name { font-size: 1rem; font-weight: bold; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center; }
-        .tool-desc { font-size: 0.75rem; color: var(--text-sub); }
-        .badge { background: var(--accent-blue); color: #000; font-size: 0.6rem; padding: 2px 6px; border-radius: 4px; }
+        .tool-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
 
-        footer { text-align: center; padding: 40px; color: var(--text-sub); font-size: 0.75rem; background: #000; margin-top: 40px; }
+        .tool-card:hover .tool-thumb img { transform: scale(1.05); }
+
+        .tool-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .tool-desc { font-size: 0.8rem; color: var(--text-sub); line-height: 1.4; }
+        .badge { background: var(--accent-blue); color: #000; font-size: 0.6rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+
+        /* お知らせパネル */
+        .info-panel {
+            margin-top: 50px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 20px;
+            font-size: 0.85rem;
+            border: 1px dashed rgba(148, 163, 184, 0.2);
+        }
+
+        footer {
+            text-align: center;
+            padding: 50px 20px;
+            color: var(--text-sub);
+            font-size: 0.8rem;
+            background: #000;
+            margin-top: 40px;
+        }
     </style>
 </head>
 <body>
@@ -124,54 +198,79 @@
 
 <div class="container">
 
-    <div class="duo-container">
-        <div class="char-card kiina">
-            <div class="char-avatar">
-                <img src="S__14368790.jpg" alt="キイナ">
+    <div class="char-profile">
+        <div class="char-img-container">
+            <img src="1b41b474-2278-41e2-8673-a56a68d3acf4.png" alt="初音">
+        </div>
+        <div class="char-info">
+            <h3>NAVIGATOR: 初音</h3>
+            <p>「女子戦初日大好き♡最新ツールで一緒に万舟狙いましょう♪」</p>
+            <div class="sns-links">
+                <a href="#" class="sns-btn btn-youtube">YouTube</a>
+                <a href="#" class="sns-btn btn-tiktok">TikTok</a>
             </div>
-            <div class="char-name">キイナ</div>
-            <span class="char-tag">5頭・万舟穴狙い</span>
-            <p class="char-msg">「展開を突く5号艇が私の戦場。一撃、獲りに行くよ！」</p>
-            <a href="#" class="sns-btn-mini">YouTube [穴専科]</a>
-        </div>
-        <div class="char-card hatsune">
-            <div class="char-avatar">
-                <img src="hatsune_avatar.jpg" alt="初音"> </div>
-            <div class="char-name">初音</div>
-            <span class="char-tag">女子戦・デイリー予想</span>
-            <p class="char-msg">「毎日のレースを大切に。女子戦のセオリーならお任せください！」</p>
-            <a href="#" class="sns-btn-mini">TikTok [デイリー]</a>
         </div>
     </div>
 
-    <h2 class="section-title">Formation Tools</h2>
-    <div class="tool-grid">
-        <a href="hunaken3.html" class="tool-card">
-            <div class="tool-thumb"><img src="thumb3_f.jpg" alt="3連単"></div>
-            <div class="tool-name">3連単フォーメーション <span class="badge">HOT</span></div>
-            <div class="tool-desc">複雑な買い目も瞬時に画像化。キイナの穴予想共有に最適！</div>
-        </a>
-        <a href="2rentan3.html" class="tool-card">
-            <div class="tool-thumb"><img src="thumb2_f.jpg" alt="2連単"></div>
-            <div class="tool-name">2連単フォーメーション</div>
-            <div class="tool-desc">的中率重視の2連単。初音の女子戦予想にぴったり。</div>
-        </a>
-    </div>
-
-    <h2 class="section-title">Analysis Data</h2>
+    <h2 class="section-title">予想ツール(過去２年以上のデータ＆独自ロジックで開発中)</h2>
     <div class="tool-grid">
         <a href="5.index.html" class="tool-card">
-            <div class="tool-thumb"><img src="thumb_data.jpg" alt="データ"></div>
-            <div class="tool-name">5号艇 期待値ランキング</div>
-            <div class="tool-desc">キイナ監修。全国24場の「5号艇が来る条件」を数値化。</div>
+            <div class="tool-thumb"><img src="Gemini_Generated_Image_mse050mse050mse0.png" alt="5号艇ツール"></div>
+            <div class="tool-name">５号艇特化ツール<span class="badge">イチオシ</span></div>
+            <div class="tool-desc">全場５頭解析ツール＆情報</div>
         </a>
+        <a href="2rentan3.html" class="tool-card">
+            <div class="tool-thumb"><img src="S__14368791.jpg" alt="事前予想ツール"></div>
+            <div class="tool-name">事前予想ツール</div>
+            <div class="tool-desc">直感的入力で機力差が丸わかり　全場過去２年分のデータから算出</div>
+        </a>
+        <a href="2.3.box.html" class="tool-card">
+            <div class="tool-thumb"><img src="S__14368791.jpg" alt="BOX"></div>
+            <div class="tool-name">展示タイム補正ツール</div>
+            <div class="tool-desc">全場5000レース以上から場ごとの差異やコース別の差異を算出</div>
+        </a>
+    </div>
+
+    <h2 class="section-title">ボートレースツール</h2>
+    <div class="tool-grid">
+        <a href="index2.html" class="tool-card">
+            <div class="tool-thumb"><img src="S__14368794.jpg" alt="舟券ツール"></div>
+            <div class="tool-name">舟券メーカー ①</div>
+            <div class="tool-desc">オリジナル舟券作成で簡単SNS投稿</div>
+        </a>
+        <a href="hunaken2.html" class="tool-card">
+            <div class="tool-thumb"><img src="thumb_s2.jpg" alt="簡易2"></div>
+            <div class="tool-name">簡易版メーカー ②</div>
+            <div class="tool-desc">装飾を排除した、シンプルで視認性の高いデザイン。</div>
+        </a>
+    </div>
+
+    <div class="info-panel">
+        <p style="color: var(--accent-gold); font-weight: bold; margin-top: 0;">[SYSTEM UPDATE]</p>
+        <p>・2026.03.09: サイトデザインとキイナさんの紹介エリアを追加しました。</p>
+        <p>・全24会場の計算エンジンを最新版に更新済みです。</p>
     </div>
 
 </div>
 
 <footer>
     <p>&copy; 2026 BOAT STRIKE PROJECT - P-STAR</p>
+    <div style="margin-top: 10px;">
+        <a href="info.html" style="color: var(--accent-blue); text-decoration: none; margin: 0 10px;">USAGE</a> | 
+        <a href="info.html" style="color: var(--accent-blue); text-decoration: none; margin: 0 10px;">PRIVACY</a>
+    </div>
 </footer>
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
