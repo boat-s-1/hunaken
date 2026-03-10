@@ -51,6 +51,49 @@
             padding: 20px; 
         }
 
+        /* --- 右下の追従案内係 (New!) --- */
+        #floating-navi {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: flex-end;
+            cursor: pointer;
+            transition: opacity 0.5s ease, transform 0.3s ease;
+        }
+        #floating-navi:hover { transform: scale(1.05); }
+
+        .balloon {
+            position: relative;
+            background: rgba(255, 255, 255, 0.95);
+            color: #000;
+            padding: 10px 15px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-right: 10px;
+            margin-bottom: 60px; /* キャラクターの高さに合わせる */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            max-width: 160px;
+            line-height: 1.4;
+            pointer-events: none;
+        }
+        .balloon::after {
+            content: "";
+            position: absolute;
+            top: 50%; right: -10px;
+            margin-top: -5px;
+            border-style: solid;
+            border-width: 5px 0 5px 10px;
+            border-color: transparent transparent transparent rgba(255, 255, 255, 0.95);
+        }
+
+        .navi-char {
+            width: 110px;
+            filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.4));
+        }
+
         /* --- ナビゲーター紹介セクション --- */
         .char-profile {
             display: flex;
@@ -101,6 +144,7 @@
         @media (max-width: 600px) {
             .char-profile { flex-direction: column; text-align: center; }
             .char-info { margin-left: 0; margin-top: 15px; }
+            #floating-navi { transform: scale(0.85); right: 5px; bottom: 5px; } /* スマホでは少し小さく */
         }
 
         /* --- ツールグリッド & カード --- */
@@ -138,7 +182,6 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
         }
 
-        /* カード内サムネイル画像 */
         .tool-thumb {
             width: 100%;
             height: 140px;
@@ -170,7 +213,6 @@
         .tool-desc { font-size: 0.8rem; color: var(--text-sub); line-height: 1.4; }
         .badge { background: var(--accent-blue); color: #000; font-size: 0.6rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
 
-        /* お知らせパネル */
         .info-panel {
             margin-top: 50px;
             background: rgba(255, 255, 255, 0.03);
@@ -191,6 +233,11 @@
     </style>
 </head>
 <body>
+
+<div id="floating-navi" onclick="jumpSNS()">
+    <div id="navi-balloon" class="balloon">5号艇の穴狙い、準備はいい？</div>
+    <img id="navi-img" src="S__14368790.jpg" class="navi-char" alt="ナビゲーター">
+</div>
 
 <header class="hero-banner">
     <img src="S__14368789.jpg" alt="BOAT STRIKE PORTAL">
@@ -247,7 +294,7 @@
 
     <div class="info-panel">
         <p style="color: var(--accent-gold); font-weight: bold; margin-top: 0;">[SYSTEM UPDATE]</p>
-        <p>・2026.03.09: サイトデザインとキイナさんの紹介エリアを追加しました。</p>
+        <p>・2026.03.10: 案内ナビゲーターにキイナ＆初音の切り替え機能を追加しました。</p>
         <p>・全24会場の計算エンジンを最新版に更新済みです。</p>
     </div>
 
@@ -261,17 +308,49 @@
     </div>
 </footer>
 
+<script>
+    const naviData = [
+        {
+            name: "キイナ",
+            img: "S__14368790.jpg",
+            msg: "5号艇の穴狙いなら任せて！YouTube公開中だよ！",
+            url: "https://www.youtube.com/@YOUR_KIINA_CHANNEL"
+        },
+        {
+            name: "初音",
+            img: "1b41b474-2278-41e2-8673-a56a68d3acf4.png",
+            msg: "女子戦や初日の予想はTikTokで毎日更新中♪",
+            url: "https://www.tiktok.com/@YOUR_HATSUNE_CHANNEL"
+        }
+    ];
+
+    let currentIndex = 0;
+    const naviWrapper = document.getElementById('floating-navi');
+    const naviImg = document.getElementById('navi-img');
+    const naviBalloon = document.getElementById('navi-balloon');
+
+    function switchNavi() {
+        currentIndex = (currentIndex + 1) % naviData.length;
+        
+        // フェードアウト
+        naviWrapper.style.opacity = 0;
+        
+        setTimeout(() => {
+            naviImg.src = naviData[currentIndex].img;
+            naviBalloon.innerText = naviData[currentIndex].msg;
+            // フェードイン
+            naviWrapper.style.opacity = 1;
+        }, 500);
+    }
+
+    // 5秒ごとに切り替え
+    setInterval(switchNavi, 5000);
+
+    // クリックで各SNSへ
+    function jumpSNS() {
+        window.open(naviData[currentIndex].url, '_blank');
+    }
+</script>
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
