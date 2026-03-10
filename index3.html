@@ -1,299 +1,207 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>舟券メーカー P-STAR | ボートレース点数計算・予想集計ツール</title>
-    
+    <meta name="google-adsense-account" content="ca-pub-9145518658275668">
+    <title>舟券メーカー | SNS用投稿画作成ツール</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9145518658275668" crossorigin="anonymous"></script>
+    <meta name="google-site-verification" content="gjZSAf-F1sn_m4mb6Yjjv4CrGE83tJfvrFHbAy7P00s" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        :root {
-            --bg-color: #f7f9fc; /* 画面全体の背景色：少しグレーにしてカードを際立たせる */
-            --card-bg: #ffffff; /* カードの背景色 */
-            --primary-blue: #0056b3; /* 競艇らしい信頼感のある青 */
-            --accent-orange: #f39800; /* アクティブなオレンジ */
-            --text-main: #333333; /* メイン文字色 */
-            --text-sub: #888888; /* 補足文字色 */
-            --border-color: #eeeeee; /* ボーダーの色 */
+        :root { 
+            --bg-dark: #0b111a;    /* 深海のような濃紺 */
+            --card-bg: #162130;    /* カードの背景 */
+            --br-blue: #00d2ff;    /* 鮮やかなライトブルー */
+            --br-gold: #ffcc00;    /* アクセントのゴールド */
+            --br-pink: #ff007c;    /* 追加：ビビッドピンク */
+            --text-gray: #b0b8c1;
         }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-bottom: 20px;
+        body { 
+            font-family: 'Helvetica Neue', Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: var(--bg-dark); 
+            color: #eee; 
         }
 
-        /* --- ヘッダー --- */
-        header {
-            width: 100%;
-            background: var(--card-bg);
-            padding: 15px 0;
-            text-align: center;
-            border-bottom: 1px solid var(--border-color);
-            position: sticky; /* 画面上部に固定 */
-            top: 0;
-            z-index: 100;
+        header { 
+            background: linear-gradient(180deg, #001529 0%, var(--bg-dark) 100%);
+            color: #fff; 
+            padding: 40px 20px; 
+            text-align: center; 
+            border-bottom: 2px solid var(--br-blue);
         }
 
-        header h1 {
-            margin: 0;
-            font-size: 20px;
-            font-weight: 800;
-            letter-spacing: -1px;
-            color: var(--primary-blue);
+        header h1 { 
+            margin: 0; 
+            font-size: 2.2rem; 
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px var(--br-blue);
         }
 
-        header p { margin: 2px 0 0; font-size: 11px; color: var(--text-sub); }
+        header p { font-size: 0.9em; color: var(--text-gray); margin: 10px 0 0; }
 
-        /* --- メインコンテナ --- */
-        .container {
-            width: 100%;
-            max-width: 450px; /* スマホで見やすい幅に制限 */
-            padding: 15px;
-            box-sizing: border-box;
-        }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
 
-        /* --- クイックナビ（購入済み、保存済みなどの部分） --- */
-        .quick-nav {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr); /* 4等分 */
-            gap: 1px; /* 境界線代わりの隙間 */
-            background: var(--border-color);
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-        .quick-nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: var(--card-bg);
-            padding: 15px 5px;
-            text-decoration: none;
-            color: var(--text-main);
-            transition: background 0.2s;
-        }
-
-        .quick-nav-item:active { background: #f0f0f0; }
-
-        .qn-icon {
-            font-size: 20px;
-            margin-bottom: 5px;
-            color: var(--primary-blue);
-        }
-
-        .qn-text {
-            font-size: 10px;
-            font-weight: bold;
-        }
-
-        /* --- セクションタイトル --- */
-        .section-title {
-            font-size: 14px;
-            font-weight: bold;
-            color: #666;
-            margin: 25px 0 10px 5px;
-            display: flex;
-            align-items: center;
+        /* メニューグリッド */
+        .menu-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+            margin-bottom: 15px; /* 下のボタンとの間隔を調整 */
         }
         
-        .section-title span { margin-right: 8px; color: var(--accent-orange); }
-
-        /* --- ツールグリッド --- */
-        .grid-menu {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 2列配置 */
-            gap: 12px;
-        }
-
-        /* --- モダンなカードデザイン --- */
-        .nav-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 25px 15px;
-            text-align: center;
-            text-decoration: none;
-            color: var(--text-main);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03); /* 柔らかい影 */
-            border: 1px solid rgba(0,0,0,0.02);
+        .menu-item { 
+            background: var(--card-bg); 
+            border: 1px solid rgba(0, 210, 255, 0.3); 
+            border-radius: 12px; 
+            padding: 20px 10px; 
+            text-align: center; 
+            text-decoration: none; 
+            color: #fff; 
+            font-weight: bold; 
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
             display: flex;
             flex-direction: column;
-            align-items: center;
-            transition: all 0.2s ease;
-            position: relative;
-        }
-
-        .nav-card:active {
-            transform: scale(0.96); /* タップ時の沈み込み */
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-        }
-
-        .nav-icon {
-            font-size: 30px;
-            margin-bottom: 12px;
-        }
-
-        .nav-title {
-            font-size: 13px;
-            font-weight: bold;
-        }
-
-        /* 「人気」ラベル */
-        .nav-card.popular::after {
-            content: "POPULAR";
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: var(--accent-orange);
-            color: white;
-            font-size: 9px;
-            font-weight: 800;
-            padding: 3px 8px;
-            border-radius: 20px;
-            letter-spacing: 0.5px;
-        }
-
-        /* --- AI予想ツール特別ボタン --- */
-        .ai-btn {
-            grid-column: span 2; /* 2列分使う */
-            background: linear-gradient(135deg, #ff5050, #ff7e7e);
-            color: white;
-            padding: 20px;
-            border-radius: 16px;
-            text-align: center;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 16px;
-            box-shadow: 0 6px 20px rgba(255,80,80,0.25);
-            display: flex;
-            align-items: center;
             justify-content: center;
-            gap: 12px;
-            transition: all 0.2s;
         }
-        .ai-btn:active { transform: translateY(2px); box-shadow: 0 3px 10px rgba(255,80,80,0.25); }
-        .ai-btn-icon { font-size: 22px; }
 
-        /* --- インフォメーションカード --- */
-        .info-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 18px;
-            margin-top: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-            border: 1px solid var(--border-color);
+        .menu-item:hover { 
+            transform: translateY(-5px); 
+            border-color: var(--br-blue);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+            background: #1c2d41;
         }
-        .info-card h3 { font-size: 14px; margin-top: 0; color: var(--primary-blue); font-weight: bold; }
-        .info-card p { font-size: 12px; line-height: 1.7; color: #666; margin-bottom: 0; }
 
-        /* --- フッター --- */
-        footer {
-            margin-top: 50px;
-            padding: 20px 0;
-            text-align: center;
-            font-size: 11px;
-            color: var(--text-sub);
-            border-top: 1px solid var(--border-color);
-            width: 100%;
+        /* ピンクボタン専用スタイル */
+        .menu-item.pink {
+            border: 1px solid rgba(255, 0, 124, 0.3);
+            background: #1e131d; /* 少し赤みのある暗色 */
         }
-        footer a { color: var(--text-sub); text-decoration: none; margin: 0 8px; }
 
-        /* --- 画像保存用モーダル（追加） --- */
-        #save-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); z-index: 1000; display: none;
-            flex-direction: column; align-items: center; justify-content: center;
-            padding: 20px; box-sizing: border-box;
+        .menu-item.pink:hover {
+            border-color: var(--br-pink);
+            box-shadow: 0 0 15px rgba(255, 0, 124, 0.4);
+            background: #2d1a29;
         }
-        #save-modal p { color: #fff; font-weight: bold; margin-bottom: 15px; text-align: center; font-size: 14px; line-height: 1.5; }
-        #save-modal img { width: 100%; max-width: 380px; border: 2px solid #fff; margin-bottom: 20px; }
-        #save-modal .close-modal { padding: 10px 25px; background: #fff; border: none; border-radius: 20px; font-weight: bold; cursor: pointer; }
+
+        .menu-item span { 
+            display: block; 
+            font-size: 0.75em; 
+            color: var(--br-blue); 
+            margin-top: 8px; 
+            font-weight: normal;
+        }
+
+        /* ピンクボタンのスパン色 */
+        .menu-item.pink span {
+            color: var(--br-pink);
+        }
+
+        /* コンテンツセクション */
+        .content-section { 
+            background: var(--card-bg); 
+            padding: 25px; 
+            border-radius: 12px; 
+            line-height: 1.8; 
+            margin-bottom: 20px; 
+            border-left: 4px solid var(--br-gold);
+        }
+
+        .content-section h2 { 
+            margin-top: 0;
+            font-size: 1.2em; 
+            color: var(--br-gold); 
+            letter-spacing: 1px;
+        }
+
+        .content-section p { font-size: 0.95em; color: #ccc; }
+
+        .feature-list { padding-left: 20px; font-size: 0.9em; color: #ccc; }
+        .feature-list li { margin-bottom: 8px; }
+        .feature-list strong { color: var(--br-blue); }
+
+        footer { 
+            text-align: center; 
+            padding: 40px; 
+            background: #000;
+            color: var(--text-gray);
+            font-size: 11px; 
+        }
+
+        footer a { color: var(--br-blue); text-decoration: none; margin: 0 10px; }
+        
+        .glow-line {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--br-blue), transparent);
+            margin-bottom: 30px;
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>舟券メーカー P-STAR</h1>
-    <p>ボートレース予想をスマートに集計・共有</p>
+    <h1>舟券メーカー</h1>
+    <p>DIGITAL LOGIC & DATA VISUALIZE</p>
+    <p>ボートレース予想を、一瞬で「形」にする。</p>
 </header>
 
 <div class="container">
-    
-    <div class="quick-nav">
-        <a href="https://boat-ai.streamlit.app/" class="quick-nav-item" target="_blank">
-            <span class="qn-icon">🛒</span>
-            <span class="qn-text">購入済み</span>
+    <div class="glow-line"></div>
+
+    <div class="menu-grid">
+        <a href="2.3.box.html" class="menu-item">
+            <div style="font-size: 1.2rem; margin-bottom: 5px;">2/3連単 BOX</div>
+            <span>点数計算＆画像生成</span>
         </a>
-        <a href="info.html" class="quick-nav-item">
-            <span class="qn-icon">🔖</span>
-            <span class="qn-text">保存済み</span>
+        <a href="hunaken3.html" class="menu-item">
+            <div style="font-size: 1.2rem; margin-bottom: 5px;">3連単 (F)</div>
+            <span>フォーメーション専用</span>
         </a>
-        <a href="info.html" class="quick-nav-item">
-            <span class="qn-icon">❤️</span>
-            <span class="qn-text">いいね済み</span>
+        <a href="2rentan3.html" class="menu-item">
+            <div style="font-size: 1.2rem; margin-bottom: 5px;">2連単 (F)</div>
+            <span>2連単特化ツール</span>
         </a>
-        <a href="info.html" class="quick-nav-item">
-            <span class="qn-icon">🕒</span>
-            <span class="qn-text">視聴履歴</span>
+        <a href="hunaken1.html" class="menu-item">
+            <div style="font-size: 1.2rem; margin-bottom: 5px;">SIMPLE TYPE</div>
+            <span>簡易版入力</span>
         </a>
     </div>
 
-    <div class="section-title"><span>🚀</span>AI予想エンジン</div>
-    <div class="grid-menu">
-        <a href="https://boat-ai.streamlit.app/" class="ai-btn" target="_blank">
-            <span class="ai-btn-icon">🤖</span> AI予想ツール (β版)
+    <div class="menu-grid" style="margin-top: 15px;">
+        <a href="new_tool1.html" class="menu-item pink">
+            <div style="font-size: 1.2rem; margin-bottom: 5px;">NEW ITEM 1</div>
+            <span>特別ツール A</span>
+        </a>
+        <a href="new_tool2.html" class="menu-item pink">
+            <div style="font-size: 1.2rem; margin-bottom: 5px;">NEW ITEM 2</div>
+            <span>特別ツール B</span>
         </a>
     </div>
 
-    <div class="section-title"><span>📊</span>計算ツール・画像生成</div>
-    <div class="grid-menu">
-        <a href="2.3.box.html" class="nav-card popular">
-            <span class="nav-icon">🔥</span>
-            <span class="nav-title">2/3連単(BOX)</span>
-        </a>
-        <a href="hunaken3.html" class="nav-card">
-            <span class="nav-icon">📋</span>
-            <span class="nav-title">3連単(F)</span>
-        </a>
-        <a href="2rentan3.html" class="nav-card">
-            <span class="nav-icon">🚤</span>
-            <span class="nav-title">2連単(F)</span>
-        </a>
-        <a href="hunaken1.html" class="nav-card">
-            <span class="nav-icon">✅</span>
-            <span class="nav-title">簡易版①</span>
-        </a>
-        <a href="hunaken2.html" class="nav-card">
-            <span class="nav-icon">✨</span>
-            <span class="nav-title">簡易版②</span>
-        </a>
-        <a href="heiwajima.html" class="nav-card">
-            <span class="nav-icon">🏝️</span>
-            <span class="nav-title">平和島攻略</span>
-        </a>
-    </div>
+    <section class="content-section" style="margin-top: 30px;">
+        <h2>MISSION</h2>
+        <p>当サイトは、全国24会場で開催されるボートレースの予想を、プロフェッショナルな視覚画像へ変換する無料ツール集です。</p>
+        <p>データ分析をスマートに共有。SNSでの発信力を最大化します。</p>
+    </section>
 
-    <div class="section-title"><span>📰</span>インフォメーション</div>
-    <div class="info-card">
-        <h3>P-STARとは？</h3>
-        <p>ボートレースの予想を、誰でも簡単に視認化・点数計算できるツール集です。複雑なBOXやフォーメーションの点数も一瞬で集計。本物風の舟券画像を生成してSNSで共有しましょう。</p>
-    </div>
-
+    <section class="content-section">
+        <h2>FEATURES</h2>
+        <ul class="feature-list">
+            <li><strong>INSTANT CALC：</strong> 買い目を選択するだけで合計金額を瞬時に算出。</li>
+            <li><strong>VISUALIZE：</strong> リアルな舟券イメージを生成。</li>
+            <li><strong>SOCIAL SHARE：</strong> 𝕏などのSNSへ最適化された画像出力。</li>
+        </ul>
+    </section>
 </div>
 
 <footer>
-    &copy; 2026 舟券メーカー P-STAR<br><br>
-    <a href="info.html">使い方</a> | <a href="info.html">免責事項</a> | <a href="info.html">プライバシーポリシー</a>
+    <p>&copy; 2026 舟券メーカー P-STAR</p>
+    <a href="info.html">USAGE</a> | 
+    <a href="info.html">TERMS</a> | 
+    <a href="info.html">PRIVACY POLICY</a>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </body>
 </html>
