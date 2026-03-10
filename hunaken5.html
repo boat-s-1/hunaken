@@ -64,7 +64,7 @@
             box-shadow: 0 0 15px rgba(255, 110, 140, 0.2);
         }
 
-        /* 💖 背景イラスト */
+        /* 💖 女の子のイラスト（背景） */
         .ticket::before {
             content: "";
             position: absolute;
@@ -82,19 +82,19 @@
             pointer-events: none;
         }
         
-        /* 💮 的中スタンプのスタイル (アニメーション付き) */
+        /* 💮 的中スタンプのスタイル (サイズアップ版) */
         .stamp {
             position: absolute;
-            width: 100px;
-            height: 100px;
+            width: 150px;  /* 100px -> 150px に拡大 */
+            height: 150px; /* 100px -> 150px に拡大 */
             cursor: move;
             z-index: 50;
             pointer-events: auto;
             user-select: none;
             opacity: 0;
             transform-origin: center;
-            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.1));
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
+            filter: drop-shadow(4px 4px 6px rgba(0,0,0,0.2)); /* 影も少し強調 */
+            transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
         }
 
         .t-header { 
@@ -294,7 +294,7 @@
 </div>
 
 <div class="stamp-controls">
-    <div class="stamp-guide">✨ 舟券をタップして「的中」スタンプを押してね！</div>
+    <div class="stamp-guide">✨ 舟券をタップして「的中」スタンプをドーンと押してね！</div>
     <button class="reset-btn" onclick="resetStamps()">♻️ スタンプを全部消す</button>
 </div>
 
@@ -399,7 +399,7 @@
         document.getElementById('res-full-date').innerText = now.getFullYear() + "年" + (now.getMonth() + 1) + "月" + now.getDate() + "日";
     };
 
-    // 💮 的中スタンプ機能
+    // 💮 的中スタンプ機能 (巨大化 & ダイナミック版)
     function addStamp(event) {
         if (event.target.classList.contains('stamp') || event.target.classList.contains('mark') || event.target.closest('.stamp-controls')) return;
 
@@ -411,14 +411,20 @@
         const container = document.getElementById('stamp-container');
         const stamp = document.createElement('img');
         
-        // 自作スタンプ画像
+        // 自作スタンプ画像を指定
         stamp.src = 'stamp.png'; 
         stamp.className = 'stamp';
         
+        // 配置調整：サイズが150pxになったので、その半分（75px）を引く
+        const offsetX = 75; 
+        const offsetY = 75;
+        
         const randomDeg = Math.floor(Math.random() * 31) - 15;
-        stamp.style.left = (x - 50) + 'px';
-        stamp.style.top = (y - 50) + 'px';
-        stamp.style.transform = `rotate(${randomDeg}deg) scale(2)`;
+        stamp.style.left = (x - offsetX) + 'px';
+        stamp.style.top = (y - offsetY) + 'px';
+        
+        // 開始スケールを3倍にアップ！ 迫力がでます
+        stamp.style.transform = `rotate(${randomDeg}deg) scale(3)`;
 
         setTimeout(() => {
             stamp.style.opacity = "0.95";
@@ -459,11 +465,12 @@
     function resetStamps() {
         const container = document.getElementById('stamp-container');
         if (container.children.length === 0) return;
-        if (confirm('スタンプを全部消しちゃう？💕')) {
+        if (confirm('せっかく押したスタンプを全部消しちゃう？💕')) {
             container.innerHTML = '';
         }
     }
 
+    // --- 以下、計算・保存などのロジック（そのまま） ---
     function setShiki(s) {
         shiki = s;
         document.getElementById('btn-3ren').classList.toggle('active', s===3);
