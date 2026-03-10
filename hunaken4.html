@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>舟券メーカー | 競艇予想ツールポータル</title>
+    <style>
+        :root {
+            --main-bg: #050a0f;
+            --card-bg: #0f1722;
+            --accent-blue: #00e5ff;
+            --accent-gold: #ffc107;
+            --text-main: #ffffff;
+            --text-sub: #94a3b8;
+        }
+
+        body {
+            background-color: var(--main-bg);
+            color: var(--text-main);
+            font-family: 'Avenir Next', 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* --- ヘッダー画像エリア --- */
+        .hero-banner {
+            width: 100%;
+            height: 350px;
+            overflow: hidden;
+            position: relative;
+            border-bottom: 3px solid var(--accent-blue);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .hero-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 20%;
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            .hero-banner { height: 200px; }
+        }
+
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 20px; 
+        }
+
+        /* --- ナビゲーター紹介セクション --- */
+        .char-profile {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #162130 0%, #050a0f 100%);
+            border-radius: 20px;
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.1);
+        }
+
+        .char-img-container {
+            width: 120px;
+            height: 120px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--accent-blue);
+        }
+
+        .char-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top;
+        }
+
+        .char-info { margin-left: 20px; }
+        .char-info h3 { color: var(--accent-gold); margin: 0 0 5px 0; font-size: 1.2rem; }
+        .char-info p { font-size: 0.85rem; margin: 0; color: #ccc; }
+
+        .sns-links { margin-top: 12px; }
+        .sns-btn {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.75rem;
+            margin-right: 8px;
+            transition: opacity 0.2s;
+        }
+        .btn-youtube { background: #ff0000; color: #fff; }
+        .btn-tiktok { background: #fff; color: #000; }
+        .sns-btn:hover { opacity: 0.8; }
+
+        @media (max-width: 600px) {
+            .char-profile { flex-direction: column; text-align: center; }
+            .char-info { margin-left: 0; margin-top: 15px; }
+        }
+
+        /* --- ツールグリッド & カード --- */
+        .section-title {
+            font-size: 0.9rem;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 40px 0 20px;
+            padding-left: 15px;
+            border-left: 4px solid var(--accent-gold);
+        }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .tool-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 20px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            background: #162130;
+            border-color: var(--accent-blue);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        /* カード内サムネイル画像 */
+        .tool-thumb {
+            width: 100%;
+            height: 140px;
+            background: #050a0f;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tool-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .tool-card:hover .tool-thumb img { transform: scale(1.05); }
+
+        .tool-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .tool-desc { font-size: 0.8rem; color: var(--text-sub); line-height: 1.4; }
+        .badge { background: var(--accent-blue); color: #000; font-size: 0.6rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+
+        /* お知らせパネル */
+        .info-panel {
+            margin-top: 50px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 20px;
+            font-size: 0.85rem;
+            border: 1px dashed rgba(148, 163, 184, 0.2);
+        }
+
+        footer {
+            text-align: center;
+            padding: 50px 20px;
+            color: var(--text-sub);
+            font-size: 0.8rem;
+            background: #000;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<header class="hero-banner">
+    <img src="S__14368789.jpg" alt="BOAT STRIKE PORTAL">
+</header>
+
+<div class="container">
+
+    <div class="char-profile">
+        <div class="char-img-container">
+            <img src="S__14368790.jpg" alt="キイナ">
+        </div>
+        <div class="char-info">
+            <h3>NAVIGATOR: キイナ</h3>
+            <p>「5号艇の勝機を逃さないっ！最新ツールで一緒に万舟狙いましょう♪」</p>
+            <div class="sns-links">
+                <a href="#" class="sns-btn btn-youtube">YouTube</a>
+                <a href="#" class="sns-btn btn-tiktok">TikTok</a>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="section-title">Formation Tools</h2>
+    <div class="tool-grid">
+        <a href="hunaken3.html" class="tool-card">
+            <div class="tool-thumb"><img src="thumb3_f.jpg" alt="3連単(F)"></div>
+            <div class="tool-name">3連単フォーメーション <span class="badge">POPULAR</span></div>
+            <div class="tool-desc">専用の入力画面で、複雑なフォーメーションも瞬時に画像化。</div>
+        </a>
+        <a href="2rentan3.html" class="tool-card">
+            <div class="tool-thumb"><img src="thumb2_f.jpg" alt="2連単(F)"></div>
+            <div class="tool-name">2連単フォーメーション</div>
+            <div class="tool-desc">2連単に特化した最適化レイアウト。スピード重視設計。</div>
+        </a>
+        <a href="2.3.box.html" class="tool-card">
+            <div class="tool-thumb"><img src="thumbbox.jpg" alt="BOX"></div>
+            <div class="tool-name">2/3連単 BOX</div>
+            <div class="tool-desc">BOX買いや変則フォーメーションにも柔軟に対応。</div>
+        </a>
+    </div>
+
+    <h2 class="section-title">Simple Tools</h2>
+    <div class="tool-grid">
+        <a href="hunaken1.html" class="tool-card">
+            <div class="tool-thumb"><img src="thumb_s1.jpg" alt="簡易1"></div>
+            <div class="tool-name">簡易版メーカー ①</div>
+            <div class="tool-desc">直感操作で、初心者でも迷わず予想画像を作成可能。</div>
+        </a>
+        <a href="hunaken2.html" class="tool-card">
+            <div class="tool-thumb"><img src="thumb_s2.jpg" alt="簡易2"></div>
+            <div class="tool-name">簡易版メーカー ②</div>
+            <div class="tool-desc">装飾を排除した、シンプルで視認性の高いデザイン。</div>
+        </a>
+    </div>
+
+    <div class="info-panel">
+        <p style="color: var(--accent-gold); font-weight: bold; margin-top: 0;">[SYSTEM UPDATE]</p>
+        <p>・2026.03.09: サイトデザインとキイナさんの紹介エリアを追加しました。</p>
+        <p>・全24会場の計算エンジンを最新版に更新済みです。</p>
+    </div>
+
+</div>
+
+<footer>
+    <p>&copy; 2026 BOAT STRIKE PROJECT - P-STAR</p>
+    <div style="margin-top: 10px;">
+        <a href="info.html" style="color: var(--accent-blue); text-decoration: none; margin: 0 10px;">USAGE</a> | 
+        <a href="info.html" style="color: var(--accent-blue); text-decoration: none; margin: 0 10px;">PRIVACY</a>
+    </div>
+</footer>
+
+</body>
+</html>
