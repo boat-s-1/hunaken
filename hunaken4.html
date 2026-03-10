@@ -398,6 +398,23 @@
     function closeModal() {
         document.getElementById('save-modal').style.display = 'none';
     }
+    function shareToX() {
+        // 現在の入力情報を取得
+        const place = document.getElementById('res-main-place').innerText;
+        const race = document.getElementById('res-race').innerText;
+        const shiki = document.getElementById('res-shiki').innerText;
+        
+        // 投稿文の作成
+        const text = `${place} ${race}R ${shiki} で勝負！🔥\n#PSTAR #舟券メーカー #ボートレース`;
+        const url = window.location.href; // サイトのURL（必要に応じて変更してください）
+
+        // Xのシェア用URLを生成
+        const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+        
+        // 案内を表示してから移動
+        alert("画像を保存してからXに投稿してね！💕");
+        window.open(xUrl, '_blank');
+    }
 </script>
 
 </body>
