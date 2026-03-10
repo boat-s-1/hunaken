@@ -63,22 +63,28 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.05); /* 影を柔らかく */
         }
 
-        /* 💖 女の子のイラストを透過で入れる（追加） */
-        .ticket::before {
-            content: "";
-            position: absolute;
-            bottom: 0; /* 下に合わせる */
-            right: 0;  /* 右に寄せる */
-            width: 80%; /* 文字と被らない程度のサイズに */
-            height: 100%;
-            /* いただいた画像（グリーンバック削除済みの透過PNG）を指定 */
-            background-image: url('1b41b474-2278-41e2-8673-a56a68d3acf4.png');
-            background-size: contain; /* 画像を切らさずに表示 */
-            background-repeat: no-repeat;
-            background-position: right 25px bottom 0;
-            opacity: 0.40; /* 透明度（文字が読めるように薄く） */
-            z-index: 0; /* 文字の下に配置 */
-            pointer-events: none;
+      /* 💖 女の子のイラストを透過で入れる（位置ずれ対策版） */
+.ticket::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;   /* 右端を基準にする */
+    width: 80%;
+    height: 100%;
+    background-image: url('1b41b474-2278-41e2-8673-a56a68d3acf4.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    
+    /* 修正ポイント：ここをシンプルな指定に変更 */
+    background-position: right bottom; 
+    
+    /* 💡 位置を左にずらしたい場合は、この margin-right を調整します */
+    margin-right: 25px; 
+    
+    opacity: 0.40;
+    z-index: 0;
+    pointer-events: none;
+}
         }
         
         .t-header { display: flex; align-items: center; border-bottom: 2px solid var(--br-pink-deep); padding-bottom: 5px; margin-bottom: 8px; z-index: 1; }
