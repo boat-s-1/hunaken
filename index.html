@@ -483,6 +483,72 @@
     color: #00ff00; /* 開催中は緑 */
     font-family: monospace;
 }
+        /* キイナの穴狙いボード */
+.kiina-board {
+    background: linear-gradient(135deg, #050a0f 0%, #162130 100%);
+    border: 2px solid var(--accent-blue);
+    border-radius: 16px;
+    padding: 20px;
+    margin: 40px 0;
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+    position: relative;
+}
+
+.kiina-board::before {
+    content: "HIGH PAYOUT ANALYSIS";
+    position: absolute;
+    top: -10px; right: 20px;
+    background: var(--accent-blue);
+    color: #000;
+    font-size: 0.6rem;
+    padding: 2px 10px;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+.rank-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    border-bottom: 1px solid rgba(0, 229, 255, 0.1);
+    transition: background 0.3s;
+}
+
+.rank-item:hover {
+    background: rgba(0, 229, 255, 0.05);
+}
+
+.rank-num {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--accent-gold);
+    width: 30px;
+    font-style: italic;
+}
+
+.rank-venue {
+    flex: 1;
+    margin-left: 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.rank-data {
+    text-align: right;
+}
+
+.rank-label {
+    display: block;
+    font-size: 0.6rem;
+    color: var(--text-sub);
+}
+
+.rank-value {
+    color: var(--accent-blue);
+    font-weight: bold;
+    font-family: monospace;
+}
     </style>
 </head>
 <body>
@@ -569,6 +635,49 @@
             <div class="tool-desc">シンプルで視認性の高いデザイン。</div>
         </a>
     </div>
+    <div class="kiina-board">
+    <div class="board-header">
+        <div class="char-img-container" style="width: 50px; height: 50px; border-color: var(--accent-blue);">
+            <img src="S__14368790.jpg" alt="キイナ">
+        </div>
+        <div>
+            <div class="board-title" style="color: var(--accent-blue);">KIINA'S ATTACK RANKING</div>
+            <div style="font-size: 0.7rem; color: #ccc;">5号艇・高配当期待値TOP3</div>
+        </div>
+    </div>
+
+    <div class="rank-item">
+        <div class="rank-num">01</div>
+        <div class="rank-venue">平和島 (HEIWAJIMA)</div>
+        <div class="rank-data">
+            <span class="rank-label">5頭出現率</span>
+            <span class="rank-value">12.8%</span>
+        </div>
+    </div>
+
+    <div class="rank-item">
+        <div class="rank-num">02</div>
+        <div class="rank-venue">戸田 (TODA)</div>
+        <div class="rank-data">
+            <span class="rank-label">5頭出現率</span>
+            <span class="rank-value">11.5%</span>
+        </div>
+    </div>
+
+    <div class="rank-item">
+        <div class="rank-num">03</div>
+        <div class="rank-venue">江戸川 (EDOGAWA)</div>
+        <div class="rank-data">
+            <span class="rank-label">5頭出現率</span>
+            <span class="rank-value">10.2%</span>
+        </div>
+    </div>
+
+    <div style="margin-top: 15px; font-size: 0.7rem; color: var(--text-sub); background: rgba(0,0,0,0.3); padding: 8px; border-radius: 6px;">
+        <span style="color: var(--accent-gold);">● KIINA'S ADVICE:</span> <br>
+        平和島の5号艇は展開ひとつで万舟の宝庫。カドが攻める展開を狙い撃ち！
+    </div>
+</div>
     <div class="hatsune-board">
     <div class="board-header">
         <div class="char-img-container" style="width: 50px; height: 50px; border-color: #ff00ff;">
@@ -791,6 +900,7 @@ function openTab(evt, tabName) {
 
 </body>
 </html>
+
 
 
 
