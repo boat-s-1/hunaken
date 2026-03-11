@@ -23,7 +23,6 @@
             line-height: 1.6;
         }
 
-        /* --- ヘッダー画像エリア --- */
         .hero-banner {
             width: 100%;
             height: 350px;
@@ -51,26 +50,20 @@
             padding: 20px; 
         }
 
-        /* --- 右下の追従案内係 (New!) --- */
-       #floating-navi {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-    display: flex;
-    align-items: flex-end;
-    cursor: pointer;
-    /* transitionをopacityに絞り、確実に1になるようにします */
-    transition: opacity 0.5s ease-in-out;
-    opacity: 1; /* 最初から表示 */
-    pointer-events: auto;
-}
+        /* --- 右下の追従案内係 --- */
+        #floating-navi {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: flex-end;
+            cursor: pointer;
+            transition: opacity 0.5s ease-in-out, transform 0.3s ease;
+            opacity: 1 !important; /* 強制的に表示 */
+            visibility: visible;
+        }
 
-.navi-char {
-    width: 120px; /* 少し大きめに調整 */
-    height: auto;
-    filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.4));
-}
         #floating-navi:hover { transform: scale(1.05); }
 
         .balloon {
@@ -82,7 +75,7 @@
             font-size: 0.75rem;
             font-weight: bold;
             margin-right: 10px;
-            margin-bottom: 60px; /* キャラクターの高さに合わせる */
+            margin-bottom: 60px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             max-width: 160px;
             line-height: 1.4;
@@ -100,6 +93,7 @@
 
         .navi-char {
             width: 110px;
+            height: auto;
             filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.4));
         }
 
@@ -145,7 +139,10 @@
             font-size: 0.75rem;
             margin-right: 8px;
             transition: opacity 0.2s;
+            text-align: center;
+            min-width: 70px;
         }
+        .btn-x { background: #000; color: #fff; border: 1px solid #333; }
         .btn-youtube { background: #ff0000; color: #fff; }
         .btn-tiktok { background: #fff; color: #000; }
         .sns-btn:hover { opacity: 0.8; }
@@ -153,10 +150,10 @@
         @media (max-width: 600px) {
             .char-profile { flex-direction: column; text-align: center; }
             .char-info { margin-left: 0; margin-top: 15px; }
-            #floating-navi { transform: scale(0.85); right: 5px; bottom: 5px; } /* スマホでは少し小さく */
+            #floating-navi { transform: scale(0.85); right: 5px; bottom: 5px; }
         }
 
-        /* --- ツールグリッド & カード --- */
+        /* --- ツールデザイン --- */
         .section-title {
             font-size: 0.9rem;
             color: var(--accent-gold);
@@ -171,6 +168,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
+            margin-bottom: 40px;
         }
 
         .tool-card {
@@ -201,14 +199,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .tool-thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s;
-        }
-
-        .tool-card:hover .tool-thumb img { transform: scale(1.05); }
+        .tool-thumb img { width: 100%; height: 100%; object-fit: cover; }
 
         .tool-name {
             font-size: 1.1rem;
@@ -223,12 +214,12 @@
         .badge { background: var(--accent-blue); color: #000; font-size: 0.6rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
 
         .info-panel {
-            margin-top: 50px;
             background: rgba(255, 255, 255, 0.03);
             border-radius: 12px;
             padding: 20px;
             font-size: 0.85rem;
             border: 1px dashed rgba(148, 163, 184, 0.2);
+            margin: 40px 0;
         }
 
         footer {
@@ -237,23 +228,17 @@
             color: var(--text-sub);
             font-size: 0.8rem;
             background: #000;
-            margin-top: 40px;
         }
-        /* SNSボタンの追加スタイル */
-.btn-x { background: #000000; color: #fff; border: 1px solid #333; }
-.sns-btn {
-    min-width: 70px; /* ボタンの幅を揃えると綺麗です */
-    text-align: center;
-}
     </style>
 </head>
 <body>
+
 <header class="hero-banner">
     <img src="S__14368789.jpg" alt="BOAT STRIKE PORTAL">
 </header>
-  
 
-    <h2 class="section-title">予想ツール(過去２年以上のデータ＆独自ロジックで開発中)</h2>
+<div class="container">
+    <h2 class="section-title">予想ツール</h2>
     <div class="tool-grid">
         <a href="5.index.html" class="tool-card">
             <div class="tool-thumb"><img src="5.png" alt="5号艇ツール"></div>
@@ -263,15 +248,14 @@
         <a href="2rentan3.html" class="tool-card">
             <div class="tool-thumb"><img src="S__14368791.jpg" alt="事前予想ツール"></div>
             <div class="tool-name">事前予想ツール</div>
-            <div class="tool-desc">直感的入力で機力差が丸わかり　全場過去２年分のデータから算出</div>
+            <div class="tool-desc">全場過去２年分のデータから算出</div>
         </a>
         <a href="2.3.box.html" class="tool-card">
             <div class="tool-thumb"><img src="S__14368791.jpg" alt="BOX"></div>
             <div class="tool-name">展示タイム補正ツール</div>
-            <div class="tool-desc">全場5000レース以上から場ごとの差異やコース別の差異を算出</div>
+            <div class="tool-desc">場ごとの差異やコース別の差異を算出</div>
         </a>
     </div>
-</div>
 
     <h2 class="section-title">ボートレースツール</h2>
     <div class="tool-grid">
@@ -283,55 +267,47 @@
         <a href="hunaken2.html" class="tool-card">
             <div class="tool-thumb"><img src="thumb_s2.jpg" alt="簡易2"></div>
             <div class="tool-name">簡易版メーカー ②</div>
-            <div class="tool-desc">装飾を排除した、シンプルで視認性の高いデザイン。</div>
+            <div class="tool-desc">シンプルで視認性の高いデザイン。</div>
         </a>
     </div>
-<div id="floating-navi" onclick="jumpSNS()">
-    <div id="navi-balloon" class="balloon">5号艇の穴狙い、準備はいい？</div>
-    <img id="navi-img" src="1fe3eb2e-ec88-4aef-8140-6c4f9bad84e1.png" class="navi-char" alt="ナビゲーター">
-</div>
 
-<div class="container">
-    
     <div class="char-profile">
-        <div class="char-img-container">
-            <img src="S__14409739_0.jpg" alt="キイナ">
-        </div>
+        <div class="char-img-container"><img src="S__14409739_0.jpg" alt="キイナ"></div>
         <div class="char-info">
-            <h3 style="color: #ffcc00;">NAVIGATOR: キイナ</h3>
-            <p>「5号艇の穴狙いならお任せ！展開を読み切って高配当を掴みましょう🔥」</p>
+            <h3>NAVIGATOR: キイナ</h3>
+            <p>「5号艇の穴狙いならお任せ！高配当を掴みましょう🔥」</p>
             <div class="sns-links">
-                <a href="https://x.com/YOUR_KIINA" class="sns-btn btn-x">𝕏</a>
-                <a href="https://youtube.com/@YOUR_KIINA" class="sns-btn btn-youtube">YouTube</a>
-                <a href="https://tiktok.com/@YOUR_KIINA" class="sns-btn btn-tiktok">TikTok</a>
+                <a href="#" class="sns-btn btn-x">𝕏</a>
+                <a href="#" class="sns-btn btn-youtube">YouTube</a>
+                <a href="#" class="sns-btn btn-tiktok">TikTok</a>
             </div>
         </div>
     </div>
 
     <div class="char-profile">
-        <div class="char-img-container">
-            <img src="S__14409740_0.jpg" alt="初音">
-        </div>
+        <div class="char-img-container"><img src="S__14409740_0.jpg" alt="初音"></div>
         <div class="char-info">
-            <h3 style="color: #ffcc00;">NAVIGATOR: 初音</h3>
-            <p>「女子戦初日大好き♡最新ツールで一緒に万舟狙いましょう♪」</p>
+            <h3>NAVIGATOR: 初音</h3>
+            <p>「女子戦初日大好き♡一緒に万舟狙いましょう♪」</p>
             <div class="sns-links">
-                <a href="https://x.com/YOUR_HATSUNE" class="sns-btn btn-x">𝕏</a>
-                <a href="https://youtube.com/@YOUR_HATSUNE" class="sns-btn btn-youtube">YouTube</a>
-                <a href="https://tiktok.com/@YOUR_HATSUNE" class="sns-btn btn-tiktok">TikTok</a>
+                <a href="#" class="sns-btn btn-x">𝕏</a>
+                <a href="#" class="sns-btn btn-youtube">YouTube</a>
+                <a href="#" class="sns-btn btn-tiktok">TikTok</a>
             </div>
         </div>
     </div>
-
-</div>
 
     <div class="info-panel">
         <p style="color: var(--accent-gold); font-weight: bold; margin-top: 0;">[SYSTEM UPDATE]</p>
-        <p>・2026.03.10: 案内ナビゲーターにキイナ＆初音の切り替え機能を追加しました。</p>
+        <p>・2026.03.11: ナビゲーターの動作安定化アップデートを適用しました。</p>
         <p>・全24会場の計算エンジンを最新版に更新済みです。</p>
     </div>
+</div>
 
-
+<div id="floating-navi" onclick="jumpSNS()">
+    <div id="navi-balloon" class="balloon">5号艇の穴狙い、準備はいい？</div>
+    <img id="navi-img" src="S__14368790.jpg" class="navi-char" alt="ナビゲーター">
+</div>
 
 <footer>
     <p>&copy; 2026 BOAT STRIKE PROJECT - P-STAR</p>
@@ -343,58 +319,50 @@
 
 <script>
     const naviData = [
-    { 
-        img: "S__14368790.jpg", // キイナ全身
-        msg: "5号艇の穴狙い、準備はいい？", 
-        url: "https://www.youtube.com/@YOUR_KIINA" 
-    },
-    { 
-        img: "1b41b474-2278-41e2-8673-a56a68d3acf4.png", // 初音
-        msg: "女子戦や初日の予想はTikTokで毎日更新中♪", 
-        url: "https://www.tiktok.com/@YOUR_HATSUNE" 
+        { 
+            img: "S__14368790.jpg", 
+            msg: "5号艇の穴狙い、準備はいい？", 
+            url: "https://www.youtube.com/@YOUR_KIINA" 
+        },
+        { 
+            img: "1b41b474-2278-41e2-8673-a56a68d3acf4.png", 
+            msg: "女子戦や初日の予想はTikTokで毎日更新中♪", 
+            url: "https://www.tiktok.com/@YOUR_HATSUNE" 
+        }
+    ];
+
+    let currentIndex = 0;
+    const naviWrapper = document.getElementById('floating-navi');
+    const naviImg = document.getElementById('navi-img');
+    const naviBalloon = document.getElementById('navi-balloon');
+
+    function switchNavi() {
+        if(!naviWrapper) return;
+        
+        // 透明にする
+        naviWrapper.style.opacity = "0";
+
+        setTimeout(() => {
+            currentIndex = (currentIndex + 1) % naviData.length;
+            
+            // 画像とテキストを差し替え
+            naviImg.src = naviData[currentIndex].img;
+            naviBalloon.innerText = naviData[currentIndex].msg;
+            
+            // 少し遅らせて表示（ブラウザの読み込み待ち）
+            setTimeout(() => {
+                naviWrapper.style.opacity = "1";
+            }, 50);
+        }, 500);
     }
-];
 
-let currentIndex = 0;
-const naviWrapper = document.getElementById('floating-navi');
-const naviImg = document.getElementById('navi-img');
-const naviBalloon = document.getElementById('navi-balloon');
+    // 7秒ごとに切り替え
+    setInterval(switchNavi, 7000);
 
-function switchNavi() {
-    // 1. まず透明にする
-    naviWrapper.style.opacity = "0";
-
-    // 2. 0.5秒後（消えきった後）に中身を入れ替えて、また表示する
-    setTimeout(() => {
-        currentIndex = (currentIndex + 1) % naviData.length;
-        
-        naviImg.src = naviData[currentIndex].img;
-        naviBalloon.innerText = naviData[currentIndex].msg;
-        
-        // 3. 中身が入れ替わったら不透明に戻す
-        naviWrapper.style.opacity = "1";
-    }, 500);
-}
-
-// 6秒ごとに切り替えを実行
-setInterval(switchNavi, 6000);
-
-// クリック時のリンク処理
-function jumpSNS() {
-    window.open(naviData[currentIndex].url, '_blank');
-}
+    function jumpSNS() {
+        window.open(naviData[currentIndex].url, '_blank');
+    }
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
