@@ -147,35 +147,40 @@ body::after {
 
         /* --- 右下の追従案内係 --- */
         #floating-navi {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            align-items: flex-end;
-            cursor: pointer;
-            transition: opacity 0.5s ease-in-out, transform 0.3s ease;
-            opacity: 1 !important; /* 強制的に表示 */
-            visibility: visible;
-        }
+    position: fixed;
+    bottom: 70px; /* 広告の高さ(50px) + 余白(20px) */
+    right: 15px;
+    z-index: 10000; /* 広告より確実に上に表示 */
+    display: flex;
+    align-items: flex-end;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
 
         #floating-navi:hover { transform: scale(1.05); }
 
         .balloon {
-            position: relative;
-            background: rgba(255, 255, 255, 0.95);
-            color: #000;
-            padding: 10px 15px;
-            border-radius: 15px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            margin-right: 10px;
-            margin-bottom: 60px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            max-width: 160px;
-            line-height: 1.4;
-            pointer-events: none;
-        }
+    position: relative;
+    background: #ffffff;
+    color: #000;
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin-right: 5px;
+    margin-bottom: 50px;
+    box-shadow: 0 4px 15px rgba(0, 229, 255, 0.4);
+    border: 2px solid var(--accent-blue); /* 枠線をつけて目立たせる */
+    max-width: 140px;
+    line-height: 1.3;
+    animation: balloon-float 2s ease-in-out infinite; /* ふわふわ動かす */
+}
+
+/* 吹き出しが浮遊するアニメーション */
+@keyframes balloon-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
         .balloon::after {
             content: "";
             position: absolute;
@@ -908,16 +913,26 @@ body::after {
  // 1. データの定義（画像・URL・セリフ）
 const naviData = [
     { 
-        img: "1fe3eb2e-ec88-4aef-8140-6c4f9bad84e1.png", 
-        msg: "5号艇の穴狙い、準備はいい？", 
+        img: "S__14368790.jpg", 
+        msg: "ねぇねぇ、ここをタップしてみて！", // 初期メッセージ
         url: "https://www.youtube.com/@YOUR_KIINA",
-        voices: ["いくよ！5号艇の攻め！", "万舟の準備はできてる？", "展開読み切った！", "ここが勝負どころ！"]
+        voices: [
+            "タップして！穴狙いの秘策教えるよ♪", 
+            "ここ押すと良いことあるかも？", 
+            "キイナをタップしてね！", 
+            "万舟狙い、準備OK？タップ！"
+        ]
     },
     { 
         img: "1b41b474-2278-41e2-8673-a56a68d3acf4.png", 
-        msg: "女子戦や初日の予想はTikTokで毎日更新中♪", 
+        msg: "初音をタップして女子戦チェック♡", 
         url: "https://www.tiktok.com/@YOUR_HATSUNE",
-        voices: ["女子戦、熱いですよ♡", "一緒に万舟狙お♪", "初日特有の気配だね！", "ツールの準備OK？"]
+        voices: [
+            "女子戦情報、ここから見てね♪", 
+            "タップして一緒にお話しよ♡", 
+            "ねぇねぇ、ここ押してみて？", 
+            "初音の最新予想はここから！"
+        ]
     }
 ];
 
@@ -1003,6 +1018,7 @@ function openTab(evt, tabName) {
 <!-- admax -->
 </body>
 </html>
+
 
 
 
