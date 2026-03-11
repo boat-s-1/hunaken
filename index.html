@@ -52,16 +52,25 @@
         }
 
         /* --- 右下の追従案内係 (New!) --- */
-        #floating-navi {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            align-items: flex-end;
-            cursor: pointer;
-            transition: opacity 0.5s ease, transform 0.3s ease;
-        }
+       #floating-navi {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    align-items: flex-end;
+    cursor: pointer;
+    /* transitionをopacityに絞り、確実に1になるようにします */
+    transition: opacity 0.5s ease-in-out;
+    opacity: 1; /* 最初から表示 */
+    pointer-events: auto;
+}
+
+.navi-char {
+    width: 120px; /* 少し大きめに調整 */
+    height: auto;
+    filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.4));
+}
         #floating-navi:hover { transform: scale(1.05); }
 
         .balloon {
@@ -334,50 +343,51 @@
 
 <script>
     const naviData = [
-        {
-            name: "キイナ",
-            img: "S__14368790.jpg",
-            msg: "5号艇の穴狙いなら任せて！YouTube公開中だよ！",
-            url: "https://www.youtube.com/@YOUR_KIINA_CHANNEL"
-        },
-        {
-            name: "初音",
-            img: "1b41b474-2278-41e2-8673-a56a68d3acf4.png",
-            msg: "女子戦や初日の予想はTikTokで毎日更新中♪",
-            url: "https://www.tiktok.com/@YOUR_HATSUNE_CHANNEL"
-        }
-    ];
+    { 
+        img: "S__14368790.jpg", // キイナ全身
+        msg: "5号艇の穴狙い、準備はいい？", 
+        url: "https://www.youtube.com/@YOUR_KIINA" 
+    },
+    { 
+        img: "1b41b474-2278-41e2-8673-a56a68d3acf4.png", // 初音
+        msg: "女子戦や初日の予想はTikTokで毎日更新中♪", 
+        url: "https://www.tiktok.com/@YOUR_HATSUNE" 
+    }
+];
 
-    let currentIndex = 0;
-    const naviWrapper = document.getElementById('floating-navi');
-    const naviImg = document.getElementById('navi-img');
-    const naviBalloon = document.getElementById('navi-balloon');
+let currentIndex = 0;
+const naviWrapper = document.getElementById('floating-navi');
+const naviImg = document.getElementById('navi-img');
+const naviBalloon = document.getElementById('navi-balloon');
 
-    function switchNavi() {
+function switchNavi() {
+    // 1. まず透明にする
+    naviWrapper.style.opacity = "0";
+
+    // 2. 0.5秒後（消えきった後）に中身を入れ替えて、また表示する
+    setTimeout(() => {
         currentIndex = (currentIndex + 1) % naviData.length;
         
-        // フェードアウト
-        naviWrapper.style.opacity = 0;
+        naviImg.src = naviData[currentIndex].img;
+        naviBalloon.innerText = naviData[currentIndex].msg;
         
-        setTimeout(() => {
-            naviImg.src = naviData[currentIndex].img;
-            naviBalloon.innerText = naviData[currentIndex].msg;
-            // フェードイン
-            naviWrapper.style.opacity = 1;
-        }, 500);
-    }
+        // 3. 中身が入れ替わったら不透明に戻す
+        naviWrapper.style.opacity = "1";
+    }, 500);
+}
 
-    // 5秒ごとに切り替え
-    setInterval(switchNavi, 5000);
+// 6秒ごとに切り替えを実行
+setInterval(switchNavi, 6000);
 
-    // クリックで各SNSへ
-    function jumpSNS() {
-        window.open(naviData[currentIndex].url, '_blank');
-    }
+// クリック時のリンク処理
+function jumpSNS() {
+    window.open(naviData[currentIndex].url, '_blank');
+}
 </script>
 
 </body>
 </html>
+
 
 
 
