@@ -245,6 +245,38 @@
         max-height: 400px;
     }
 }
+        /* タブのスタイル */
+.tabs-container {
+    margin-bottom: 20px;
+}
+.tab-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    justify-content: center;
+}
+.tab-btn {
+    flex: 1;
+    padding: 10px;
+    background: #162130;
+    border: 1px solid var(--accent-blue);
+    color: var(--text-main);
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: 0.3s;
+    font-size: 0.9rem;
+}
+.tab-btn.active {
+    background: var(--accent-blue);
+    color: #000;
+}
+.tab-content {
+    display: none; /* 最初は隠す */
+}
+.tab-content.active {
+    display: block; /* activeなものだけ表示 */
+}
     </style>
 </head>
 <body>
@@ -286,15 +318,33 @@
             <div class="tool-desc">シンプルで視認性の高いデザイン。</div>
         </a>
     </div>
-<h2 class="section-title">LATEST PREDICTIONS (𝕏)</h2>
-<div class="x-timeline-container">
-    <a class="twitter-timeline" 
-       data-height="500" 
-       data-theme="dark" 
-       data-chrome="noheader nofooter transparent"
-       href="https://twitter.com/@kiina_boat?ref_src=twsrc%5Etfw">
-       Tweets by @kiina_boat
-    </a> 
+<h2 class="section-title">TODAY'S PREDICTIONS</h2>
+
+<div class="tabs-container">
+    <div class="tab-buttons">
+        <button class="tab-btn active" onclick="openTab(event, 'kiina-xtalk')">キイナの穴予想</button>
+        <button class="tab-btn" onclick="openTab(event, 'hatsune-xtalk')">初音の女子戦予想</button>
+    </div>
+
+    <div id="kiina-xtalk" class="tab-content active">
+        <div class="x-timeline-container">
+            <a class="twitter-timeline" data-height="500" data-theme="dark" data-chrome="noheader nofooter transparent" 
+               href="https://twitter.com/search?q=from%3AYOUR_X_ID%20%23キイナ予想">
+               Loading Kiina's Predictions...
+            </a>
+        </div>
+    </div>
+
+    <div id="hatsune-xtalk" class="tab-content">
+        <div class="x-timeline-container">
+            <a class="twitter-timeline" data-height="500" data-theme="dark" data-chrome="noheader nofooter transparent" 
+               href="https://twitter.com/search?q=from%3AYOUR_X_ID%20%23初音予想">
+               Loading Hatsune's Predictions...
+            </a>
+        </div>
+    </div>
+</div>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </div>
     <div class="char-profile">
@@ -388,10 +438,30 @@
     function jumpSNS() {
         window.open(naviData[currentIndex].url, '_blank');
     }
+    function openTab(evt, tabName) {
+    var i, tabContent, tabButtons;
+
+    // すべてのコンテンツを非表示にする
+    tabContent = document.getElementsByClassName("tab-content");
+    for (i = 0; i < tabContent.length; i++) {
+        tabContent[i].style.display = "none";
+    }
+
+    // すべてのボタンの active クラスを外す
+    tabButtons = document.getElementsByClassName("tab-btn");
+    for (i = 0; i < tabButtons.length; i++) {
+        tabButtons[i].className = tabButtons[i].className.replace(" active", "");
+    }
+
+    // 指定されたタブを表示し、ボタンを active にする
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
 </script>
 
 </body>
 </html>
+
 
 
 
