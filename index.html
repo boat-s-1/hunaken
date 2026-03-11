@@ -522,7 +522,7 @@
 </footer>
 
 <script>
-    // 1. データの定義（セリフを追加）
+ // 1. データの定義（画像・URL・セリフ）
 const naviData = [
     { 
         img: "S__14368790.jpg", 
@@ -543,7 +543,7 @@ const naviWrapper = document.getElementById('floating-navi');
 const naviImg = document.getElementById('navi-img');
 const naviBalloon = document.getElementById('navi-balloon');
 
-// 自動切り替えの関数
+// 2. 自動切り替えの関数
 function switchNavi() {
     if(!naviWrapper) return;
     naviWrapper.style.opacity = "0";
@@ -556,78 +556,43 @@ function switchNavi() {
 }
 setInterval(switchNavi, 7000);
 
-// クリック時の派手な演出（ここを新しいものに差し替え！）
+// 3. クリック時の派手な演出（ジャンプ機能付き）
 function jumpSNS() {
-    // 1. アニメーション付与
+    // アニメーション付与
     naviImg.classList.remove('bounce-animation');
-    void naviImg.offsetWidth; // おまじない（再発動させるため）
+    void naviImg.offsetWidth; // おまじない
     naviImg.classList.add('bounce-animation');
 
-    // 2. 吹き出しを強調
+    // 吹き出し強調
     naviBalloon.classList.add('active-pop');
     
-    // 3. ランダムなセリフを表示
+    // ランダムなセリフを表示
     const currentVoices = naviData[currentIndex].voices;
     const randomVoice = currentVoices[Math.floor(Math.random() * currentVoices.length)];
     naviBalloon.innerText = randomVoice;
 
-    // 4. スマホなら少しバイブさせる（任意）
+    // スマホバイブ（対応機種のみ）
     if (window.navigator.vibrate) window.navigator.vibrate(50);
 
-    // 5. 0.8秒後にSNSへ移動（演出をしっかり見せる）
+    // 0.8秒後に演出を戻してSNSへ移動
     setTimeout(() => {
         naviBalloon.classList.remove('active-pop');
         // SNSへ飛ばしたい場合は下のコメントアウトを外してください
         // window.open(naviData[currentIndex].url, '_blank');
     }, 800);
 }
-    let currentIndex = 0;
-    const naviWrapper = document.getElementById('floating-navi');
-    const naviImg = document.getElementById('navi-img');
-    const naviBalloon = document.getElementById('navi-balloon');
 
-    function switchNavi() {
-        if(!naviWrapper) return;
-        
-        // 透明にする
-        naviWrapper.style.opacity = "0";
-
-        setTimeout(() => {
-            currentIndex = (currentIndex + 1) % naviData.length;
-            
-            // 画像とテキストを差し替え
-            naviImg.src = naviData[currentIndex].img;
-            naviBalloon.innerText = naviData[currentIndex].msg;
-            
-            // 少し遅らせて表示（ブラウザの読み込み待ち）
-            setTimeout(() => {
-                naviWrapper.style.opacity = "1";
-            }, 50);
-        }, 500);
-    }
-
-    // 7秒ごとに切り替え
-    setInterval(switchNavi, 7000);
-
-    function jumpSNS() {
-        window.open(naviData[currentIndex].url, '_blank');
-    }
-    function openTab(evt, tabName) {
+// 4. 𝕏予想タブの切り替え
+function openTab(evt, tabName) {
     var i, tabContent, tabButtons;
-
-    // すべてのコンテンツを非表示にする
     tabContent = document.getElementsByClassName("tab-content");
     for (i = 0; i < tabContent.length; i++) {
         tabContent[i].style.display = "none";
     }
-
-    // すべてのボタンの active クラスを外す
     tabButtons = document.getElementsByClassName("tab-btn");
     for (i = 0; i < tabButtons.length; i++) {
         tabButtons[i].className = tabButtons[i].className.replace(" active", "");
     }
-
-    // 指定されたタブを表示し、ボタンを active にする
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.className += " active";
 }
@@ -635,6 +600,7 @@ function jumpSNS() {
 
 </body>
 </html>
+
 
 
 
