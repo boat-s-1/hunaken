@@ -649,6 +649,35 @@ body::after {
     font-weight: bold;
     font-family: monospace;
 }
+        /* --- 重なり解消の最終調整 --- */
+
+/* 1. 吹き出しの位置を微調整（画像に被らないように） */
+.balloon {
+    margin-bottom: 10px !important; /* 無駄な余白を削る */
+    margin-right: -10px !important; /* キャラに少し近づける */
+}
+
+/* 2. スマホ表示(横幅600px以下)の時だけ、全体をグイッと上に上げる */
+@media (max-width: 600px) {
+    #floating-navi {
+        /* 忍者アドのオーバーレイ広告(約50-100px)を避けるための高さ */
+        bottom: 110px !important; 
+        right: 10px !important;
+        transform: scale(0.9); /* スマホでは少し小さくして圧迫感を減らす */
+    }
+
+    /* 吹き出しをもう少し目立たせる */
+    .balloon {
+        font-size: 0.8rem !important;
+        padding: 10px 15px !important;
+        max-width: 160px !important;
+    }
+}
+
+/* 3. 広告より絶対手前に出す設定を念押し */
+#floating-navi {
+    z-index: 999999 !important;
+}
     </style>
 </head>
 <body>
@@ -1018,6 +1047,7 @@ function openTab(evt, tabName) {
 <!-- admax -->
 </body>
 </html>
+
 
 
 
