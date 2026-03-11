@@ -5,6 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BOAT STRIKE | 競艇予想ツールポータル</title>
     <style>
+        /* 広告スロットの共通スタイル */
+.ad-slot {
+    max-width: 100%;
+    margin: 30px auto;
+    background: rgba(15, 23, 34, 0.6);
+    border: 1px solid rgba(0, 229, 255, 0.2);
+    position: relative;
+    padding: 15px;
+    text-align: center;
+    border-radius: 4px;
+}
+
+/* 四隅のサイバー装飾 */
+.ad-slot::before, .ad-slot::after {
+    content: "";
+    position: absolute;
+    width: 10px; height: 10px;
+    border: 2px solid var(--accent-blue);
+}
+.ad-slot::before { top: -2px; left: -2px; border-right: none; border-bottom: none; }
+.ad-slot::after { bottom: -2px; right: -2px; border-left: none; border-top: none; }
+
+.ad-label {
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    background: var(--main-bg);
+    color: var(--accent-blue);
+    font-size: 0.6rem;
+    padding: 0 10px;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+/* 広告が入るエリア（忍者アドなどのコードをここに貼る） */
+.ad-content {
+    min-height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #475569;
+    font-size: 0.8rem;
+}
         /* デジタル背景全体の制御 */
 body {
     position: relative;
@@ -843,7 +886,12 @@ body::after {
     <div id="navi-balloon" class="balloon">5号艇の穴狙い、準備はいい？</div>
     <img id="navi-img" src="1fe3eb2e-ec88-4aef-8140-6c4f9bad84e1.png" class="navi-char" alt="ナビゲーター">
 </div>
-
+<div class="ad-slot" style="margin-bottom: 50px;">
+    <div class="ad-label">RECOMMENDED SERVICE</div>
+    <div class="ad-content">
+        [ここに広告コードを挿入]
+    </div>
+</div>
 <footer>
     <p>&copy; 2026 BOAT STRIKE PROJECT - P-STAR</p>
     <div style="margin-top: 10px;">
@@ -953,6 +1001,7 @@ function openTab(evt, tabName) {
 
 </body>
 </html>
+
 
 
 
