@@ -426,6 +426,63 @@
     60% { width: 70%; }
     100% { width: 100%; }
 }
+        /* 初音の女子戦ボード */
+.hatsune-board {
+    background: linear-gradient(135deg, #1a0b2e 0%, #0f1722 100%);
+    border: 2px solid #ff00ff; /* 女子戦カラーのネオンピンク */
+    border-radius: 16px;
+    padding: 20px;
+    margin: 40px 0;
+    box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);
+}
+
+.board-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 0, 255, 0.3);
+    padding-bottom: 10px;
+}
+
+.board-title {
+    color: #ff00ff;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+}
+
+.ladies-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.ladies-table th {
+    text-align: left;
+    color: var(--accent-gold);
+    padding: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ladies-table td {
+    padding: 12px 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.venue-badge {
+    background: #ff00ff;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.75rem;
+}
+
+.status-check {
+    color: #00ff00; /* 開催中は緑 */
+    font-family: monospace;
+}
     </style>
 </head>
 <body>
@@ -512,6 +569,52 @@
             <div class="tool-desc">シンプルで視認性の高いデザイン。</div>
         </a>
     </div>
+    <div class="hatsune-board">
+    <div class="board-header">
+        <div class="char-img-container" style="width: 50px; height: 50px; border-color: #ff00ff;">
+            <img src="S__14409740_0.jpg" alt="初音">
+        </div>
+        <div>
+            <div class="board-title">HATSUNE'S LADIES DATA</div>
+            <div style="font-size: 0.7rem; color: #ccc;">初音の女子戦・初日特化ボード</div>
+        </div>
+    </div>
+
+    <table class="ladies-table">
+        <thead>
+            <tr>
+                <th>開催場</th>
+                <th>グレード</th>
+                <th>初音の狙い目</th>
+                <th>状態</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><span class="venue-badge">多摩川</span></td>
+                <td>G3 オールレディース</td>
+                <td>イン強気、4カド注目</td>
+                <td class="status-check">● ON AIR</td>
+            </tr>
+            <tr>
+                <td><span class="venue-badge">児島</span></td>
+                <td>一般 ヴィーナスシリーズ</td>
+                <td>初日の展示タイム重視</td>
+                <td class="status-check">● ON AIR</td>
+            </tr>
+            <tr>
+                <td style="color: #666;">---</td>
+                <td style="color: #666;">次節開催待ち</td>
+                <td style="color: #666;">-</td>
+                <td style="color: #666;">OFFLINE</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div style="margin-top: 15px; font-size: 0.75rem; color: var(--text-sub); text-align: right;">
+        ※毎日午前中に初音が更新中♪
+    </div>
+</div>
 <h2 class="section-title">TODAY'S PREDICTIONS</h2>
 
 <div class="tabs-container">
@@ -688,6 +791,7 @@ function openTab(evt, tabName) {
 
 </body>
 </html>
+
 
 
 
