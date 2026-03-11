@@ -229,6 +229,22 @@
             font-size: 0.8rem;
             background: #000;
         }
+        .x-timeline-container {
+    background: rgba(15, 23, 34, 0.8);
+    border: 1px solid rgba(0, 225, 255, 0.2);
+    border-radius: 16px;
+    padding: 10px;
+    margin-bottom: 40px;
+    overflow: hidden;
+    max-height: 500px; /* 高さを制限してスクロール可能に */
+}
+
+/* スマホでの表示調整 */
+@media (max-width: 600px) {
+    .x-timeline-container {
+        max-height: 400px;
+    }
+}
     </style>
 </head>
 <body>
@@ -270,7 +286,17 @@
             <div class="tool-desc">シンプルで視認性の高いデザイン。</div>
         </a>
     </div>
-
+<h2 class="section-title">LATEST PREDICTIONS (𝕏)</h2>
+<div class="x-timeline-container">
+    <a class="twitter-timeline" 
+       data-height="500" 
+       data-theme="dark" 
+       data-chrome="noheader nofooter transparent"
+       href="https://twitter.com/@kiina_boat?ref_src=twsrc%5Etfw">
+       Tweets by @kiina_boat
+    </a> 
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>
     <div class="char-profile">
         <div class="char-img-container"><img src="S__14409739_0.jpg" alt="キイナ"></div>
         <div class="char-info">
@@ -366,5 +392,6 @@
 
 </body>
 </html>
+
 
 
