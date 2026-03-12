@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P-STAR 投稿ライブラリ | キイナの元気イエロー</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #0b111a;
+            --card-bg: #162130;
+            --br-yellow-neon: #ffcc00;   /* メインの輝く黄色 */
+            --br-yellow-dark: #2a2400;   /* 背景の沈んだ黄色 */
+            --br-orange: #ff9500;
+            --p-star-purple: #7a46c2;
+            --text-gray: #b0b8c1;
+        }
+
+        body {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            background-color: var(--bg-dark);
+            color: #eee;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding-bottom: 50px;
+        }
+
+        /* --- ヘッダー --- */
+        header { 
+            width: 100%;
+            background: linear-gradient(180deg, #001529 0%, var(--bg-dark) 100%);
+            color: #fff; padding: 30px 0; text-align: center; border-bottom: 2px solid var(--br-yellow-neon);
+            margin-bottom: 20px;
+        }
+        header h1 { margin: 0; font-size: 1.8rem; letter-spacing: 2px; text-shadow: 0 0 10px var(--br-yellow-neon); }
+        header p { font-size: 0.8em; color: var(--text-gray); margin: 5px 0 0; }
+
+        /* --- トップメニュー --- */
+        .top-menu { 
+            display: flex; gap: 10px; margin-bottom: 20px;
+        }
+        .top-menu a { 
+            color: var(--text-gray); text-decoration: none; font-size: 12px; font-weight: bold; 
+            padding: 8px 16px; border-radius: 20px; border: 1px solid #333; transition: 0.3s;
+        }
+        .top-menu a.active { background: var(--br-yellow-neon); color: #000; border-color: var(--br-yellow-neon); box-shadow: 0 0 10px rgba(255, 204, 0, 0.4); }
+
+        /* --- 舟券プレビューエリア --- */
+        #capture-target { 
+            padding: 15px; 
+            background: radial-gradient(circle, #2a2400 0%, #000 100%); 
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        
+        .ticket {
+            width: 380px; height: 260px;
+            background-color: #fff;
+            border: 3px solid var(--br-yellow-neon);
+            border-radius: 12px;
+            padding: 12px;
+            box-sizing: border-box;
+            display: flex; flex-direction: column;
+            position: relative; overflow: hidden;
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.2);
+            color: #333; /* 舟券内は黒文字 */
+        }
+
+        .ticket::before {
+            content: ""; position: absolute; bottom: 0; right: 0; width: 80%; height: 100%;
+            background-image: url('1fe3eb2e-ec88-4aef-8140-6c4f9bad84e1.png'); /* キイナ背景画像 */
+            background-size: contain; background-repeat: no-repeat; background-position: right bottom; 
+            margin-right: 90px; opacity: 0.25; z-index: 0; pointer-events: none;
+        }
+
+        /* 既存の舟券パーツのデザイン維持（イエロー版） */
+        .t-header { display: flex; align-items: center; border-bottom: 2px solid var(--br-yellow-neon); padding-bottom: 5px; margin-bottom: 8px; position: relative; z-index: 5; }
+        .t-br-logo { font-size: 10px; font-weight: bold; color: var(--br-orange); line-height: 1.1; margin-right: 15px; }
+        .t-main-place { font-size: 30px; font-weight: 700; color: var(--p-star-purple); }
+        .t-form-box { position: absolute; right: 0; top: 50%; transform: translateY(-50%); background: var(--br-orange); color: #fff; padding: 3px 12px; font-size: 11px; font-weight: bold; border-radius: 20px; }
+        .t-body { display: flex; flex: 1; z-index: 1; position: relative; }
+        .t-left { width: 130px; display: flex; flex-direction: column; padding-top: 5px; }
+        .t-sub-place { border: 2px solid var(--br-yellow-neon); color: var(--p-star-purple); padding: 3px 5px; font-size: 14px; font-weight: bold; text-align: center; border-radius: 10px; margin-bottom: 8px; background: #fff9e6; }
+        .t-race-num { font-size: 36px; font-weight: bold; color: var(--p-star-purple); line-height: 1; }
+        .t-shiki-v { writing-mode: vertical-rl; text-orientation: upright; font-size: 20px; font-weight: bold; color: #fff; background: var(--p-star-purple); padding: 15px 6px; letter-spacing: 6px; border-radius: 10px; }
+        .t-right { flex: 1; padding-left: 10px; display: flex; flex-direction: column; justify-content: center; }
+        .t-bet-row { display: flex; align-items: center; height: 35px; font-size: 15px; font-weight: bold; border-bottom: 1px dashed var(--br-yellow-neon); }
+        .t-nums { font-size: 22px; margin-left: 10px; letter-spacing: 3px; color: var(--p-star-purple); }
+
+        /* --- 追従ナビゲーター (右下) --- */
+        #floating-navi {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1000;
+            display: flex; align-items: flex-end; transform: scale(0.9);
+        }
+        .balloon {
+            position: relative; background: rgba(255, 255, 255, 0.95); color: #000;
+            padding: 10px 15px; border-radius: 15px; font-size: 0.75rem; font-weight: bold;
+            margin-right: 10px; margin-bottom: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            max-width: 140px; line-height: 1.4;
+        }
+        .balloon::after {
+            content: ""; position: absolute; top: 50%; right: -10px; margin-top: -5px;
+            border-style: solid; border-width: 5px 0 5px 10px;
+            border-color: transparent transparent transparent rgba(255, 255, 255, 0.95);
+        }
+        .navi-char { width: 90px; filter: drop-shadow(0 0 10px var(--br-yellow-neon)); }
+
+        /* --- コントロールセクション --- */
+        .controls-container { width: 100%; max-width: 400px; margin-top: 30px; padding: 0 10px; box-sizing: border-box; }
+        .section-title { font-size: 14px; font-weight: bold; color: var(--br-yellow-neon); margin: 20px 0 10px 5px; letter-spacing: 1px; }
+
+        .input-section { background: var(--card-bg); padding: 15px; border: 1px solid #333; border-radius: 12px 12px 0 0; }
+        .input-field { 
+            width: 100%; padding: 10px; box-sizing: border-box; 
+            background: #050a0f; border: 1px solid #333; border-radius: 8px; 
+            font-size: 14px; color: #fff; margin-bottom: 8px;
+        }
+
+        .ms { background: var(--card-bg); padding: 15px; border: 1px solid #333; border-top: 4px solid var(--br-yellow-neon); border-radius: 0 0 12px 12px; }
+        
+        .m-btn, .ms-btn, .p-btn { 
+            background: #050a0f; border: 1px solid #333; color: #888; border-radius: 5px; font-weight: bold; cursor: pointer;
+        }
+        .m-btn.active, .ms-btn.active, .p-btn.active { background: var(--br-yellow-neon); color: #000; border-color: var(--br-yellow-neon); }
+
+        .mark { width: 36px; height: 36px; border: 1px solid #333; border-radius: 50%; background: #050a0f; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .mark.selected { background: var(--br-orange) !important; color: #fff !important; border-color: var(--br-orange) !important; box-shadow: 0 0 10px var(--br-orange); }
+
+        .save-btn { width: 100%; padding: 16px; background: var(--br-orange); color: #fff; border: none; border-radius: 35px; font-weight: bold; font-size: 16px; cursor: pointer; box-shadow: 0 4px 0 #cc7a00; transition: 0.2s; }
+        .save-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #cc7a00; }
+
+        #save-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; }
+        #save-modal img { width: 100%; max-width: 380px; border: 2px solid var(--br-yellow-neon); border-radius: 10px; margin: 15px 0; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>元気なイエロー舟券</h1>
+    <p>KIINA SELECTION | DIGITAL PREVIEW</p>
+</header>
+
+<div class="top-menu">
+    <a href="index.html">トップ</a>
+    <a href="library.html" class="active">ツール一覧</a>
+</div>
+
+<div id="capture-target">
+    <div class="ticket" id="ticket-main" onclick="addStamp(event)">
+        <div class="t-header">
+            <div class="t-br-logo">BOAT<br>RACE</div>
+            <div class="t-main-place" id="res-main-place">平和島</div>
+            <div class="t-form-box" id="res-mode-label">フォーメーション</div>
+        </div>
+        <div class="t-body">
+            <div class="t-left">
+                <div class="t-sub-place" id="res-sub-text">平和島</div>
+                <div><span class="t-race-num" id="res-race">01</span><span class="t-race-label">レース</span></div>
+                <div class="t-memo-area" id="res-memo" style="font-size:9px; color:#666; white-space:pre-wrap;">03年度<br>第04回07日</div>
+                <div class="t-date-area" id="res-full-date" style="font-size:10px; color:#666; margin-top:5px;">2026年3月12日</div>
+            </div>
+            <div class="t-mid"><div class="t-shiki-v" id="res-shiki">３連単</div></div>
+            <div class="t-right">
+                <div id="view-normal">
+                    <div class="t-bet-row">1着 － <span id="ans0" class="t-nums"></span></div>
+                    <div class="t-bet-row">2着 － <span id="ans1" class="t-nums"></span></div>
+                    <div class="t-bet-row" id="res-row-3rd">3着 － <span id="ans2" class="t-nums"></span></div>
+                </div>
+                <div style="text-align: right; font-size: 11px; color: #666; margin-top: auto;">
+                    合計 💰<span id="res-total">0</span>円
+                </div>
+            </div>
+        </div>
+        <div id="stamp-container"></div>
+        <div style="width:100%; height:15px; background:repeating-linear-gradient(90deg, var(--br-yellow-neon), var(--br-yellow-neon) 2px, #fff 2px, #fff 4px); margin-top:8px; opacity:0.4;"></div>
+    </div>
+</div>
+
+<div id="floating-navi">
+    <div class="balloon">ねぇねぇ、いい買い目できた？🌟</div>
+    <img src="1fe3eb2e-ec88-4aef-8140-6c4f9bad84e1.png" class="navi-char" alt="キイナ">
+</div>
+
+<div class="controls-container">
+    <div class="section-title">🛍️ TICKET DATA EDIT</div>
+    <div class="input-section">
+        <input type="text" id="in-main" class="input-field" value="平和島" oninput="sync()">
+        <textarea id="in-memo" class="input-field" rows="2" oninput="sync()">03年度&#13;&#10;第04回07日</textarea>
+    </div>
+
+    <div class="ms">
+        <div id="ms-rows">
+            </div>
+        <button class="save-btn" style="margin-top:20px;" onclick="save()">🎀 画像を生成して保存</button>
+    </div>
+</div>
+
+<div id="save-modal">
+    <p style="color:white; font-weight:bold; text-align:center;">【画像を長押しして保存してね】</p>
+    <img id="saved-image" src="">
+    <button onclick="closeModal()" style="padding:10px 30px; border-radius:20px; border:none; background:var(--br-yellow-neon); font-weight:bold;">とじる</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+    // 以前の舟券計算ロジック、保存ロジックをここに配置
+    function sync() {
+        document.getElementById('res-main-place').innerText = document.getElementById('in-main').value;
+        document.getElementById('res-sub-text').innerText = document.getElementById('in-main').value;
+        document.getElementById('res-memo').innerText = document.getElementById('in-memo').value;
+    }
+    function save() {
+        const target = document.getElementById('capture-target');
+        html2canvas(target, { scale: 3 }).then(canvas => {
+            document.getElementById('saved-image').src = canvas.toDataURL();
+            document.getElementById('save-modal').style.display = 'flex';
+        });
+    }
+    function closeModal() { document.getElementById('save-modal').style.display = 'none'; }
+</script>
+
+</body>
+</html>
