@@ -6,6 +6,62 @@
     <title>5枠突破・24場完全解析 - 5-MASTER INDEX</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* キャラクター・SNSバナー装飾 */
+.char-sns-banner {
+    background: linear-gradient(135deg, #050a0f 0%, #162130 100%);
+    border: 1px solid #334155;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    overflow: hidden;
+}
+
+.char-sns-banner:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 30px rgba(0, 210, 255, 0.2);
+}
+
+/* 青（キイナ）とピンク（初音）のネオン枠線 */
+.border-kiina { border-top: 2px solid #00d2ff; }
+.border-hatsune { border-top: 2px solid #ff66aa; }
+
+/* 背景にうっすら流れるデータグリッド演出 */
+.data-grid-bg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image: 
+        linear-gradient(rgba(0, 210, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 210, 255, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    z-index: 0;
+}
+
+/* キャラクターイラストの配置 */
+.char-illustration {
+    position: absolute;
+    bottom: -20px;
+    right: -10px;
+    width: 120px;
+    opacity: 0.7; /* うっすら溶け込ませる */
+    z-index: 1;
+    filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.4));
+}
+
+.hatsune-illustration {
+    width: 110px;
+    filter: drop-shadow(0 0 10px rgba(255, 102, 170, 0.4));
+}
+
+/* 文字情報の配置 */
+.banner-info {
+    position: relative;
+    z-index: 2;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
         body { background-color: #0b0f19; color: #f1f5f9; font-family: sans-serif; }
         .data-card { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #334155; }
         .yellow-accent { color: #facc15; }
@@ -346,7 +402,44 @@ fetchLog();
                     <span class="text-pink-500 text-[10px] mt-1 font-bold">最新情報・フォロワー限定公開</span>
                 </a>
             </div>
+        <section class="my-12 px-2">
+            <h2 class="text-xl font-black italic text-pink-400 mb-6 flex items-center gap-3 uppercase tracking-widest">
+                <span class="bg-pink-500 w-2 h-8 block"></span> Character Community
+            </h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <a href="https://www.youtube.com/@YOUR_KIINA" target="_blank" class="char-sns-banner border-kiina p-6 rounded-2xl h-40 group">
+                    <div class="data-grid-bg"></div>
+                    <img src="Gemini_Generated_Image_vkg8r1vkg8r1vkg8.png" class="char-illustration" alt="キイナ">
+                    
+                    <div class="banner-info">
+                        <span class="bg-red-600 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider mb-2 inline-block w-fit">YouTube</span>
+                        <h3 class="text-white font-black italic text-2xl uppercase tracking-tighter group-hover:text-[#00d2ff]">
+                            KIINA'S ATTACK
+                        </h3>
+                        <p class="text-[#00d2ff] text-xs mt-1 font-bold">
+                            5号艇・穴狙いの精密解析を動画で公開！
+                        </p>
+                    </div>
+                </a>
+
+                <a href="https://www.tiktok.com/@YOUR_HATSUNE" target="_blank" class="char-sns-banner border-hatsune p-6 rounded-2xl h-40 group">
+                    <div class="data-grid-bg"></div>
+                    <img src="Gemini_Generated_Image_vkg8r1vkg8r1vkg8.png" class="char-illustration hatsune-illustration" alt="初音">
+                    
+                    <div class="banner-info">
+                        <span class="bg-black text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider mb-2 inline-block w-fit">TikTok</span>
+                        <h3 class="text-white font-black italic text-2xl uppercase tracking-tighter group-hover:text-[#ff66aa]">
+                            HATSUNE'S DAILY
+                        </h3>
+                        <p class="text-[#ff66aa] text-xs mt-1 font-bold">
+                            女子戦・初日特化！可愛く・的中重視の安定予想。
+                        </p>
+                    </div>
+                </a>
+            </div>
         </section>
+     </section>
     </main>
 
     <script>
