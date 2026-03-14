@@ -19,8 +19,8 @@
         .sub-label { font-size: 0.75rem; color: #888; display: flex; justify-content: space-between; margin-top: 5px; }
 
         select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; font-size: 1rem; background: #fff; }
-        button { width: 100%; padding: 18px; margin-top: 10px; background: #28a745; color: white; border: none; border-radius: 12px; font-weight: bold; font-size: 1.2rem; cursor: pointer; transition: 0.3s; }
-        button:hover { background: #218838; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(40,167,69,0.3); }
+        button { width: 100%; padding: 18px; margin-top: 10px; background: #e63946; color: white; border: none; border-radius: 12px; font-weight: bold; font-size: 1.2rem; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #c1121f; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(230,57,70,0.3); }
 
         #result { margin-top: 30px; padding: 25px; border-radius: 15px; text-align: center; display: none; }
         .high { background: #e6fcf5; color: #087f5b; border: 2px solid #b2f2bb; }
@@ -33,26 +33,58 @@
 <body>
 
 <div class="card">
-    <h1>🚤 超精密逃げ判定シミュレーター</h1>
+    <h1>🚀 超精密逃げ判定 7項目版</h1>
     
     <div class="input-section">
         <label>① 開催場を選択</label>
         <select id="stadium">
-            <option value="01">01 桐生</option><option value="02">02 戸田</option><option value="24">24 大村</option>
-            </select>
+            <option value="01">01 桐生</option><option value="02">02 戸田</option><option value="03">03 江戸川</option>
+            <option value="04">04 平和島</option><option value="05">05 多摩川</option><option value="06">06 浜名湖</option>
+            <option value="07">07 蒲郡</option><option value="08">08 常滑</option><option value="09">09 津</option>
+            <option value="10">10 三国</option><option value="11">11 びわこ</option><option value="12">12 住之江</option>
+            <option value="13">13 尼崎</option><option value="14">14 鳴門</option><option value="15">15 丸亀</option>
+            <option value="16">16 児島</option><option value="17">17 宮島</option><option value="18">18 徳山</option>
+            <option value="19">19 下関</option><option value="20">20 若松</option><option value="21">21 芦屋</option>
+            <option value="22">22 福岡</option><option value="23">23 唐津</option><option value="24">24 大村</option>
+        </select>
     </div>
 
     <div class="input-section">
-        <label>② 1号艇の平均ST</label>
+        <label>② 1号艇の2連対率</label>
+        <div class="input-group">
+            <input type="range" id="rank1" min="0" max="100" value="70" oninput="updateVal('rank1Val', this.value + '%')">
+            <span class="val-display" id="rank1Val">70%</span>
+        </div>
+    </div>
+
+    <div class="input-section">
+        <label>③ 1号艇の平均ST (または展示ST)</label>
         <div class="input-group">
             <input type="range" id="st1" min="10" max="25" value="15" step="1" oninput="updateVal('st1Val', '0.' + this.value + 's')">
             <span class="val-display" id="st1Val">0.15s</span>
         </div>
-        <div class="sub-label"><span>早い(0.12)</span><span>遅い(0.22)</span></div>
+        <div class="sub-label"><span>早い</span><span>遅い</span></div>
     </div>
 
     <div class="input-section">
-        <label>③ 2号艇のST（壁が凹むか？）</label>
+        <label>④ 1号艇の展示気配</label>
+        <div class="input-group">
+            <input type="range" id="tenji1" min="-2" max="2" value="0" oninput="updateTenjiDisplay(this.value)">
+            <span class="val-display" id="tenjiVal">普通</span>
+        </div>
+        <div class="sub-label"><span>劣勢</span><span>超抜(1位)</span></div>
+    </div>
+
+    <div class="input-section">
+        <label>⑤ 2号艇の2連対率 (壁の強度)</label>
+        <div class="input-group">
+            <input type="range" id="rank2" min="0" max="100" value="50" oninput="updateVal('rank2Val', this.value + '%')">
+            <span class="val-display" id="rank2Val">50%</span>
+        </div>
+    </div>
+
+    <div class="input-section">
+        <label>⑥ 2号艇のST (壁が凹むか？)</label>
         <div class="input-group">
             <input type="range" id="st2" min="10" max="25" value="15" step="1" oninput="updateVal('st2Val', '0.' + this.value + 's')">
             <span class="val-display" id="st2Val">0.15s</span>
@@ -61,25 +93,17 @@
     </div>
 
     <div class="input-section">
-        <label>④ 1号艇の2連対率</label>
-        <div class="input-group">
-            <input type="range" id="rank1" min="0" max="100" value="70" oninput="updateVal('rank1Val', this.value + '%')">
-            <span class="val-display" id="rank1Val">70%</span>
-        </div>
-    </div>
-
-    <div class="input-section">
-        <label>⑤ 展示・気配・環境</label>
+        <label>⑦ その他・環境条件</label>
         <select id="condition">
             <option value="0">特になし（普通）</option>
-            <option value="10">1号艇が展示1位</option>
             <option value="-15">外枠に超抜タイムがいる</option>
-            <option value="-10">追い風 4m以上（流れ注意）</option>
-            <option value="-12">向かい風 5m以上（まくり注意）</option>
+            <option value="-25">外枠に超抜が複数いる</option>
+            <option value="-10">追い風 4m以上 (流れやすい)</option>
+            <option value="-12">向かい風 5m以上 (捲られやすい)</option>
         </select>
     </div>
 
-    <button onclick="calculate()">的中確率を算出する</button>
+    <button onclick="calculate()">最終判定を算出</button>
 
     <div id="result">
         <span style="font-size: 0.9rem;">推定イン逃げ確率</span>
@@ -93,36 +117,68 @@ function updateVal(id, val) {
     document.getElementById(id).innerText = val;
 }
 
+function updateTenjiDisplay(val) {
+    const texts = { "-2": "最悪", "-1": "やや劣勢", "0": "普通", "1": "良好", "2": "超抜(1位)" };
+    document.getElementById('tenjiVal').innerText = texts[val];
+}
+
 const stadiumData = {
-    "01": { name: "桐生", base: 51, factor: 1.0 },
-    "02": { name: "戸田", base: 44, factor: 1.2 },
-    "24": { name: "大村", base: 66, factor: 0.8 }
-    // 他の場も同様に追加可能
+    "01": { name: "桐生", base: 51, desc: "向かい風時のまくりに注意。" },
+    "02": { name: "戸田", base: 44, desc: "イン最弱。壁が凹むと即終了。" },
+    "03": { name: "江戸川", base: 45, desc: "波・潮流に注意。無理は禁物。" },
+    "04": { name: "平和島", base: 45, desc: "差し水面。追い風は内が流れる。" },
+    "05": { name: "多摩川", base: 53, desc: "日本一の静水面。自力勝負。" },
+    "06": { name: "浜名湖", base: 54, desc: "広大水面。1の腕が問われる。" },
+    "07": { name: "蒲郡", base: 55, desc: "ナイターはイン信頼。3の攻めに注意。" },
+    "08": { name: "常滑", base: 55, desc: "2コースの逃がし率が高い場。" },
+    "09": { name: "津", base: 54, desc: "強風時はダッシュ勢が怖い。" },
+    "10": { name: "三国", base: 53, desc: "スタート遅れは致命傷。" },
+    "11": { name: "びわこ", base: 49, desc: "イン受難。3, 4の全速戦。" },
+    "12": { name: "住之江", base: 58, desc: "インの聖地。安定感抜群。" },
+    "13": { name: "尼崎", base: 54, desc: "センターのまくり差し警戒。" },
+    "14": { name: "鳴門", base: 50, desc: "向かい風はイン全滅あり。" },
+    "15": { name: "丸亀", base: 54, desc: "満潮時は差し、干潮なら逃げ。" },
+    "16": { name: "児島", base: 55, desc: "潮位差で狙い目が変わる。" },
+    "17": { name: "宮島", base: 54, desc: "風向き次第で穴展開。" },
+    "18": { name: "徳山", base: 63, desc: "企画レースのインは盤石。" },
+    "19": { name: "下関", base: 60, desc: "ナイターの逃げ率は全国上位。" },
+    "20": { name: "若松", base: 56, desc: "夜のうねりに注意が必要。" },
+    "21": { name: "芦屋", base: 61, desc: "モーニングはA1インなら鉄板。" },
+    "22": { name: "福岡", base: 45, desc: "うねりの罠。2の壁が重要。" },
+    "23": { name: "唐津", base: 55, desc: "広くて逃げやすいが風に注意。" },
+    "24": { name: "大村", base: 66, desc: "日本一のイン。信頼度MAX。" }
 };
 
 function calculate() {
     const stadiumId = document.getElementById('stadium').value;
-    const stadium = stadiumData[stadiumId] || {name:"その他", base:52, factor:1.0};
+    const stadium = stadiumData[stadiumId];
     
-    let st1 = parseInt(document.getElementById('st1').value);
-    let st2 = parseInt(document.getElementById('st2').value);
     let r1 = parseInt(document.getElementById('rank1').value);
+    let st1 = parseInt(document.getElementById('st1').value);
+    let tenji1 = parseInt(document.getElementById('tenji1').value);
+    let r2 = parseInt(document.getElementById('rank2').value);
+    let st2 = parseInt(document.getElementById('st2').value);
     let cond = parseInt(document.getElementById('condition').value);
 
-    // 1号艇ST補正：0.15sを基準に、早いほどプラス、遅いほどマイナス
+    // --- ロジック計算 ---
+    let r1Fix = (r1 - 50) * 0.6;
+    let tenjiFix = tenji1 * 8;
+    
+    // 1号艇ST補正 (0.15を基準)
     let st1Fix = (15 - st1) * 2.5;
 
-    // 2号艇ST補正（重要！）：2号艇が0.18sより遅くなると、壁崩壊として大幅減点
+    // 2号艇(壁)補正
+    let r2Fix = (r2 - 50) * 0.3;
+    
+    // 壁の凹み補正（2号艇が0.18以降だと大幅減点）
     let st2Fix = 0;
-    if (st2 > 17) {
-        st2Fix = (17 - st2) * 5.0; // 凹むほどマイナスが加速
+    if (st2 >= 18) {
+        st2Fix = (17 - st2) * 5.5; // 凹むほど指数関数的に危険度アップ
     } else {
-        st2Fix = (15 - st2) * 1.5; // 少し早い分にはプラス
+        st2Fix = (15 - st2) * 1.0;
     }
 
-    let r1Fix = (r1 - 50) * 0.6;
-
-    let total = stadium.base + st1Fix + st2Fix + r1Fix + cond + 5;
+    let total = stadium.base + r1Fix + st1Fix + tenjiFix + r2Fix + st2Fix + cond + 5;
     total = Math.min(98, Math.max(5, total));
 
     const resDiv = document.getElementById('result');
@@ -132,17 +188,16 @@ function calculate() {
     
     resDiv.className = (score >= 75) ? "high" : (score <= 40) ? "low" : "mid";
     
-    let adviceText = "";
-    if (st2 > 17) adviceText = `<br><span style="color:red;">⚠️警告：2号艇が凹む予想です。3コースのまくり・まくり差しを警戒してください。</span>`;
+    let alertMsg = (st2 >= 18) ? `<br><span style="color:red;">⚠️警告：2号艇が凹む予想です。3コースのまくりに注意！</span>` : "";
     
-    document.getElementById('advice').innerHTML = `<strong>${stadium.name}判定:</strong><br>${getComment(score)}${adviceText}`;
+    document.getElementById('advice').innerHTML = `<strong>${stadium.name}:</strong> ${stadium.desc}<br><br>${getComment(score)}${alertMsg}`;
 }
 
 function getComment(s) {
-    if(s >= 85) return "イン鉄板級。スタートさえ五分なら逃げ切ります。";
-    if(s >= 70) return "本命。壁が機能すればまず大丈夫。";
-    if(s >= 50) return "中堅。スタート勝負になります。";
-    return "危険。インが飲まれる展開を考慮してください。";
+    if(s >= 85) return "【究極の鉄板】インが盤石。スタートさえ五分ならまず逃げます。";
+    if(s >= 70) return "【本命】信頼度高め。壁がしっかりしていれば安泰。";
+    if(s >= 50) return "【五分】展開次第。スタート展示の並びを確認してください。";
+    return "【危険】イン逃げは厳しい。他艇の逆転が濃厚なサイン。";
 }
 </script>
 
