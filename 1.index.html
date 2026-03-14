@@ -198,7 +198,22 @@ function calculate() {
     document.getElementById('result').style.display = "block";
     document.getElementById('score').innerText = lastScore + "%";
     document.getElementById('result').className = (lastScore >= 75) ? "high" : (lastScore <= 40) ? "low" : "mid";
-    document.getElementById('advice').innerHTML = `<strong>${lastScore >= 75 ? "逃げ濃厚" : "混戦注意"}</strong>`;
+    // --- 一果ちゃんのセリフ判定ロジック ---
+    let ichikaComment = "";
+    if (lastScore >= 85) {
+        ichikaComment = `「ふわぁ…！これはもう、一果の**“鬼絞り”**発動ですっ。1号艇さんは盤石ですね。信じて見守りましょう〜♪」`;
+    } else if (lastScore >= 75) {
+        ichikaComment = `「イン逃げ濃厚ですねぇ。一果も1号艇さんから、おっとり勝負しちゃおうかな？期待大、ですよぉ。」`;
+    } else if (lastScore >= 60) {
+        ichikaComment = `「本命の気配はしますけどぉ…少しだけ、水面がざわざわしてる気がします。慎重に選んでくださいね？」`;
+    } else if (lastScore >= 45) {
+        ichikaComment = `「んん〜…ちょっと混戦模様、でしょうかぁ。1号艇さん、頑張ってほしいですけど…無理は禁物ですよぉ？」`;
+    } else {
+        ichikaComment = `「あわわ…これは一果でも、インから行くのは怖いですぅ…。無理せず、次のチャンスを待ちませんかぁ？」`;
+    }
+
+    // 画面に反映
+    document.getElementById('advice').innerHTML = `<div style="padding:10px; color:#555; font-style:italic;">${ichikaComment}</div>`;
 }
 
 // 保存ボタン
