@@ -109,21 +109,24 @@
 
 <div class="card">
     <h2>🏆 総合・場別分析パネル</h2>
-    <div class="stats-grid">
-        <div class="stat-box">
-            <span class="stat-val" id="toolTotalRate">0%</span>
-            <span class="stat-label">ツール的中率<br><span id="toolTotalCount">(全0回)</span></span>
-        </div>
-        <div class="stat-box" style="background: #e9f2ff; border: 1px solid #b3d7ff;">
-            <span class="stat-val" id="adminTotalRate" style="color: #004085;">0%</span>
-            <span class="stat-label">管理人的中率<br><span id="adminTotalCount">(全0回)</span></span>
-        </div>
-        <div class="stat-box">
-            <span class="stat-val" id="selfTotalRate">0%</span>
-            <span class="stat-label">自分的中率<br><span id="selfTotalCount">(全0回)</span></span>
-        </div>
+<div class="stats-grid" style="grid-template-columns: 1fr 1fr; gap: 10px;">
+    <div class="stat-box" style="border-top: 4px solid #087f5b;">
+        <span class="stat-val" id="rateHigh">0%</span>
+        <span class="stat-label">🔥 鉄板成功率<br><small id="countHigh">(75%以上時)</small></span>
     </div>
-    
+    <div class="stat-box" style="border-top: 4px solid #f08c00;">
+        <span class="stat-val" id="rateMid">0%</span>
+        <span class="stat-label">⚖️ 本命成功率<br><small id="countMid">(60-74%時)</small></span>
+    </div>
+    <div class="stat-box" style="background: #e9f2ff; border-top: 4px solid #004085;">
+        <span class="stat-val" id="adminTotalRate" style="color: #004085;">0%</span>
+        <span class="stat-label">👑 管理人の的中率<br><small id="adminTotalCount">(全データ)</small></span>
+    </div>
+    <div class="stat-box" style="background: #f0fff4; border-top: 4px solid #2f855a;">
+        <span class="stat-val" id="selfTotalRate" style="color: #2f855a;">0%</span>
+        <span class="stat-label">👤 自分の的中率<br><small id="selfTotalCount">(個人成績)</small></span>
+    </div>
+</div>
     <div class="table-container">
         <table class="field-table">
             <thead>
@@ -251,11 +254,22 @@ async function loadAdminStats() {
     try {
         const response = await fetch(GAS_URL);
         const data = await response.json();
-        document.getElementById('adminTotalRate').innerText = data.rate + "%";
-        document.getElementById('adminTotalCount').innerText = "(全" + data.total + "回)";
+        
+        // 4つのパネルに反映
+        document.getElementById('rateHigh').innerText = data.highRate + "%";
+        document.getElementById('countHigh').innerHTML = `<small>(75%以上時:全${data.highCount}回)</small>`;
+        
+        document.getElementById('rateMid').innerText = data.midRate + "%";
+        document.getElementById('countMid').innerHTML = `<small>(60-74%時:全${data.midCount}回)</small>`;
+        
+        document.getElementById('adminTotalRate').innerText = data.adminRate + "%";
+        document.getElementById('adminTotalCount').innerText = "(全データ: " + data.adminCount + "回)";
+        
         adminFieldData = data.fields;
         renderTable();
-    } catch (e) { console.error("Cloud Load Error"); }
+    } catch (e) { 
+        console.error("Cloud Load Error", e); 
+    }
 }
 
 function renderTable() {
