@@ -6,19 +6,27 @@
     <title>ボートレース1号艇逃げ判定ツール</title>
     <style>
         body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f0f2f5; padding: 20px; color: #333; }
-        .card { background: white; max-width: 500px; margin: auto; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h1 { font-size: 1.4rem; text-align: center; color: #004085; margin-bottom: 20px; }
-        label { display: block; margin-top: 15px; font-weight: bold; font-size: 0.9rem; color: #555; }
-        select, input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; font-size: 1rem; }
-        button { width: 100%; padding: 16px; margin-top: 25px; background: #007bff; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.3s; }
-        button:hover { background: #0056b3; }
-        #result { margin-top: 25px; padding: 20px; border-radius: 12px; text-align: center; display: none; }
-        .high { background: #d4edda; color: #155724; border: 2px solid #c3e6cb; }
-        .mid { background: #fff3cd; color: #856404; border: 2px solid #ffeeba; }
-        .low { background: #f8d7da; color: #721c24; border: 2px solid #f5c6cb; }
-        .score-label { font-size: 1rem; margin-bottom: 5px; }
-        .score { font-size: 3rem; font-weight: bold; display: block; line-height: 1; margin: 10px 0; }
-        #advice { text-align: left; font-size: 0.95rem; line-height: 1.5; margin-top: 15px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 10px; }
+        .card { background: white; max-width: 500px; margin: auto; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        h1 { font-size: 1.4rem; text-align: center; color: #004085; margin-bottom: 25px; }
+        
+        .input-section { margin-bottom: 25px; }
+        label { display: block; font-weight: bold; font-size: 0.9rem; color: #555; margin-bottom: 10px; }
+        
+        .input-group { display: flex; align-items: center; gap: 15px; }
+        input[type="range"] { flex: 1; height: 8px; border-radius: 5px; background: #ddd; accent-color: #007bff; cursor: pointer; }
+        .val-display { font-size: 1.1rem; font-weight: bold; color: #007bff; min-width: 70px; text-align: right; }
+        .sub-label { font-size: 0.75rem; color: #888; display: flex; justify-content: space-between; margin-top: 5px; }
+
+        select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; font-size: 1rem; background: #fff; }
+        button { width: 100%; padding: 18px; margin-top: 10px; background: #007bff; color: white; border: none; border-radius: 12px; font-weight: bold; font-size: 1.2rem; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #0056b3; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,123,255,0.3); }
+
+        #result { margin-top: 30px; padding: 25px; border-radius: 15px; text-align: center; display: none; transition: 0.5s; }
+        .high { background: #e6fcf5; color: #087f5b; border: 2px solid #b2f2bb; }
+        .mid { background: #fff9db; color: #f08c00; border: 2px solid #ffec99; }
+        .low { background: #fff5f5; color: #e03131; border: 2px solid #ffc9c9; }
+        .score { font-size: 4rem; font-weight: bold; display: block; line-height: 1; margin: 15px 0; }
+        #advice { text-align: left; font-size: 0.95rem; line-height: 1.6; margin-top: 15px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 15px; }
     </style>
 </head>
 <body>
@@ -26,78 +34,99 @@
 <div class="card">
     <h1>🚤 逃げ判定シミュレーター</h1>
     
-    <label>① 開催場を選択</label>
-    <select id="stadium">
-        <option value="24">大村 (イン最強)</option>
-        <option value="18">徳山</option>
-        <option value="21">芦屋</option>
-        <option value="19">下関</option>
-        <option value="12">住之江</option>
-        <option value="20">若松</option>
-        <option value="08">常滑</option>
-        <option value="16">児島</option>
-        <option value="23">唐津</option>
-        <option value="07">蒲郡</option>
-        <option value="13">尼崎</option>
-        <option value="15">丸亀</option>
-        <option value="09">津</option>
-        <option value="17">宮島</option>
-        <option value="05">多摩川</option>
-        <option value="10">三国</option>
-        <option value="01">桐生</option>
-        <option value="14">鳴門</option>
-        <option value="11">びわこ</option>
-        <option value="03">江戸川</option>
-        <option value="04">平和島</option>
-        <option value="22">福岡</option>
-        <option value="02">戸田 (イン最弱)</option>
-        <option value="06">浜名湖</option>
-    </select>
+    <div class="input-section">
+        <label>① 開催場を選択</label>
+        <select id="stadium">
+            <option value="24">大村 (イン最強)</option>
+            <option value="18">徳山</option>
+            <option value="21">芦屋</option>
+            <option value="19">下関</option>
+            <option value="12">住之江</option>
+            <option value="20">若松</option>
+            <option value="08">常滑</option>
+            <option value="16">児島</option>
+            <option value="23">唐津</option>
+            <option value="07">蒲郡</option>
+            <option value="13">尼崎</option>
+            <option value="15">丸亀</option>
+            <option value="09">津</option>
+            <option value="17">宮島</option>
+            <option value="05">多摩川</option>
+            <option value="10">三国</option>
+            <option value="01">桐生</option>
+            <option value="14">鳴門</option>
+            <option value="11">びわこ</option>
+            <option value="03">江戸川</option>
+            <option value="04">平和島</option>
+            <option value="22">福岡</option>
+            <option value="02">戸田 (イン最弱)</option>
+            <option value="06">浜名湖</option>
+        </select>
+    </div>
 
-    <label>② 1号艇の2連対率 (%)</label>
-    <input type="number" id="rank1" value="70" min="0" max="100">
+    <div class="input-section">
+        <label>② 1号艇の2連対率</label>
+        <div class="input-group">
+            <input type="range" id="rank1" min="0" max="100" value="70" oninput="updateVal('rank1Val', this.value + '%')">
+            <span class="val-display" id="rank1Val">70%</span>
+        </div>
+    </div>
 
-    <label>③ 2号艇の気配・役割</label>
-    <select id="rank2">
-        <option value="5">壁になる (2連対率高く、展示普通)</option>
-        <option value="-15">刺客 (展示タイム1位・差し注意)</option>
-        <option value="-20">壁崩壊 (展示ワースト・凹み注意)</option>
-        <option value="0">普通</option>
-    </select>
+    <div class="input-section">
+        <label>③ 2号艇の2連対率 (壁の強度)</label>
+        <div class="input-group">
+            <input type="range" id="rank2" min="0" max="100" value="50" oninput="updateVal('rank2Val', this.value + '%')">
+            <span class="val-display" id="rank2Val">50%</span>
+        </div>
+        <div class="sub-label"><span>弱い壁</span><span>最強の壁</span></div>
+    </div>
 
-    <label>④ 風向き・風速</label>
-    <select id="wind">
-        <option value="5">無風〜微風 (+5%)</option>
-        <option value="-10">追い風 4m以上 (差し注意)</option>
-        <option value="-15">向かい風 5m以上 (まくり注意)</option>
-        <option value="0">風速 1-3m程度</option>
-    </select>
+    <div class="input-section">
+        <label>④ 風向きと風速 (m)</label>
+        <div class="input-group">
+            <input type="range" id="wind" min="-10" max="10" value="0" oninput="updateWindDisplay(this.value)">
+            <span class="val-display" id="windVal">無風</span>
+        </div>
+        <div class="sub-label"><span>向かい風</span><span>追い風</span></div>
+    </div>
 
-    <button onclick="calculate()">逃げ率を判定する</button>
+    <button onclick="calculate()">逃げ率を計算する</button>
 
     <div id="result">
-        <span class="score-label">推定イン逃げ確率</span>
+        <span style="font-size: 0.9rem;">推定イン逃げ確率</span>
         <span class="score" id="score">0%</span>
         <div id="advice"></div>
     </div>
 </div>
 
 <script>
+function updateVal(id, val) {
+    document.getElementById(id).innerText = val;
+}
+
+function updateWindDisplay(val) {
+    let text = "";
+    if (val > 0) text = "追い " + val + "m";
+    else if (val < 0) text = "向かい " + Math.abs(val) + "m";
+    else text = "無風";
+    document.getElementById('windVal').innerText = text;
+}
+
 const stadiumData = {
     "01": { name: "桐生", base: 51, windFactor: 1.2, desc: "標高が高く出足重要。向かい風は捲り注意。" },
-    "02": { name: "戸田", base: 44, windFactor: 1.5, desc: "イン最弱。2の壁と追い風が命。流れたら即差し。" },
-    "03": { name: "江戸川", base: 45, windFactor: 1.5, desc: "波・風で激変。追い風+上げ潮はイン壊滅。" },
-    "04": { name: "平和島", base: 45, windFactor: 1.4, desc: "差し水面。追い風は2, 4の差しが突き刺さる。" },
+    "02": { name: "戸田", base: 44, windFactor: 1.8, desc: "イン最弱。2の壁と追い風が命。流れたら即差し。" },
+    "03": { name: "江戸川", base: 45, windFactor: 1.8, desc: "波・風で激変。追い風+上げ潮はイン壊滅。" },
+    "04": { name: "平和島", base: 45, windFactor: 1.6, desc: "差し水面。追い風は2, 4の差しが突き刺さる。" },
     "05": { name: "多摩川", base: 53, windFactor: 1.2, desc: "日本一の静水面。2の展示が良いと2-1に化ける。" },
     "06": { name: "浜名湖", base: 54, windFactor: 1.0, desc: "広大水面。1の自力が必要。カド捲りに注意。" },
     "07": { name: "蒲郡", base: 55, windFactor: 1.0, desc: "ナイターはイン強。3の捲りを受けやすい広さ。" },
-    "08": { name: "常滑", base: 55, windFactor: 1.1, desc: "2の逃がし率が高い。追い風は2の差し警戒。" },
+    "08": { name: "常滑", base: 55, windFactor: 1.3, desc: "2の逃がし率が高い。追い風は2の差し警戒。" },
     "09": { name: "津", base: 54, windFactor: 1.3, desc: "強風の場。向かい風強風は外枠の全速捲り。" },
     "10": { name: "三国", base: 53, windFactor: 1.0, desc: "スタート勝負。インが遠く3の攻めが届く。" },
-    "11": { name: "びわこ", base: 49, windFactor: 1.4, desc: "イン受難。向かい風はダッシュ勢の独壇場。" },
+    "11": { name: "びわこ", base: 49, windFactor: 1.5, desc: "イン受難。向かい風はダッシュ勢の独壇場。" },
     "12": { name: "住之江", base: 58, windFactor: 1.0, desc: "インの聖地。1-2が基本だが2の足次第で逆転。" },
     "13": { name: "尼崎", base: 54, windFactor: 1.1, desc: "センターが攻める展開。5やまくり差しに注意。" },
-    "14": { name: "鳴門", base: 50, windFactor: 1.5, desc: "向かい風はイン全滅。3, 4のカドまくり警戒。" },
+    "14": { name: "鳴門", base: 50, windFactor: 1.6, desc: "向かい風はイン全滅。3, 4のカドまくり警戒。" },
     "15": { name: "丸亀", base: 54, windFactor: 1.2, desc: "満潮+追い風はインが飛ぶ。干潮なら鉄板。" },
     "16": { name: "児島", base: 55, windFactor: 1.1, desc: "潮位で変わる。干潮なら逃げ、満潮は差し。" },
     "17": { name: "宮島", base: 54, windFactor: 1.3, desc: "風向きに敏感。4, 5の機力が良い時は波乱。" },
@@ -105,7 +134,7 @@ const stadiumData = {
     "19": { name: "下関", base: 60, windFactor: 0.9, desc: "ナイターのインは固い。横風が吹くと荒れる。" },
     "20": { name: "若松", base: 56, windFactor: 1.1, desc: "満潮はうねり注意。足が良ければ逃げ切る。" },
     "21": { name: "芦屋", base: 61, windFactor: 0.8, desc: "モーニングはイン専。A1インなら信頼度高。" },
-    "22": { name: "福岡", base: 45, windFactor: 1.4, desc: "うねりの罠。満潮はイン不可避の敗北あり。" },
+    "22": { name: "福岡", base: 45, windFactor: 1.5, desc: "うねりの罠。満潮はイン不可避の敗北あり。" },
     "23": { name: "唐津", base: 55, windFactor: 1.2, desc: "広大な水面。足の差がそのまま結果に出る。" },
     "24": { name: "大村", base: 66, windFactor: 0.7, desc: "日本一の逃げ。2が壁になれば負けない。" }
 };
@@ -115,23 +144,32 @@ function calculate() {
     const stadium = stadiumData[stadiumId];
     
     let r1 = parseInt(document.getElementById('rank1').value);
-    let r2Effect = parseInt(document.getElementById('rank2').value);
-    let windEffect = parseInt(document.getElementById('wind').value);
+    let r2 = parseInt(document.getElementById('rank2').value);
+    let wind = parseInt(document.getElementById('wind').value);
 
+    // 補正計算
     let r1Fix = (r1 - 50) * 0.6; 
-    let totalWindEffect = windEffect * stadium.windFactor;
+    let r2Fix = (r2 - 50) * 0.3; // 2号艇の壁としての補正
+    
+    // 風の影響（追い風・向かい風ともに強すぎるとマイナス）
+    let windFix = 0;
+    if (wind > 0) windFix = wind * -2.5; // 追い風による流れ
+    else if (wind < 0) windFix = Math.abs(wind) * -3.0; // 向かい風による捲られ
+    
+    let totalWindEffect = windFix * stadium.windFactor;
 
-    let total = stadium.base + r1Fix + r2Effect + totalWindEffect;
-    total = Math.min(96, Math.max(8, total));
+    let total = stadium.base + r1Fix + r2Fix + totalWindEffect + 5; // 補正定数
+    total = Math.min(97, Math.max(5, total));
 
-    document.getElementById('result').style.display = "block";
+    const resDiv = document.getElementById('result');
+    resDiv.style.display = "block";
     const score = Math.round(total);
     document.getElementById('score').innerText = score + "%";
     
     let className = "mid";
     if(score >= 75) className = "high";
     if(score <= 40) className = "low";
-    document.getElementById('result').className = className;
+    resDiv.className = className;
 
     document.getElementById('advice').innerHTML = `<strong>${stadium.name}の傾向:</strong> ${stadium.desc}<br><br>${getComment(score)}`;
 }
