@@ -334,56 +334,13 @@ function resetStats() {
 
 window.onload = loadStats;
 
-    let isAdmin = false;
 
-// 管理者チェック
-function checkAdmin() {
-    const pass = document.getElementById('adminPass').value;
-    if (pass === "YOUR_SECRET_PASS") { // ←好きなパスワードに変えてください
-        isAdmin = true;
-        document.getElementById('cloudSection').style.display = "block";
-        alert("管理者モード：クラウド連携が有効になりました");
-        loadCloudStats(); // クラウドデータを読みに行く
-    }
-}
-
-// クラウドデータの読み込み
-async function loadCloudStats() {
-    if (!isAdmin) return;
-    const GAS_URL = "あなたのGAS_URL"; 
-    
-    try {
-        const response = await fetch(GAS_URL);
-        const cloudData = await response.json();
-        
-        // cloudDataの中身（配列）を元に、集計表示を更新するロジックをここに書く
-        console.log("クラウドデータ取得成功:", cloudData);
-        // 例: クラウドの総的中率を計算して表示するなど
-    } catch (e) {
-        console.error("クラウド読み込み失敗");
-    }
-}
-
-// 既存のsaveData関数を修正
-async function saveData(type, isHit) {
-    // ローカル保存は全員共通
-    updateLocalStats(type, isHit);
-
-    // 管理者かつ、クラウド送信がONの場合だけ送信
-    if (isAdmin) {
-        const GAS_URL = "あなたのGAS_URL";
-        // ...（以前のフェッチ処理）...
-        alert("自分用：クラウドにも保存しました");
-    } else {
-        alert("配布用：ブラウザに保存しました（クラウド送信なし）");
-    }
-}
     let isAdmin = false; // 初期状態は配布モード（false）
 
 // パスワードチェック関数
 function checkAdmin() {
     const pass = document.getElementById('adminPass').value;
-    const secret = "0326"; // 👈 ここに好きなパスワードを設定してください
+    const secret = "0913"; // 👈 ここに好きなパスワードを設定してください
 
     if (pass === secret) {
         if (!isAdmin) {
