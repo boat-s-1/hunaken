@@ -237,12 +237,57 @@ function calculate() {
     document.getElementById('advice').innerHTML = getDetailedAdvice(lastScore, r1, st1, tj1, r2, st2, cd);
 }
 
-function saveData(type, isHit) {
+// --- saveData 関数をクラウド対応版にアップデート ---
+async function saveData(type, isHit) {
+    // あなたが取得したURLをここにセット
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbyUkTIb26j8PG4vFKxflHTVnL51kzj0w1_CHPkPeh0Hy-rY5MNSKEL3PtFQTMJCH5K-EA/exec";
+
+    // 送信するデータの形を整える
+    const data = {
+        stadium: currentStadium,
+        score: lastScore,
+        type: type === 'tool' ? 'ツール判定' : '自分予想',
+        isHit: isHit
+    };
+
+    // 保存中の連打防止（ボタンを一時的に無効化）
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(b => b.disabled = true);
+    
+    // 画面に「保存中...」と出すと親切です
+    const originalAdvice = document.getElementById('advice').innerHTML;
+    document.getElementById('advice').innerHTML = "⏳ クラウドに保存中...";
+
+    try {
+        // Googleスプレッドシート（GAS）へデータを送信
+        const response = await fetch(GAS_URL, {
+            method: "POST",
+            mode: "no-cors", // GASへの送信でよく使われる設定です
+            body: JSON.stringify(data)
+        });
+
+        // 保存成功時の処理
+        alert("クラウド保存完了！");
+        
+        // ローカル（ブラウザ）の集計表にも反映させる
+        updateLocalStats(type, isHit);
+
+    } catch (error) {
+        console.error("Error:", error);
+        alert("保存に失敗しました。ネット環境を確認してください。");
+    } finally {
+        // ボタンを元に戻す
+        buttons.forEach(b => b.disabled = false);
+        document.getElementById('advice').innerHTML = originalAdvice;
+    }
+}
+
+// ローカル表示更新用の補助関数
+function updateLocalStats(type, isHit) {
     let stats = JSON.parse(localStorage.getItem('boatDoubleStats')) || {};
     if (!stats[currentStadium]) {
         stats[currentStadium] = { tT: 0, tH: 0, sT: 0, sH: 0 };
     }
-
     if (type === 'tool') {
         stats[currentStadium].tT += 1;
         if(isHit) stats[currentStadium].tH += 1;
@@ -250,10 +295,8 @@ function saveData(type, isHit) {
         stats[currentStadium].sT += 1;
         if(isHit) stats[currentStadium].sH += 1;
     }
-
     localStorage.setItem('boatDoubleStats', JSON.stringify(stats));
-    loadStats();
-    alert("記録しました！");
+    loadStats(); // 下のテーブルを更新
 }
 
 function loadStats() {
