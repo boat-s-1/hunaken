@@ -86,6 +86,26 @@
             border-right: 10px solid #007bff;
         }
         /* --- ここまで追記 --- */
+        /* 一果ちゃんがぴょこっと動くアニメーション */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.ichika-bounce {
+    animation: bounce 0.5s ease infinite; /* 鉄板の時にぴょこぴょこ動く */
+}
+
+/* 鉄板（鬼絞り）の時の特別な吹き出し */
+.balloon.gold-mode {
+    background: #fff9db;
+    border-color: #fcc419;
+    border-width: 3px;
+    box-shadow: 0 0 15px rgba(252, 196, 25, 0.5);
+}
+.balloon.gold-mode::before {
+    border-right-color: #fcc419;
+}
     </style>
 </head>
 <body>
@@ -241,10 +261,19 @@ function calculate() {
     let fix = (r1-50)*0.6 + (15-st1)*2.5 + tj1*8 + (r2-50)*0.3 + (st2>=18 ? (17-st2)*5.5 : (15-st2)*1.0) + cd + 5;
     lastScore = Math.round(Math.min(98, Math.max(5, base + fix)));
 
-    // 一果ちゃんのセリフ判定
+    const ichikaImg = document.getElementById('ichikaImg');
+    const balloon = document.querySelector('.balloon');
     let ichikaComment = "";
+
+    // 演出のリセット
+    ichikaImg.classList.remove('ichika-bounce');
+    balloon.classList.remove('gold-mode');
+
+    // --- 一果ちゃんの鬼絞り判定 ---
     if (lastScore >= 85) {
         ichikaComment = `「ふわぁ…！これはもう、一果の**“鬼絞り”**発動ですっ。1号艇さんは盤石ですね。信じて見守りましょう〜♪」`;
+        ichikaImg.classList.add('ichika-bounce'); // ぴょこぴょこ動く
+        balloon.classList.add('gold-mode');     // 吹き出しが豪華に
     } else if (lastScore >= 75) {
         ichikaComment = `「イン逃げ濃厚ですねぇ。一果も1号艇さんから、おっとり勝負しちゃおうかな？期待大、ですよぉ。」`;
     } else if (lastScore >= 60) {
