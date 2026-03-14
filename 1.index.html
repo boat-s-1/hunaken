@@ -36,32 +36,16 @@
     <h1>🚀 精密逃げ判定シミュレーター</h1>
     
     <div class="input-section">
-        <label>① 開催場を選択 (01〜24)</label>
+        <label>① 開催場を選択</label>
         <select id="stadium">
-            <option value="01">01 桐生</option>
-            <option value="02">02 戸田</option>
-            <option value="03">03 江戸川</option>
-            <option value="04">04 平和島</option>
-            <option value="05">05 多摩川</option>
-            <option value="06">06 浜名湖</option>
-            <option value="07">07 蒲郡</option>
-            <option value="08">08 常滑</option>
-            <option value="09">09 津</option>
-            <option value="10">10 三国</option>
-            <option value="11">11 びわこ</option>
-            <option value="12">12 住之江</option>
-            <option value="13">13 尼崎</option>
-            <option value="14">14 鳴門</option>
-            <option value="15">15 丸亀</option>
-            <option value="16">16 児島</option>
-            <option value="17">17 宮島</option>
-            <option value="18">18 徳山</option>
-            <option value="19">19 下関</option>
-            <option value="20">20 若松</option>
-            <option value="21">21 芦屋</option>
-            <option value="22">22 福岡</option>
-            <option value="23">23 唐津</option>
-            <option value="24">24 大村</option>
+            <option value="01">01 桐生</option><option value="02">02 戸田</option><option value="03">03 江戸川</option>
+            <option value="04">04 平和島</option><option value="05">05 多摩川</option><option value="06">06 浜名湖</option>
+            <option value="07">07 蒲郡</option><option value="08">08 常滑</option><option value="09">09 津</option>
+            <option value="10">10 三国</option><option value="11">11 びわこ</option><option value="12">12 住之江</option>
+            <option value="13">13 尼崎</option><option value="14">14 鳴門</option><option value="15">15 丸亀</option>
+            <option value="16">16 児島</option><option value="17">17 宮島</option><option value="18">18 徳山</option>
+            <option value="19">19 下関</option><option value="20">20 若松</option><option value="21">21 芦屋</option>
+            <option value="22">22 福岡</option><option value="23">23 唐津</option><option value="24">24 大村</option>
         </select>
     </div>
 
@@ -79,10 +63,20 @@
             <input type="range" id="tenji1" min="-2" max="2" value="0" oninput="updateTenjiDisplay(this.value)">
             <span class="val-display" id="tenjiVal">普通</span>
         </div>
+        <div class="sub-label"><span>劣勢</span><span>超抜(1位)</span></div>
     </div>
 
     <div class="input-section">
-        <label>④ 外枠(2-6)に超抜タイムはいるか？</label>
+        <label>④ 2号艇の2連対率 (壁の強度)</label>
+        <div class="input-group">
+            <input type="range" id="rank2" min="0" max="100" value="50" oninput="updateVal('rank2Val', this.value + '%')">
+            <span class="val-display" id="rank2Val">50%</span>
+        </div>
+        <div class="sub-label"><span>弱い壁</span><span>最強の壁</span></div>
+    </div>
+
+    <div class="input-section">
+        <label>⑤ 外枠(2-6)に超抜タイムはいるか？</label>
         <select id="tenji_others">
             <option value="0">いない（1号艇が最速、または差が小さい）</option>
             <option value="-15">いる（1号艇より0.1s以上速い艇がいる）</option>
@@ -91,11 +85,12 @@
     </div>
 
     <div class="input-section">
-        <label>⑤ 風向きと風速 (m)</label>
+        <label>⑥ 風向きと風速 (m)</label>
         <div class="input-group">
             <input type="range" id="wind" min="-10" max="10" value="0" oninput="updateWindDisplay(this.value)">
             <span class="val-display" id="windVal">無風</span>
         </div>
+        <div class="sub-label"><span>向かい風</span><span>追い風</span></div>
     </div>
 
     <button onclick="calculate()">逃げ率を最終判定</button>
@@ -155,15 +150,23 @@ function calculate() {
     
     let r1 = parseInt(document.getElementById('rank1').value);
     let tenji1 = parseInt(document.getElementById('tenji1').value);
+    let r2 = parseInt(document.getElementById('rank2').value); // 復活！
     let tenjiOthers = parseInt(document.getElementById('tenji_others').value);
     let wind = parseInt(document.getElementById('wind').value);
 
+    // 1号艇補正
     let r1Fix = (r1 - 50) * 0.6; 
     let tenjiFix = tenji1 * 7; 
+    
+    // 2号艇(壁)補正
+    let r2Fix = (r2 - 50) * 0.3;
+
+    // 風補正
     let windFix = (wind > 0) ? wind * -2.5 : Math.abs(wind) * -3.0;
     let totalWindEffect = windFix * stadium.windFactor;
 
-    let total = stadium.base + r1Fix + tenjiFix + tenjiOthers + totalWindEffect + 5;
+    // 最終計算
+    let total = stadium.base + r1Fix + tenjiFix + r2Fix + tenjiOthers + totalWindEffect + 5;
     total = Math.min(98, Math.max(5, total));
 
     const resDiv = document.getElementById('result');
@@ -176,103 +179,10 @@ function calculate() {
 }
 
 function getComment(s) {
-    if(s >= 85) return "【究極の鉄板】インが盤石です。資金集中も視野に。";
-    if(s >= 70) return "【本命】逃げ濃厚。余程のスタート遅れがない限り逃げます。";
-    if(s >= 50) return "【五分】展開次第。展示で競っているなら波乱も。";
-    return "【危険】イン機力負け or 悪条件。穴を狙いましょう。";
-}
-</script>
-
-</body>
-</html>            <input type="range" id="tenji1" min="-2" max="2" value="0" oninput="updateTenjiDisplay(this.value)">
-            <span class="val-display" id="tenjiVal">普通</span>
-        </div>
-        <div class="sub-label"><span>悪い(展示順位下位)</span><span>良い(展示1位級)</span></div>
-    </div>
-
-    <div class="input-section">
-        <label>④ 外枠(2-6)に超抜タイムはいるか？</label>
-        <select id="tenji_others">
-            <option value="0">いない（1号艇が最速、または差が小さい）</option>
-            <option value="-15">いる（1号艇より0.1s以上速い艇がいる）</option>
-            <option value="-25">複数いる（外枠が伸び特化している）</option>
-        </select>
-    </div>
-
-    <div class="input-section">
-        <label>⑤ 風向きと風速 (m)</label>
-        <div class="input-group">
-            <input type="range" id="wind" min="-10" max="10" value="0" oninput="updateWindDisplay(this.value)">
-            <span class="val-display" id="windVal">無風</span>
-        </div>
-    </div>
-
-    <button onclick="calculate()">逃げ率を最終判定</button>
-
-    <div id="result">
-        <span style="font-size: 0.9rem;">推定イン逃げ確率</span>
-        <span class="score" id="score">0%</span>
-        <div id="advice"></div>
-    </div>
-</div>
-
-<script>
-function updateVal(id, val) {
-    document.getElementById(id).innerText = val;
-}
-
-function updateTenjiDisplay(val) {
-    const texts = { "-2": "最悪", "-1": "やや劣勢", "0": "普通", "1": "良好", "2": "超抜(1位)" };
-    document.getElementById('tenjiVal').innerText = texts[val];
-}
-
-function updateWindDisplay(val) {
-    let text = (val > 0) ? "追い " + val + "m" : (val < 0) ? "向かい " + Math.abs(val) + "m" : "無風";
-    document.getElementById('windVal').innerText = text;
-}
-
-const stadiumData = {
-    "24": { name: "大村", base: 66, windFactor: 0.7, desc: "イン絶対。展示が悪くても逃げる事が多い。" },
-    "02": { name: "戸田", base: 44, windFactor: 1.8, desc: "外枠に速いタイムがいると、カド受けが速攻で沈む。" },
-    "18": { name: "徳山", base: 63, windFactor: 0.8, desc: "1号艇の展示が良ければほぼ鉄板。" },
-    "04": { name: "平和島", base: 45, windFactor: 1.6, desc: "展示タイムが良い艇が、バックで一気に突き抜ける。" },
-    // 他のデータは以前の24場リストをここに統合
-};
-
-function calculate() {
-    const stadiumId = document.getElementById('stadium').value;
-    const stadium = stadiumData[stadiumId] || {name:"その他", base:50, windFactor:1.0, desc:""};
-    
-    let r1 = parseInt(document.getElementById('rank1').value);
-    let tenji1 = parseInt(document.getElementById('tenji1').value);
-    let tenjiOthers = parseInt(document.getElementById('tenji_others').value);
-    let wind = parseInt(document.getElementById('wind').value);
-
-    // ロジック計算
-    let r1Fix = (r1 - 50) * 0.6; 
-    let tenjiFix = tenji1 * 7; // 展示1位なら+14%、最悪なら-14%
-    
-    let windFix = (wind > 0) ? wind * -2.5 : Math.abs(wind) * -3.0;
-    let totalWindEffect = windFix * stadium.windFactor;
-
-    // 最終合算
-    let total = stadium.base + r1Fix + tenjiFix + tenjiOthers + totalWindEffect + 5;
-    total = Math.min(98, Math.max(5, total));
-
-    const resDiv = document.getElementById('result');
-    resDiv.style.display = "block";
-    const score = Math.round(total);
-    document.getElementById('score').innerText = score + "%";
-    
-    resDiv.className = (score >= 75) ? "high" : (score <= 40) ? "low" : "mid";
-    document.getElementById('advice').innerHTML = `<strong>${stadium.name}:</strong> ${stadium.desc}<br><br>${getComment(score)}`;
-}
-
-function getComment(s) {
-    if(s >= 85) return "【究極の鉄板】1号艇の機力が抜けています。厚く勝負。";
-    if(s >= 70) return "【本命】逃げ濃厚。外枠に0.1s以上の差をつけられていなければ安全。";
-    if(s >= 50) return "【五分】展開次第。展示で1号艇が負けているなら逆転を考慮。";
-    return "【危険】インが機力負けしています。高配当を狙うチャンス。";
+    if(s >= 85) return "【究極の鉄板】壁も厚く、インが盤石です。資金集中も視野に。";
+    if(s >= 70) return "【本命】逃げ濃厚。2号艇がしっかり壁になれば安泰です。";
+    if(s >= 50) return "【五分】展開次第。壁が薄い、または展示で外が強いなら波乱も。";
+    return "【危険】イン機力負け or 壁崩壊の恐れ。穴を狙いましょう。";
 }
 </script>
 
