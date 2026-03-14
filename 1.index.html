@@ -47,6 +47,45 @@
         .field-table td { padding: 8px; border-bottom: 1px solid #eee; }
         .field-table tr:nth-child(even) { background: #fafafa; }
         .reset-btn { font-size: 0.7rem; color: #999; background: none; border: none; cursor: pointer; text-decoration: underline; margin-top: 15px; display: block; width: 100%; }
+        /* --- ここから追記 --- */
+        #ichikaImg {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid #007bff;
+            object-fit: cover;
+            background: white;
+            /* 画像のどの部分を中央にするか。10%にすると頭の方が映ります */
+            object-position: 0% 10%; 
+            flex-shrink: 0; /* 画像が潰れないように固定 */
+        }
+
+        .balloon {
+            position: relative;
+            background: #fff;
+            border: 2px solid #007bff;
+            padding: 12px;
+            border-radius: 15px;
+            flex: 1;
+            font-size: 0.85rem;
+            color: #333;
+            text-align: left;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* 吹き出しの三角部分 */
+        .balloon::before {
+            content: "";
+            position: absolute;
+            left: -10px;
+            top: 20px;
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-right: 10px solid #007bff;
+        }
+        /* --- ここまで追記 --- */
     </style>
 </head>
 <body>
@@ -83,7 +122,14 @@
 
     <button class="calc-btn" onclick="calculate()">逃げ率を算出</button>
 
-    <div id="result">
+   <div id="result">
+    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px; text-align: left;">
+        <img src="FAA9527F-7F59-4F18-801C-2A1CA64A7B54.jpg" id="ichikaImg" style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid #007bff; object-fit: cover; background: white;">
+        <div style="position: relative; background: #fff; border: 2px solid #007bff; padding: 10px; border-radius: 15px; flex: 1; font-size: 0.85rem;">
+            <div id="advice" style="line-height: 1.4;"></div>
+            <div style="position: absolute; left: -10px; top: 20px; width: 0; height: 0; border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-right: 10px solid #007bff;"></div>
+        </div>
+    </div>
         <span style="font-size: 0.8rem;">推定逃げ確率</span>
         <span class="score" id="score">0%</span>
         <div id="advice" style="font-size: 0.9rem; margin-bottom: 10px;"></div>
@@ -195,10 +241,7 @@ function calculate() {
     let fix = (r1-50)*0.6 + (15-st1)*2.5 + tj1*8 + (r2-50)*0.3 + (st2>=18 ? (17-st2)*5.5 : (15-st2)*1.0) + cd + 5;
     lastScore = Math.round(Math.min(98, Math.max(5, base + fix)));
 
-    document.getElementById('result').style.display = "block";
-    document.getElementById('score').innerText = lastScore + "%";
-    document.getElementById('result').className = (lastScore >= 75) ? "high" : (lastScore <= 40) ? "low" : "mid";
-    // --- 一果ちゃんのセリフ判定ロジック ---
+    // 一果ちゃんのセリフ判定
     let ichikaComment = "";
     if (lastScore >= 85) {
         ichikaComment = `「ふわぁ…！これはもう、一果の**“鬼絞り”**発動ですっ。1号艇さんは盤石ですね。信じて見守りましょう〜♪」`;
@@ -212,8 +255,12 @@ function calculate() {
         ichikaComment = `「あわわ…これは一果でも、インから行くのは怖いですぅ…。無理せず、次のチャンスを待ちませんかぁ？」`;
     }
 
-    // 画面に反映
-    document.getElementById('advice').innerHTML = `<div style="padding:10px; color:#555; font-style:italic;">${ichikaComment}</div>`;
+    document.getElementById('result').style.display = "block";
+    document.getElementById('score').innerText = lastScore + "%";
+    document.getElementById('advice').innerHTML = `<strong>${ichikaComment}</strong>`;
+    
+    // 背景色変更
+    document.getElementById('result').className = (lastScore >= 75) ? "high" : (lastScore <= 40) ? "low" : "mid";
 }
 
 // 保存ボタン
