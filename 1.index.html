@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ボートレース精密判定 & 分析パネル</title>
+    <title>一果の1号艇・鬼絞り判定所 🌸</title>
     <style>
         body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f0f2f5; padding: 20px; color: #333; }
         .card { background: white; max-width: 550px; margin: auto; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 20px; }
@@ -22,9 +22,7 @@
         .calc-btn { width: 100%; padding: 15px; background: #007bff; color: white; border: none; border-radius: 12px; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.2s; }
 
         #result { margin-top: 20px; padding: 20px; border-radius: 15px; text-align: center; display: none; }
-        .high { background: #e6fcf5; color: #087f5b; border: 2px solid #b2f2bb; }
-        .mid { background: #fff9db; color: #f08c00; border: 2px solid #ffec99; }
-        .low { background: #fff5f5; color: #e03131; border: 2px solid #ffc9c9; }
+        /* スコアの色（一果ちゃんの演出と連動させるため、直接指定は避ける） */
         .score { font-size: 3.5rem; font-weight: bold; display: block; margin: 10px 0; }
 
         .record-container { margin-top: 15px; background: rgba(255,255,255,0.6); padding: 15px; border-radius: 12px; border: 1px dashed #999; }
@@ -32,11 +30,12 @@
         .record-label { font-size: 0.75rem; font-weight: bold; color: #444; display: block; margin-bottom: 8px; }
         .btn-row { display: flex; gap: 8px; justify-content: center; }
         
-        button[class^="btn-"] { color: white; border: none; padding: 10px; border-radius: 8px; flex: 1; font-weight: bold; cursor: pointer; }
+        button[class^="btn-"] { color: white; border: none; padding: 10px; border-radius: 8px; flex: 1; font-weight: bold; cursor: pointer; transition: 0.1s; }
+        button[class^="btn-"]:active { transform: scale(0.95); } /* クリック感 */
         .btn-tool-hit { background: #228be6; } .btn-tool-miss { background: #fa5252; }
         .btn-self-hit { background: #40c057; } .btn-self-miss { background: #868e96; }
 
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 15px 0; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
         .stat-box { background: #f8f9fa; padding: 10px; border-radius: 12px; text-align: center; border: 1px solid #eee; }
         .stat-val { display: block; font-size: 1.2rem; font-weight: bold; color: #333; }
         .stat-label { font-size: 0.6rem; color: #777; line-height: 1.2; }
@@ -47,17 +46,20 @@
         .field-table td { padding: 8px; border-bottom: 1px solid #eee; }
         .field-table tr:nth-child(even) { background: #fafafa; }
         .reset-btn { font-size: 0.7rem; color: #999; background: none; border: none; cursor: pointer; text-decoration: underline; margin-top: 15px; display: block; width: 100%; }
-        /* --- ここから追記 --- */
+
+        /* --- 一果ちゃん演出関連 --- */
         #ichikaImg {
             width: 80px;
             height: 80px;
             border-radius: 50%;
             border: 3px solid #007bff;
             object-fit: cover;
-            background: white;
+            background: radial-gradient(circle, #ffffff 0%, #e9f2ff 100%);
             /* 画像のどの部分を中央にするか。10%にすると頭の方が映ります */
             object-position: 0% 10%; 
             flex-shrink: 0; /* 画像が潰れないように固定 */
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.1));
+            transition: 0.3s;
         }
 
         .balloon {
@@ -85,36 +87,53 @@
             border-bottom: 10px solid transparent;
             border-right: 10px solid #007bff;
         }
-        /* --- ここまで追記 --- */
-        /* 一果ちゃんがぴょこっと動くアニメーション */
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
 
-.ichika-bounce {
-    animation: bounce 0.5s ease infinite; /* 鉄板の時にぴょこぴょこ動く */
-}
+        /* アニメーション：ぴょこぴょこ跳ねる */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
 
-/* 鉄板（鬼絞り）の時の特別な吹き出し */
-.balloon.gold-mode {
-    background: #fff9db;
-    border-color: #fcc419;
-    border-width: 3px;
-    box-shadow: 0 0 15px rgba(252, 196, 25, 0.5);
-}
-.balloon.gold-mode::before {
-    border-right-color: #fcc419;
-}
+        .ichika-bounce {
+            animation: bounce 0.5s ease infinite; /* 鉄板の時にぴょこぴょこ動く */
+        }
+
+        /* 鉄板（鬼絞り）の時の特別な吹き出し */
+        .balloon.gold-mode {
+            background: #fff9db;
+            border-color: #fcc419;
+            border-width: 3px;
+            box-shadow: 0 0 15px rgba(252, 196, 25, 0.5);
+        }
+        .balloon.gold-mode::before {
+            border-right-color: #fcc419;
+        }
+        
+        /* 的中（お祝い）の時の特別な吹き出し */
+        .balloon.celebrate-mode {
+            background: #fff0f6;
+            border-color: #ff85c0;
+            border-width: 3px;
+            box-shadow: 0 0 15px rgba(255, 133, 192, 0.5);
+        }
+        .balloon.celebrate-mode::before {
+            border-right-color: #ff85c0;
+        }
+
+        /* 判定結果の背景色（一果ちゃんの演出と連動させるため、record-containerの外側に適用） */
+        #result.high { background: #e6fcf5; border: 2px solid #b2f2bb; color: #087f5b; }
+        #result.mid { background: #fff9db; border: 2px solid #ffec99; color: #f08c00; }
+        #result.low { background: #fff5f5; border: 2px solid #ffc9c9; color: #e03131; }
+
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h1>🚀 精密判定 & 分析パネル</h1>
+    <h1>🌸 一果の1号艇・鬼絞り判定所</h1>
     
     <div style="text-align: right; margin-bottom: 10px;">
-        <input type="password" id="adminPass" placeholder="🔑 Mode Pass" 
+        <input type="password" id="adminPass" placeholder="🔑 合言葉？" 
                style="font-size: 0.7rem; padding: 5px; border-radius: 5px; border: 1px solid #ddd; width: 80px;"
                oninput="checkAdmin()">
     </div>
@@ -140,11 +159,11 @@
     <div class="input-section"><label>⑥ 2号艇 ST (凹み)</label><div class="input-group"><input type="range" id="st2" min="10" max="25" value="15" step="1" oninput="updateVal('st2Val', '0.' + this.value + 's')"><span class="val-display" id="st2Val">0.15s</span></div></div>
     <div class="input-section"><label>⑦ その他条件</label><select id="condition"><option value="0">普通</option><option value="-15">外に超抜あり</option><option value="-25">外に超抜複数</option><option value="-10">追い風強</option><option value="-12">向かい風強</option></select></div>
 
-    <button class="calc-btn" onclick="calculate()">逃げ率を算出</button>
+    <button class="calc-btn" onclick="calculate()">一果に聞いてみる♪</button>
 
-   <div id="result">
+    <div id="result">
         <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 15px; text-align: left;">
-            <img src="FAA9527F-7F59-4F18-801C-2A1CA64A7B54.jpg" id="ichikaImg">
+            <img src="99dcbb8b-a6a7-43a9-88d6-6b24cbd48947.png" id="ichikaImg">
             <div class="balloon">
                 <div id="advice" style="line-height: 1.4; font-weight: bold;"></div>
             </div>
@@ -170,27 +189,29 @@
             </div>
         </div>
     </div>
+</div>
 
 <div class="card">
     <h2>🏆 総合・場別分析パネル</h2>
-<div class="stats-grid" style="grid-template-columns: 1fr 1fr; gap: 10px;">
-    <div class="stat-box" style="border-top: 4px solid #087f5b;">
-        <span class="stat-val" id="rateHigh">0%</span>
-        <span class="stat-label">🔥 鉄板成功率<br><small id="countHigh">(75%以上時)</small></span>
+    <div class="stats-grid">
+        <div class="stat-box" style="border-top: 4px solid #087f5b;">
+            <span class="stat-val" id="rateHigh">0%</span>
+            <span class="stat-label">🔥 鉄板成功率<br><small id="countHigh">(75%以上時)</small></span>
+        </div>
+        <div class="stat-box" style="border-top: 4px solid #f08c00;">
+            <span class="stat-val" id="rateMid">0%</span>
+            <span class="stat-label">⚖️ 本命成功率<br><small id="countMid">(60-74%時)</small></span>
+        </div>
+        <div class="stat-box" style="background: #e9f2ff; border-top: 4px solid #004085;">
+            <span class="stat-val" id="adminTotalRate" style="color: #004085;">0%</span>
+            <span class="stat-label">👑 管理人の的中率<br><small id="adminTotalCount">(全データ)</small></span>
+        </div>
+        <div class="stat-box" style="background: #f0fff4; border-top: 4px solid #2f855a;">
+            <span class="stat-val" id="selfTotalRate" style="color: #2f855a;">0%</span>
+            <span class="stat-label">👤 自分の的中率<br><small id="selfTotalCount">(個人成績)</small></span>
+        </div>
     </div>
-    <div class="stat-box" style="border-top: 4px solid #f08c00;">
-        <span class="stat-val" id="rateMid">0%</span>
-        <span class="stat-label">⚖️ 本命成功率<br><small id="countMid">(60-74%時)</small></span>
-    </div>
-    <div class="stat-box" style="background: #e9f2ff; border-top: 4px solid #004085;">
-        <span class="stat-val" id="adminTotalRate" style="color: #004085;">0%</span>
-        <span class="stat-label">👑 管理人の的中率<br><small id="adminTotalCount">(全データ)</small></span>
-    </div>
-    <div class="stat-box" style="background: #f0fff4; border-top: 4px solid #2f855a;">
-        <span class="stat-val" id="selfTotalRate" style="color: #2f855a;">0%</span>
-        <span class="stat-label">👤 自分の的中率<br><small id="selfTotalCount">(個人成績)</small></span>
-    </div>
-</div>
+    
     <div class="table-container">
         <table class="field-table">
             <thead>
@@ -213,6 +234,7 @@ let currentStadium = "";
 let isAdmin = false; 
 let adminFieldData = {}; 
 
+// あなたのGAS URLをここに1箇所だけ書く
 const GAS_URL = "https://script.google.com/macros/s/AKfycbyUkTIb26j8PG4vFKxflHTVnL51kzj0w1_CHPkPeh0Hy-rY5MNSKEL3PtFQTMJCH5K-EA/exec";
 
 const stadiumBaseData = {
@@ -234,7 +256,7 @@ function updateTenjiDisplay(val) {
 
 function checkAdmin() {
     const pass = document.getElementById('adminPass').value;
-    const secret = "0913";
+    const secret = "0913"; // パスワード
     if (pass === secret) {
         isAdmin = true;
         document.getElementById('adminPass').style.backgroundColor = "#e6fcf5";
@@ -266,8 +288,9 @@ function calculate() {
     // 演出のリセット
     ichikaImg.classList.remove('ichika-bounce');
     balloon.classList.remove('gold-mode');
+    balloon.classList.remove('celebrate-mode');
 
-    // --- 一果ちゃんの鬼絞り判定 ---
+    // --- 一果ちゃんの鬼絞り判定セリフ ---
     if (lastScore >= 85) {
         ichikaComment = `「ふわぁ…！これはもう、一果の**“鬼絞り”**発動ですっ。1号艇さんは盤石ですね。信じて見守りましょう〜♪」`;
         ichikaImg.classList.add('ichika-bounce'); // ぴょこぴょこ動く
@@ -275,7 +298,7 @@ function calculate() {
     } else if (lastScore >= 75) {
         ichikaComment = `「イン逃げ濃厚ですねぇ。一果も1号艇さんから、おっとり勝負しちゃおうかな？期待大、ですよぉ。」`;
     } else if (lastScore >= 60) {
-        ichikaComment = `「本命の気配はしますけどぉ…少しだけ、水面がざわざわしてる気がします。慎重に選んでくださいね？」`;
+        ichikaComment = `「本命の気配はしますけどぉ…少しだけ、水面がざざわしてる気がします。慎重に選んでくださいね？」`;
     } else if (lastScore >= 45) {
         ichikaComment = `「んん〜…ちょっと混戦模様、でしょうかぁ。1号艇さん、頑張ってほしいですけど…無理は禁物ですよぉ？」`;
     } else {
@@ -290,8 +313,44 @@ function calculate() {
     document.getElementById('result').className = (lastScore >= 75) ? "high" : (lastScore <= 40) ? "low" : "mid";
 }
 
-// 保存ボタン
+// 保存ボタン（的中・不的中の特別なリアクションを追加）
 async function saveData(type, isHit) {
+    // 演出用の要素を取得
+    const ichikaImg = document.getElementById('ichikaImg');
+    const balloon = document.querySelector('.balloon');
+    const advice = document.getElementById('advice');
+    
+    // 現在のセリフを一時保存
+    const originalComment = advice.innerHTML;
+    
+    // 的中・不的中によるリアクションの出し分け
+    let reactComment = "";
+    ichikaImg.classList.remove('ichika-bounce'); // 一旦リセット
+    balloon.classList.remove('celebrate-mode'); // 的中演出リセット
+
+    if (isHit) {
+        // 的中した時
+        reactComment = `「ふわぁぁっ！**的中**ですっ♪ おめでとうございます〜！一果も、とーっても嬉しいですぅ〜っ！！」`;
+        ichikaImg.classList.add('ichika-bounce'); // ぴょこぴょこ喜ぶ
+        balloon.classList.add('celebrate-mode'); // 吹き出しをピンク色に
+    } else {
+        // 外れた時（おっとり慰める）
+        reactComment = `「あぅぅ…残念でしたぁ…。でも大丈夫ですよぉ。次こそは、一果の**“鬼絞り”**でお返ししましょうねぇ…。」`;
+    }
+
+    // 吹き出しを一瞬切り替える
+    advice.innerHTML = `<strong>${reactComment}</strong>`;
+
+    // 2.5秒後に元のセリフに戻し、演出をリセット
+    setTimeout(() => {
+        advice.innerHTML = originalComment;
+        ichikaImg.classList.remove('ichika-bounce');
+        balloon.classList.remove('celebrate-mode');
+        // 的中した時、もし元のスコアが鉄板（85%以上）なら、跳ねる演出を戻す
+        if(lastScore >= 85) { ichikaImg.classList.add('ichika-bounce'); }
+    }, 2500);
+
+    // --- ここから下は保存処理（変更なし） ---
     updateLocalStats(type, isHit);
 
     if (isAdmin === true) {
@@ -303,13 +362,11 @@ async function saveData(type, isHit) {
         };
         try {
             await fetch(GAS_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(data) });
-            alert("【自分用】クラウド＆ブラウザに保存完了！");
+            // alertは出さずに、一果ちゃんのセリフで完結させる（おっとり感を出すため）
             loadAdminStats(); 
         } catch (error) {
-            alert("クラウド保存に失敗しました。");
+            console.error("Cloud Save Error", error);
         }
-    } else {
-        alert("【配布用】ブラウザに保存しました！");
     }
 }
 
@@ -329,12 +386,15 @@ async function loadAdminStats() {
         const response = await fetch(GAS_URL);
         const data = await response.json();
         
-        document.getElementById('rateHigh').innerText = data.highRate + "%";
-        document.getElementById('countHigh').innerHTML = `<small>(75%以上時:全${data.highCount}回)</small>`;
-        document.getElementById('rateMid').innerText = data.midRate + "%";
-        document.getElementById('countMid').innerHTML = `<small>(60-74%時:全${data.midCount}回)</small>`;
-        document.getElementById('adminTotalRate').innerText = data.adminRate + "%";
-        document.getElementById('adminTotalCount').innerText = "(全データ: " + data.adminCount + "回)";
+        // パネルに反映（ID名をHTMLと合わせる）
+        if(document.getElementById('rateHigh')) {
+            document.getElementById('rateHigh').innerText = data.highRate + "%";
+            document.getElementById('countHigh').innerHTML = `<small>(75%以上時:全${data.highCount}回)</small>`;
+            document.getElementById('rateMid').innerText = data.midRate + "%";
+            document.getElementById('countMid').innerHTML = `<small>(60-74%時:全${data.midCount}回)</small>`;
+            document.getElementById('adminTotalRate').innerText = data.adminRate + "%";
+            document.getElementById('adminTotalCount').innerText = "(全データ: " + data.adminCount + "回)";
+        }
         
         adminFieldData = data.fields;
         renderTable();
@@ -355,14 +415,14 @@ function renderTable() {
         tbody.innerHTML += `<tr><td>${name}</td><td style="background:#f0f7ff;">${a.h}/${a.t} (${a.t>0?Math.round(a.h/a.t*100):0}%)</td><td>${s.sH}/${s.sT} (${s.sT>0?Math.round(s.sH/s.sT*100):0}%)</td></tr>`;
     });
 
-    // 消えていたIDへの書き込みを削除・修正
+    // 自分 的中率の更新（IDが存在する場合のみ）
     if(document.getElementById('selfTotalRate')) {
         document.getElementById('selfTotalRate').innerText = (st > 0 ? Math.round(sh/st*100) : 0) + "%";
         document.getElementById('selfTotalCount').innerText = "(全" + st + "回)";
     }
 }
 
-function resetStats() { if(confirm("リセットしますか？")) { localStorage.clear(); renderTable(); } }
+function resetStats() { if(confirm("おっとりリセットしちゃいますかぁ？")) { localStorage.clear(); renderTable(); } }
 
 window.onload = () => { renderTable(); loadAdminStats(); };
 </script>
