@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ボートレース精密判定 & 24場個別分析</title>
+    <title>精密判定 & ダブル分析ツール</title>
     <style>
         body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f0f2f5; padding: 20px; color: #333; }
         .card { background: white; max-width: 550px; margin: auto; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 20px; }
         h1, h2 { text-align: center; color: #004085; }
-        h1 { font-size: 1.4rem; margin-bottom: 25px; }
-        h2 { font-size: 1.2rem; margin-top: 0; }
+        h1 { font-size: 1.2rem; margin-bottom: 25px; }
+        h2 { font-size: 1.1rem; margin-top: 0; }
         
-        .input-section { margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+        .input-section { margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 12px; }
         label { display: block; font-weight: bold; font-size: 0.85rem; color: #555; margin-bottom: 8px; }
         
         .input-group { display: flex; align-items: center; gap: 12px; }
@@ -19,234 +19,186 @@
         .val-display { font-size: 1rem; font-weight: bold; color: #007bff; min-width: 70px; text-align: right; }
 
         select { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; background: #fff; }
-        .calc-btn { width: 100%; padding: 15px; background: #007bff; color: white; border: none; border-radius: 12px; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.2s; }
+        .calc-btn { width: 100%; padding: 15px; background: #007bff; color: white; border: none; border-radius: 12px; font-weight: bold; font-size: 1.1rem; cursor: pointer; }
 
         #result { margin-top: 20px; padding: 20px; border-radius: 15px; text-align: center; display: none; }
-        .high { background: #e6fcf5; color: #087f5b; border: 2px solid #b2f2bb; }
-        .mid { background: #fff9db; color: #f08c00; border: 2px solid #ffec99; }
-        .low { background: #fff5f5; color: #e03131; border: 2px solid #ffc9c9; }
-        .score { font-size: 3.5rem; font-weight: bold; display: block; margin: 10px 0; }
+        .score { font-size: 3.5rem; font-weight: bold; display: block; margin: 5px 0; }
+        
+        /* 記録セクション */
+        .record-box { margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.5); border-radius: 10px; border: 1px dashed #ccc; }
+        .record-title { font-size: 0.8rem; font-weight: bold; margin-bottom: 10px; display: block; }
+        .record-row { display: flex; gap: 8px; justify-content: center; margin-bottom: 15px; }
+        
+        /* ボタン色分け */
+        .btn-nige { background: #228be6; color: white; border: none; padding: 10px; border-radius: 8px; flex: 1; font-weight: bold; font-size: 0.8rem; cursor: pointer; }
+        .btn-nogashi { background: #fa5252; color: white; border: none; padding: 10px; border-radius: 8px; flex: 1; font-weight: bold; font-size: 0.8rem; cursor: pointer; }
+        .btn-win { background: #40c057; color: white; border: none; padding: 10px; border-radius: 8px; flex: 1; font-weight: bold; font-size: 0.8rem; cursor: pointer; }
+        .btn-lose { background: #868e96; color: white; border: none; padding: 10px; border-radius: 8px; flex: 1; font-weight: bold; font-size: 0.8rem; cursor: pointer; }
 
-        .record-area { margin-top: 15px; display: flex; gap: 10px; justify-content: center; }
-        .btn-hit { background: #e63946; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        .btn-miss { background: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        /* 集計表示 */
+        .stats-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .stat-card { background: #f8f9fa; padding: 10px; border-radius: 12px; text-align: center; border: 1px solid #e9ecef; }
+        .stat-val { display: block; font-size: 1.2rem; font-weight: bold; color: #333; }
+        .stat-label { font-size: 0.65rem; color: #777; }
 
-        /* 通算成績グリッド */
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
-        .stat-box { background: #f8f9fa; padding: 12px; border-radius: 12px; text-align: center; border: 1px solid #eee; }
-        .stat-val { display: block; font-size: 1.3rem; font-weight: bold; color: #333; }
-        .stat-label { font-size: 0.7rem; color: #777; }
-
-        /* 24場個別テーブル */
-        .table-container { overflow-x: auto; margin-top: 15px; }
-        .field-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; text-align: center; }
+        .table-container { overflow-x: auto; max-height: 300px; }
+        .field-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
         .field-table th { background: #004085; color: white; padding: 8px; position: sticky; top: 0; }
-        .field-table td { padding: 8px; border-bottom: 1px solid #eee; }
-        .field-table tr:nth-child(even) { background: #fafafa; }
-        .field-table tr:hover { background: #f1f1f1; }
-
-        .reset-btn { font-size: 0.7rem; color: #999; background: none; border: none; cursor: pointer; text-decoration: underline; margin-top: 15px; display: block; width: 100%; }
+        .field-table td { padding: 6px; border-bottom: 1px solid #eee; text-align: center; }
+        
+        .reset-btn { font-size: 0.7rem; color: #adb5bd; background: none; border: none; cursor: pointer; text-decoration: underline; margin-top: 15px; width: 100%; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h1>🚀 精密逃げ判定 & 24場分析</h1>
+    <h1>🚀 精密逃げ判定 & ダブル分析</h1>
     
     <div class="input-section">
         <label>① 開催場を選択</label>
         <select id="stadium">
-            <option value="01 桐生">01 桐生</option><option value="02 戸田">02 戸田</option><option value="03 江戸川">03 江戸川</option>
-            <option value="04 平和島">04 平和島</option><option value="05 多摩川">05 多摩川</option><option value="06 浜名湖">06 浜名湖</option>
-            <option value="07 蒲郡">07 蒲郡</option><option value="08 常滑">08 常滑</option><option value="09 津">09 津</option>
-            <option value="10 三国">10 三国</option><option value="11 びわこ">11 びわこ</option><option value="12 住之江">12 住之江</option>
-            <option value="13 尼崎">13 尼崎</option><option value="14 鳴門">14 鳴門</option><option value="15 丸亀">15 丸亀</option>
-            <option value="16 児島">16 児島</option><option value="17 宮島">17 宮島</option><option value="18 徳山">18 徳山</option>
-            <option value="19 下関">19 下関</option><option value="20 若松">20 若松</option><option value="21 芦屋">21 芦屋</option>
-            <option value="22 福岡">22 福岡</option><option value="23 唐津">23 唐津</option><option value="24 大村">24 大村</option>
+            <option value="桐生">01 桐生</option><option value="戸田">02 戸田</option><option value="江戸川">03 江戸川</option><option value="平和島">04 平和島</option><option value="多摩川">05 多摩川</option><option value="浜名湖">06 浜名湖</option><option value="蒲郡">07 蒲郡</option><option value="常滑">08 常滑</option><option value="津">09 津</option><option value="三国">10 三国</option><option value="びわこ">11 びわこ</option><option value="住之江">12 住之江</option><option value="尼崎">13 尼崎</option><option value="鳴門">14 鳴門</option><option value="丸亀">15 丸亀</option><option value="児島">16 児島</option><option value="宮島">17 宮島</option><option value="徳山">18 徳山</option><option value="下関">19 下関</option><option value="若松">20 若松</option><option value="芦屋">21 芦屋</option><option value="福岡">22 福岡</option><option value="唐津">23 唐津</option><option value="大村">24 大村</option>
         </select>
     </div>
 
     <div class="input-section">
-        <label>② 1号艇 2連対率</label>
+        <label>② 1号艇 2連率 / ST</label>
         <div class="input-group">
-            <input type="range" id="rank1" min="0" max="100" value="70" oninput="updateVal('rank1Val', this.value + '%')">
-            <span class="val-display" id="rank1Val">70%</span>
+            <input type="range" id="rank1" min="0" max="100" value="70" oninput="updateVal('r1v', this.value+'%')">
+            <span class="val-display" id="r1v">70%</span>
+            <input type="range" id="st1" min="10" max="25" value="15" oninput="updateVal('s1v', '0.'+this.value+'s')">
+            <span class="val-display" id="s1v">0.15s</span>
         </div>
     </div>
 
     <div class="input-section">
-        <label>③ 1号艇 平均ST</label>
+        <label>③ 1号艇 展示 / 2号艇 壁率</label>
         <div class="input-group">
-            <input type="range" id="st1" min="10" max="25" value="15" step="1" oninput="updateVal('st1Val', '0.' + this.value + 's')">
-            <span class="val-display" id="st1Val">0.15s</span>
+            <input type="range" id="tenji1" min="-2" max="2" value="0" oninput="updateVal('tjv', this.value)">
+            <span class="val-display" id="tjv">0</span>
+            <input type="range" id="rank2" min="0" max="100" value="50" oninput="updateVal('r2v', this.value+'%')">
+            <span class="val-display" id="r2v">50%</span>
         </div>
     </div>
 
     <div class="input-section">
-        <label>④ 1号艇 展示気配</label>
+        <label>④ 2号艇 ST (凹み) / その他</label>
         <div class="input-group">
-            <input type="range" id="tenji1" min="-2" max="2" value="0" oninput="updateTenjiDisplay(this.value)">
-            <span class="val-display" id="tenjiVal">普通</span>
+            <input type="range" id="st2" min="10" max="25" value="15" oninput="updateVal('s2v', '0.'+this.value+'s')">
+            <span class="val-display" id="s2v">0.15s</span>
+            <select id="condition" style="flex:1;">
+                <option value="0">条件なし</option><option value="-15">外超抜</option><option value="-10">追い風強</option>
+            </select>
         </div>
-    </div>
-
-    <div class="input-section">
-        <label>⑤ 2号艇 2連対率 (壁)</label>
-        <div class="input-group">
-            <input type="range" id="rank2" min="0" max="100" value="50" oninput="updateVal('rank2Val', this.value + '%')">
-            <span class="val-display" id="rank2Val">50%</span>
-        </div>
-    </div>
-
-    <div class="input-section">
-        <label>⑥ 2号艇 ST (凹み)</label>
-        <div class="input-group">
-            <input type="range" id="st2" min="10" max="25" value="15" step="1" oninput="updateVal('st2Val', '0.' + this.value + 's')">
-            <span class="val-display" id="st2Val">0.15s</span>
-        </div>
-    </div>
-
-    <div class="input-section">
-        <label>⑦ その他条件</label>
-        <select id="condition">
-            <option value="0">普通</option>
-            <option value="-15">外に超抜あり</option>
-            <option value="-25">外に超抜複数</option>
-            <option value="-10">追い風強</option>
-            <option value="-12">向かい風強</option>
-        </select>
     </div>
 
     <button class="calc-btn" onclick="calculate()">逃げ率を算出</button>
 
     <div id="result">
-        <span style="font-size: 0.8rem;">推定逃げ確率</span>
+        <span style="font-size:0.8rem">逃げ確率</span>
         <span class="score" id="score">0%</span>
-        <div id="advice" style="font-size: 0.9rem; margin-bottom: 10px;"></div>
-        <div class="record-area">
-            <button class="btn-hit" onclick="saveResult(true)">的中(逃げた)</button>
-            <button class="btn-miss" onclick="saveResult(false)">不的中(失敗)</button>
+        
+        <div class="record-box">
+            <span class="record-title">【1】逃げ判定（ツールの答え合わせ）</span>
+            <div class="record-row">
+                <button class="btn-nige" onclick="record('tool', true)">逃げた(的中)</button>
+                <button class="btn-nogashi" onclick="record('tool', false)">逃げず(ハズレ)</button>
+            </div>
+            
+            <span class="record-title">【2】自分予想（実際の収支）</span>
+            <div class="record-row">
+                <button class="btn-win" onclick="record('self', true)">的中！</button>
+                <button class="btn-lose" onclick="record('self', false)">不的中</button>
+            </div>
         </div>
     </div>
 </div>
 
 <div class="card">
-    <h2>🏆 通算・場別成績集計</h2>
-    <div class="stats-grid">
-        <div class="stat-box"><span class="stat-val" id="totalCount">0</span><span class="stat-label">総試行</span></div>
-        <div class="stat-box"><span class="stat-val" id="hitRate">0%</span><span class="stat-label">総的中率</span></div>
+    <h2>📊 分析パネル</h2>
+    <div class="stats-summary">
+        <div class="stat-card"><span class="stat-val" id="toolRate">0%</span><span class="stat-label">ツール的中率</span></div>
+        <div class="stat-card"><span class="stat-val" id="selfRate">0%</span><span class="stat-label">自分的中率</span></div>
     </div>
 
     <div class="table-container">
         <table class="field-table">
             <thead>
-                <tr><th>競艇場</th><th>試行</th><th>的中</th><th>的中率</th></tr>
+                <tr><th>競艇場</th><th>ツール(的中)</th><th>自分(的中)</th></tr>
             </thead>
-            <tbody id="fieldStatsBody">
-                </tbody>
+            <tbody id="fieldStatsBody"></tbody>
         </table>
     </div>
-    
-    <button class="reset-btn" onclick="resetStats()">全データをリセット</button>
+    <button class="reset-btn" onclick="resetAll()">全データを消去</button>
 </div>
 
 <script>
 let lastScore = 0;
-let currentStadium = "";
+let currentField = "";
 
-const stadiumBaseData = {
-    "01 桐生": 51, "02 戸田": 44, "03 江戸川": 45, "04 平和島": 45, "05 多摩川": 53,
-    "06 浜名湖": 54, "07 蒲郡": 55, "08 常滑": 55, "09 津": 54, "10 三国": 53,
-    "11 びわこ": 49, "12 住之江": 58, "13 尼崎": 54, "14 鳴門": 50, "15 丸亀": 54,
-    "16 児島": 55, "17 宮島": 54, "18 徳山": 63, "19 下関": 60, "20 若松": 56,
-    "21 芦屋": 61, "22 福岡": 45, "23 唐津": 55, "24 大村": 66
-};
+const stadiumBase = {"桐生":51,"戸田":44,"江戸川":45,"平和島":45,"多摩川":53,"浜名湖":54,"蒲郡":55,"常滑":55,"津":54,"三国":53,"びわこ":49,"住之江":58,"尼崎":54,"鳴門":50,"丸亀":54,"児島":55,"宮島":54,"徳山":63,"下関":60,"若松":56,"芦屋":61,"福岡":45,"唐津":55,"大村":66};
 
 function updateVal(id, val) { document.getElementById(id).innerText = val; }
-function updateTenjiDisplay(val) {
-    const texts = { "-2": "最悪", "-1": "やや劣勢", "0": "普通", "1": "良好", "2": "超抜" };
-    document.getElementById('tenjiVal').innerText = texts[val];
-}
 
 function calculate() {
-    currentStadium = document.getElementById('stadium').value;
-    const base = stadiumBaseData[currentStadium] || 52;
-    
+    currentField = document.getElementById('stadium').value;
+    let b = stadiumBase[currentField] || 52;
     let r1 = parseInt(document.getElementById('rank1').value);
-    let st1 = parseInt(document.getElementById('st1').value);
-    let tj1 = parseInt(document.getElementById('tenji1').value);
+    let s1 = parseInt(document.getElementById('st1').value);
+    let tj = parseInt(document.getElementById('tenji1').value);
     let r2 = parseInt(document.getElementById('rank2').value);
-    let st2 = parseInt(document.getElementById('st2').value);
+    let s2 = parseInt(document.getElementById('st2').value);
     let cd = parseInt(document.getElementById('condition').value);
 
-    // 精密ロジック計算
-    let fix = (r1-50)*0.6 + (15-st1)*2.5 + tj1*8 + (r2-50)*0.3 + (st2>=18 ? (17-st2)*5.5 : (15-st2)*1.0) + cd + 5;
-    lastScore = Math.round(Math.min(98, Math.max(5, base + fix)));
+    let fix = (r1-50)*0.6 + (15-s1)*2.5 + tj*8 + (r2-50)*0.3 + (s2>=18 ? (17-s2)*5.5 : (15-s2)*1.0) + cd + 5;
+    lastScore = Math.round(Math.min(98, Math.max(5, b + fix)));
 
-    const res = document.getElementById('result');
-    res.style.display = "block";
     document.getElementById('score').innerText = lastScore + "%";
-    res.className = (lastScore >= 75) ? "high" : (lastScore <= 40) ? "low" : "mid";
-    document.getElementById('advice').innerText = (st2>=18) ? "⚠️2号艇凹み注意！まくり警戒。" : "安定した壁が期待できます。";
+    document.getElementById('result').style.display = "block";
+    document.getElementById('result').className = (lastScore >= 75) ? "high" : (lastScore <= 40) ? "low" : "mid";
 }
 
-function saveResult(isHit) {
-    // 全体成績の保存
-    let totalStats = JSON.parse(localStorage.getItem('raceStats')) || { total: 0, hits: 0 };
-    totalStats.total += 1;
-    if(isHit) totalStats.hits += 1;
-    localStorage.setItem('raceStats', JSON.stringify(totalStats));
+function record(type, isSuccess) {
+    let data = JSON.parse(localStorage.getItem('doubleStats')) || {};
+    if(!data[currentField]) data[currentField] = { toolTotal:0, toolHit:0, selfTotal:0, selfHit:0 };
 
-    // 場別成績の保存
-    let fieldStats = JSON.parse(localStorage.getItem('fieldStats')) || {};
-    if(!fieldStats[currentStadium]) {
-        fieldStats[currentStadium] = { total: 0, hits: 0 };
+    if(type === 'tool') {
+        data[currentField].toolTotal++;
+        if(isSuccess) data[currentField].toolHit++;
+    } else {
+        data[currentField].selfTotal++;
+        if(isSuccess) data[currentField].selfHit++;
     }
-    fieldStats[currentStadium].total += 1;
-    if(isHit) fieldStats[currentStadium].hits += 1;
-    localStorage.setItem('fieldStats', JSON.stringify(fieldStats));
 
-    alert(isHit ? "的中おめでとうございます！" : "記録しました。");
+    localStorage.setItem('doubleStats', JSON.stringify(data));
     loadStats();
-    document.getElementById('result').style.display = "none";
+    alert("記録しました！");
 }
 
 function loadStats() {
-    // 通算成績の反映
-    let totalStats = JSON.parse(localStorage.getItem('raceStats')) || { total: 0, hits: 0 };
-    document.getElementById('totalCount').innerText = totalStats.total;
-    let totalRate = totalStats.total > 0 ? Math.round((totalStats.hits / totalStats.total) * 100) : 0;
-    document.getElementById('hitRate').innerText = totalRate + "%";
-
-    // 24場個別テーブルの反映
-    let fieldStats = JSON.parse(localStorage.getItem('fieldStats')) || {};
+    let data = JSON.parse(localStorage.getItem('doubleStats')) || {};
     let tbody = document.getElementById('fieldStatsBody');
     tbody.innerHTML = "";
 
-    // 24場を回してテーブル作成（実績がある場を優先表示）
-    Object.keys(stadiumBaseData).forEach(name => {
-        let stats = fieldStats[name] || { total: 0, hits: 0 };
-        let rate = stats.total > 0 ? Math.round((stats.hits / stats.total) * 100) : 0;
-        
-        // 実績がある場合のみ、または全場表示（今回は全場表示）
-        let row = `<tr>
-            <td>${name}</td>
-            <td>${stats.total}</td>
-            <td>${stats.hits}</td>
-            <td>${rate}%</td>
+    let tT=0, tH=0, sT=0, sH=0;
+
+    Object.keys(stadiumBase).forEach(f => {
+        let s = data[f] || { toolTotal:0, toolHit:0, selfTotal:0, selfHit:0 };
+        tT+=s.toolTotal; tH+=s.toolHit; sT+=s.selfTotal; sH+=s.selfHit;
+
+        let tr = `<tr>
+            <td>${f}</td>
+            <td>${s.toolTotal}(${s.toolHit})</td>
+            <td>${s.selfTotal}(${s.selfHit})</td>
         </tr>`;
-        tbody.innerHTML += row;
+        tbody.innerHTML += tr;
     });
+
+    document.getElementById('toolRate').innerText = (tT>0 ? Math.round(tH/tT*100) : 0) + "%";
+    document.getElementById('selfRate').innerText = (sT>0 ? Math.round(sH/sT*100) : 0) + "%";
 }
 
-function resetStats() {
-    if(confirm("全ての成績データを完全に消去しますか？")) {
-        localStorage.clear();
-        loadStats();
-    }
-}
-
+function resetAll() { if(confirm("消去しますか？")){ localStorage.clear(); loadStats(); } }
 window.onload = loadStats;
 </script>
 </body>
