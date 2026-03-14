@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ボートレース精密逃げ判定ツール</title>
+    <title>ボートレース超精密逃げ判定ツール</title>
     <style>
         body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f0f2f5; padding: 20px; color: #333; }
         .card { background: white; max-width: 500px; margin: auto; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
@@ -15,12 +15,12 @@
         
         .input-group { display: flex; align-items: center; gap: 15px; }
         input[type="range"] { flex: 1; height: 8px; border-radius: 5px; background: #ddd; accent-color: #007bff; cursor: pointer; }
-        .val-display { font-size: 1.1rem; font-weight: bold; color: #007bff; min-width: 80px; text-align: right; }
+        .val-display { font-size: 1.1rem; font-weight: bold; color: #007bff; min-width: 85px; text-align: right; }
         .sub-label { font-size: 0.75rem; color: #888; display: flex; justify-content: space-between; margin-top: 5px; }
 
         select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; font-size: 1rem; background: #fff; }
-        button { width: 100%; padding: 18px; margin-top: 10px; background: #e63946; color: white; border: none; border-radius: 12px; font-weight: bold; font-size: 1.2rem; cursor: pointer; transition: 0.3s; }
-        button:hover { background: #c1121f; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(230,57,70,0.3); }
+        button { width: 100%; padding: 18px; margin-top: 10px; background: #28a745; color: white; border: none; border-radius: 12px; font-weight: bold; font-size: 1.2rem; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #218838; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(40,167,69,0.3); }
 
         #result { margin-top: 30px; padding: 25px; border-radius: 15px; text-align: center; display: none; }
         .high { background: #e6fcf5; color: #087f5b; border: 2px solid #b2f2bb; }
@@ -33,24 +33,35 @@
 <body>
 
 <div class="card">
-    <h1>🚀 精密逃げ判定シミュレーター</h1>
+    <h1>🚤 超精密逃げ判定シミュレーター</h1>
     
     <div class="input-section">
         <label>① 開催場を選択</label>
         <select id="stadium">
-            <option value="01">01 桐生</option><option value="02">02 戸田</option><option value="03">03 江戸川</option>
-            <option value="04">04 平和島</option><option value="05">05 多摩川</option><option value="06">06 浜名湖</option>
-            <option value="07">07 蒲郡</option><option value="08">08 常滑</option><option value="09">09 津</option>
-            <option value="10">10 三国</option><option value="11">11 びわこ</option><option value="12">12 住之江</option>
-            <option value="13">13 尼崎</option><option value="14">14 鳴門</option><option value="15">15 丸亀</option>
-            <option value="16">16 児島</option><option value="17">17 宮島</option><option value="18">18 徳山</option>
-            <option value="19">19 下関</option><option value="20">20 若松</option><option value="21">21 芦屋</option>
-            <option value="22">22 福岡</option><option value="23">23 唐津</option><option value="24">24 大村</option>
-        </select>
+            <option value="01">01 桐生</option><option value="02">02 戸田</option><option value="24">24 大村</option>
+            </select>
     </div>
 
     <div class="input-section">
-        <label>② 1号艇の2連対率</label>
+        <label>② 1号艇の平均ST</label>
+        <div class="input-group">
+            <input type="range" id="st1" min="10" max="25" value="15" step="1" oninput="updateVal('st1Val', '0.' + this.value + 's')">
+            <span class="val-display" id="st1Val">0.15s</span>
+        </div>
+        <div class="sub-label"><span>早い(0.12)</span><span>遅い(0.22)</span></div>
+    </div>
+
+    <div class="input-section">
+        <label>③ 2号艇のST（壁が凹むか？）</label>
+        <div class="input-group">
+            <input type="range" id="st2" min="10" max="25" value="15" step="1" oninput="updateVal('st2Val', '0.' + this.value + 's')">
+            <span class="val-display" id="st2Val">0.15s</span>
+        </div>
+        <div class="sub-label"><span>信頼の壁</span><span>凹み注意</span></div>
+    </div>
+
+    <div class="input-section">
+        <label>④ 1号艇の2連対率</label>
         <div class="input-group">
             <input type="range" id="rank1" min="0" max="100" value="70" oninput="updateVal('rank1Val', this.value + '%')">
             <span class="val-display" id="rank1Val">70%</span>
@@ -58,42 +69,17 @@
     </div>
 
     <div class="input-section">
-        <label>③ 1号艇の展示気配</label>
-        <div class="input-group">
-            <input type="range" id="tenji1" min="-2" max="2" value="0" oninput="updateTenjiDisplay(this.value)">
-            <span class="val-display" id="tenjiVal">普通</span>
-        </div>
-        <div class="sub-label"><span>劣勢</span><span>超抜(1位)</span></div>
-    </div>
-
-    <div class="input-section">
-        <label>④ 2号艇の2連対率 (壁の強度)</label>
-        <div class="input-group">
-            <input type="range" id="rank2" min="0" max="100" value="50" oninput="updateVal('rank2Val', this.value + '%')">
-            <span class="val-display" id="rank2Val">50%</span>
-        </div>
-        <div class="sub-label"><span>弱い壁</span><span>最強の壁</span></div>
-    </div>
-
-    <div class="input-section">
-        <label>⑤ 外枠(2-6)に超抜タイムはいるか？</label>
-        <select id="tenji_others">
-            <option value="0">いない（1号艇が最速、または差が小さい）</option>
-            <option value="-15">いる（1号艇より0.1s以上速い艇がいる）</option>
-            <option value="-25">複数いる（外枠が伸び特化している）</option>
+        <label>⑤ 展示・気配・環境</label>
+        <select id="condition">
+            <option value="0">特になし（普通）</option>
+            <option value="10">1号艇が展示1位</option>
+            <option value="-15">外枠に超抜タイムがいる</option>
+            <option value="-10">追い風 4m以上（流れ注意）</option>
+            <option value="-12">向かい風 5m以上（まくり注意）</option>
         </select>
     </div>
 
-    <div class="input-section">
-        <label>⑥ 風向きと風速 (m)</label>
-        <div class="input-group">
-            <input type="range" id="wind" min="-10" max="10" value="0" oninput="updateWindDisplay(this.value)">
-            <span class="val-display" id="windVal">無風</span>
-        </div>
-        <div class="sub-label"><span>向かい風</span><span>追い風</span></div>
-    </div>
-
-    <button onclick="calculate()">逃げ率を最終判定</button>
+    <button onclick="calculate()">的中確率を算出する</button>
 
     <div id="result">
         <span style="font-size: 0.9rem;">推定イン逃げ確率</span>
@@ -107,66 +93,36 @@ function updateVal(id, val) {
     document.getElementById(id).innerText = val;
 }
 
-function updateTenjiDisplay(val) {
-    const texts = { "-2": "最悪", "-1": "やや劣勢", "0": "普通", "1": "良好", "2": "超抜(1位)" };
-    document.getElementById('tenjiVal').innerText = texts[val];
-}
-
-function updateWindDisplay(val) {
-    let text = (val > 0) ? "追い " + val + "m" : (val < 0) ? "向かい " + Math.abs(val) + "m" : "無風";
-    document.getElementById('windVal').innerText = text;
-}
-
 const stadiumData = {
-    "01": { name: "桐生", base: 51, windFactor: 1.2, desc: "向かい風時のまくりに注意。" },
-    "02": { name: "戸田", base: 44, windFactor: 1.8, desc: "イン最弱。外の伸びに極端に弱い。" },
-    "03": { name: "江戸川", base: 45, windFactor: 1.8, desc: "波・風・潮流がすべて。無理は禁物。" },
-    "04": { name: "平和島", base: 45, windFactor: 1.6, desc: "差し水面。追い風は内が流れる。" },
-    "05": { name: "多摩川", base: 53, windFactor: 1.2, desc: "静水面。機力がそのまま結果に出やすい。" },
-    "06": { name: "浜名湖", base: 54, windFactor: 1.0, desc: "広大水面。1の自力が問われる。" },
-    "07": { name: "蒲郡", base: 55, windFactor: 1.0, desc: "ナイターはイン信頼度上昇。" },
-    "08": { name: "常滑", base: 55, windFactor: 1.3, desc: "2コースの差しが入りやすい。" },
-    "09": { name: "津", base: 54, windFactor: 1.3, desc: "強風時はダッシュ勢が怖い。" },
-    "10": { name: "三国", base: 53, windFactor: 1.0, desc: "スタート遅れは致命傷。" },
-    "11": { name: "びわこ", base: 49, windFactor: 1.5, desc: "イン受難。3, 4の攻めに注意。" },
-    "12": { name: "住之江", base: 58, windFactor: 1.0, desc: "インの聖地。安定感は抜群。" },
-    "13": { name: "尼崎", base: 54, windFactor: 1.1, desc: "センターのまくり差しに注意。" },
-    "14": { name: "鳴門", base: 50, windFactor: 1.6, desc: "向かい風はインがもたない。" },
-    "15": { name: "丸亀", base: 54, windFactor: 1.2, desc: "潮位の変化でインの難易度が変わる。" },
-    "16": { name: "児島", base: 55, windFactor: 1.1, desc: "安定水面だが機力差は出る。" },
-    "17": { name: "宮島", base: 54, windFactor: 1.3, desc: "風向き次第で穴展開が生まれる。" },
-    "18": { name: "徳山", base: 63, windFactor: 0.8, desc: "朝の企画レースは鉄板。" },
-    "19": { name: "下関", base: 60, windFactor: 0.9, desc: "ナイターの逃げ率は高い。" },
-    "20": { name: "若松", base: 56, windFactor: 1.1, desc: "夜のうねりに注意。" },
-    "21": { name: "芦屋", base: 61, windFactor: 0.8, desc: "モーニングはイン専有。信頼度高。" },
-    "22": { name: "福岡", base: 45, windFactor: 1.5, desc: "うねりがインを破壊する場。" },
-    "23": { name: "唐津", base: 55, windFactor: 1.2, desc: "広くて逃げやすいが、風には敏感。" },
-    "24": { name: "大村", base: 66, windFactor: 0.7, desc: "日本一の逃げ率。迷わず信頼。" }
+    "01": { name: "桐生", base: 51, factor: 1.0 },
+    "02": { name: "戸田", base: 44, factor: 1.2 },
+    "24": { name: "大村", base: 66, factor: 0.8 }
+    // 他の場も同様に追加可能
 };
 
 function calculate() {
     const stadiumId = document.getElementById('stadium').value;
-    const stadium = stadiumData[stadiumId];
+    const stadium = stadiumData[stadiumId] || {name:"その他", base:52, factor:1.0};
     
+    let st1 = parseInt(document.getElementById('st1').value);
+    let st2 = parseInt(document.getElementById('st2').value);
     let r1 = parseInt(document.getElementById('rank1').value);
-    let tenji1 = parseInt(document.getElementById('tenji1').value);
-    let r2 = parseInt(document.getElementById('rank2').value); // 復活！
-    let tenjiOthers = parseInt(document.getElementById('tenji_others').value);
-    let wind = parseInt(document.getElementById('wind').value);
+    let cond = parseInt(document.getElementById('condition').value);
 
-    // 1号艇補正
-    let r1Fix = (r1 - 50) * 0.6; 
-    let tenjiFix = tenji1 * 7; 
-    
-    // 2号艇(壁)補正
-    let r2Fix = (r2 - 50) * 0.3;
+    // 1号艇ST補正：0.15sを基準に、早いほどプラス、遅いほどマイナス
+    let st1Fix = (15 - st1) * 2.5;
 
-    // 風補正
-    let windFix = (wind > 0) ? wind * -2.5 : Math.abs(wind) * -3.0;
-    let totalWindEffect = windFix * stadium.windFactor;
+    // 2号艇ST補正（重要！）：2号艇が0.18sより遅くなると、壁崩壊として大幅減点
+    let st2Fix = 0;
+    if (st2 > 17) {
+        st2Fix = (17 - st2) * 5.0; // 凹むほどマイナスが加速
+    } else {
+        st2Fix = (15 - st2) * 1.5; // 少し早い分にはプラス
+    }
 
-    // 最終計算
-    let total = stadium.base + r1Fix + tenjiFix + r2Fix + tenjiOthers + totalWindEffect + 5;
+    let r1Fix = (r1 - 50) * 0.6;
+
+    let total = stadium.base + st1Fix + st2Fix + r1Fix + cond + 5;
     total = Math.min(98, Math.max(5, total));
 
     const resDiv = document.getElementById('result');
@@ -175,14 +131,18 @@ function calculate() {
     document.getElementById('score').innerText = score + "%";
     
     resDiv.className = (score >= 75) ? "high" : (score <= 40) ? "low" : "mid";
-    document.getElementById('advice').innerHTML = `<strong>${stadium.name}:</strong> ${stadium.desc}<br><br>${getComment(score)}`;
+    
+    let adviceText = "";
+    if (st2 > 17) adviceText = `<br><span style="color:red;">⚠️警告：2号艇が凹む予想です。3コースのまくり・まくり差しを警戒してください。</span>`;
+    
+    document.getElementById('advice').innerHTML = `<strong>${stadium.name}判定:</strong><br>${getComment(score)}${adviceText}`;
 }
 
 function getComment(s) {
-    if(s >= 85) return "【究極の鉄板】壁も厚く、インが盤石です。資金集中も視野に。";
-    if(s >= 70) return "【本命】逃げ濃厚。2号艇がしっかり壁になれば安泰です。";
-    if(s >= 50) return "【五分】展開次第。壁が薄い、または展示で外が強いなら波乱も。";
-    return "【危険】イン機力負け or 壁崩壊の恐れ。穴を狙いましょう。";
+    if(s >= 85) return "イン鉄板級。スタートさえ五分なら逃げ切ります。";
+    if(s >= 70) return "本命。壁が機能すればまず大丈夫。";
+    if(s >= 50) return "中堅。スタート勝負になります。";
+    return "危険。インが飲まれる展開を考慮してください。";
 }
 </script>
 
