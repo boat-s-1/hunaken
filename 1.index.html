@@ -5,35 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ボートレース1号艇逃げ判定ツール</title>
     <style>
-        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; color: #333; }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f0f2f5; padding: 20px; color: #333; }
         .card { background: white; max-width: 500px; margin: auto; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h1 { font-size: 1.2rem; text-align: center; color: #004085; }
-        label { display: block; margin-top: 15px; font-weight: bold; font-size: 0.9rem; }
-        select, input { width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; margin-top: 20px; background: #007bff; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        h1 { font-size: 1.4rem; text-align: center; color: #004085; margin-bottom: 20px; }
+        label { display: block; margin-top: 15px; font-weight: bold; font-size: 0.9rem; color: #555; }
+        select, input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; font-size: 1rem; }
+        button { width: 100%; padding: 16px; margin-top: 25px; background: #007bff; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.3s; }
         button:hover { background: #0056b3; }
-        #result { margin-top: 20px; padding: 20px; border-radius: 10px; text-align: center; display: none; }
-        .high { background: #d4edda; color: #155724; }
-        .mid { background: #fff3cd; color: #856404; }
-        .low { background: #f8d7da; color: #721c24; }
-        .score { font-size: 2rem; font-weight: bold; }
+        #result { margin-top: 25px; padding: 20px; border-radius: 12px; text-align: center; display: none; }
+        .high { background: #d4edda; color: #155724; border: 2px solid #c3e6cb; }
+        .mid { background: #fff3cd; color: #856404; border: 2px solid #ffeeba; }
+        .low { background: #f8d7da; color: #721c24; border: 2px solid #f5c6cb; }
+        .score-label { font-size: 1rem; margin-bottom: 5px; }
+        .score { font-size: 3rem; font-weight: bold; display: block; line-height: 1; margin: 10px 0; }
+        #advice { text-align: left; font-size: 0.95rem; line-height: 1.5; margin-top: 15px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 10px; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h1>🚤 1号艇逃げ判定シミュレーター</h1>
+    <h1>🚤 逃げ判定シミュレーター</h1>
     
     <label>① 開催場を選択</label>
     <select id="stadium">
-        <option value="65">大村 (イン最強)</option>
-        <option value="62">徳山</option>
-        <option value="60">芦屋</option>
-        <option value="55">住之江</option>
-        <option value="52">多摩川</option>
-        <option value="45">戸田 (イン最弱)</option>
-        <option value="50">平和島</option>
-        </select>
+        <option value="24">大村 (イン最強)</option>
+        <option value="18">徳山</option>
+        <option value="21">芦屋</option>
+        <option value="19">下関</option>
+        <option value="12">住之江</option>
+        <option value="20">若松</option>
+        <option value="08">常滑</option>
+        <option value="16">児島</option>
+        <option value="23">唐津</option>
+        <option value="07">蒲郡</option>
+        <option value="13">尼崎</option>
+        <option value="15">丸亀</option>
+        <option value="09">津</option>
+        <option value="17">宮島</option>
+        <option value="05">多摩川</option>
+        <option value="10">三国</option>
+        <option value="01">桐生</option>
+        <option value="14">鳴門</option>
+        <option value="11">びわこ</option>
+        <option value="03">江戸川</option>
+        <option value="04">平和島</option>
+        <option value="22">福岡</option>
+        <option value="02">戸田 (イン最弱)</option>
+        <option value="06">浜名湖</option>
+    </select>
 
     <label>② 1号艇の2連対率 (%)</label>
     <input type="number" id="rank1" value="70" min="0" max="100">
@@ -57,14 +76,13 @@
     <button onclick="calculate()">逃げ率を判定する</button>
 
     <div id="result">
-        判定結果<br>
-        <span class="score" id="score">0%</span><br>
-        <p id="advice"></p>
+        <span class="score-label">推定イン逃げ確率</span>
+        <span class="score" id="score">0%</span>
+        <div id="advice"></div>
     </div>
 </div>
 
 <script>
-// 全24場のベース逃げ率と特性データ
 const stadiumData = {
     "01": { name: "桐生", base: 51, windFactor: 1.2, desc: "標高が高く出足重要。向かい風は捲り注意。" },
     "02": { name: "戸田", base: 44, windFactor: 1.5, desc: "イン最弱。2の壁と追い風が命。流れたら即差し。" },
@@ -100,30 +118,21 @@ function calculate() {
     let r2Effect = parseInt(document.getElementById('rank2').value);
     let windEffect = parseInt(document.getElementById('wind').value);
 
-    // 1号艇の能力補正（基準50%から上下）
     let r1Fix = (r1 - 50) * 0.6; 
-    
-    // 風の影響度補正（場ごとの敏感さを掛ける）
     let totalWindEffect = windEffect * stadium.windFactor;
 
-    // 計算
     let total = stadium.base + r1Fix + r2Effect + totalWindEffect;
-    
-    // 範囲制限
     total = Math.min(96, Math.max(8, total));
 
-    // 結果表示
     document.getElementById('result').style.display = "block";
     const score = Math.round(total);
     document.getElementById('score').innerText = score + "%";
     
-    // 判定色
     let className = "mid";
     if(score >= 75) className = "high";
     if(score <= 40) className = "low";
     document.getElementById('result').className = className;
 
-    // 個別アドバイス
     document.getElementById('advice').innerHTML = `<strong>${stadium.name}の傾向:</strong> ${stadium.desc}<br><br>${getComment(score)}`;
 }
 
