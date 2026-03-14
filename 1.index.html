@@ -143,16 +143,15 @@
     <button class="calc-btn" onclick="calculate()">逃げ率を算出</button>
 
    <div id="result">
-    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px; text-align: left;">
-        <img src="FAA9527F-7F59-4F18-801C-2A1CA64A7B54.jpg" id="ichikaImg" style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid #007bff; object-fit: cover; background: white;">
-        <div style="position: relative; background: #fff; border: 2px solid #007bff; padding: 10px; border-radius: 15px; flex: 1; font-size: 0.85rem;">
-            <div id="advice" style="line-height: 1.4;"></div>
-            <div style="position: absolute; left: -10px; top: 20px; width: 0; height: 0; border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-right: 10px solid #007bff;"></div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 15px; text-align: left;">
+            <img src="FAA9527F-7F59-4F18-801C-2A1CA64A7B54.jpg" id="ichikaImg">
+            <div class="balloon">
+                <div id="advice" style="line-height: 1.4; font-weight: bold;"></div>
+            </div>
         </div>
-    </div>
-        <span style="font-size: 0.8rem;">推定逃げ確率</span>
+
+        <span style="font-size: 0.8rem; color: #666;">推定逃げ確率</span>
         <span class="score" id="score">0%</span>
-        <div id="advice" style="font-size: 0.9rem; margin-bottom: 10px;"></div>
         
         <div class="record-container">
             <div class="record-group">
@@ -171,7 +170,6 @@
             </div>
         </div>
     </div>
-</div>
 
 <div class="card">
     <h2>🏆 総合・場別分析パネル</h2>
