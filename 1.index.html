@@ -186,6 +186,35 @@ function updateTenjiDisplay(val) {
     document.getElementById('tenjiVal').innerText = texts[val];
 }
 
+// --- アドバイス生成ロジック ---
+function getDetailedAdvice(score, r1, st1, tj1, r2, st2, cd) {
+    let mainMsg = "";
+    let subMsgs = [];
+
+    // 1. スコアによる基本評価
+    if (score >= 85) { mainMsg = "【激アツ・鉄板級】"; }
+    else if (score >= 75) { mainMsg = "【本命・逃げ濃厚】"; }
+    else if (score >= 60) { mainMsg = "【中堅・逃げ5分】"; }
+    else if (score >= 45) { mainMsg = "【混戦・イン受難】"; }
+    else { mainMsg = "【波乱・穴狙い推奨】"; }
+
+    // 2. 個別条件による分析
+    if (st1 >= 18) subMsgs.push("1号艇のST不安。先マイできないリスクあり。");
+    if (tj1 === -2) subMsgs.push("1号艇の展示が劣勢。道中逆転される懸念。");
+    if (st2 >= 18) subMsgs.push("2号艇が凹む予感。外からの捲り強襲に要警戒！");
+    else if (r2 >= 60) subMsgs.push("2号艇の壁が強力。インにとっては絶好の援護。");
+    
+    if (cd <= -15) subMsgs.push("外枠に強力な伸び足。一撃の捲りに注意。");
+    if (cd === -10) subMsgs.push("追い風注意。1マークで膨らんで差し場を許すかも。");
+
+    // 3. 簡易買い目ヒント
+    let hint = (score >= 75) ? "推奨：1-23-全" : (score >= 50) ? "推奨：1-全-全 (広めに)" : "推奨：外枠の頭から穴狙い";
+
+    return `<strong>${mainMsg}</strong><br>
+            <span style="font-size:0.8rem; color:#555;">${subMsgs.length > 0 ? "・" + subMsgs.join("<br>・") : "特に目立った死角はありません。"}</span><br>
+            <div style="margin-top:8px; padding:8px; background:#e9f2ff; border-radius:8px; font-weight:bold; font-size:0.85rem; color:#004085; border-left:4px solid #007bff;">💡 ${hint}</div>`;
+}
+
 function calculate() {
     currentStadium = document.getElementById('stadium').value;
     const base = stadiumBaseData[currentStadium] || 52;
@@ -196,13 +225,16 @@ function calculate() {
     let st2 = parseInt(document.getElementById('st2').value);
     let cd = parseInt(document.getElementById('condition').value);
 
+    // 精密ロジック計算
     let fix = (r1-50)*0.6 + (15-st1)*2.5 + tj1*8 + (r2-50)*0.3 + (st2>=18 ? (17-st2)*5.5 : (15-st2)*1.0) + cd + 5;
     lastScore = Math.round(Math.min(98, Math.max(5, base + fix)));
 
     document.getElementById('result').style.display = "block";
     document.getElementById('score').innerText = lastScore + "%";
     document.getElementById('result').className = (lastScore >= 75) ? "high" : (lastScore <= 40) ? "low" : "mid";
-    document.getElementById('advice').innerText = (st2>=18) ? "⚠️2号艇凹み注意！まくり警戒。" : "安定した壁が期待できます。";
+    
+    // アドバイス部分を詳細版に更新
+    document.getElementById('advice').innerHTML = getDetailedAdvice(lastScore, r1, st1, tj1, r2, st2, cd);
 }
 
 function saveData(type, isHit) {
