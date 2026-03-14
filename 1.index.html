@@ -92,12 +92,75 @@
         .balloon.celebrate-mode { background: #fff0f6; border-color: #ff85c0; }
 
         /* 分析パネル */
-        .stat-box { background: white; padding: 12px; border-radius: 15px; text-align: center; border: 1px solid #ffe0e6; }
-        .stat-val { display: block; font-size: 1.3rem; font-weight: bold; color: #ff6b81; }
-        .stat-label { font-size: 0.65rem; color: #ff8fa3; }
+       .stats-grid { 
+            display: grid; 
+            /* 画面幅に合わせて自動で調整。最低140pxあれば横に並びます */
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
+            gap: 10px; 
+            margin: 15px 0; 
+        }
 
-        .field-table th { background: #ff8fa3; color: white; padding: 12px; }
-        .field-table td { padding: 10px; border-bottom: 1px solid #fff0f3; color: #666; }
+        .stat-box { 
+            background: white; 
+            padding: 10px 5px; /* 上下を少し詰めてスッキリ */
+            border-radius: 15px; 
+            text-align: center; 
+            border: 1px solid #ffe0e6; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 70px; /* 高さを揃える */
+        }
+
+        /* 数値の部分 */
+        .stat-val { 
+            display: block; 
+            font-size: 1.2rem; /* 少しだけ小さくして枠内に収める */
+            font-weight: bold; 
+            color: #ff6b81; 
+            line-height: 1.2;
+        }
+
+        /* ラベル（説明文）の部分 */
+        .stat-label { 
+            font-size: 0.6rem; 
+            color: #ff8fa3; 
+            line-height: 1.1;
+            margin-top: 4px;
+        }
+
+        /* 競艇場リストのテーブルも少しスリムに */
+        .table-container { 
+            overflow-x: auto; 
+            margin-top: 15px; 
+            max-height: 350px; 
+            border-radius: 15px; 
+            border: 1px solid #ffe0e6; 
+        }
+
+        .field-table th { 
+            background: #ff8fa3; 
+            color: white; 
+            padding: 8px 4px; 
+            font-size: 0.75rem; 
+        }
+        
+        .field-table td { 
+            padding: 8px 4px; 
+            font-size: 0.75rem; 
+        }
+
+        /* カード全体の最大幅を少し広げて余裕を持たせる */
+        .card { 
+            background: rgba(255, 255, 255, 0.95); 
+            max-width: 600px; /* 550から600へ少し拡大 */
+            margin: auto; 
+            padding: 20px; 
+            border-radius: 30px; 
+            box-shadow: 0 10px 30px rgba(255, 107, 129, 0.15); 
+            margin-bottom: 25px; 
+            border: 2px solid #ffe0e6;
+        }
     </style>
 </head>
 <body>
