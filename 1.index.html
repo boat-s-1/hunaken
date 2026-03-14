@@ -203,6 +203,15 @@ async function saveData(type, isHit) {
         } catch (e) { alert("クラウド保存失敗"); }
     } else {
         alert("ブラウザに保存しました！");
+        async function saveData(type, isHit) {
+    updateLocalStats(type, isHit);
+    
+    console.log("現在のisAdmin状態:", isAdmin); // ブラウザのF12開発者ツールで確認できます
+
+    if (isAdmin) {
+        // ... 送信処理 ...
+    }
+}
     }
 }
 
