@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ボートレース1号艇逃げ判定ツール</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; color: #333; }
+        .card { background: white; max-width: 500px; margin: auto; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { font-size: 1.2rem; text-align: center; color: #004085; }
+        label { display: block; margin-top: 15px; font-weight: bold; font-size: 0.9rem; }
+        select, input { width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; margin-top: 20px; background: #007bff; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        #result { margin-top: 20px; padding: 20px; border-radius: 10px; text-align: center; display: none; }
+        .high { background: #d4edda; color: #155724; }
+        .mid { background: #fff3cd; color: #856404; }
+        .low { background: #f8d7da; color: #721c24; }
+        .score { font-size: 2rem; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>🚤 1号艇逃げ判定シミュレーター</h1>
+    
+    <label>① 開催場を選択</label>
+    <select id="stadium">
+        <option value="65">大村 (イン最強)</option>
+        <option value="62">徳山</option>
+        <option value="60">芦屋</option>
+        <option value="55">住之江</option>
+        <option value="52">多摩川</option>
+        <option value="45">戸田 (イン最弱)</option>
+        <option value="50">平和島</option>
+        </select>
+
+    <label>② 1号艇の2連対率 (%)</label>
+    <input type="number" id="rank1" value="70" min="0" max="100">
+
+    <label>③ 2号艇の気配・役割</label>
+    <select id="rank2">
+        <option value="5">壁になる (2連対率高く、展示普通)</option>
+        <option value="-15">刺客 (展示タイム1位・差し注意)</option>
+        <option value="-20">壁崩壊 (展示ワースト・凹み注意)</option>
+        <option value="0">普通</option>
+    </select>
+
+    <label>④ 風向き・風速</label>
+    <select id="wind">
+        <option value="5">無風〜微風 (+5%)</option>
+        <option value="-10">追い風 4m以上 (差し注意)</option>
+        <option value="-15">向かい風 5m以上 (まくり注意)</option>
+        <option value="0">風速 1-3m程度</option>
+    </select>
+
+    <button onclick="calculate()">逃げ率を判定する</button>
+
+    <div id="result">
+        判定結果<br>
+        <span class="score" id="score">0%</span><br>
+        <p id="advice"></p>
+    </div>
+</div>
+
+<script>
+// 全24場のベース逃げ率と特性データ
+const stadiumData = {
+    "01": { name: "桐生", base: 51, windFactor: 1.2, desc: "標高が高く出足重要。向かい風は捲り注意。" },
+    "02": { name: "戸田", base: 44, windFactor: 1.5, desc: "イン最弱。2の壁と追い風が命。流れたら即差し。" },
+    "03": { name: "江戸川", base: 45, windFactor: 1.5, desc: "波・風で激変。追い風+上げ潮はイン壊滅。" },
+    "04": { name: "平和島", base: 45, windFactor: 1.4, desc: "差し水面。追い風は2, 4の差しが突き刺さる。" },
+    "05": { name: "多摩川", base: 53, windFactor: 1.2, desc: "日本一の静水面。2の展示が良いと2-1に化ける。" },
+    "06": { name: "浜名湖", base: 54, windFactor: 1.0, desc: "広大水面。1の自力が必要。カド捲りに注意。" },
+    "07": { name: "蒲郡", base: 55, windFactor: 1.0, desc: "ナイターはイン強。3の捲りを受けやすい広さ。" },
+    "08": { name: "常滑", base: 55, windFactor: 1.1, desc: "2の逃がし率が高い。追い風は2の差し警戒。" },
+    "09": { name: "津", base: 54, windFactor: 1.3, desc: "強風の場。向かい風強風は外枠の全速捲り。" },
+    "10": { name: "三国", base: 53, windFactor: 1.0, desc: "スタート勝負。インが遠く3の攻めが届く。" },
+    "11": { name: "びわこ", base: 49, windFactor: 1.4, desc: "イン受難。向かい風はダッシュ勢の独壇場。" },
+    "12": { name: "住之江", base: 58, windFactor: 1.0, desc: "インの聖地。1-2が基本だが2の足次第で逆転。" },
+    "13": { name: "尼崎", base: 54, windFactor: 1.1, desc: "センターが攻める展開。5やまくり差しに注意。" },
+    "14": { name: "鳴門", base: 50, windFactor: 1.5, desc: "向かい風はイン全滅。3, 4のカドまくり警戒。" },
+    "15": { name: "丸亀", base: 54, windFactor: 1.2, desc: "満潮+追い風はインが飛ぶ。干潮なら鉄板。" },
+    "16": { name: "児島", base: 55, windFactor: 1.1, desc: "潮位で変わる。干潮なら逃げ、満潮は差し。" },
+    "17": { name: "宮島", base: 54, windFactor: 1.3, desc: "風向きに敏感。4, 5の機力が良い時は波乱。" },
+    "18": { name: "徳山", base: 63, windFactor: 0.8, desc: "企画レースは鉄板。2は壁として機能。" },
+    "19": { name: "下関", base: 60, windFactor: 0.9, desc: "ナイターのインは固い。横風が吹くと荒れる。" },
+    "20": { name: "若松", base: 56, windFactor: 1.1, desc: "満潮はうねり注意。足が良ければ逃げ切る。" },
+    "21": { name: "芦屋", base: 61, windFactor: 0.8, desc: "モーニングはイン専。A1インなら信頼度高。" },
+    "22": { name: "福岡", base: 45, windFactor: 1.4, desc: "うねりの罠。満潮はイン不可避の敗北あり。" },
+    "23": { name: "唐津", base: 55, windFactor: 1.2, desc: "広大な水面。足の差がそのまま結果に出る。" },
+    "24": { name: "大村", base: 66, windFactor: 0.7, desc: "日本一の逃げ。2が壁になれば負けない。" }
+};
+
+function calculate() {
+    const stadiumId = document.getElementById('stadium').value;
+    const stadium = stadiumData[stadiumId];
+    
+    let r1 = parseInt(document.getElementById('rank1').value);
+    let r2Effect = parseInt(document.getElementById('rank2').value);
+    let windEffect = parseInt(document.getElementById('wind').value);
+
+    // 1号艇の能力補正（基準50%から上下）
+    let r1Fix = (r1 - 50) * 0.6; 
+    
+    // 風の影響度補正（場ごとの敏感さを掛ける）
+    let totalWindEffect = windEffect * stadium.windFactor;
+
+    // 計算
+    let total = stadium.base + r1Fix + r2Effect + totalWindEffect;
+    
+    // 範囲制限
+    total = Math.min(96, Math.max(8, total));
+
+    // 結果表示
+    document.getElementById('result').style.display = "block";
+    const score = Math.round(total);
+    document.getElementById('score').innerText = score + "%";
+    
+    // 判定色
+    let className = "mid";
+    if(score >= 75) className = "high";
+    if(score <= 40) className = "low";
+    document.getElementById('result').className = className;
+
+    // 個別アドバイス
+    document.getElementById('advice').innerHTML = `<strong>${stadium.name}の傾向:</strong> ${stadium.desc}<br><br>${getComment(score)}`;
+}
+
+function getComment(s) {
+    if(s >= 85) return "【究極の鉄板】1-2, 1-3の2点。資金を集中。";
+    if(s >= 70) return "【本命】逃げ濃厚。2号艇の差しだけケアして1-23-全。";
+    if(s >= 50) return "【五分】イン逃げの期待は持てるが、他艇の機力が上なら逆転も。";
+    if(s >= 35) return "【波乱】インの壁が薄い。センターからの捲り・捲り差し注意。";
+    return "【壊滅】イン壊滅のサイン。中穴〜大穴を積極的に狙うべき。";
+}
+</script>
+
+</body>
+</html>
