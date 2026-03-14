@@ -143,13 +143,12 @@
 </div>
 
 <script>
-// --- 変数は最初にまとめて定義（ここが重要！） ---
+// --- 変数定義 ---
 let lastScore = 0;
 let currentStadium = "";
-let isAdmin = false; // 管理者フラグを1つに統合
+let isAdmin = false; 
 let adminFieldData = {}; 
 
-// あなたのGAS URLをここに1箇所だけ書く
 const GAS_URL = "https://script.google.com/macros/s/AKfycbyUkTIb26j8PG4vFKxflHTVnL51kzj0w1_CHPkPeh0Hy-rY5MNSKEL3PtFQTMJCH5K-EA/exec";
 
 const stadiumBaseData = {
@@ -169,16 +168,13 @@ function updateTenjiDisplay(val) {
     document.getElementById('tenjiVal').innerText = texts[val];
 }
 
-// パスワードチェック
 function checkAdmin() {
     const pass = document.getElementById('adminPass').value;
-    const secret = "0913"; // あなたのパスワード
-
+    const secret = "0913";
     if (pass === secret) {
-        isAdmin = true; // ここでフラグを立てる
+        isAdmin = true;
         document.getElementById('adminPass').style.backgroundColor = "#e6fcf5";
         document.getElementById('adminPass').style.borderColor = "#087f5b";
-        console.log("管理者モードON");
     } else {
         isAdmin = false;
         document.getElementById('adminPass').style.backgroundColor = "#fff";
@@ -205,12 +201,10 @@ function calculate() {
     document.getElementById('advice').innerHTML = `<strong>${lastScore >= 75 ? "逃げ濃厚" : "混戦注意"}</strong>`;
 }
 
-// 保存ボタン（ここが今回の修正の肝！）
+// 保存ボタン
 async function saveData(type, isHit) {
-    // ローカル保存は全員共通
     updateLocalStats(type, isHit);
 
-    // 管理者モードがONの場合のみクラウド送信
     if (isAdmin === true) {
         const data = {
             stadium: currentStadium,
@@ -218,18 +212,12 @@ async function saveData(type, isHit) {
             type: type === 'tool' ? 'ツール判定' : '自分予想',
             isHit: isHit
         };
-
         try {
-            await fetch(GAS_URL, { 
-                method: "POST", 
-                mode: "no-cors", 
-                body: JSON.stringify(data) 
-            });
+            await fetch(GAS_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(data) });
             alert("【自分用】クラウド＆ブラウザに保存完了！");
-            loadAdminStats(); // 集計を再送
+            loadAdminStats(); 
         } catch (error) {
-            console.error("Cloud Save Error:", error);
-            alert("クラウド保存に失敗しました。URLを確認してください。");
+            alert("クラウド保存に失敗しました。");
         }
     } else {
         alert("【配布用】ブラウザに保存しました！");
@@ -239,12 +227,9 @@ async function saveData(type, isHit) {
 function updateLocalStats(type, isHit) {
     let stats = JSON.parse(localStorage.getItem('boatDoubleStats')) || {};
     if (!stats[currentStadium]) stats[currentStadium] = { tT: 0, tH: 0, sT: 0, sH: 0 };
-    if (type === 'tool') { 
-        stats[currentStadium].tT++; 
-        if(isHit) stats[currentStadium].tH++; 
-    } else { 
-        stats[currentStadium].sT++; 
-        if(isHit) stats[currentStadium].sH++; 
+    if (type === 'tool' || type === 'self') { 
+        if(type === 'tool') { stats[currentStadium].tT++; if(isHit) stats[currentStadium].tH++; }
+        else { stats[currentStadium].sT++; if(isHit) stats[currentStadium].sH++; }
     }
     localStorage.setItem('boatDoubleStats', JSON.stringify(stats));
     renderTable();
@@ -255,21 +240,16 @@ async function loadAdminStats() {
         const response = await fetch(GAS_URL);
         const data = await response.json();
         
-        // 4つのパネルに反映
         document.getElementById('rateHigh').innerText = data.highRate + "%";
         document.getElementById('countHigh').innerHTML = `<small>(75%以上時:全${data.highCount}回)</small>`;
-        
         document.getElementById('rateMid').innerText = data.midRate + "%";
         document.getElementById('countMid').innerHTML = `<small>(60-74%時:全${data.midCount}回)</small>`;
-        
         document.getElementById('adminTotalRate').innerText = data.adminRate + "%";
         document.getElementById('adminTotalCount').innerText = "(全データ: " + data.adminCount + "回)";
         
         adminFieldData = data.fields;
         renderTable();
-    } catch (e) { 
-        console.error("Cloud Load Error", e); 
-    }
+    } catch (e) { console.error("Cloud Load Error", e); }
 }
 
 function renderTable() {
@@ -277,23 +257,24 @@ function renderTable() {
     let tbody = document.getElementById('fieldStatsBody');
     if (!tbody) return;
     tbody.innerHTML = "";
-    let tt = 0, th = 0, st = 0, sh = 0;
+    let st = 0, sh = 0;
 
     Object.keys(stadiumBaseData).forEach(name => {
         let s = stats[name] || { tT: 0, tH: 0, sT: 0, sH: 0 };
         let a = adminFieldData[name] || { t: 0, h: 0 };
-        tt += s.tT; th += s.tH; st += s.sT; sh += s.sH;
+        st += s.sT; sh += s.sH;
         tbody.innerHTML += `<tr><td>${name}</td><td style="background:#f0f7ff;">${a.h}/${a.t} (${a.t>0?Math.round(a.h/a.t*100):0}%)</td><td>${s.sH}/${s.sT} (${s.sT>0?Math.round(s.sH/s.sT*100):0}%)</td></tr>`;
     });
-    document.getElementById('toolTotalRate').innerText = (tt > 0 ? Math.round(th/tt*100) : 0) + "%";
-    document.getElementById('toolTotalCount').innerText = "(全" + tt + "回)";
-    document.getElementById('selfTotalRate').innerText = (st > 0 ? Math.round(sh/st*100) : 0) + "%";
-    document.getElementById('selfTotalCount').innerText = "(全" + st + "回)";
+
+    // 消えていたIDへの書き込みを削除・修正
+    if(document.getElementById('selfTotalRate')) {
+        document.getElementById('selfTotalRate').innerText = (st > 0 ? Math.round(sh/st*100) : 0) + "%";
+        document.getElementById('selfTotalCount').innerText = "(全" + st + "回)";
+    }
 }
 
 function resetStats() { if(confirm("リセットしますか？")) { localStorage.clear(); renderTable(); } }
 
-// 初期起動
 window.onload = () => { renderTable(); loadAdminStats(); };
 </script>
 </body>
