@@ -122,7 +122,11 @@
             <option value="-12">向かい風強</option>
         </select>
     </div>
-
+<div style="text-align: right; margin-bottom: 10px;">
+    <input type="password" id="adminPass" placeholder="🔑 Mode Pass" 
+           style="font-size: 0.7rem; padding: 5px; border-radius: 5px; border: 1px solid #ddd; width: 80px;"
+           oninput="checkAdmin()">
+</div>
     <button class="calc-btn" onclick="calculate()">逃げ率を算出</button>
 
     <div id="result">
@@ -147,11 +151,6 @@
             </div>
         </div>
     </div>
-</div>
-<div style="text-align:right; margin-bottom:10px;">
-    <input type="password" id="adminPass" placeholder="PASS入力でモード切替" 
-           style="font-size:0.7rem; padding:3px; border-radius:5px; border:1px solid #ccc;"
-           oninput="checkAdmin()">
 </div>
 <div class="card">
     <h2>🏆 総合・場別分析パネル</h2>
@@ -378,6 +377,59 @@ async function saveData(type, isHit) {
     } else {
         alert("配布用：ブラウザに保存しました（クラウド送信なし）");
     }
+}
+    let isAdmin = false; // 初期状態は配布モード（false）
+
+// パスワードチェック関数
+function checkAdmin() {
+    const pass = document.getElementById('adminPass').value;
+    const secret = "0326"; // 👈 ここに好きなパスワードを設定してください
+
+    if (pass === secret) {
+        if (!isAdmin) {
+            isAdmin = true;
+            alert("管理者モード解除：クラウド保存が有効になりました。");
+            // 管理者とわかるように入力欄の色を変える
+            document.getElementById('adminPass').style.backgroundColor = "#e6fcf5";
+            document.getElementById('adminPass').style.borderColor = "#087f5b";
+        }
+    } else {
+        isAdmin = false;
+        document.getElementById('adminPass').style.backgroundColor = "#fff";
+        document.getElementById('adminPass').style.borderColor = "#ddd";
+    }
+}
+
+// saveData関数を「出し分け」対応に修正
+async function saveData(type, isHit) {
+    // 1. 全ユーザー共通：ブラウザ(LocalStorage)に保存
+    updateLocalStats(type, isHit);
+
+    // 2. 管理者の場合のみ：クラウド(スプレッドシート)に送信
+    if (isAdmin) {
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbyUkTIb26j8PG4vFKxflHTVnL51kzj0w1_CHPkPeh0Hy-rY5MNSKEL3PtFQTMJCH5K-EA/exec";
+
+        const data = {
+            stadium: currentStadium,
+            score: lastScore,
+            type: type === 'tool' ? 'ツール判定' : '自分予想',
+            isHit: isHit
+        };
+
+        try {
+            // クラウドへ送信（管理者のみ実行される）
+            await fetch(GAS_URL, {
+                method: "POST",
+                mode: "no-cors",
+                body: JSON.stringify(data)
+            });
+            console.log("Admin: Cloud Save Success");
+        } catch (error) {
+            console.error("Cloud Save Error:", error);
+        }
+    }
+
+    alert(isAdmin ? "【自分用】クラウド＆ブラウザに保存完了！" : "【配布用】ブラウザに保存しました！");
 }
 </script>
 </body>
