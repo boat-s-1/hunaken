@@ -3,304 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BOAT STRIKE | プレミアム舟券メーカー</title>
+    <title>P-STAR 投稿ライブラリ | シルバー舟券メーカー</title>
     
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --br-yellow-deep: #ffcc00;   /* メインの濃い黄色 */
-            --br-yellow-light: #fffdf5;  /* 背景用の超薄い黄色 */
-            --br-orange: #ff9500;        /* アクセントのオレンジ */
-            --p-star-purple: #7a46c2;    /* ブランド紫 */
+            /* 🥈 イエローからシルバー・モノトーン系に変更 */
+            --br-silver-deep: #a0a0a0;   /* メインの濃いシルバー */
+            --br-silver-light: #f0f0f0;  /* 背景用の薄いグレー */
+            --br-accent-navy: #001f3f;   /* アクセントのネイビー（黄色だった部分） */
+            --p-star-purple: #555555;    /* ブランド紫をダークグレーに変更 */
+            --sheet-bg: #fff;
             --text-main: #333;
             --text-sub: #666;
-            --card-shadow: 0 10px 20px rgba(0,0,0,0.08);
         }
 
         body {
             font-family: 'M PLUS Rounded 1c', sans-serif;
-            background-color: #fcfaf0;
+            background-color: #f5f5f5; /* 薄いグレー背景 */
             display: flex;
             flex-direction: column;
             align-items: center;
             margin: 0;
-            padding: 0 0 40px 0;
+            padding: 0 0 20px 0;
             color: var(--text-main);
         }
 
-        /* --- 1. 上部メニューのデザイン刷新 --- */
-        .top-navigation {
-            width: 100%;
-            background: #fff;
-            padding: 12px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+        .top-menu { 
+            width: 100%; 
+            background: #fff; 
+            display: flex; 
+            justify-content: center; 
+            padding: 10px 0; 
+            border-bottom: 1px solid #ddd; 
+            margin-bottom: 15px; 
+            position: sticky; top: 0; z-index: 100;
         }
+        .top-menu a { color: var(--text-main); text-decoration: none; font-size: 11px; font-weight: bold; padding: 5px 10px; border-radius: 20px; }
+        .top-menu a.active { background: var(--br-silver-deep); color: #fff; }
 
-        .nav-item {
-            text-decoration: none;
-            color: var(--text-sub);
-            font-size: 13px;
-            font-weight: 800;
-            padding: 8px 18px;
-            border-radius: 25px;
-            background: #f5f5f5;
-            transition: all 0.2s;
-        }
-
-        .nav-item.active {
-            background: var(--br-yellow-deep);
-            color: #000;
-            box-shadow: 0 3px 0 #ccaa00;
-        }
-
-        /* --- 2. 舟券（キャプチャエリア）のデザイン --- */
-        #capture-target { 
-            padding: 25px; 
-            background: linear-gradient(135deg, #fff4c2 0%, #ffe48a 100%); 
-            border-radius: 20px;
-            margin-top: 20px;
-        }
+        #capture-target { padding: 10px; background: #e0e0e0; position: relative; border-radius: 15px; } /* 保存用背景もグレーに */
         
         .ticket {
             width: 380px;
-            height: 260px;
-            background: #fff;
-            background-image: radial-gradient(#eee 1px, transparent 1px);
-            background-size: 10px 10px; /* 繊細なドット模様 */
-            border: 3px solid var(--br-yellow-deep);
-            border-radius: 15px;
-            padding: 15px;
+            min-height: 260px;
+            background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%); /* シルバーのグラデーション */
+            border: 2px solid var(--br-silver-deep);
+            border-radius: 12px;
+            padding: 12px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
             position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             overflow: hidden;
-            box-shadow: var(--card-shadow);
-        }
-
-        /* 舟券の透かし */
-        .ticket::after {
-            content: "";
-            position: absolute;
-            bottom: -10px;
-            right: -10px;
-            width: 180px;
-            height: 180px;
-            background-image: url('fd83ed9c-eb0b-4ff7-a415-816d09f80edc.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            opacity: 0.25;
-            z-index: 0;
-            pointer-events: none;
         }
 
         .t-header { 
             display: flex; 
             align-items: center; 
-            border-bottom: 2px solid var(--br-yellow-deep); 
-            padding-bottom: 8px; 
-            margin-bottom: 10px; 
-            z-index: 5; 
+            border-bottom: 2px solid var(--br-silver-deep); 
+            padding-bottom: 5px; 
+            margin-bottom: 8px; 
+            z-index: 5;
         }
 
-        .t-br-logo { font-size: 10px; font-weight: 900; color: var(--br-orange); line-height: 1; margin-right: 15px; letter-spacing: 1px; }
-        .t-main-place { font-size: 32px; font-weight: 800; color: var(--p-star-purple); letter-spacing: 2px; }
+        .t-br-logo { font-size: 10px; font-weight: bold; color: var(--br-accent-navy); line-height: 1.1; margin-right: 15px; }
+        .t-main-place { font-size: 30px; font-weight: 700; color: #333; }
 
         .t-form-box { 
-            position: absolute; right: 0; top: 50%; transform: translateY(-50%);
-            background: var(--br-orange); color: #fff; 
-            padding: 4px 15px; font-size: 12px; font-weight: 800; border-radius: 5px 0 0 5px;
+            position: absolute;
+            right: 12px;
+            top: 20px;
+            background: var(--br-accent-navy); /* ネイビーに変更 */
+            color: #fff; 
+            padding: 3px 12px; 
+            font-size: 11px; 
+            font-weight: bold; 
+            border-radius: 20px;
+            z-index: 10;
         }
 
-        .t-body { display: flex; flex: 1; z-index: 1; }
-        .t-left { width: 130px; }
-        .t-sub-place { 
-            background: var(--br-yellow-light); border: 1.5px solid var(--br-yellow-deep); 
-            color: var(--p-star-purple); padding: 4px; font-size: 14px; font-weight: 800; 
-            text-align: center; border-radius: 8px; margin-bottom: 10px; 
+        .t-body { display: flex; flex: 1; z-index: 1; position: relative; }
+        .t-left { width: 120px; display: flex; flex-direction: column; }
+        .t-sub-place { border: 2px solid var(--br-silver-deep); color: #333; padding: 3px 5px; font-size: 14px; font-weight: bold; text-align: center; border-radius: 10px; margin-bottom: 8px; background: #fff; }
+        .t-race-num { font-size: 36px; font-weight: bold; color: #333; line-height: 1; }
+        .t-race-label { font-size: 14px; font-weight: bold; color: #333; }
+        .t-memo-area { margin-top: 10px; font-size: 9px; color: var(--text-sub); white-space: pre-wrap; line-height: 1.2; }
+        .t-date-area { font-size: 9px; color: #999; margin-top: 5px; }
+        
+        .t-mid { width: 40px; display: flex; align-items: flex-start; justify-content: center; padding-top: 5px; }
+        .t-shiki-v { writing-mode: vertical-rl; text-orientation: upright; font-size: 18px; font-weight: bold; color: #fff; background: var(--br-silver-deep); padding: 12px 5px; letter-spacing: 4px; border-radius: 8px; }
+        
+        .t-right { flex: 1; padding-left: 10px; display: flex; flex-direction: column; }
+        
+        .bet-list { 
+            font-family: monospace; 
+            font-size: 15px; 
+            font-weight: bold; 
+            color: var(--text-main); 
+            line-height: 1.4;
         }
-        .t-race-num { font-size: 42px; font-weight: 900; color: var(--p-star-purple); line-height: 1; }
-        .t-race-label { font-size: 16px; font-weight: 800; }
-        .t-memo-area { margin-top: 10px; font-size: 9px; color: var(--text-sub); line-height: 1.4; height: 30px; }
-        .t-date-area { font-size: 10px; color: #999; margin-top: 15px; font-weight: bold; }
-        
-        .t-mid { width: 45px; display: flex; align-items: center; justify-content: center; }
-        .t-shiki-v { 
-            writing-mode: vertical-rl; text-orientation: upright; font-size: 20px; font-weight: 800; 
-            color: #fff; background: var(--p-star-purple); padding: 18px 6px; 
-            letter-spacing: 6px; border-radius: 10px; box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
-        }
-        
-        .t-right { flex: 1; padding-left: 15px; display: flex; flex-direction: column; justify-content: space-between; }
-        .t-bet-row { display: flex; align-items: center; height: 35px; font-size: 16px; font-weight: 800; border-bottom: 1px dashed #ddd; }
-        .t-nums { font-size: 24px; margin-left: auto; color: var(--p-star-purple); letter-spacing: 2px; }
-        
-        .t-summary { text-align: right; font-size: 11px; color: var(--text-sub); font-weight: bold; margin-bottom: 5px; }
-        .t-barcode { width: 100%; height: 20px; background: repeating-linear-gradient(90deg, #333, #333 1px, transparent 1px, transparent 4px); opacity: 0.1; }
+        .bet-item { display: flex; align-items: center; border-bottom: 1px dotted #ccc; }
+        .bet-num-box { border: 1px solid #333; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; margin: 0 2px; background: #fff; }
+        .bet-amt { margin-left: auto; font-size: 11px; color: #444; }
 
-        /* --- 3. スタンプをドーン！のデザイン --- */
-        .stamp-section { margin: 20px 0; text-align: center; }
-        .stamp-guide-card {
-            background: #fff;
-            padding: 12px 25px;
-            border-radius: 50px;
-            border: 3px solid var(--br-yellow-deep);
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 800;
-            color: var(--br-orange);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            animation: bounce 2s infinite;
-        }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        .t-summary-row { margin-top: 10px; padding-top: 5px; border-top: 2px solid #333; text-align: right; font-weight: bold; font-size: 12px; }
+        .t-barcode { width: 100%; height: 10px; background: repeating-linear-gradient(90deg, #ccc, #ccc 2px, #fff 2px, #fff 4px); margin-top: 10px; opacity: 0.6; border-radius: 5px; }
 
+        /* スタンプ用 */
         .stamp {
-            position: absolute; width: 140px; height: 140px; cursor: move; z-index: 50;
-            filter: drop-shadow(5px 5px 8px rgba(0,0,0,0.3));
+            position: absolute; width: 120px; height: 120px; cursor: move; z-index: 50; user-select: none;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3)); transition: transform 0.2s, opacity 0.2s;
         }
 
-        /* --- 4. 操作パネルの整理 --- */
-        .controls-container { width: 100%; max-width: 420px; padding: 0 15px; box-sizing: border-box; }
-        .panel { 
-            background: #fff; border-radius: 18px; padding: 20px; 
-            box-shadow: var(--card-shadow); border: 1px solid #eee; margin-bottom: 20px;
-        }
-        .panel-h { font-size: 15px; font-weight: 900; color: var(--br-orange); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        /* UIパーツ */
+        .controls-container { width: 100%; max-width: 400px; padding: 0 10px; box-sizing: border-box; }
+        .section-title { font-size: 14px; font-weight: bold; color: var(--br-accent-navy); margin: 20px 0 10px 5px; }
 
-        .input-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
-        .input-field { 
-            border: 2px solid #f0f0f0; padding: 12px; border-radius: 10px; 
-            font-family: inherit; font-size: 14px; font-weight: bold;
-        }
-        .input-field:focus { border-color: var(--br-yellow-deep); outline: none; }
+        .ms { background: var(--sheet-bg); padding: 12px; border: 1px solid #ddd; border-top: 4px solid var(--br-silver-deep); border-radius: 12px; margin-bottom: 15px; }
+        .input-field { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #eee; border-radius: 8px; font-size: 13px; margin-bottom: 8px; }
 
-        /* 式別・場選択ボタン */
-        .selector-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
-        .sel-btn { 
-            padding: 12px; background: #f8f8f8; border: 2px solid #eee; 
-            border-radius: 12px; font-weight: 800; font-size: 13px; cursor: pointer; text-align: center;
-        }
-        .sel-btn.active { background: var(--br-yellow-deep); border-color: var(--br-yellow-deep); color: #000; }
+        .ms-top-flex { display: flex; gap: 8px; margin-bottom: 12px; }
+        .ms-race-grid { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; }
+        .ms-place-scroll { flex: 1.2; display: flex; overflow-x: auto; background: #fff; padding: 5px; gap: 4px; height: 110px; border-radius: 8px; border: 1px solid #eee; }
+        .ms-btn { border: 1px solid #eee; background: #fff; color: #888; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 11px; cursor: pointer; height: 34px; border-radius: 5px; }
+        .ms-btn.active, .p-btn.active { background: var(--br-silver-deep); color: #fff; border-color: var(--br-silver-deep); }
+        .p-btn { min-width: 32px; writing-mode: vertical-rl; padding: 5px 0; border: 1px solid #eee; background: #fff; color: #888; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 12px; border-radius: 5px; }
 
-        /* 数字マーク */
-        .mark-row { display: flex; justify-content: space-between; margin-bottom: 12px; }
-        .mark-label { font-size: 12px; font-weight: 900; color: var(--br-orange); margin-bottom: 5px; }
-        .mark { 
-            width: 45px; height: 45px; background: #fff; border: 2px solid #eee; 
-            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-            font-weight: 900; font-size: 18px; cursor: pointer; transition: 0.2s;
-        }
-        .mark.selected { background: var(--br-orange); border-color: var(--br-orange); color: #fff; transform: scale(1.1); }
+        .toggle-group { display: flex; gap: 5px; margin-bottom: 12px; }
+        .m-btn { flex: 1; text-align: center; padding: 8px; font-size: 11px; font-weight: bold; cursor: pointer; border-radius: 20px; color: #888; background: #fff; border: 1px solid #ddd; }
+        .m-btn.active { background: var(--br-silver-deep); color: #fff; border-color: var(--br-silver-deep); }
+        
+        .row { display: flex; align-items: center; gap: 8px; margin: 8px 0; }
+        .label { background: var(--br-silver-light); color: var(--br-accent-navy); font-size: 12px; width: 45px; text-align: center; padding: 6px 0; font-weight: bold; border-radius: 5px; }
+        .mark { width: 34px; height: 34px; border: 1px solid #ddd; border-radius: 50%; background: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .mark.selected { background: var(--br-accent-navy) !important; color: #fff !important; }
+        
+        .amt-input-field { width: 80px; border: 1px solid #eee; border-radius: 8px; padding: 5px; text-align: right; font-weight: bold; }
+        
+        .btn-container { display: flex; gap: 10px; margin-top: 15px; }
+        .save-btn { flex: 1.5; padding: 16px; background: var(--br-accent-navy); color: #fff; border: none; border-radius: 35px; font-weight: bold; cursor: pointer; }
+        .share-btn { flex: 1; padding: 16px; background: #000; color: #fff; border: none; border-radius: 35px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; }
 
-        /* 保存ボタン */
-        .action-area { display: flex; gap: 12px; margin-top: 20px; }
-        .btn-main { 
-            flex: 1; padding: 18px; border-radius: 50px; border: none; 
-            font-weight: 900; font-size: 16px; cursor: pointer; transition: 0.2s;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
-        .btn-save { background: var(--br-orange); color: #fff; box-shadow: 0 5px 0 #cc7a00; }
-        .btn-save:active { transform: translateY(3px); box-shadow: 0 2px 0 #cc7a00; }
-        .btn-share { background: #000; color: #fff; box-shadow: 0 5px 0 #333; }
+        .stamp-guide { font-size: 11px; color: var(--br-accent-navy); text-align: center; margin-bottom: 10px; font-weight: bold; }
+        .reset-btn { display: block; margin: 0 auto 15px; padding: 5px 15px; background: #fff; color: #999; border: 1px solid #ddd; border-radius: 20px; font-size: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<nav class="top-navigation">
-    <a href="#" class="nav-item">🏠 ホーム</a>
-    <a href="#" class="nav-item active">🎫 舟券メーカー</a>
-    <a href="#" class="nav-item">📊 レース分析</a>
-</nav>
-
 <div id="capture-target">
     <div class="ticket" id="ticket-main" onclick="addStamp(event)">
         <div class="t-header">
-            <div class="t-br-logo">BOAT<br>STRIKE</div>
+            <div class="t-br-logo">BOAT<br>RACE</div>
             <div class="t-main-place" id="res-main-place">平和島</div>
-            <div class="t-form-box" id="res-mode-label">フォーメーション</div>
+            <div class="t-form-box">フォーメーション</div>
         </div>
         <div class="t-body">
             <div class="t-left">
                 <div class="t-sub-place" id="res-sub-text">平和島</div>
-                <div><span class="t-race-num" id="res-race">01</span><span class="t-race-label">R</span></div>
-                <div class="t-memo-area" id="res-memo">2026年度 プレミアムG1<br>第12回 最終日</div>
+                <div><span class="t-race-num" id="res-race">01</span><span class="t-race-label">レース</span></div>
+                <div class="t-memo-area" id="res-memo">03年度<br>第04回07日</div>
                 <div class="t-date-area" id="res-full-date">2026年3月15日</div>
             </div>
-            <div class="t-mid"><div class="t-shiki-v" id="res-shiki">３連単</div></div>
+            <div class="t-mid">
+                <div class="t-shiki-v" id="res-shiki">３連単</div>
+            </div>
             <div class="t-right">
-                <div id="view-normal">
-                    <div class="t-bet-row">1着 <span id="ans0" class="t-nums">1</span></div>
-                    <div class="t-bet-row">2着 <span id="ans1" class="t-nums">2 3</span></div>
-                    <div class="t-bet-row" id="res-row-3rd">3着 <span id="ans2" class="t-nums">全</span></div>
+                <div id="bet-list" class="bet-list"></div>
+                <div class="t-summary-row">
+                    合計 ★<span id="res-cnt">0</span>枚券 ★<span id="res-total">0</span>円
                 </div>
-                <div class="t-summary">
-                    組合せ：<span id="res-cnt">0</span>通り / 各<span id="res-unit">100</span>円<br>
-                    合計金額：<span style="font-size:14px; color:var(--br-orange)">¥</span><span id="res-total" style="font-size:18px; color:var(--br-orange)">0</span>
-                </div>
-                <div class="t-barcode"></div>
             </div>
         </div>
         <div id="stamp-container"></div>
-    </div>
-</div>
-
-<div class="stamp-section">
-    <div class="stamp-guide-card" onclick="alert('舟券を直接タップしてね！')">
-        <span>✨ 舟券をタップして「的中」を刻め！</span>
-    </div>
-    <div style="margin-top:10px;">
-        <button class="nav-item" style="border:none; cursor:pointer;" onclick="resetStamps()">♻️ スタンプ全消去</button>
+        <div class="t-barcode"></div>
     </div>
 </div>
 
 <div class="controls-container">
-    <div class="panel">
-        <div class="panel-h">📝 開催情報の入力</div>
-        <div class="input-group">
-            <input type="text" id="in-main" class="input-field" value="平和島" placeholder="会場名" oninput="sync()">
-            <textarea id="in-memo" class="input-field" rows="2" oninput="sync()">2026年度 プレミアムG1&#13;&#10;第12回 最終日</textarea>
-        </div>
-        
-        <div class="panel-h">🔢 買い目の設定</div>
-        <div class="selector-grid">
-            <div class="sel-btn active" id="btn-3ren" onclick="setShiki(3)">3連単</div>
-            <div class="sel-btn" id="btn-2ren" onclick="setShiki(2)">2連単</div>
-        </div>
-        
-        <div>
-            <div class="mark-label">1着</div>
-            <div class="mark-row" id="row0">
-                <div class="mark" onclick="tapMark(this,0,1)">1</div><div class="mark" onclick="tapMark(this,0,2)">2</div><div class="mark" onclick="tapMark(this,0,3)">3</div><div class="mark" onclick="tapMark(this,0,4)">4</div><div class="mark" onclick="tapMark(this,0,5)">5</div><div class="mark" onclick="tapMark(this,0,6)">6</div>
-            </div>
-            <div class="mark-label">2着</div>
-            <div class="mark-row" id="row1">
-                <div class="mark" onclick="tapMark(this,1,1)">1</div><div class="mark" onclick="tapMark(this,1,2)">2</div><div class="mark" onclick="tapMark(this,1,3)">3</div><div class="mark" onclick="tapMark(this,1,4)">4</div><div class="mark" onclick="tapMark(this,1,5)">5</div><div class="mark" onclick="tapMark(this,1,6)">6</div>
-            </div>
-            <div id="row2-area">
-                <div class="mark-label">3着</div>
-                <div class="mark-row" id="row2">
-                    <div class="mark" onclick="tapMark(this,2,1)">1</div><div class="mark" onclick="tapMark(this,2,2)">2</div><div class="mark" onclick="tapMark(this,2,3)">3</div><div class="mark" onclick="tapMark(this,2,4)">4</div><div class="mark" onclick="tapMark(this,2,5)">5</div><div class="mark" onclick="tapMark(this,2,6)">6</div>
-                </div>
-            </div>
-        </div>
+    <div class="stamp-guide">✨ 舟券をタップして「的中」スタンプ！</div>
+    <button class="reset-btn" onclick="resetStamps()">スタンプ全消去</button>
 
-        <div class="input-group" style="margin-top:15px;">
-            <div class="mark-label">1点あたりの金額 (円)</div>
-            <input type="number" id="in-unit" class="input-field" value="100" step="100" oninput="update()">
+    <div class="section-title">🛍️ レース場・番号の選択</div>
+    <div class="ms">
+        <div class="ms-top-flex">
+            <div class="ms-race-grid" id="race-grid"></div>
+            <div class="ms-place-scroll" id="place-grid"></div>
+        </div>
+        <div style="border-top: 1px solid #eee; padding-top: 10px;">
+            <input type="text" id="in-main" class="input-field" placeholder="メイン場名（例：平和島）" value="平和島" oninput="sync()">
+            <input type="text" id="in-sub" class="input-field" placeholder="サブ場名（例：平和島）" value="平和島" oninput="sync()">
+            <textarea id="in-memo" class="input-field" rows="2" placeholder="年度・開催情報" oninput="sync()">03年度&#13;&#10;第04回07日</textarea>
         </div>
     </div>
 
-    <div class="action-area">
-        <button class="btn-main btn-save" onclick="save()">📸 画像を保存する</button>
-        <button class="btn-main btn-share" onclick="shareToX()">Xにシェア</button>
+    <div class="section-title">✍️ 買い目の編集</div>
+    <div class="ms">
+        <div class="toggle-group">
+            <div class="m-btn active" id="btn-3ren" onclick="setShiki(3)">３連単</div>
+            <div class="m-btn" id="btn-2ren" onclick="setShiki(2)">２連単</div>
+        </div>
+        
+        <div class="row"><div class="label">1着</div><div style="display:flex; gap:4px;">
+            <div class="mark" onclick="tapMark(this,0,1)">1</div><div class="mark" onclick="tapMark(this,0,2)">2</div><div class="mark" onclick="tapMark(this,0,3)">3</div><div class="mark" onclick="tapMark(this,0,4)">4</div><div class="mark" onclick="tapMark(this,0,5)">5</div><div class="mark" onclick="tapMark(this,0,6)">6</div>
+        </div></div>
+        <div class="row"><div class="label">2着</div><div style="display:flex; gap:4px;">
+            <div class="mark" onclick="tapMark(this,1,1)">1</div><div class="mark" onclick="tapMark(this,1,2)">2</div><div class="mark" onclick="tapMark(this,1,3)">3</div><div class="mark" onclick="tapMark(this,1,4)">4</div><div class="mark" onclick="tapMark(this,1,5)">5</div><div class="mark" onclick="tapMark(this,1,6)">6</div>
+        </div></div>
+        <div id="row-3rd" class="row"><div class="label">3着</div><div style="display:flex; gap:4px;">
+            <div class="mark" onclick="tapMark(this,2,1)">1</div><div class="mark" onclick="tapMark(this,2,2)">2</div><div class="mark" onclick="tapMark(this,2,3)">3</div><div class="mark" onclick="tapMark(this,2,4)">4</div><div class="mark" onclick="tapMark(this,2,5)">5</div><div class="mark" onclick="tapMark(this,2,6)">6</div>
+        </div></div>
+        
+        <div class="row" style="margin-top: 15px; border-top: 1px dashed #eee; padding-top: 10px;">
+            <div class="label">単価</div>
+            <input type="number" id="in-unit" class="amt-input-field" value="100" step="100" oninput="update()"> 円
+        </div>
+    </div>
+
+    <div class="btn-container">
+        <button class="save-btn" onclick="save()">🎀 画像を保存</button>
+        <button class="share-btn" onclick="shareToX()">
+            <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:white;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
+            X投稿
+        </button>
     </div>
 </div>
 
@@ -308,10 +235,45 @@
 <script>
     let shiki = 3;
     let sel = [[], [], []];
+    const places = ["桐生","戸田","江戸川","平和島","多摩川","浜名湖","蒲郡","常滑","津","三国","びわこ","住之江","尼崎","鳴門","丸亀","児島","宮島","徳山","下関","若松","芦屋","福岡","唐津","大村"];
+
+    window.onload = () => {
+        // レース番号生成
+        const rg = document.getElementById('race-grid');
+        for(let i=1; i<=12; i++){
+            const b = document.createElement('div');
+            b.className = 'ms-btn' + (i===1?' active':'');
+            b.innerText = i + 'R';
+            b.onclick = () => {
+                document.querySelectorAll('.ms-race-grid .ms-btn').forEach(x=>x.classList.remove('active'));
+                b.classList.add('active');
+                document.getElementById('res-race').innerText = String(i).padStart(2,'0');
+            };
+            rg.appendChild(b);
+        }
+        // 24場生成
+        const pg = document.getElementById('place-grid');
+        places.forEach(p => {
+            const b = document.createElement('div');
+            b.className = 'p-btn' + (p==='平和島'?' active':'');
+            b.innerText = p;
+            b.onclick = () => {
+                document.querySelectorAll('.p-btn').forEach(x=>x.classList.remove('active'));
+                b.classList.add('active');
+                document.getElementById('in-main').value = p;
+                document.getElementById('in-sub').value = p;
+                sync();
+            };
+            pg.appendChild(b);
+        });
+        // 日付初期値
+        const now = new Date();
+        document.getElementById('res-full-date').innerText = now.getFullYear() + "年" + (now.getMonth() + 1) + "月" + now.getDate() + "日";
+    };
 
     function sync() {
         document.getElementById('res-main-place').innerText = document.getElementById('in-main').value;
-        document.getElementById('res-sub-text').innerText = document.getElementById('in-main').value;
+        document.getElementById('res-sub-text').innerText = document.getElementById('in-sub').value;
         document.getElementById('res-memo').innerText = document.getElementById('in-memo').value;
     }
 
@@ -319,9 +281,8 @@
         shiki = s;
         document.getElementById('btn-3ren').classList.toggle('active', s===3);
         document.getElementById('btn-2ren').classList.toggle('active', s===2);
-        document.getElementById('res-shiki').innerText = (s===3) ? '３連単' : '２連単';
-        document.getElementById('row2-area').style.display = (s===3) ? 'block' : 'none';
-        document.getElementById('res-row-3rd').style.display = (s===3) ? 'flex' : 'none';
+        document.getElementById('row-3rd').style.display = (s === 3) ? 'flex' : 'none';
+        document.getElementById('res-shiki').innerText = (s === 3) ? '３連単' : '２連単';
         update();
     }
 
@@ -333,80 +294,98 @@
     }
 
     function update() {
+        const listDiv = document.getElementById('bet-list');
+        listDiv.innerHTML = '';
+        let combinations = [];
         let unit = parseInt(document.getElementById('in-unit').value) || 0;
-        let cnt = 0;
-        
-        // 簡易的な組み合わせ計算
+
         for (let a of sel[0]) {
             for (let b of sel[1]) {
                 if (a === b) continue;
                 if (shiki === 3) {
                     for (let c of sel[2]) {
                         if (c === a || c === b) continue;
-                        cnt++;
+                        combinations.push([a, b, c]);
                     }
-                } else { cnt++; }
+                } else {
+                    combinations.push([a, b]);
+                }
             }
         }
 
-        document.getElementById('ans0').innerText = sel[0].length ? sel[0].sort().join(' ') : '-';
-        document.getElementById('ans1').innerText = sel[1].length ? sel[1].sort().join(' ') : '-';
-        if(shiki === 3) document.getElementById('ans2').innerText = sel[2].length ? sel[2].sort().join(' ') : '-';
-        
-        document.getElementById('res-cnt').innerText = cnt;
-        document.getElementById('res-unit').innerText = unit.toLocaleString();
-        document.getElementById('res-total').innerText = (cnt * unit).toLocaleString();
+        combinations.forEach(combo => {
+            const item = document.createElement('div');
+            item.className = 'bet-item';
+            let html = `<div class="bet-num-box">${combo[0]}</div><span style="font-size:10px">▶</span><div class="bet-num-box">${combo[1]}</div>`;
+            if (shiki === 3) html += `<span style="font-size:10px">▶</span><div class="bet-num-box">${combo[2]}</div>`;
+            html += `<div class="bet-amt">★★${unit.toLocaleString()}円</div>`;
+            item.innerHTML = html;
+            listDiv.appendChild(item);
+        });
+
+        document.getElementById('res-cnt').innerText = combinations.length;
+        document.getElementById('res-total').innerText = (combinations.length * unit).toLocaleString();
     }
 
+    // --- スタンプ機能 ---
     function addStamp(event) {
         if (event.target.classList.contains('stamp')) return;
-        const container = document.getElementById('stamp-container');
-        const rect = document.getElementById('ticket-main').getBoundingClientRect();
+        const ticket = document.getElementById('ticket-main');
+        const rect = ticket.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
         
         const stamp = document.createElement('img');
-        stamp.src = 'stamp.png'; // 的中スタンプのパス
+        stamp.src = 'stamp.png'; // サーバー上のスタンプ画像パス
         stamp.className = 'stamp';
+        const randomDeg = Math.floor(Math.random() * 30) - 15;
+        stamp.style.left = (x - 60) + 'px';
+        stamp.style.top = (y - 60) + 'px';
+        stamp.style.transform = `rotate(${randomDeg}deg) scale(2)`;
         
-        const x = event.clientX - rect.left - 70;
-        const y = event.clientY - rect.top - 70;
-        const rotate = Math.random() * 30 - 15;
+        setTimeout(() => { stamp.style.opacity = "0.9"; stamp.style.transform = `rotate(${randomDeg}deg) scale(1)`; }, 50);
 
-        stamp.style.left = x + 'px';
-        stamp.style.top = y + 'px';
-        stamp.style.transform = `rotate(${rotate}deg)`;
-
-        // 簡易ドラッグ機能
-        stamp.onmousedown = function(e) {
-            let shiftX = e.clientX - stamp.getBoundingClientRect().left;
-            let shiftY = e.clientY - stamp.getBoundingClientRect().top;
-            function moveAt(pageX, pageY) {
-                stamp.style.left = pageX - rect.left - shiftX + 'px';
-                stamp.style.top = pageY - rect.top - shiftY + 'px';
-            }
-            function onMouseMove(e) { moveAt(e.pageX, e.pageY); }
-            document.addEventListener('mousemove', onMouseMove);
-            stamp.onmouseup = function() { document.removeEventListener('mousemove', onMouseMove); };
+        // ドラッグ移動
+        let isDragging = false;
+        let offset = { x: 0, y: 0 };
+        stamp.onmousedown = (e) => {
+            isDragging = true;
+            offset.x = e.clientX - stamp.offsetLeft;
+            offset.y = e.clientY - stamp.offsetTop;
+            e.stopPropagation();
         };
-        stamp.ondragstart = function() { return false; };
-        stamp.ondblclick = function() { stamp.remove(); };
+        window.onmousemove = (e) => {
+            if (isDragging) {
+                stamp.style.left = (e.clientX - offset.x) + 'px';
+                stamp.style.top = (e.clientY - offset.y) + 'px';
+            }
+        };
+        window.onmouseup = () => { isDragging = false; };
+        stamp.ondblclick = () => stamp.remove();
 
-        container.appendChild(stamp);
+        document.getElementById('stamp-container').appendChild(stamp);
     }
 
-    function resetStamps() { document.getElementById('stamp-container').innerHTML = ''; }
+    function resetStamps() {
+        if (confirm('スタンプを全部消しますか？')) document.getElementById('stamp-container').innerHTML = '';
+    }
 
+    // --- 保存・共有 ---
     function save() {
         html2canvas(document.getElementById('capture-target'), { scale: 3, useCORS: true }).then(canvas => {
             const link = document.createElement('a');
             link.href = canvas.toDataURL();
-            link.download = 'boat-strike-ticket.png';
+            link.download = 'p-star-ticket-silver.png';
             link.click();
         });
     }
 
     function shareToX() {
-        const text = encodeURIComponent("BOAT STRIKEで舟券予想！🔥 #ボートレース #舟券メーカー");
-        window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+        const place = document.getElementById('res-main-place').innerText;
+        const race = document.getElementById('res-race').innerText;
+        const shikiTxt = document.getElementById('res-shiki').innerText;
+        const text = `${place} ${race}R ${shikiTxt} で勝負！🔥\n#PSTAR #舟券メーカー #ボートレース`;
+        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
     }
 </script>
 </body>
