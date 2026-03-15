@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>P-STAR 舟券メーカー | 修正完了版</title>
+    <title>P-STAR 舟券メーカー | 最終表示改善版</title>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --br-pink: #ff69b4;
             --br-purple: #7a46c2;
-            --bg-light: #fff5f8;
         }
 
         body {
             font-family: 'M PLUS Rounded 1c', sans-serif;
-            background-color: var(--bg-light);
+            background-color: #fff5f8;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -22,12 +21,11 @@
             margin: 0;
         }
 
-        /* 舟券デザイン：外枠 */
+        /* 舟券本体：サイズと表示を固定 */
         #capture-area {
-            padding: 15px;
-            background: #fff;
+            padding: 10px;
+            background: white;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
         .ticket {
@@ -36,49 +34,29 @@
             background: #fff;
             border: 4px solid var(--br-pink);
             border-radius: 15px;
-            position: relative;
             display: flex;
             flex-direction: column;
             padding: 15px;
             box-sizing: border-box;
             color: var(--br-purple);
+            position: relative;
         }
 
         .header { 
             display: flex; 
             justify-content: space-between; 
-            border-bottom: 2px solid var(--br-pink); 
-            padding-bottom: 8px; 
+            border-bottom: 2px solid var(--br-pink);
             margin-bottom: 10px;
         }
-        .place-name { font-size: 42px; font-weight: 800; line-height: 1; }
-        .formation-tag { 
-            background: var(--br-pink); 
-            color: white; 
-            border-radius: 25px; 
-            padding: 6px 18px; 
-            height: fit-content; 
-            font-size: 16px;
-            font-weight: 800;
-        }
 
-        .main-content { display: flex; flex: 1; min-height: 0; }
-        
-        /* 左側：レース情報 */
-        .info-side { 
-            width: 130px; 
+        .main-content { 
             display: flex; 
-            flex-direction: column; 
-            border-right: 2px dashed #ffc0cb; 
-            padding-right: 10px;
+            height: 180px; /* 高さを明示的に指定 */
         }
-        .race-num { font-size: 60px; font-weight: 800; line-height: 1; color: var(--br-purple); }
-        .race-num span { font-size: 24px; }
-        .date { font-size: 14px; margin-top: auto; color: #888; }
-
-        /* 中央：式別（縦書き） */
+        
+        .info-side { width: 120px; border-right: 2px dashed #ffc0cb; }
         .type-box {
-            width: 50px;
+            width: 45px;
             background: var(--br-purple);
             color: white;
             writing-mode: vertical-rl;
@@ -86,75 +64,66 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            font-weight: 800;
-            margin: 0 15px;
-            border-radius: 12px;
-            letter-spacing: 6px;
+            font-size: 22px;
+            margin: 0 10px;
+            border-radius: 8px;
         }
 
-        /* 右側：買い目リスト（ここを修正） */
+        /* 買い目リスト：スクロールと表示を強制 */
         .bet-side {
             flex: 1;
+            background: #fff9fb;
+            border-radius: 8px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
-            background: #fff9fb;
             border: 1px solid #ffe4ed;
-            border-radius: 10px;
-            padding: 8px;
-            min-height: 0; /* flex内のスクロールに必須 */
         }
 
         #bet-list {
             flex: 1;
-            overflow-y: auto;
-            font-size: 22px;
+            overflow-y: auto; /* はみ出たらスクロール */
+            font-size: 24px;
             font-weight: 800;
+            min-height: 120px; /* 最小高さを確保 */
         }
 
         .bet-row {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #f0f0f0;
-            padding: 4px 0;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 4px;
         }
-        .bet-row:last-child { border-bottom: none; }
-        .row-unit { font-size: 12px; font-weight: normal; color: #555; }
 
         .summary {
-            font-size: 13px;
             text-align: right;
+            font-size: 14px;
+            margin-top: 10px;
             border-top: 1px solid var(--br-pink);
-            padding-top: 5px;
-            margin-top: 5px;
-            color: #444;
         }
 
-        /* 操作パネル（ボタン類） */
+        /* 下部の操作パネル */
         .controls {
-            width: 95%;
+            width: 90%;
             max-width: 480px;
             background: white;
-            margin-top: 25px;
             padding: 20px;
-            border-radius: 25px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            border-radius: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
-        .btn-group { display: flex; gap: 6px; margin-bottom: 12px; align-items: center; flex-wrap: wrap; }
-        .btn-label { width: 45px; font-weight: bold; color: var(--br-pink); }
+        .btn-group { display: flex; gap: 8px; margin-bottom: 10px; align-items: center; }
         .num-btn {
-            width: 42px; height: 42px; border: 2px solid #eee; border-radius: 50%;
+            width: 40px; height: 40px; border: 1px solid #ddd; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-weight: bold; font-size: 18px; transition: 0.2s;
+            cursor: pointer; font-weight: bold;
         }
         .num-btn.active { background: var(--br-pink); color: white; border-color: var(--br-pink); }
 
         .save-btn {
-            width: 100%; padding: 18px; background: #ff007f; color: white;
-            border: none; border-radius: 50px; font-size: 18px; font-weight: bold;
-            cursor: pointer; margin-top: 15px; box-shadow: 0 5px 0 #b30059;
+            width: 100%; padding: 15px; background: #ff007f; color: white;
+            border: none; border-radius: 50px; font-weight: bold; cursor: pointer;
         }
     </style>
 </head>
@@ -163,115 +132,91 @@
 <div id="capture-area">
     <div class="ticket">
         <div class="header">
-            <div class="place-name" id="disp-place">蒲郡</div>
-            <div class="formation-tag">フォーメーション</div>
+            <div style="font-size: 38px; font-weight: 800;">蒲郡</div>
+            <div style="background: var(--br-pink); color: white; padding: 4px 12px; border-radius: 20px; font-size: 14px; height: fit-content;">フォーメーション</div>
         </div>
         <div class="main-content">
             <div class="info-side">
-                <div class="race-num"><span id="disp-race">12</span><span>R</span></div>
-                <div class="date">2026.03.15</div>
+                <div style="font-size: 50px; font-weight: 800;">12<span>R</span></div>
+                <div style="font-size: 12px; color: #999; margin-top: 20px;">2026.03.15</div>
             </div>
             <div class="type-box">３連単</div>
             <div class="bet-side">
                 <div id="bet-list">
                     </div>
-                <div class="summary">
-                    計 <span id="res-cnt" style="font-weight: bold; color: var(--br-pink);">0</span>点 / 
-                    合計 <span id="res-total" style="font-weight: bold; color: var(--br-pink);">0</span>円
-                </div>
             </div>
+        </div>
+        <div class="summary">
+            計 <span id="res-cnt">0</span>点 / 合計 <span id="res-total">0</span>円
         </div>
     </div>
 </div>
 
 <div class="controls">
-    <div class="btn-group" id="row-1"><div class="btn-label">1着</div></div>
-    <div class="btn-group" id="row-2"><div class="btn-label">2着</div></div>
-    <div class="btn-group" id="row-3"><div class="btn-label">3着</div></div>
-    
-    <div style="margin: 15px 0; border-top: 1px solid #eee; padding-top: 15px;">
-        単価: <input type="number" id="price" value="100" step="100" style="width:100px; padding:8px; border-radius:8px; border:1px solid #ddd;" oninput="render()"> 円
+    <div class="btn-group" id="row-1"><div style="width:40px; color:var(--br-pink); font-weight:bold;">1着</div></div>
+    <div class="btn-group" id="row-2"><div style="width:40px; color:var(--br-pink); font-weight:bold;">2着</div></div>
+    <div class="btn-group" id="row-3"><div style="width:40px; color:var(--br-pink); font-weight:bold;">3着</div></div>
+    <div style="margin: 15px 0;">
+        単価: <input type="number" id="price" value="100" style="width:80px; padding:5px;"> 円
     </div>
-    
     <button class="save-btn" onclick="takeScreenshot()">🎀 画像を保存する</button>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
 <script>
-    const selections = [[], [], []];
+    const sel = [[], [], []];
 
-    // 数字ボタンを生成
-    function init() {
-        for (let r = 0; r < 3; r++) {
-            const row = document.getElementById(`row-${r+1}`);
-            for (let n = 1; n <= 6; n++) {
-                const btn = document.createElement('div');
-                btn.className = 'num-btn';
-                btn.innerText = n;
-                btn.onclick = function() {
-                    const idx = selections[r].indexOf(n);
-                    if (idx > -1) {
-                        selections[r].splice(idx, 1);
-                        this.classList.remove('active');
-                    } else {
-                        selections[r].push(n);
-                        this.classList.add('active');
+    // ボタン生成
+    for (let r = 0; r < 3; r++) {
+        const container = document.getElementById(`row-${r+1}`);
+        for (let n = 1; n <= 6; n++) {
+            const b = document.createElement('div');
+            b.className = 'num-btn';
+            b.innerText = n;
+            b.onclick = function() {
+                this.classList.toggle('active');
+                const i = sel[r].indexOf(n);
+                if (i > -1) sel[r].splice(i, 1); else sel[r].push(n);
+                updateList();
+            };
+            container.appendChild(b);
+        }
+    }
+
+    function updateList() {
+        const list = document.getElementById('bet-list');
+        list.innerHTML = '';
+        let c = 0;
+        const p = parseInt(document.getElementById('price').value) || 0;
+
+        // 3つの列すべてに選択がある場合のみ計算
+        if (sel[0].length && sel[1].length && sel[2].length) {
+            for (let a of sel[0]) {
+                for (let b of sel[1]) {
+                    if (a === b) continue;
+                    for (let c_num of sel[2]) {
+                        if (c_num === a || c_num === b) continue;
+                        c++;
+                        const item = document.createElement('div');
+                        item.className = 'bet-row';
+                        item.innerHTML = `<span>${a} ▶ ${b} ▶ ${c_num}</span><span style="font-size:12px;">${p}円</span>`;
+                        list.appendChild(item);
                     }
-                    render();
-                };
-                row.appendChild(btn);
+                }
             }
         }
+        document.getElementById('res-cnt').innerText = c;
+        document.getElementById('res-total').innerText = (c * p).toLocaleString();
     }
 
-    // 買い目リストを計算・表示
-    function render() {
-        const listDiv = document.getElementById('bet-list');
-        listDiv.innerHTML = '';
-        let count = 0;
-        const price = parseInt(document.getElementById('price').value) || 0;
-
-        // 全通りチェック
-        if (selections[0].length > 0 && selections[1].length > 0 && selections[2].length > 0) {
-            selections[0].forEach(a => {
-                selections[1].forEach(b => {
-                    if (a === b) return;
-                    selections[2].forEach(c => {
-                        if (c === a || c === b) return;
-                        
-                        count++;
-                        const row = document.createElement('div');
-                        row.className = 'bet-row';
-                        row.innerHTML = `<span>${a} ▶ ${b} ▶ ${c}</span><span class="row-unit">${price}円</span>`;
-                        listDiv.appendChild(row);
-                    });
-                });
-            });
-        }
-        
-        document.getElementById('res-cnt').innerText = count;
-        document.getElementById('res-total').innerText = (count * price).toLocaleString();
-    }
-
-    // 保存機能
     function takeScreenshot() {
-        const target = document.querySelector("#capture-area");
-        html2canvas(target, {
-            scale: 2, // 高画質化
-            backgroundColor: "#fff5f8",
-            useCORS: true
-        }).then(canvas => {
-            const link = document.createElement('a');
-            link.download = 'p-star_ticket.png';
-            link.href = canvas.toDataURL("image/png");
-            link.click();
+        html2canvas(document.querySelector("#capture-area")).then(canvas => {
+            const a = document.createElement('a');
+            a.href = canvas.toDataURL();
+            a.download = 'p-star.png';
+            a.click();
         });
     }
-
-    // 起動
-    window.onload = init;
 </script>
-
 </body>
 </html>
