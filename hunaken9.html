@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>P-STAR 投稿ライブラリ | 元気なイエロー舟券メーカー</title>
+    <title>P-STAR 投稿ライブラリ | 全表示イエロー舟券メーカー</title>
     
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --br-yellow-deep: #ffcc00;   /* メインの濃い黄色 */
-            --br-yellow-light: #fff9e6;  /* 背景用の薄い黄色 */
-            --br-orange: #ff9500;        /* アクセントのオレンジ */
-            --p-star-purple: #7a46c2;    /* 紫 */
+            --br-yellow-deep: #ffcc00;
+            --br-yellow-light: #fff9e6;
+            --br-orange: #ff9500;
+            --p-star-purple: #7a46c2;
             --sheet-bg: #fff;
             --text-main: #333;
             --text-sub: #666;
@@ -46,7 +46,8 @@
         
         .ticket {
             width: 380px;
-            height: 260px;
+            height: auto; /* 高さを可変に */
+            min-height: 260px;
             background-color: #fff;
             border: 2px solid var(--br-yellow-deep);
             border-radius: 12px;
@@ -57,39 +58,6 @@
             position: relative;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .ticket::before {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 80%;
-            height: 100%;
-            background-image: url('fd83ed9c-eb0b-4ff7-a415-816d09f80edc.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: right bottom; 
-            margin-right: 150px; 
-            opacity: 0.35;
-            z-index: 0;
-            pointer-events: none;
-        }
-        
-        .stamp {
-            position: absolute;
-            width: 150px;
-            height: 150px;
-            cursor: move;
-            z-index: 50;
-            pointer-events: auto;
-            user-select: none;
-            opacity: 0;
-            transform-origin: center;
-            filter: drop-shadow(4px 4px 6px rgba(0,0,0,0.2));
-            transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
         }
 
         .t-header { 
@@ -125,91 +93,55 @@
         .t-race-num { font-size: 36px; font-weight: bold; color: var(--p-star-purple); line-height: 1; }
         .t-race-label { font-size: 14px; font-weight: bold; color: var(--p-star-purple); }
         .t-memo-area { margin-top: 10px; margin-bottom: auto; font-size: 9px; color: var(--text-sub); white-space: pre-wrap; }
-        .t-date-area { font-size: 10px; color: var(--text-sub); margin-top: 5px; }
         
-        .t-mid { width: 40px; display: flex; align-items: center; justify-content: center; }
+        .t-mid { width: 40px; display: flex; align-items: flex-start; justify-content: center; padding-top: 10px; }
         .t-shiki-v { writing-mode: vertical-rl; text-orientation: upright; font-size: 20px; font-weight: bold; color: #fff; background: var(--p-star-purple); padding: 15px 6px; letter-spacing: 6px; border-radius: 10px; }
         
-        .t-right { flex: 1; padding-left: 10px; display: flex; flex-direction: column; justify-content: center; color: var(--text-main); }
+        .t-right { flex: 1; padding-left: 10px; display: flex; flex-direction: column; color: var(--text-main); }
         
-        /* 🚩 ここを修正：矢印形式の表示用スタイル */
-        .t-bet-row { display: flex; align-items: center; justify-content: center; height: 35px; font-size: 18px; font-weight: 800; border-bottom: 1px dashed var(--br-yellow-deep); color: var(--p-star-purple); }
-        .t-bet-row:last-child { border-bottom: none; }
-        .t-arrow { font-size: 14px; margin: 0 8px; color: var(--br-orange); }
-        
-        .t-summary { text-align: right; font-size: 11px; color: var(--text-sub); margin-top: auto; line-height: 1.3; }
-        .t-barcode { width: 100%; height: 15px; background: repeating-linear-gradient(90deg, var(--br-yellow-deep), var(--br-yellow-deep) 2px, #fff 2px, #fff 4px); margin-top: 8px; border-radius: 5px; opacity: 0.4; }
+        /* 🚩 ここがポイント：買い目全表示用スタイル */
+        .bet-list { 
+            font-family: monospace; 
+            font-size: 15px; 
+            font-weight: bold; 
+            color: var(--text-main); 
+            line-height: 1.4;
+            max-height: 400px;
+            overflow-y: hidden;
+        }
+        .bet-item { display: flex; align-items: center; margin-bottom: 2px; border-bottom: 1px dotted #eee; }
+        .bet-num-box { border: 1px solid #333; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; margin: 0 2px; }
+        .bet-arrow { font-size: 10px; color: #333; margin: 0 2px; }
+        .bet-amt { margin-left: auto; font-size: 13px; color: #444; }
+
+        .t-summary-row { margin-top: 10px; padding-top: 5px; border-top: 2px solid #333; text-align: right; font-weight: bold; font-size: 14px; }
 
         .stamp-controls { width: 100%; max-width: 380px; display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 15px 0; }
-        .stamp-guide {
-            font-size: 12px;
-            color: #b38600;
-            font-weight: bold;
-            background: #fff;
-            padding: 6px 16px;
-            border-radius: 20px;
-            border: 2px dashed var(--br-yellow-deep);
-            animation: fuwa 2s infinite ease-in-out;
-        }
-
-        @keyframes fuwa { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-
         .reset-btn { padding: 8px 20px; background: #fff; color: var(--text-sub); border: 1px solid #ddd; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; }
 
-        /* コントロール周り */
+        /* コントロール周り（変更なし） */
         .controls-container { width: 100%; max-width: 400px; margin-top: 10px; display: flex; flex-direction: column; padding: 0 10px; box-sizing: border-box; }
         .section-title { font-size: 14px; font-weight: bold; color: var(--br-orange); margin: 20px 0 10px 5px; }
-
         .input-section { background: #fff; padding: 12px; border: 1px solid #ddd; border-bottom: none; border-radius: 12px 12px 0 0; }
         .input-field { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #eee; border-radius: 8px; font-size: 14px; margin-bottom: 6px; }
-
-        .ms { background: var(--sheet-bg); padding: 10px; border: 1px solid #ddd; border-top: 4px solid var(--br-yellow-deep); border-radius: 0 0 12px 12px; box-sizing: border-box; }
+        .ms { background: var(--sheet-bg); padding: 10px; border: 1px solid #ddd; border-top: 4px solid var(--br-yellow-deep); border-radius: 0 0 12px 12px; }
         .toggle-group { display: flex; gap: 5px; margin-bottom: 8px; }
         .m-btn { flex: 1; text-align: center; padding: 6px; font-size: 11px; font-weight: bold; cursor: pointer; border-radius: 20px; color: #888; background: #fff; border: 1px solid #ddd; }
         .m-btn.active { background: var(--br-yellow-deep); color: #000; border-color: var(--br-yellow-deep); }
-
-        .ms-top-flex { display: flex; gap: 8px; margin-bottom: 12px; }
-        .ms-race-grid { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; }
-        .ms-place-scroll { flex: 1.2; display: flex; overflow-x: auto; background: #fff; padding: 5px; gap: 4px; height: 110px; border-radius: 8px; border: 1px solid #eee; }
-        .ms-btn { border: 1px solid #eee; background: #fff; color: #888; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 11px; cursor: pointer; height: 34px; border-radius: 5px; }
-        .ms-btn.active, .p-btn.active { background: var(--br-yellow-deep); color: #000; border-color: var(--br-yellow-deep); }
-        .p-btn { min-width: 32px; writing-mode: vertical-rl; padding: 5px 0; border: 1px solid #eee; background: #fff; color: #888; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 12px; border-radius: 5px; }
-        
         .row { display: flex; align-items: center; gap: 8px; margin: 10px 0; }
         .label { background: var(--br-yellow-light); color: var(--br-orange); font-size: 12px; width: 45px; text-align: center; padding: 6px 0; font-weight: bold; border-radius: 5px; }
-        .mark-wrap { display: flex; gap: 4px; }
         .mark { width: 34px; height: 34px; border: 1px solid #ddd; border-radius: 50%; background: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .mark.selected { background: var(--br-orange) !important; color: #fff !important; border-color: var(--br-orange) !important; }
+        .mark.selected { background: var(--br-orange) !important; color: #fff !important; }
+        .amt-input-field { width: 80px; border: 1px solid #eee; border-radius: 8px; padding: 5px; text-align: right; }
 
-        .amt-row { display: flex; align-items: center; justify-content: space-between; gap: 5px; margin-top: 10px; border-top: 1px dashed #ddd; padding-top: 10px; }
-        .amt-btns-left { display: flex; gap: 5px; }
-        .amt-btn { border: 1px solid #ddd; color: var(--text-main); background: #fff; padding: 6px 10px; font-size: 11px; font-weight: bold; cursor: pointer; border-radius: 20px; }
-        .amt-btn.active { background: var(--br-yellow-deep); color: #000; border-color: var(--br-yellow-deep); }
-        .amt-input-field { width: 60px; border: 1px solid #eee; border-radius: 8px; padding: 5px; font-size: 14px; font-weight: bold; text-align: right; color: var(--br-orange); }
-
-        .btn-container { display: flex; gap: 10px; width: 95%; max-width: 400px; margin-top: 20px; padding: 0 10px; box-sizing: border-box; }
-        .save-btn { flex: 1; padding: 16px; background: var(--br-orange); color: #fff; border: none; border-radius: 35px; font-weight: bold; font-size: 16px; cursor: pointer; box-shadow: 0 4px 0 #cc7a00; }
-        .save-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #cc7a00; }
-
-        #save-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; }
-        #save-modal p { color: #fff; font-weight: bold; margin-bottom: 15px; text-align: center; }
-        #save-modal img { width: 100%; max-width: 380px; border: 2px solid #fff; margin-bottom: 20px; border-radius: 10px; }
-        #save-modal .close-modal { padding: 12px 30px; background: var(--br-yellow-deep); border: none; border-radius: 25px; font-weight: bold; cursor: pointer; color: #000; }
-
-        .share-btn { 
-            flex: 1; padding: 16px; background: #000; color: #fff; border: none; border-radius: 35px; font-weight: bold; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 0 #333; text-decoration: none;
-        }
+        .btn-container { display: flex; gap: 10px; width: 95%; max-width: 400px; margin-top: 20px; }
+        .save-btn { flex: 1; padding: 16px; background: var(--br-orange); color: #fff; border: none; border-radius: 35px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div class="top-menu">
-    <a href="https://www.boat-strike.com" class="active">トップぺーじ</a>
-    <a href="https://www.boat-strike.com/index2.html" class="active">つーる一覧</a>
-</div>
-
 <div id="capture-target">
-    <div class="ticket" id="ticket-main" onclick="addStamp(event)">
+    <div class="ticket" id="ticket-main">
         <div class="t-header">
             <div class="t-br-logo">BOAT<br>RACE</div>
             <div class="t-main-place" id="res-main-place">平和島</div>
@@ -220,285 +152,128 @@
                 <div class="t-sub-place" id="res-sub-text">平和島</div>
                 <div><span class="t-race-num" id="res-race">01</span><span class="t-race-label">レース</span></div>
                 <div class="t-memo-area" id="res-memo">03年度<br>第04回07日</div>
-                <div class="t-date-area" id="res-full-date">2026年2月28日</div>
+                <div style="font-size:9px; color:#666;" id="res-full-date">2026年3月15日</div>
             </div>
-            <div class="t-mid"><div class="t-shiki-v" id="res-shiki">３連単</div></div>
+            <div class="t-mid">
+                <div class="t-shiki-v" id="res-shiki">３連単</div>
+            </div>
             <div class="t-right">
-                <div id="view-normal">
-                    <div class="t-bet-row"><span id="ans0"></span><span class="t-arrow">▶</span><span id="ans1"></span><span class="t-arrow" id="arrow-2-3">▶</span><span id="ans2"></span></div>
-                    <div style="height: 40px;"></div>
-                </div>
-                <div id="view-box" style="display:none;">
-                    <div class="t-bet-row">BOX － <span id="ans-box"></span></div>
-                    <div style="height:70px"></div>
-                </div>
-                <div class="t-summary">
-                    組合せ数 🌟<span id="res-cnt">0</span><br>
-                    各組 ✨<span id="res-unit">100</span>円<br>
-                    合計 💰<span id="res-total">0</span>円
+                <div id="bet-list" class="bet-list"></div>
+                
+                <div class="t-summary-row">
+                    合計 ★<span id="res-cnt">0</span>枚券 ★<span id="res-total">0</span>円
                 </div>
             </div>
         </div>
-        <div id="stamp-container"></div> <div class="t-barcode"></div>
+        <div class="t-barcode" style="margin-top: 15px;"></div>
     </div>
-</div>
-
-<div class="stamp-controls">
-    <div class="stamp-guide">✨ 舟券をタップして「的中」スタンプをドーン！</div>
-    <button class="reset-btn" onclick="resetStamps()">♻️ スタンプを全部消す</button>
 </div>
 
 <div class="controls-container">
     <div class="section-title">🛍️ 舟券情報の編集</div>
     <div class="input-section">
         <input type="text" id="in-main" class="input-field" value="平和島" oninput="sync()">
-        <input type="text" id="in-sub" class="input-field" value="平和島" oninput="sync()">
         <textarea id="in-memo" class="input-field" rows="2" oninput="sync()">03年度&#13;&#10;第04回07日</textarea>
     </div>
 
     <div class="ms">
         <div class="toggle-group">
-            <div class="m-btn active" id="btn-3ren" onclick="setShiki(3)">３連単</div>
-            <div class="m-btn" id="btn-2ren" onclick="setShiki(2)">２連単</div>
-        </div>
-        <div class="toggle-group">
-            <div class="m-btn active" id="btn-form" onclick="setMethod('form')">フォーメーション</div>
-            <div class="m-btn" id="btn-box" onclick="setMethod('box')">ボックス</div>
+            <div class="m-btn active" onclick="setShiki(3, this)">３連単</div>
+            <div class="m-btn" onclick="setShiki(2, this)">２連単</div>
         </div>
         
-        <div class="ms-top-flex">
-            <div class="ms-race-grid" id="race-grid"></div>
-            <div class="ms-place-scroll" id="place-grid"></div>
-        </div>
-
         <div id="ms-rows">
-            <div class="row" id="row0"><div class="label" id="label0">1着</div><div class="mark-wrap">
+            <div class="row"><div class="label">1着</div><div class="mark-wrap" style="display:flex; gap:4px;">
                 <div class="mark" onclick="tapMark(this,0,1)">1</div><div class="mark" onclick="tapMark(this,0,2)">2</div><div class="mark" onclick="tapMark(this,0,3)">3</div><div class="mark" onclick="tapMark(this,0,4)">4</div><div class="mark" onclick="tapMark(this,0,5)">5</div><div class="mark" onclick="tapMark(this,0,6)">6</div>
             </div></div>
-            <div class="row" id="row1"><div class="label">2着</div><div class="mark-wrap">
+            <div class="row"><div class="label">2着</div><div class="mark-wrap" style="display:flex; gap:4px;">
                 <div class="mark" onclick="tapMark(this,1,1)">1</div><div class="mark" onclick="tapMark(this,1,2)">2</div><div class="mark" onclick="tapMark(this,1,3)">3</div><div class="mark" onclick="tapMark(this,1,4)">4</div><div class="mark" onclick="tapMark(this,1,5)">5</div><div class="mark" onclick="tapMark(this,1,6)">6</div>
             </div></div>
-            <div class="row" id="row2"><div class="label">3着</div><div class="mark-wrap">
+            <div id="row-3rd" class="row"><div class="label">3着</div><div class="mark-wrap" style="display:flex; gap:4px;">
                 <div class="mark" onclick="tapMark(this,2,1)">1</div><div class="mark" onclick="tapMark(this,2,2)">2</div><div class="mark" onclick="tapMark(this,2,3)">3</div><div class="mark" onclick="tapMark(this,2,4)">4</div><div class="mark" onclick="tapMark(this,2,5)">5</div><div class="mark" onclick="tapMark(this,2,6)">6</div>
             </div></div>
         </div>
-        <div class="amt-row">
-            <div class="amt-btns-left">
-                <div class="amt-btn active" onclick="quickAmt(this,100)">100</div>
-                <div class="amt-btn" onclick="quickAmt(this,500)">500</div>
-            </div>
-            <div class="amt-input-wrap">
-                <input type="number" id="in-unit" class="amt-input-field" value="100" step="100" oninput="manualAmt()">円
-            </div>
+        <div class="row">
+            <div class="label">単価</div>
+            <input type="number" id="in-unit" class="amt-input-field" value="100" step="100" oninput="update()"> 円
         </div>
     </div>
 </div>
 
 <div class="btn-container">
     <button class="save-btn" onclick="save()">🎀 画像を保存</button>
-    <button class="share-btn" onclick="shareToX()">
-        <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:white;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
-        Xに投稿
-    </button>
-</div>
-
-<div id="save-modal">
-    <p>【元気な画像ができました】<br>画像を長押しして「保存」してね 🌟</p>
-    <img id="saved-image" src="" alt="イエロー舟券画像">
-    <button class="close-modal" onclick="closeModal()">とじる</button>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
 <script>
-    let shiki = 3; 
-    let method = 'form'; 
+    let shiki = 3;
     let sel = [[], [], []];
-    let unit = 100;
-    const places = ["桐生","戸田","江戸川","平和島","多摩川","浜名湖","蒲郡","常滑","津","三国","びわこ","住之江","尼崎","鳴門","丸亀","児島","宮島","徳山","下関","若松","芦屋","福岡","唐津","大村"];
 
-    window.onload = () => {
-        const rg = document.getElementById('race-grid');
-        for(let i=1; i<=12; i++){
-            const b = document.createElement('div');
-            b.className = 'ms-btn' + (i===1?' active':'');
-            b.innerText = i + 'R';
-            b.onclick = () => {
-                document.querySelectorAll('.ms-race-grid .ms-btn').forEach(x=>x.classList.remove('active'));
-                b.classList.add('active');
-                document.getElementById('res-race').innerText = String(i).padStart(2,'0');
-            };
-            rg.appendChild(b);
-        }
-        const pg = document.getElementById('place-grid');
-        places.forEach(p => {
-            const b = document.createElement('div');
-            b.className = 'p-btn' + (p==='平和島'?' active':'');
-            b.innerText = p;
-            b.onclick = () => {
-                document.querySelectorAll('.p-btn').forEach(x=>x.classList.remove('active'));
-                b.classList.add('active');
-                document.getElementById('in-main').value = p;
-                document.getElementById('in-sub').value = p;
-                sync();
-            };
-            pg.appendChild(b);
-        });
-        const now = new Date();
-        document.getElementById('res-full-date').innerText = now.getFullYear() + "年" + (now.getMonth() + 1) + "月" + now.getDate() + "日";
-    };
-
-    function addStamp(event) {
-        if (event.target.classList.contains('stamp') || event.target.classList.contains('mark') || event.target.closest('.stamp-controls')) return;
-        const ticket = document.getElementById('ticket-main');
-        const rect = ticket.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
-        const container = document.getElementById('stamp-container');
-        const stamp = document.createElement('img');
-        stamp.src = 'stamp.png'; 
-        stamp.className = 'stamp';
-        const offsetX = 75; const offsetY = 75;
-        const randomDeg = Math.floor(Math.random() * 31) - 15;
-        stamp.style.left = (x - offsetX) + 'px';
-        stamp.style.top = (y - offsetY) + 'px';
-        stamp.style.transform = `rotate(${randomDeg}deg) scale(3)`;
-        setTimeout(() => { stamp.style.opacity = "0.95"; stamp.style.transform = `rotate(${randomDeg}deg) scale(1)`; }, 10);
-        
-        let isDragging = false;
-        let offset = { x: 0, y: 0 };
-        const startDrag = (e) => {
-            isDragging = true;
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            offset.x = clientX - stamp.offsetLeft;
-            offset.y = clientY - stamp.offsetTop;
-            e.stopPropagation(); 
-        };
-        const doDrag = (e) => {
-            if (!isDragging) return;
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            stamp.style.left = (clientX - offset.x) + 'px';
-            stamp.style.top = (clientY - offset.y) + 'px';
-        };
-        const stopDrag = () => { isDragging = false; };
-        stamp.addEventListener('mousedown', startDrag);
-        stamp.addEventListener('touchstart', startDrag, {passive: false});
-        window.addEventListener('mousemove', doDrag);
-        window.addEventListener('touchmove', doDrag, {passive: false});
-        window.addEventListener('mouseup', stopDrag);
-        window.addEventListener('touchend', stopDrag);
-        stamp.addEventListener('dblclick', () => stamp.remove());
-        container.appendChild(stamp);
-    }
-
-    function resetStamps() {
-        const container = document.getElementById('stamp-container');
-        if (container.children.length === 0) return;
-        if (confirm('スタンプを全部消しますか？🌟')) { container.innerHTML = ''; }
-    }
-
-    function setShiki(s) {
-        shiki = s;
-        document.getElementById('btn-3ren').classList.toggle('active', s===3);
-        document.getElementById('btn-2ren').classList.toggle('active', s===2);
-        document.getElementById('res-shiki').innerText = (s===3) ? '３連単' : '２連単';
-        
-        // 🚩 ここを修正：矢印表示の出し分け
-        document.getElementById('ans2').style.display = (s===3) ? 'inline' : 'none';
-        document.getElementById('arrow-2-3').style.display = (s===3) ? 'inline' : 'none';
-        
-        document.getElementById('row2').style.display = (s===3 && method==='form') ? 'flex' : 'none';
-        update();
-    }
-    function setMethod(m) {
-        method = m;
-        document.getElementById('btn-form').classList.toggle('active', m==='form');
-        document.getElementById('btn-box').classList.toggle('active', m==='box');
-        document.getElementById('row1').style.display = (m==='box') ? 'none' : 'flex';
-        document.getElementById('row2').style.display = (m==='box' || shiki===2) ? 'none' : 'flex';
-        document.getElementById('label0').innerText = (m==='box') ? '選択' : '1着';
-        document.getElementById('view-normal').style.display = (m==='box') ? 'none' : 'block';
-        document.getElementById('view-box').style.display = (m==='box') ? 'block' : 'none';
-        document.getElementById('res-mode-label').innerText = (m==='box') ? 'ボックス' : 'フォーメーション';
-        update();
-    }
     function tapMark(el, row, num) {
         if (sel[row].includes(num)) sel[row] = sel[row].filter(v => v !== num);
         else sel[row].push(num);
         el.classList.toggle('selected');
         update();
     }
-    function quickAmt(el, v) {
-        document.querySelectorAll('.amt-btn').forEach(x => x.classList.remove('active'));
+
+    function setShiki(s, el) {
+        shiki = s;
+        document.querySelectorAll('.toggle-group .m-btn').forEach(b => b.classList.remove('active'));
         el.classList.add('active');
-        document.getElementById('in-unit').value = v;
-        unit = v;
+        document.getElementById('row-3rd').style.display = (s === 3) ? 'flex' : 'none';
+        document.getElementById('res-shiki').innerText = (s === 3) ? '３連単' : '２連単';
         update();
     }
-    function manualAmt() {
-        unit = parseInt(document.getElementById('in-unit').value) || 0;
-        update();
-    }
+
     function sync() {
         document.getElementById('res-main-place').innerText = document.getElementById('in-main').value;
-        document.getElementById('res-sub-text').innerText = document.getElementById('in-sub').value;
+        document.getElementById('res-sub-text').innerText = document.getElementById('in-main').value;
         document.getElementById('res-memo').innerText = document.getElementById('in-memo').value;
     }
+
     function update() {
-        let cnt = 0;
-        if (method === 'form') {
-            for (let a of sel[0]) {
-                for (let b of sel[1]) {
-                    if (a === b) continue;
-                    if (shiki === 3) {
-                        for (let c of sel[2]) {
-                            if (c === a || c === b) continue;
-                            cnt++;
-                        }
-                    } else { cnt++; }
+        const listDiv = document.getElementById('bet-list');
+        listDiv.innerHTML = '';
+        let combinations = [];
+        let unit = parseInt(document.getElementById('in-unit').value) || 0;
+
+        // 組み合わせ計算
+        for (let a of sel[0]) {
+            for (let b of sel[1]) {
+                if (a === b) continue;
+                if (shiki === 3) {
+                    for (let c of sel[2]) {
+                        if (c === a || c === b) continue;
+                        combinations.push([a, b, c]);
+                    }
+                } else {
+                    combinations.push([a, b]);
                 }
             }
-            // 🚩 矢印形式で数字を結合して表示
-            document.getElementById('ans0').innerText = sel[0].length ? sel[0].sort().join('') : '-';
-            document.getElementById('ans1').innerText = sel[1].length ? sel[1].sort().join('') : '-';
-            if(shiki === 3) document.getElementById('ans2').innerText = sel[2].length ? sel[2].sort().join('') : '-';
-        } else {
-            let n = sel[0].length;
-            if (shiki === 3) { if (n >= 3) cnt = n * (n - 1) * (n - 2); } 
-            else { if (n >= 2) cnt = n * (n - 1); }
-            // ボックス時は数字を繋げて矢印で繋ぐ（例: 123▶BOX）
-            document.getElementById('ans-box').innerText = sel[0].sort().join('');
         }
-        document.getElementById('res-cnt').innerText = cnt;
-        document.getElementById('res-total').innerText = (cnt * unit).toLocaleString();
-    }
-    function save() {
-        const target = document.getElementById('capture-target');
-        html2canvas(target, { scale: 3, useCORS: true, logging: false, backgroundColor: "#fff4c2" }).then(canvas => {
-            const imgData = canvas.toDataURL("image/png");
-            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-            if (isMobile) {
-                document.getElementById('saved-image').src = imgData;
-                document.getElementById('save-modal').style.display = 'flex';
-            } else {
-                const a = document.createElement('a');
-                a.href = imgData;
-                a.download = `p-star_hunaken_yellow.png`;
-                a.click();
-            }
+
+        // 🚩 実際の舟券のように全表示
+        combinations.forEach(combo => {
+            const item = document.createElement('div');
+            item.className = 'bet-item';
+            let html = `<div class="bet-num-box">${combo[0]}</div><div class="bet-arrow">▶</div><div class="bet-num-box">${combo[1]}</div>`;
+            if (shiki === 3) html += `<div class="bet-arrow">▶</div><div class="bet-num-box">${combo[2]}</div>`;
+            html += `<div class="bet-amt">★★${unit.toLocaleString()}円</div>`;
+            item.innerHTML = html;
+            listDiv.appendChild(item);
         });
+
+        document.getElementById('res-cnt').innerText = combinations.length;
+        document.getElementById('res-total').innerText = (combinations.length * unit).toLocaleString();
     }
-    function closeModal() { document.getElementById('save-modal').style.display = 'none'; }
-    function shareToX() {
-        const place = document.getElementById('res-main-place').innerText;
-        const race = document.getElementById('res-race').innerText;
-        const shikiTxt = document.getElementById('res-shiki').innerText;
-        const text = `${place} ${race}R ${shikiTxt} で的中！🌟\n#PSTAR #舟券メーカー #ボートレース`;
-        const url = window.location.href;
-        alert("画像を保存してからXに投稿してね！🌟");
-        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+
+    function save() {
+        html2canvas(document.getElementById('capture-target'), { scale: 3 }).then(canvas => {
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL();
+            link.download = 'p-star-ticket.png';
+            link.click();
+        });
     }
 </script>
 </body>
