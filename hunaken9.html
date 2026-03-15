@@ -9,10 +9,9 @@
     
     <style>
         :root {
-            /* 🥈 イエローからシルバー・モノトーン系に変更 */
             --br-silver-deep: #a0a0a0;   /* メインの濃いシルバー */
             --br-silver-light: #f0f0f0;  /* 背景用の薄いグレー */
-            --br-accent-navy: #001f3f;   /* アクセントのネイビー（黄色だった部分） */
+            --br-accent-navy: #001f3f;   /* アクセントのネイビー */
             --p-star-purple: #555555;    /* ブランド紫をダークグレーに変更 */
             --sheet-bg: #fff;
             --text-main: #333;
@@ -60,6 +59,23 @@
             overflow: hidden;
         }
 
+        /* 🥈 ここを修正：シルバー舟券用の薄い透かし */
+        .ticket::before {
+            content: "";
+            position: absolute;
+            bottom: -20px; /* 少しはみ出させる */
+            right: -20px;
+            width: 200px; /* イエロー版より少し大きく */
+            height: 200px;
+            background-image: url('fd83ed9c-eb0b-4ff7-a415-816d09f80edc.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: right bottom; 
+            opacity: 0.15; /* クールに見せるため、さらに薄く */
+            z-index: 0;
+            pointer-events: none;
+        }
+
         .t-header { 
             display: flex; 
             align-items: center; 
@@ -67,6 +83,7 @@
             padding-bottom: 5px; 
             margin-bottom: 8px; 
             z-index: 5;
+            position: relative; /* 影を正しく表示するため */
         }
 
         .t-br-logo { font-size: 10px; font-weight: bold; color: var(--br-accent-navy); line-height: 1.1; margin-right: 15px; }
@@ -233,12 +250,12 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
+    // JavaScriptロジックは変更なし（そのまま動作します）
     let shiki = 3;
     let sel = [[], [], []];
     const places = ["桐生","戸田","江戸川","平和島","多摩川","浜名湖","蒲郡","常滑","津","三国","びわこ","住之江","尼崎","鳴門","丸亀","児島","宮島","徳山","下関","若松","芦屋","福岡","唐津","大村"];
 
     window.onload = () => {
-        // レース番号生成
         const rg = document.getElementById('race-grid');
         for(let i=1; i<=12; i++){
             const b = document.createElement('div');
@@ -251,7 +268,6 @@
             };
             rg.appendChild(b);
         }
-        // 24場生成
         const pg = document.getElementById('place-grid');
         places.forEach(p => {
             const b = document.createElement('div');
@@ -266,7 +282,6 @@
             };
             pg.appendChild(b);
         });
-        // 日付初期値
         const now = new Date();
         document.getElementById('res-full-date').innerText = now.getFullYear() + "年" + (now.getMonth() + 1) + "月" + now.getDate() + "日";
     };
@@ -327,7 +342,6 @@
         document.getElementById('res-total').innerText = (combinations.length * unit).toLocaleString();
     }
 
-    // --- スタンプ機能 ---
     function addStamp(event) {
         if (event.target.classList.contains('stamp')) return;
         const ticket = document.getElementById('ticket-main');
@@ -336,7 +350,7 @@
         const y = event.clientY - rect.top;
         
         const stamp = document.createElement('img');
-        stamp.src = 'stamp.png'; // サーバー上のスタンプ画像パス
+        stamp.src = 'stamp.png'; // 的中スタンプのパス
         stamp.className = 'stamp';
         const randomDeg = Math.floor(Math.random() * 30) - 15;
         stamp.style.left = (x - 60) + 'px';
@@ -345,7 +359,6 @@
         
         setTimeout(() => { stamp.style.opacity = "0.9"; stamp.style.transform = `rotate(${randomDeg}deg) scale(1)`; }, 50);
 
-        // ドラッグ移動
         let isDragging = false;
         let offset = { x: 0, y: 0 };
         stamp.onmousedown = (e) => {
@@ -370,7 +383,6 @@
         if (confirm('スタンプを全部消しますか？')) document.getElementById('stamp-container').innerHTML = '';
     }
 
-    // --- 保存・共有 ---
     function save() {
         html2canvas(document.getElementById('capture-target'), { scale: 3, useCORS: true }).then(canvas => {
             const link = document.createElement('a');
