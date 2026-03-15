@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>P-STAR 投稿ライブラリ | 全表示＆機能統合版</title>
+    <title>P-STAR 投稿ライブラリ | シルバー舟券メーカー</title>
     
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --br-yellow-deep: #ffcc00;
-            --br-yellow-light: #fff9e6;
-            --br-orange: #ff9500;
-            --p-star-purple: #7a46c2;
+            /* 🥈 イエローからシルバー・モノトーン系に変更 */
+            --br-silver-deep: #a0a0a0;   /* メインの濃いシルバー */
+            --br-silver-light: #f0f0f0;  /* 背景用の薄いグレー */
+            --br-accent-navy: #001f3f;   /* アクセントのネイビー（黄色だった部分） */
+            --p-star-purple: #555555;    /* ブランド紫をダークグレーに変更 */
             --sheet-bg: #fff;
             --text-main: #333;
             --text-sub: #666;
@@ -20,7 +21,7 @@
 
         body {
             font-family: 'M PLUS Rounded 1c', sans-serif;
-            background-color: #fcfaf0;
+            background-color: #f5f5f5; /* 薄いグレー背景 */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -29,40 +30,53 @@
             color: var(--text-main);
         }
 
-        #capture-target { padding: 10px; background: #fff4c2; position: relative; }
+        .top-menu { 
+            width: 100%; 
+            background: #fff; 
+            display: flex; 
+            justify-content: center; 
+            padding: 10px 0; 
+            border-bottom: 1px solid #ddd; 
+            margin-bottom: 15px; 
+            position: sticky; top: 0; z-index: 100;
+        }
+        .top-menu a { color: var(--text-main); text-decoration: none; font-size: 11px; font-weight: bold; padding: 5px 10px; border-radius: 20px; }
+        .top-menu a.active { background: var(--br-silver-deep); color: #fff; }
+
+        #capture-target { padding: 10px; background: #e0e0e0; position: relative; border-radius: 15px; } /* 保存用背景もグレーに */
         
         .ticket {
             width: 380px;
             min-height: 260px;
-            background-color: #fff;
-            border: 2px solid var(--br-yellow-deep);
+            background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%); /* シルバーのグラデーション */
+            border: 2px solid var(--br-silver-deep);
             border-radius: 12px;
             padding: 12px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
             position: relative;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            overflow: hidden; /* スタンプのはみ出し防止 */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
         }
 
         .t-header { 
             display: flex; 
             align-items: center; 
-            border-bottom: 2px solid var(--br-yellow-deep); 
+            border-bottom: 2px solid var(--br-silver-deep); 
             padding-bottom: 5px; 
             margin-bottom: 8px; 
             z-index: 5;
         }
 
-        .t-br-logo { font-size: 10px; font-weight: bold; color: var(--br-orange); line-height: 1.1; margin-right: 15px; }
-        .t-main-place { font-size: 30px; font-weight: 700; color: var(--p-star-purple); }
+        .t-br-logo { font-size: 10px; font-weight: bold; color: var(--br-accent-navy); line-height: 1.1; margin-right: 15px; }
+        .t-main-place { font-size: 30px; font-weight: 700; color: #333; }
 
         .t-form-box { 
             position: absolute;
             right: 12px;
             top: 20px;
-            background: var(--br-orange);
+            background: var(--br-accent-navy); /* ネイビーに変更 */
             color: #fff; 
             padding: 3px 12px; 
             font-size: 11px; 
@@ -73,14 +87,14 @@
 
         .t-body { display: flex; flex: 1; z-index: 1; position: relative; }
         .t-left { width: 120px; display: flex; flex-direction: column; }
-        .t-sub-place { border: 2px solid var(--br-yellow-deep); color: var(--p-star-purple); padding: 3px 5px; font-size: 14px; font-weight: bold; text-align: center; border-radius: 10px; margin-bottom: 8px; background: var(--br-yellow-light); }
-        .t-race-num { font-size: 36px; font-weight: bold; color: var(--p-star-purple); line-height: 1; }
-        .t-race-label { font-size: 14px; font-weight: bold; color: var(--p-star-purple); }
+        .t-sub-place { border: 2px solid var(--br-silver-deep); color: #333; padding: 3px 5px; font-size: 14px; font-weight: bold; text-align: center; border-radius: 10px; margin-bottom: 8px; background: #fff; }
+        .t-race-num { font-size: 36px; font-weight: bold; color: #333; line-height: 1; }
+        .t-race-label { font-size: 14px; font-weight: bold; color: #333; }
         .t-memo-area { margin-top: 10px; font-size: 9px; color: var(--text-sub); white-space: pre-wrap; line-height: 1.2; }
         .t-date-area { font-size: 9px; color: #999; margin-top: 5px; }
         
         .t-mid { width: 40px; display: flex; align-items: flex-start; justify-content: center; padding-top: 5px; }
-        .t-shiki-v { writing-mode: vertical-rl; text-orientation: upright; font-size: 18px; font-weight: bold; color: #fff; background: var(--p-star-purple); padding: 12px 5px; letter-spacing: 4px; border-radius: 8px; }
+        .t-shiki-v { writing-mode: vertical-rl; text-orientation: upright; font-size: 18px; font-weight: bold; color: #fff; background: var(--br-silver-deep); padding: 12px 5px; letter-spacing: 4px; border-radius: 8px; }
         
         .t-right { flex: 1; padding-left: 10px; display: flex; flex-direction: column; }
         
@@ -91,49 +105,49 @@
             color: var(--text-main); 
             line-height: 1.4;
         }
-        .bet-item { display: flex; align-items: center; border-bottom: 1px dotted #eee; }
-        .bet-num-box { border: 1px solid #333; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; margin: 0 2px; }
+        .bet-item { display: flex; align-items: center; border-bottom: 1px dotted #ccc; }
+        .bet-num-box { border: 1px solid #333; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; margin: 0 2px; background: #fff; }
         .bet-amt { margin-left: auto; font-size: 11px; color: #444; }
 
         .t-summary-row { margin-top: 10px; padding-top: 5px; border-top: 2px solid #333; text-align: right; font-weight: bold; font-size: 12px; }
-        .t-barcode { width: 100%; height: 10px; background: repeating-linear-gradient(90deg, var(--br-yellow-deep), var(--br-yellow-deep) 2px, #fff 2px, #fff 4px); margin-top: 10px; opacity: 0.4; border-radius: 5px; }
+        .t-barcode { width: 100%; height: 10px; background: repeating-linear-gradient(90deg, #ccc, #ccc 2px, #fff 2px, #fff 4px); margin-top: 10px; opacity: 0.6; border-radius: 5px; }
 
         /* スタンプ用 */
         .stamp {
             position: absolute; width: 120px; height: 120px; cursor: move; z-index: 50; user-select: none;
-            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2)); transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3)); transition: transform 0.2s, opacity 0.2s;
         }
 
         /* UIパーツ */
         .controls-container { width: 100%; max-width: 400px; padding: 0 10px; box-sizing: border-box; }
-        .section-title { font-size: 14px; font-weight: bold; color: var(--br-orange); margin: 20px 0 10px 5px; }
+        .section-title { font-size: 14px; font-weight: bold; color: var(--br-accent-navy); margin: 20px 0 10px 5px; }
 
-        .ms { background: var(--sheet-bg); padding: 12px; border: 1px solid #ddd; border-top: 4px solid var(--br-yellow-deep); border-radius: 12px; margin-bottom: 15px; }
+        .ms { background: var(--sheet-bg); padding: 12px; border: 1px solid #ddd; border-top: 4px solid var(--br-silver-deep); border-radius: 12px; margin-bottom: 15px; }
         .input-field { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #eee; border-radius: 8px; font-size: 13px; margin-bottom: 8px; }
 
         .ms-top-flex { display: flex; gap: 8px; margin-bottom: 12px; }
         .ms-race-grid { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; }
         .ms-place-scroll { flex: 1.2; display: flex; overflow-x: auto; background: #fff; padding: 5px; gap: 4px; height: 110px; border-radius: 8px; border: 1px solid #eee; }
         .ms-btn { border: 1px solid #eee; background: #fff; color: #888; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 11px; cursor: pointer; height: 34px; border-radius: 5px; }
-        .ms-btn.active, .p-btn.active { background: var(--br-yellow-deep); color: #000; border-color: var(--br-yellow-deep); }
+        .ms-btn.active, .p-btn.active { background: var(--br-silver-deep); color: #fff; border-color: var(--br-silver-deep); }
         .p-btn { min-width: 32px; writing-mode: vertical-rl; padding: 5px 0; border: 1px solid #eee; background: #fff; color: #888; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 12px; border-radius: 5px; }
 
         .toggle-group { display: flex; gap: 5px; margin-bottom: 12px; }
         .m-btn { flex: 1; text-align: center; padding: 8px; font-size: 11px; font-weight: bold; cursor: pointer; border-radius: 20px; color: #888; background: #fff; border: 1px solid #ddd; }
-        .m-btn.active { background: var(--br-yellow-deep); color: #000; border-color: var(--br-yellow-deep); }
+        .m-btn.active { background: var(--br-silver-deep); color: #fff; border-color: var(--br-silver-deep); }
         
         .row { display: flex; align-items: center; gap: 8px; margin: 8px 0; }
-        .label { background: var(--br-yellow-light); color: var(--br-orange); font-size: 12px; width: 45px; text-align: center; padding: 6px 0; font-weight: bold; border-radius: 5px; }
+        .label { background: var(--br-silver-light); color: var(--br-accent-navy); font-size: 12px; width: 45px; text-align: center; padding: 6px 0; font-weight: bold; border-radius: 5px; }
         .mark { width: 34px; height: 34px; border: 1px solid #ddd; border-radius: 50%; background: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .mark.selected { background: var(--br-orange) !important; color: #fff !important; }
+        .mark.selected { background: var(--br-accent-navy) !important; color: #fff !important; }
         
         .amt-input-field { width: 80px; border: 1px solid #eee; border-radius: 8px; padding: 5px; text-align: right; font-weight: bold; }
         
         .btn-container { display: flex; gap: 10px; margin-top: 15px; }
-        .save-btn { flex: 1.5; padding: 16px; background: var(--br-orange); color: #fff; border: none; border-radius: 35px; font-weight: bold; cursor: pointer; }
+        .save-btn { flex: 1.5; padding: 16px; background: var(--br-accent-navy); color: #fff; border: none; border-radius: 35px; font-weight: bold; cursor: pointer; }
         .share-btn { flex: 1; padding: 16px; background: #000; color: #fff; border: none; border-radius: 35px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; }
 
-        .stamp-guide { font-size: 11px; color: var(--br-orange); text-align: center; margin-bottom: 10px; font-weight: bold; }
+        .stamp-guide { font-size: 11px; color: var(--br-accent-navy); text-align: center; margin-bottom: 10px; font-weight: bold; }
         .reset-btn { display: block; margin: 0 auto 15px; padding: 5px 15px; background: #fff; color: #999; border: 1px solid #ddd; border-radius: 20px; font-size: 10px; cursor: pointer; }
     </style>
 </head>
@@ -361,7 +375,7 @@
         html2canvas(document.getElementById('capture-target'), { scale: 3, useCORS: true }).then(canvas => {
             const link = document.createElement('a');
             link.href = canvas.toDataURL();
-            link.download = 'p-star-hunaken.png';
+            link.download = 'p-star-ticket-silver.png';
             link.click();
         });
     }
