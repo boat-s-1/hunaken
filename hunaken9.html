@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>P-STAR 舟券メーカー | 完成版</title>
+    <title>P-STAR 舟券メーカー | フル項目版</title>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --br-pink: #ff69b4;
             --br-purple: #7a46c2;
-            --soft-pink: #fff0f6;
         }
 
         body {
@@ -24,9 +23,10 @@
 
         /* 舟券デザイン */
         #capture-area {
-            padding: 15px;
+            padding: 10px;
             background: white;
             border-radius: 20px;
+            position: relative;
         }
 
         .ticket {
@@ -41,9 +41,19 @@
             box-sizing: border-box;
             color: var(--br-purple);
             position: relative;
-            /* 背景にキャラを薄く入れる場合はここにURLを指定 */
-            background-image: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8));
-            background-size: cover;
+            overflow: hidden;
+        }
+
+        /* 的中スタンプ（初期は非表示） */
+        #stamp-tekichu {
+            position: absolute;
+            top: 40px;
+            left: 200px;
+            width: 150px;
+            z-index: 10;
+            display: none;
+            pointer-events: none;
+            transform: rotate(-15deg);
         }
 
         .header { 
@@ -52,15 +62,173 @@
             align-items: center;
             border-bottom: 2px solid var(--br-pink);
             margin-bottom: 12px;
-            padding-bottom: 5px;
         }
         .place-name { font-size: 42px; font-weight: 800; letter-spacing: 2px; }
-        .tag { background: var(--br-pink); color: white; padding: 4px 15px; border-radius: 20px; font-size: 14px; font-weight: 800; }
 
         .main-content { display: flex; flex: 1; height: 180px; }
         
-        .info-side { 
-            width: 125px; 
+        .info-side { width: 125px; border-right: 2px dashed #ffc0cb; display: flex; flex-direction: column; }
+        .race-num { font-size: 60px; font-weight: 800; line-height: 1; margin-top: 10px; }
+        .race-num span { font-size: 24px; }
+        .date { font-size: 13px; color: #999; margin-top: auto; }
+
+        .type-box {
+            width: 48px; background: var(--br-purple); color: white;
+            writing-mode: vertical-rl; text-orientation: upright;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; font-weight: 800; margin: 0 15px; border-radius: 10px;
+        }
+
+        .bet-side { flex: 1; background: #fff9fb; border-radius: 10px; padding: 8px; display: flex; flex-direction: column; border: 1px solid #ffe4ed; }
+        #bet-list { flex: 1; overflow-y: auto; font-size: 22px; font-weight: 800; }
+        .bet-row { display: flex; justify-content: space-between; border-bottom: 1px solid #f0f0f0; padding: 2px 0; }
+
+        .summary { text-align: right; font-size: 14px; padding-top: 8px; border-top: 2px solid var(--br-pink); margin-top: 8px; }
+
+        /* 操作パネル */
+        .controls {
+            width: 95%; max-width: 480px; background: white; padding: 20px;
+            border-radius: 25px; margin-top: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        }
+        .config-row { display: flex; gap: 10px; margin-bottom: 15px; }
+        .input-item { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+        .input-item label { font-size: 12px; color: var(--br-pink); font-weight: bold; }
+        .input-item input { padding: 8px; border-radius: 8px; border: 1px solid #ddd; }
+
+        .row { display: flex; gap: 8px; margin-bottom: 12px; align-items: center; }
+        .num-btn { width: 42px; height: 42px; border: 1px solid #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; }
+        .num-btn.active { background: var(--br-pink); color: white; border-color: var(--br-pink); }
+
+        .btn-tekichu { background: #ff4747; color: white; border: none; padding: 10px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; margin-bottom: 10px; }
+        .save-btn { width: 100%; padding: 18px; background: #ff007f; color: white; border: none; border-radius: 50px; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 0 #b30059; }
+    </style>
+</head>
+<body>
+
+<div id="capture-area">
+    <div class="ticket">
+        <img src="Gemini_Generated_Image_c44ymwc44ymwc44y - 編集済み.png" id="stamp-tekichu">
+        
+        <div class="header">
+            <div class="place-name" id="view-place">蒲郡</div>
+            <div style="background:var(--br-pink); color:white; padding:4px 15px; border-radius:20px; font-size:14px; font-weight:800;">フォーメーション</div>
+        </div>
+        <div class="main-content">
+            <div class="info-side">
+                <div class="race-num"><span id="view-race">12</span><span>R</span></div>
+                <div class="date" id="view-date">2026.03.15</div>
+            </div>
+            <div class="type-box">３連単</div>
+            <div class="bet-side">
+                <div id="bet-list"></div>
+            </div>
+        </div>
+        <div class="summary">
+            計 <span id="res-cnt" style="font-weight:bold; color:var(--br-pink);">0</span>点 / 
+            合計 <span id="res-total" style="font-weight:bold; color:var(--br-pink);">0</span>円
+        </div>
+    </div>
+</div>
+
+<div class="controls">
+    <div class="config-row">
+        <div class="input-item">
+            <label>場名</label>
+            <input type="text" id="in-place" value="蒲郡" oninput="sync()">
+        </div>
+        <div class="input-item">
+            <label>レース</label>
+            <input type="number" id="in-race" value="12" oninput="sync()">
+        </div>
+        <div class="input-item">
+            <label>日付</label>
+            <input type="text" id="in-date" value="2026.03.15" oninput="sync()">
+        </div>
+    </div>
+
+    <div class="row" id="row-1"><b>1着</b> </div>
+    <div class="row" id="row-2"><b>2着</b> </div>
+    <div class="row" id="row-3"><b>3着</b> </div>
+    
+    <div style="margin-bottom: 15px;">
+        単価: <input type="number" id="price" value="100" style="width:80px; padding:8px; border-radius:10px; border:1px solid #ddd;" oninput="update()"> 円
+    </div>
+
+    <button class="btn-tekichu" onclick="toggleStamp()">💮 的中スタンプ ON/OFF</button>
+    
+    <button class="save-btn" onclick="takeSave()">🎀 画像を保存する</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+    const sel = [[], [], []];
+
+    window.onload = () => {
+        for (let r = 0; r < 3; r++) {
+            const container = document.getElementById(`row-${r+1}`);
+            for (let n = 1; n <= 6; n++) {
+                const btn = document.createElement('div');
+                btn.className = 'num-btn';
+                btn.innerText = n;
+                btn.onclick = function() {
+                    const idx = sel[r].indexOf(n);
+                    if (idx > -1) sel[r].splice(idx, 1); else sel[r].push(n);
+                    this.classList.toggle('active');
+                    update();
+                };
+                container.appendChild(btn);
+            }
+        }
+        update();
+    };
+
+    function sync() {
+        document.getElementById('view-place').innerText = document.getElementById('in-place').value;
+        document.getElementById('view-race').innerText = document.getElementById('in-race').value;
+        document.getElementById('view-date').innerText = document.getElementById('in-date').value;
+    }
+
+    function update() {
+        const list = document.getElementById('bet-list');
+        list.innerHTML = '';
+        let count = 0;
+        const price = parseInt(document.getElementById('price').value) || 0;
+
+        if (sel[0].length && sel[1].length && sel[2].length) {
+            for (let a of sel[0]) {
+                for (let b of sel[1]) {
+                    if (a === b) continue;
+                    for (let c of sel[2]) {
+                        if (c === a || c === b) continue;
+                        count++;
+                        const item = document.createElement('div');
+                        item.className = 'bet-row';
+                        item.innerHTML = `<span>${a} ▶ ${b} ▶ ${c}</span><span style="font-size:12px;">${price}円</span>`;
+                        list.appendChild(item);
+                    }
+                }
+            }
+        }
+        document.getElementById('res-cnt').innerText = count;
+        document.getElementById('res-total').innerText = (count * price).toLocaleString();
+    }
+
+    function toggleStamp() {
+        const s = document.getElementById('stamp-tekichu');
+        s.style.display = (s.style.display === 'none' || s.style.display === '') ? 'block' : 'none';
+    }
+
+    function takeSave() {
+        html2canvas(document.querySelector("#capture-area"), { scale: 2, useCORS: true }).then(canvas => {
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL();
+            link.download = 'boatstrike_ticket.png';
+            link.click();
+        });
+    }
+</script>
+</body>
+</html>            width: 125px; 
             border-right: 2px dashed #ffc0cb; 
             display: flex; 
             flex-direction: column;
