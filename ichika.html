@@ -8,39 +8,46 @@
     <style>
         body {
             font-family: 'M PLUS Rounded 1c', sans-serif;
-            margin: 0; padding: 20px;
+            margin: 0; padding: 40px 10px;
             display: flex; justify-content: center;
             background-color: #fdf2f4;
-            background-image: radial-gradient(#f9d9e2 1px, transparent 1px);
+            background-image: radial-gradient(#f9d9e2 2px, transparent 2px);
             background-size: 20px 20px;
         }
 
-        /* 外枠 */
+        /* --- 外枠 (598ebf...png を使う場合) --- */
         .outer-frame {
             position: relative;
-            width: 100%;
-            max-width: 480px;
-            padding: 25px;
+            width: 95%;
+            max-width: 460px;
+            min-height: 280px;
+            padding: 40px 25px 30px 25px;
             box-sizing: border-box;
-            background: white;
-            border: 3px solid #d4b185;
+            /* 背景画像の設定 */
+            background-image: url('598ebf7b-2370-472e-acba-c1507159c995.png'); /* ここを実際の外枠ファイル名に */
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            /* 画像がない時用のバックアップ枠線 */
+            border: 2px solid #d4b185; 
             border-radius: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background-color: white;
         }
 
-        /* 上部エリア（キャラ + 入力） */
         .top-section {
             display: flex;
-            align-items: flex-end;
-            margin-bottom: 25px; /* メモとの間隔を少し広げた */
-            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+            position: relative;
         }
 
+        /* キャラクターを少し浮かせる */
         .chara-container {
-            flex: 0 0 140px;
+            flex: 0 0 110px;
+            margin-top: -10px;
+            z-index: 5;
         }
         .ichika-chara {
-            width: 100%;
+            width: 120%; /* 少し大きく */
             height: auto;
             display: block;
         }
@@ -50,98 +57,83 @@
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            padding-bottom: 0px; /* バーの画像と合わせるため調整 */
+            gap: 10px;
         }
 
-        /* 合言葉エリア */
+        /* 合言葉 */
         .admin-pass-wrapper {
-            display: flex;
-            align-items: center;
             background: white;
-            border: 1px solid #ddd;
-            border-radius: 15px;
-            padding: 2px 10px;
-            margin-bottom: 15px; /* バーとの間隔 */
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-        }
-        .admin-pass-label {
-            font-size: 0.75rem; color: #a18e8e; font-weight: 800;
+            border: 1px solid #eee;
+            border-radius: 20px;
+            padding: 3px 12px;
+            font-size: 0.7rem;
+            color: #999;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex; align-items: center;
         }
 
-        /* --- 【修正箇所1】提供いただいた場選択バー画像を使用 --- */
+        /* 開催場セレクトバー */
         .stadium-select-wrapper {
             position: relative;
-            width: 250px; /* 画像の比率に合わせる（少し広げた） */
-            height: 48px;  /* 画像の高さに合わせる */
-            background-image: url('stadium_bar.png'); /* 画像を指定 */
+            width: 220px;
+            height: 42px;
+            background-image: url('stadium_bar.png');
             background-size: 100% 100%;
-            background-repeat: no-repeat;
             display: flex;
             align-items: center;
-            /* 画像内の「🌸」と「▼」の間に文字が来るようにパディングを調整 */
-            padding: 0 25px 0 15px;
-            box-sizing: border-box;
-        }
-        
-        /* 元々CSSで描画していた矢印や🌸は不要になるので削除・非表示に */
-        .stadium-select-wrapper::after { content: none; } 
-        .stadium-text-display::before { content: none; }
-
-        .stadium-text-display {
-            /* 画像内の金色の文字色に合わせる（近似色） */
-            color: #d4b185; 
-            font-size: 1.1rem; /* 文字を少し大きく */
-            font-weight: 800;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* 文字の視認性を上げる */
-            flex: 1;
-            text-align: center;
-        }
-
-        .stadium-select {
-            position: absolute; inset: 0; width: 100%; height: 100%;
-            opacity: 0; cursor: pointer;
-            z-index: 10;
-        }
-
-        /* --- 【修正箇所2】提供いただいた特徴メモの枠画像を使用 --- */
-        .stadium-memo-wrapper {
-            position: relative;
-            /* 画像のデザインに合わせてパディングを調整（スクロール装飾を避ける） */
-            padding: 20px 25px 25px 25px;
-            box-sizing: border-box;
-            background-color: transparent; /* 背景色は画像に任せる */
-            border: none;
-            box-shadow: none;
-        }
-        /* 枠画像を擬似要素で配置（比率を保つため） */
-        .stadium-memo-wrapper::before {
-            content: "";
-            position: absolute; inset: 0;
-            background-image: url('memo_frame.png'); /* 画像を指定 */
-            background-size: 100% 100%;
-            background-repeat: no-repeat;
-            z-index: -1; /* 文字の後ろへ */
-        }
-        
-        /* 元々CSSで描画していた波模様は不要になるので削除 */
-        .stadium-memo-wrapper::after { content: none; }
-
-        .memo-title {
-            color: #8c6a4a; /* 画像の枠色に合わせた深い茶色系に変更 */
-            font-weight: 800;
-            margin-bottom: 12px; font-size: 1rem;
-            display: flex; align-items: center; gap: 5px;
             justify-content: center;
         }
+        .stadium-text-display {
+            color: #d4b185;
+            font-size: 1rem;
+            font-weight: 800;
+            text-shadow: 1px 1px 2px black;
+        }
+        .stadium-select {
+            position: absolute; inset: 0; opacity: 0; cursor: pointer;
+        }
+
+        /* --- 特徴メモの枠 (memo_frame.png) --- */
+        .stadium-memo-wrapper {
+            position: relative;
+            width: 100%;
+            margin-top: 15px;
+            padding: 25px 20px; /* 内側の余白をしっかり取る */
+            box-sizing: border-box;
+            text-align: center;
+        }
+        .stadium-memo-wrapper::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('memo_frame.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            z-index: 0;
+        }
+
+        .memo-title, .memo-content, .memo-link {
+            position: relative; /* 背景より前に出す */
+            z-index: 1;
+        }
+
+        .memo-title {
+            color: #d86d7e;
+            font-size: 0.9rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
         .memo-content {
-            font-size: 0.85rem; color: #444; line-height: 1.7;
-            margin-bottom: 12px;
-            padding: 0 10px; /* 文字が枠に寄りすぎないように */
+            font-size: 0.75rem;
+            color: #444;
+            line-height: 1.5;
+            margin-bottom: 8px;
         }
         .memo-link {
-            color: #d86d7e; font-size: 0.8rem; font-weight: 800;
-            text-decoration: underline; cursor: pointer;
-            display: block; text-align: center;
+            color: #d86d7e;
+            font-size: 0.7rem;
+            text-decoration: underline;
+            font-weight: 800;
         }
     </style>
 </head>
@@ -150,15 +142,13 @@
 <div class="outer-frame">
     <div class="top-section">
         <div class="chara-container">
-            <img src="ichika_chara3.png" class="ichika-chara" alt="キャラクター">
+            <img src="ichika_chara3.png" class="ichika-chara">
         </div>
 
         <div class="input-container">
             <div class="admin-pass-wrapper">
-                <span class="admin-pass-label">🗝️ 合言葉？</span>
-                <input type="password" style="display:none;">
+                🗝️ 合言葉？
             </div>
-
             <div class="stadium-select-wrapper">
                 <div class="stadium-text-display" id="stadiumName">01 桐生</div>
                 <select class="stadium-select" onchange="document.getElementById('stadiumName').innerText=this.value">
