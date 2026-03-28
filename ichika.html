@@ -5,85 +5,209 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>一果の1号艇・鬼絞り判定所 🌸</title>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&display=swap" rel="stylesheet">
-    
     <style>
-        /* CSSは後ほど実装します。
-           ここでは、全体の雰囲気だけを感じられるように、
-           仮のスタイルを少しだけ当てておきます。
-        */
+        /* --- 全体・背景の設定 --- */
         body {
             font-family: 'M PLUS Rounded 1c', sans-serif;
-            background-color: #fffafb; /* 仮の背景色 */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            margin: 0;
             padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            
+            /* ★いただいた背景画像をここで指定します */
+            background-image: url('bg_pattern.png');
+            background-repeat: repeat; /* 画像をリピートさせる */
+            background-size: auto; /* 元の画像の大きさで表示 */
         }
 
+        /* --- メインカード（上部パネル）の設定 --- */
         .main-card {
             background-color: white;
-            border: 2px solid #ffcad4; /* 仮の枠線 */
-            border-radius: 20px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.2);
             width: 100%;
             max-width: 600px;
-            padding: 20px;
+            padding: 30px;
             position: relative;
+            border: 2px solid #fff0f3;
             margin-bottom: 30px;
         }
 
-        /* 画像素材を配置するためのプレースホルダ */
-        .chara-placeholder {
+        /* 一果ちゃんのキャラクター配置（テスト用） */
+        .ichika-chara {
             position: absolute;
-            top: 20px; left: 20px;
-            width: 100px; height: 100px;
-            background-color: #f0f0f0;
+            top: 20px;
+            right: 20px;
+            width: 100px;
+            height: 100px;
+            background-color: #f0f0f0; /* 画像がない場合のプレースホルダ */
+            border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
-            border-radius: 10px; font-size: 0.8rem; color: #999;
+            font-size: 0.8rem; color: #999;
         }
 
-        /* 見出しやセレクトボックス、メモ、スライダーなどの仮スタイル */
-        .title { color: #ff6b81; text-align: center; margin-left: 120px; }
-        .stadium-memo { background-color: #fff5f6; border-radius: 15px; padding: 15px; margin-top: 15px; }
-        .slider-group { width: 100%; max-width: 600px; margin-bottom: 15px; }
+        /* タイトルエリア */
+        .card-header {
+            text-align: center;
+            margin-bottom: 25px;
+            /* キャラクターを避けるための余白 */
+            margin-right: 120px; 
+        }
+
+        h1 {
+            font-size: 1.4rem;
+            color: #ff6b81;
+            font-weight: 800;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* 合言葉エリア */
+        .admin-pass-row {
+            text-align: right;
+            margin-bottom: 15px;
+        }
+
+        .admin-pass-label {
+            font-size: 0.8rem;
+            color: #ff8fa3;
+            margin-right: 5px;
+        }
+
+        .admin-pass-input {
+            font-size: 0.8rem;
+            padding: 5px 10px;
+            border-radius: 15px;
+            border: 1px solid #ddd;
+            width: 80px;
+        }
+
+        /* 開催場選択ラベル */
+        .label-row {
+            font-size: 1rem;
+            color: #ff8fa3;
+            font-weight: 700;
+            border-left: 5px solid #ff6b81;
+            padding-left: 10px;
+            margin-bottom: 5px;
+        }
+
+        /* --- 開催場選択（黒いデザイン） --- */
+        .stadium-select-wrapper {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .stadium-select {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 12px;
+            background: linear-gradient(180deg, #333 0%, #000 100%);
+            color: #f1c40f; 
+            font-size: 1.2rem;
+            font-weight: 800;
+            border: 2px solid #b8860b;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            appearance: none;
+            cursor: pointer;
+            
+            background-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="%23f1c40f"><path d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+        }
+
+        .stadium-select option {
+            background: #222;
+            color: #fff;
+        }
+
+        /* セレクトボックス右上の桜飾り */
+        .stadium-select-flower {
+            position: absolute;
+            top: -10px;
+            right: 15px;
+            font-size: 1.2rem;
+            filter: drop-shadow(0 0 5px gold);
+        }
+
+        /* --- 競艇場の特徴エリア（点線枠） --- */
+        .stadium-memo {
+            background-color: #fffafb;
+            border: 2px dashed #ffcad4;
+            border-radius: 20px;
+            padding: 20px;
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .memo-title {
+            color: #ff6b81;
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .memo-link {
+            color: #ff6b81;
+            text-decoration: underline;
+            font-weight: 700;
+            cursor: pointer;
+            display: block;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .flower-icon {
+            font-size: 1.2rem;
+        }
     </style>
 </head>
 <body>
 
 <div class="main-card">
-    <div class="chara-placeholder">キャラクター<br>(ここに画像)</div>
+    <div class="ichika-chara">キャラクター<br>(ここに画像)</div>
 
-    <div class="header-group">
-        <h1 class="title">🌸 一果の1号艇・鬼絞り判定所</h1>
-        <div style="text-align: right;">🔑 合言葉？</div>
+    <div class="card-header">
+        <h1>
+            <span class="flower-icon">🌸</span>
+            一果の1号艇・鬼絞り判定所
+        </h1>
     </div>
 
-    <div class="input-section">
-        <div style="color: #ff8fa3;">① 開催場を選択</div>
-        <select style="width: 100%; font-size: 1.2rem;">
-            <option>01 桐生</option>
-            <option>02 戸田</option>
+    <div class="admin-pass-row">
+        <span class="admin-pass-label">🔑 合言葉？</span>
+        <input type="password" class="admin-pass-input" placeholder="🔑">
+    </div>
+
+    <div class="label-row">① 開催場を選択</div>
+    <div class="stadium-select-wrapper">
+        <select class="stadium-select">
+            <option value="01 桐生">01 桐生</option>
+            <option value="02 戸田">02 戸田</option>
         </select>
+        <span class="stadium-select-flower">🌸</span>
     </div>
 
     <div class="stadium-memo">
-        <h3>🌸 01 桐生 の特徴 🌸</h3>
-        <p>標高が、等、イン逃げ率は標準的でる。夜はモーターの力が強くなるんですよぉ。<br>
-        もっと詳しいデータを見る？ 🌸</p>
+        <div class="memo-title">
+            <span class="flower-icon">🌸</span>
+            01 桐生 の特徴
+            <span class="flower-icon">🌸</span>
+        </div>
+        平均イン逃げ率：<strong>51%</strong><br>
+        標高が高くて、イン逃げ率は標準的ですぅ。夜はモーターの力が強くなるんですよぉ。<br>
+        <span class="memo-link">もっと詳しいデータを見る？ 🌸</span>
     </div>
 </div>
-
-<div class="slider-area">
-    <div class="slider-group">
-        <label>② 1号艇 2連対率</label>
-        <input type="range" min="0" max="100" value="70">
-    </div>
-    <div class="slider-group">
-        <label>③ 1号艇 平均ST</label>
-        <input type="range" min="10" max="25" value="15">
-    </div>
-    </div>
-
-<button style="margin-top: 20px;">判定ツールに戻る</button>
 
 </body>
 </html>
