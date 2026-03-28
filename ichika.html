@@ -32,20 +32,21 @@
             align-items: center;
         }
 
-        /* 上部エリア（キャラ + 入力） */
+        /* --- 上部：キャラと入力エリア --- */
         .top-section {
             display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            width: 100%;
-            margin-bottom: -5px;
+            justify-content: space-between; /* 両端に配置 */
+            align-items: flex-end; /* 下揃え */
+            width: 100%; /* 下のメモ枠と幅を合わせる */
+            margin-bottom: -5px; /* メモ枠との隙間を詰める */
             position: relative;
-            z-index: 5;
+            z-index: 5; /* メモ枠より前に */
         }
 
+        /* キャラクターエリア */
         .chara-container {
-            flex: 0 0 140px;
-            margin-left: -5px;
+            flex: 0 0 140px; /* キャラクターの幅を固定 */
+            margin-left: -5px; /* 少し左にはみ出させる */
             position: relative;
         }
         .ichika-chara {
@@ -54,40 +55,51 @@
             display: block;
         }
 
+        /* 入力エリア（合言葉、セレクトバー） */
         .input-area {
             flex: 0 0 auto;
             display: flex;
             flex-direction: column;
-            align-items: flex-end;
-            gap: 10px; /* 鍵穴とバーの間隔 */
-            padding-right: 5px;
+            align-items: flex-end; /* 右寄せ */
+            gap: 10px; /* 合言葉とバーの間隔 */
+            padding-right: 5px; /* 右側の余白調整 */
         }
 
-        /* --- 【修正箇所】合言葉エリアに鍵穴画像を追加 --- */
+        /* --- 【修正箇所】鍵と合言葉枠を綺麗に重ねる --- */
         .admin-pass-wrapper {
-            position: relative;
+            position: relative; /* 子要素の位置基準に */
             display: flex;
             align-items: center;
-            gap: 15px; /* 鍵穴とテキストの間隔 */
+            /* お手本（image_6.png）に近い位置へ調整 */
+            margin-right: 20px; 
+            margin-bottom: 5px;
         }
         
-        /* 鍵穴画像 (image_5.png) */
+        /* 鍵の画像 (image_5.png) */
         .gold-keyhole-icon {
             width: 35px; /* お手本のサイズ感に調整 */
             height: auto;
             display: block;
-            /* 鍵穴とキラキラの位置をお手本に近づける微調整 */
-            margin-bottom: -5px; 
+            position: relative; /* 重なり順を指定可能に */
+            z-index: 10; /* 白い枠より前に */
+            /* 鍵の先端が枠に差し込まれるように位置を微調整 */
+            margin-right: -10px; 
+            margin-bottom: -3px;
         }
 
+        /* 合言葉の白い枠 */
         .admin-pass-label-area {
             display: flex;
             align-items: center;
             background: white;
             border: 1px solid #ddd;
             border-radius: 20px;
-            padding: 4px 12px;
+            padding: 4px 12px 4px 18px; /* 鍵が被る左側の余白を広げた */
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+            position: relative; /* 重なり順を指定可能に */
+            z-index: 5; /* 鍵より後ろに */
+        }
+        .admin-pass-label {
             font-size: 0.75rem; color: #a18e8e; font-weight: 800;
         }
 
@@ -165,6 +177,7 @@
         <div class="input-area">
             <div class="admin-pass-wrapper">
                 <img src="gold_keyhole.png" class="gold-keyhole-icon" alt="🗝️">
+                
                 <div class="admin-pass-label-area">
                     <span class="admin-pass-label">合言葉？</span>
                     <input type="password" style="display:none;">
