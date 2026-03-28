@@ -324,4 +324,268 @@ function saveData(type, isHit) {
 }
 </script>
 </body>
+</html>        /* 鍵と合言葉 */
+        .admin-pass-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 40px;
+        }
+        .gold-keyhole-icon {
+            width: 48px;
+            position: absolute;
+            left: -18px; top: 50%;
+            transform: translateY(-50%);
+            z-index: 11;
+        }
+        .admin-pass-input {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 4px 10px 4px 32px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+            width: 80px;
+            font-size: 0.75rem;
+            color: #a18e8e;
+            font-family: inherit;
+        }
+
+        /* 選択バー */
+        .stadium-select-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 230px;
+            height: 44px;
+            background-image: url('stadium_bar.png'); 
+            background-size: 100% 100%;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .stadium-text-display {
+            color: #d4b185; font-size: 0.95rem; font-weight: 800;
+            text-shadow: 1px 1px 2px black;
+            padding-right: 15px;
+        }
+        .stadium-select {
+            position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 15;
+        }
+
+        /* --- 入力スライダー群 --- */
+        .slider-section {
+            background: #fffafb;
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid #ffeef1;
+        }
+        .input-item { margin-bottom: 12px; }
+        .input-item label {
+            display: block; font-size: 0.8rem; font-weight: 800; color: #ff8fa3;
+            border-left: 4px solid #ff6b81; padding-left: 8px; margin-bottom: 5px;
+        }
+        .input-row { display: flex; align-items: center; gap: 10px; }
+        input[type="range"] { flex: 1; accent-color: #ff6b81; }
+        .val-disp { font-size: 0.9rem; font-weight: 800; color: #ff6b81; min-width: 50px; text-align: right; }
+
+        /* ボタン */
+        .calc-btn {
+            width: 100%; padding: 15px; margin-top: 10px;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            color: white; border: none; border-radius: 15px;
+            font-weight: 800; font-size: 1.1rem; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 107, 129, 0.3);
+            font-family: inherit;
+        }
+
+        /* --- 結果・特徴メモエリア --- */
+        .stadium-memo-wrapper {
+            position: relative;
+            width: 100%;
+            margin-top: 15px;
+            padding: 25px 20px;
+            box-sizing: border-box;
+            z-index: 1;
+        }
+        .stadium-memo-wrapper::before {
+            content: ""; position: absolute; inset: 0;
+            background-image: url('memo_frame.png');
+            background-size: 100% 100%; z-index: -1;
+        }
+
+        /* 判定演出 */
+        #resultArea { display: none; text-align: center; }
+        .score-num { font-size: 3rem; font-weight: 800; color: #ff6b81; line-height: 1; margin: 5px 0; }
+        .advice-box { font-size: 0.85rem; color: #444; line-height: 1.5; margin-bottom: 10px; font-weight: 700; }
+        
+        /* 記録ボタン */
+        .record-btns { display: flex; gap: 5px; margin-top: 10px; }
+        .record-btns button {
+            flex: 1; padding: 8px; border: none; border-radius: 8px;
+            color: white; font-weight: 800; font-size: 0.75rem; cursor: pointer;
+        }
+        .btn-hit { background: #ff6b81; }
+        .btn-miss { background: #d1d1d1; }
+
+        /* 統計パネル */
+        .stats-card {
+            background: white; width: 100%; max-width: 440px;
+            border-radius: 20px; border: 3px solid #d4b185; padding: 15px; box-sizing: border-box;
+        }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .stat-box { background: #fffafb; padding: 10px; border-radius: 10px; text-align: center; border: 1px solid #ffeef1; }
+        .stat-val { font-size: 1.2rem; font-weight: 800; color: #ff6b81; display: block; }
+        .stat-label { font-size: 0.6rem; color: #ff8fa3; font-weight: 700; }
+
+        /* アニメーション */
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        .ichika-bounce { animation: bounce 0.5s ease infinite; }
+    </style>
+</head>
+<body>
+
+<div class="outer-frame">
+    <div class="top-section">
+        <div class="chara-container">
+            <img src="ichika_chara3.png" class="ichika-chara" id="ichikaImg">
+        </div>
+
+        <div class="input-area">
+            <div class="admin-pass-wrapper">
+                <img src="gold_keyhole.png" class="gold-keyhole-icon">
+                <input type="password" id="adminPass" class="admin-pass-input" placeholder="合言葉？" oninput="checkAdmin()">
+            </div>
+
+            <div class="stadium-select-wrapper">
+                <div class="stadium-text-display" id="stadiumName">選択してください</div>
+                <select class="stadium-select" id="stadium" onchange="updateStadium(this.value)">
+                    <option value="">選択してください</option>
+                    <option value="01 桐生">01 桐生</option><option value="02 戸田">02 戸田</option>
+                    <option value="12 住之江">12 住之江</option><option value="18 徳山">18 徳山</option>
+                    <option value="24 大村">24 大村</option>
+                    </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="slider-section">
+        <div class="input-item">
+            <label>1号艇 2連対率</label>
+            <div class="input-row"><input type="range" id="rank1" min="0" max="100" value="70" oninput="updateVal('rank1Val', this.value + '%')"><span class="val-disp" id="rank1Val">70%</span></div>
+        </div>
+        <div class="input-item">
+            <label>1号艇 平均ST</label>
+            <div class="input-row"><input type="range" id="st1" min="10" max="25" value="15" oninput="updateVal('st1Val', '0.' + this.value + 's')"><span class="val-disp" id="st1Val">0.15s</span></div>
+        </div>
+        <div class="input-item">
+            <label>その他条件</label>
+            <select id="condition" style="width:100%; padding:8px; border-radius:10px; border:1px solid #ddd; font-family:inherit;">
+                <option value="0">普通</option>
+                <option value="-15">外に超抜あり</option>
+                <option value="-10">追い風強</option>
+            </select>
+        </div>
+        <button class="calc-btn" onclick="calculate()">一果に聞いてみる♪</button>
+    </div>
+
+    <div class="stadium-memo-wrapper">
+        <div id="memoArea">
+            <div class="memo-title" id="memoTitle">🌸 場を選択してね 🌸</div>
+            <div class="memo-content" id="memoText">ここにデータが出ますぅ♪</div>
+        </div>
+        
+        <div id="resultArea">
+            <div class="memo-title">🌸 判定結果 🌸</div>
+            <div class="advice-box" id="advice"></div>
+            <div class="score-num" id="score">0%</div>
+            <div style="font-size:0.6rem; color:#ff8fa3; margin-top:5px;">的中・不的中を教えてね</div>
+            <div class="record-btns">
+                <button class="btn-hit" onclick="saveData('self', true)">的中！</button>
+                <button class="btn-miss" onclick="saveData('self', false)">不的中</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="stats-card">
+    <div class="memo-title" style="margin-bottom:10px;">🏆 分析パネル</div>
+    <div class="stats-grid">
+        <div class="stat-box">
+            <span class="stat-val" id="adminTotalRate">0%</span>
+            <span class="stat-label">👑 管理人の的中率</span>
+        </div>
+        <div class="stat-box">
+            <span class="stat-val" id="selfTotalRate">0%</span>
+            <span class="stat-label">👤 自分の的中率</span>
+        </div>
+    </div>
+</div>
+
+<script>
+const stadiumMemos = {
+    "01 桐生": 51, "02 戸田": 44, "12 住之江": 58, "18 徳山": 63, "24 大村": 66
+};
+const stadiumInfo = {
+    "01 桐生": "標高が高くて、イン逃げ率は標準的ですぅ。夜はモーターの力が強くなるんですよぉ。",
+    "24 大村": "日本一のインの聖地！迷ったら1号艇さん、って言われるくらい強いんですよぉ🌸"
+};
+
+let lastScore = 0;
+let isAdmin = false;
+
+function updateVal(id, val) { document.getElementById(id).innerText = val; }
+
+function updateStadium(val) {
+    document.getElementById('stadiumName').innerText = val || "選択してください";
+    const memoArea = document.getElementById('memoArea');
+    const resultArea = document.getElementById('resultArea');
+    memoArea.style.display = "block";
+    resultArea.style.display = "none";
+
+    if(val) {
+        document.getElementById('memoTitle').innerText = val + " の特徴 🌸";
+        document.getElementById('memoText').innerHTML = `平均イン逃げ率：<strong>${stadiumMemos[val]}%</strong><br>${stadiumInfo[val] || "バランスの良い場ですねぇ。"}`;
+    }
+}
+
+function checkAdmin() {
+    isAdmin = document.getElementById('adminPass').value === "0913";
+    document.getElementById('adminPass').style.borderColor = isAdmin ? "#087f5b" : "#ddd";
+}
+
+function calculate() {
+    const stadium = document.getElementById('stadium').value;
+    if(!stadium) return alert("場を選択してね！");
+
+    const base = stadiumMemos[stadium];
+    const r1 = parseInt(document.getElementById('rank1').value);
+    const st1 = parseInt(document.getElementById('st1').value);
+    const cd = parseInt(document.getElementById('condition').value);
+
+    // 簡易計算ロジック
+    lastScore = Math.round(Math.min(98, Math.max(5, base + (r1-50)*0.6 + (15-st1)*2.5 + cd)));
+
+    document.getElementById('memoArea').style.display = "none";
+    document.getElementById('resultArea').style.display = "block";
+    document.getElementById('score').innerText = lastScore + "%";
+
+    const img = document.getElementById('ichikaImg');
+    img.classList.remove('ichika-bounce');
+
+    if(lastScore >= 75) {
+        document.getElementById('advice').innerText = "「逃げ濃厚ですねぇ！期待大、ですよぉ🌸」";
+        if(lastScore >= 85) img.classList.add('ichika-bounce');
+    } else {
+        document.getElementById('advice').innerText = "「少し慎重に見守りましょうかぁ…。」";
+    }
+}
+
+function saveData(type, isHit) {
+    const advice = document.getElementById('advice');
+    const original = advice.innerText;
+    advice.innerText = isHit ? "「おめでとうございます〜っ！🌸」" : "「次こそは、頑張りましょうねぇ…。」";
+    
+    // 統計更新のダミー（実際はLocalStorageやGASへ）
+    setTimeout(() => { advice.innerText = original; }, 2000);
+}
+</script>
+</body>
 </html>
