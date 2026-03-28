@@ -6,75 +6,72 @@
     <title>一果の1号艇・鬼絞り判定所 🌸</title>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&display=swap" rel="stylesheet">
     <style>
-        /* --- 背景設定 --- */
+        /* --- 背景 --- */
         body {
             font-family: 'M PLUS Rounded 1c', sans-serif;
-            margin: 0; padding: 5px;
-            display: flex; justify-content: center; align-items: flex-start;
+            margin: 0; padding: 10px;
+            display: flex; justify-content: center;
             background-image: url('bg_pattern.png');
             background-repeat: repeat; background-size: 180px;
-            min-height: 100vh;
         }
 
-        /* --- 外枠（image_23.png）の調整 --- */
+        /* --- 外枠のサイズと余白を固定 --- */
         .outer-frame {
             position: relative;
             width: 100%;
-            max-width: 500px; /* 少し大きくしてゆとりを出す */
-            margin-top: 15px;
-            /* 枠の装飾を絶対に避けるためのパディング */
-            padding: 65px 45px 55px 45px; 
+            max-width: 460px; /* スマホで一番きれいに見える幅 */
+            margin-top: 20px;
+            /* 装飾に絶対被らせないための大きな余白 */
+            padding: 70px 45px 60px 45px; 
             box-sizing: border-box;
             background-image: url('598ebf7b-2370-472e-acba-c1507159c995.png');
             background-size: 100% 100%;
             background-repeat: no-repeat;
         }
 
-        /* --- レイアウト構造 --- */
+        /* --- メインコンテンツを横並びにする --- */
         .main-card {
             display: flex;
-            align-items: flex-start;
+            align-items: center; /* 上下中央 */
             justify-content: space-between;
-            flex-wrap: wrap;
+            width: 100%;
         }
 
-        /* --- 左側：一果ちゃん（少し大きく、位置を微調整） --- */
+        /* --- 左側：一果ちゃん（枠の内側に収める） --- */
         .chara-container {
-            flex: 0 0 42%;
-            position: relative;
+            flex: 0 0 40%;
+            display: flex;
+            justify-content: flex-start;
         }
         .ichika-chara {
-            width: 155px; /* サイズアップ */
+            width: 130px; /* 枠からはみ出さないサイズに固定 */
             height: auto;
-            filter: drop-shadow(4px 4px 8px rgba(0,0,0,0.1));
-            /* 枠の左角を避けるために少し内側へ */
-            margin-left: 2px;
-            margin-top: -5px;
+            filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.1));
+            /* 枠の左装飾の内側に少し寄せる */
+            margin-left: 5px;
         }
 
-        /* --- 右側：コンテンツブロック --- */
+        /* --- 右側：文字ブロック --- */
         .content-block {
             flex: 0 0 55%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: 10px;
         }
 
         h1 {
-            font-size: 1.05rem; /* スマホで見やすい最適サイズ */
+            font-size: 0.95rem; /* 折り返しを防ぐための微調整 */
             color: #ff6b81;
             text-align: center;
-            margin: 0 0 12px 0;
+            margin: 0 0 10px 0;
             line-height: 1.4;
-            letter-spacing: -0.5px;
         }
 
         /* 合言葉（カギ） */
         .admin-pass-wrapper {
             position: relative;
-            width: 85px; height: 38px;
-            margin-bottom: 12px;
+            width: 80px; height: 35px;
+            margin-bottom: 10px;
         }
         .gold-keyhole-bg {
             position: absolute; inset: 0;
@@ -86,25 +83,20 @@
         }
         .admin-pass-label {
             position: absolute; left: 105%; top: 50%; transform: translateY(-50%);
-            white-space: nowrap; font-size: 0.65rem; color: #ff8fa3; font-weight: 800;
+            white-space: nowrap; font-size: 0.6rem; color: #ff8fa3; font-weight: 800;
         }
 
         /* 開催場セレクトバー */
-        .label-row {
-            font-size: 0.8rem; color: #ff8fa3; font-weight: 800;
-            margin: 5px 0 5px 0;
-        }
-
         .stadium-select-wrapper {
             position: relative;
             width: 100%;
-            height: 48px; /* 高さを微増してリッチに */
+            height: 42px;
             background-image: url('stadium_bar.png');
             background-size: 100% 100%;
         }
         .stadium-text-display {
-            position: absolute; top: 52%; left: 35px; transform: translateY(-50%);
-            color: #f1c40f; font-size: 0.95rem; font-weight: 800;
+            position: absolute; top: 52%; left: 30px; transform: translateY(-50%);
+            color: #f1c40f; font-size: 0.8rem; font-weight: 800;
             text-shadow: 1px 1px 2px #000;
         }
         .stadium-select {
@@ -112,12 +104,12 @@
             opacity: 0; z-index: 20; cursor: pointer;
         }
 
-        /* --- 下部：特徴メモ（ image_15.png ） --- */
+        /* --- 下部：特徴メモ --- */
         .stadium-memo-wrapper {
             position: relative;
             width: 100%;
-            margin-top: 25px;
-            padding: 35px 25px;
+            margin-top: 20px;
+            padding: 30px 20px;
             box-sizing: border-box;
             z-index: 1;
         }
@@ -127,11 +119,11 @@
             background-size: 100% 100%; z-index: -1;
         }
         .memo-content {
-            font-size: 0.78rem; color: #444; line-height: 1.6;
+            font-size: 0.75rem; color: #555; line-height: 1.5;
         }
         .memo-title {
             color: #ff6b81; font-weight: 800; text-align: center;
-            margin-bottom: 6px; font-size: 0.9rem;
+            margin-bottom: 5px; font-size: 0.85rem;
         }
         .memo-link {
             color: #ff6b81; text-align: center; display: block;
@@ -156,7 +148,6 @@
                 <input type="password" class="admin-pass-input">
             </div>
 
-            <div class="label-row">① 開催場を選択</div>
             <div class="stadium-select-wrapper">
                 <div class="stadium-text-display" id="stadiumName">01 桐生</div>
                 <select class="stadium-select" onchange="document.getElementById('stadiumName').innerText=this.value">
