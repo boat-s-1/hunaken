@@ -341,10 +341,9 @@
                oninput="checkAdmin()">
     </div>
 
-    <div class="input-section">
+   <div class="input-section">
         <label>① 開催場を選択</label>
-        <select id="stadium">
-            <option value="01 桐生">01 桐生</option><option value="02 戸田">02 戸田</option><option value="03 江戸川">03 江戸川</option>
+        <select id="stadium" onchange="showStadiumMemo()"> <option value="">選択してください</option>  <option value="01 桐生">01 桐生</option><option value="02 戸田">02 戸田</option><option value="03 江戸川">03 江戸川</option>
             <option value="04 平和島">04 平和島</option><option value="05 多摩川">05 多摩川</option><option value="06 浜名湖">06 浜名湖</option>
             <option value="07 蒲郡">07 蒲郡</option><option value="08 常滑">08 常滑</option><option value="09 津">09 津</option>
             <option value="10 三国">10 三国</option><option value="11 びわこ">11 びわこ</option><option value="12 住之江">12 住之江</option>
@@ -353,6 +352,19 @@
             <option value="19 下関">19 下関</option><option value="20 若松">20 若松</option><option value="21 芦屋">21 芦屋</option>
             <option value="22 福岡">22 福岡</option><option value="23 唐津">23 唐津</option><option value="24 大村">24 大村</option>
         </select>
+
+        <div id="stadiumMemo" style="display: none; background: #fffafb; border: 1.5px dashed #ffcad4; border-radius: 15px; padding: 12px; margin-top: 10px; font-size: 0.85rem; color: #4a4a4a; animation: fadeIn 0.4s ease-out;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                <span style="font-size: 1.2rem;">🌸</span>
+                <strong id="memoTitle" style="color: #ff6b81;">場別データ</strong>
+            </div>
+            <div id="memoText" style="line-height: 1.4; margin-bottom: 8px;">ここにデータが出ますぅ♪</div>
+            <a href="data.html" style="color: #ff6b81; font-weight: 800; text-decoration: underline; font-size: 0.75rem; display: inline-block;">
+                もっと詳しいデータを見る？ 🌸
+            </a>
+        </div>
+        </div>
+
     </div>
 
     <div class="input-section"><label>② 1号艇 2連対率</label><div class="input-group"><input type="range" id="rank1" min="0" max="100" value="70" oninput="updateVal('rank1Val', this.value + '%')"><span class="val-display" id="rank1Val">70%</span></div></div>
@@ -431,6 +443,49 @@
 </div>
 
 <script>
+    // --- 一果ちゃんの場別豆知識データ ---
+const stadiumMemos = {
+    "01 桐生": "標高が高くて、イン逃げ率は標準的ですぅ。夜はモーターの力が強くなるんですよぉ。",
+    "02 戸田": "日本一狭いコースで、イン逃げ率は低めです…。カドからの攻めに注意してくださいねっ。",
+    "03 江戸川": "日本唯一の河川コース！流れが強くて、イン逃げはとっても難しいんですよぉ…。",
+    "04 平和島": "「東のメッカ」ですねっ。差しや捲りが決まりやすくて、インは苦戦気味ですぅ。",
+    "12 住之江": "「聖地」ですね！イン逃げ率は高めで、安定感がありますぅ。さすがの迫力ですっ。",
+    "18 徳山": "インがとーっても強い場ですっ。6割以上も逃げが決まるので、安心感がありますねぇ。",
+    "24 大村": "日本一のインの聖地！迷ったら1号艇さん、って言われるくらい強いんですよぉ🌸",
+    // 必要に応じて他の場も追加してくださいね♪
+};
+
+// --- メモを表示する関数 ---
+function showStadiumMemo() {
+    const select = document.getElementById('stadium');
+    const memoArea = document.getElementById('stadiumMemo');
+    const memoText = document.getElementById('memoText');
+    const memoTitle = document.getElementById('memoTitle');
+    const stadium = select.value;
+
+    if (stadium === "") {
+        memoArea.style.display = "none";
+        return;
+    }
+
+    // 基本データ（stadiumBaseDataから流用）と独自メモを組み合わせ
+    const baseRate = stadiumBaseData[stadium] || "??";
+    const info = stadiumMemos[stadium] || "バランスの良い場ですねぇ。一果と一緒にじっくり見極めましょう〜。";
+
+    memoTitle.innerText = stadium + " の特徴 🌸";
+    memoText.innerHTML = `平均イン逃げ率：<strong>${baseRate}%</strong><br>${info}`;
+    
+    // ふわっと表示
+    memoArea.style.display = "block";
+}
+
+// CSSアニメーションをscriptタグの上などに1つ追加しておいてください
+/*
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+*/
 // --- 変数定義 ---
 let lastScore = 0;
 let currentStadium = "";
