@@ -20,7 +20,7 @@
         .outer-frame {
             position: relative;
             width: 100%;
-            max-width: 480px; /* お手本に近い幅 */
+            max-width: 480px;
             padding: 30px;
             box-sizing: border-box;
             background: white;
@@ -29,24 +29,23 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
-            align-items: center; /* 中身を中央寄せ */
+            align-items: center;
         }
 
-        /* --- 上部：キャラと入力エリア --- */
+        /* 上部エリア（キャラ + 入力） */
         .top-section {
             display: flex;
-            justify-content: space-between; /* 両端に配置 */
-            align-items: flex-end; /* 下揃え */
-            width: 100%; /* 下のメモ枠と幅を合わせる */
-            margin-bottom: -5px; /* メモ枠との隙間を詰める */
+            justify-content: space-between;
+            align-items: flex-end;
+            width: 100%;
+            margin-bottom: -5px;
             position: relative;
-            z-index: 5; /* メモ枠より前に */
+            z-index: 5;
         }
 
-        /* キャラクターエリア */
         .chara-container {
-            flex: 0 0 140px; /* キャラクターの幅を固定 */
-            margin-left: -5px; /* 少し左にはみ出させる */
+            flex: 0 0 140px;
+            margin-left: -5px;
             position: relative;
         }
         .ichika-chara {
@@ -55,18 +54,33 @@
             display: block;
         }
 
-        /* 入力エリア（合言葉、セレクトバー） */
         .input-area {
             flex: 0 0 auto;
             display: flex;
             flex-direction: column;
-            align-items: flex-end; /* 右寄せ */
-            gap: 15px; /* 合言葉とバーの間隔 */
-            padding-right: 5px; /* 右側の余白調整 */
+            align-items: flex-end;
+            gap: 10px; /* 鍵穴とバーの間隔 */
+            padding-right: 5px;
         }
 
-        /* 合言葉エリア */
+        /* --- 【修正箇所】合言葉エリアに鍵穴画像を追加 --- */
         .admin-pass-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 15px; /* 鍵穴とテキストの間隔 */
+        }
+        
+        /* 鍵穴画像 (image_5.png) */
+        .gold-keyhole-icon {
+            width: 35px; /* お手本のサイズ感に調整 */
+            height: auto;
+            display: block;
+            /* 鍵穴とキラキラの位置をお手本に近づける微調整 */
+            margin-bottom: -5px; 
+        }
+
+        .admin-pass-label-area {
             display: flex;
             align-items: center;
             background: white;
@@ -74,50 +88,49 @@
             border-radius: 20px;
             padding: 4px 12px;
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-        }
-        .admin-pass-label {
             font-size: 0.75rem; color: #a18e8e; font-weight: 800;
         }
 
-        /* 開催場セレクトバー */
+        /* 開催場セレクトバー (image_3.pngを使用) */
         .stadium-select-wrapper {
             position: relative;
             width: 250px;
             height: 48px;
-            background-image: url('stadium_bar.png'); /* image_2.png を使用 */
+            background-image: url('stadium_bar.png'); 
             background-size: 100% 100%;
+            background-repeat: no-repeat;
             display: flex;
             align-items: center;
             padding: 0 25px 0 15px;
             box-sizing: border-box;
         }
         .stadium-text-display {
-            color: #d4b185;
-            font-size: 1.1rem;
+            color: #d4b185; 
+            font-size: 1.1rem; 
             font-weight: 800;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
             flex: 1;
             text-align: center;
         }
         .stadium-select {
-            position: absolute; inset: 0; opacity: 0; cursor: pointer;
+            position: absolute; inset: 0; width: 100%; height: 100%;
+            opacity: 0; cursor: pointer;
             z-index: 10;
         }
 
-        /* --- 下部：特徴メモ（image_3.png を使用） --- */
+        /* 下部：特徴メモ (image_4.pngを使用) */
         .stadium-memo-wrapper {
             position: relative;
-            width: 100%; /* 上の top-section と幅を合わせる */
+            width: 100%;
             padding: 25px 20px;
             box-sizing: border-box;
             background-color: transparent;
-            z-index: 1; /* キャラより後ろに */
+            z-index: 1;
         }
-        /* 枠画像を擬似要素で配置 */
         .stadium-memo-wrapper::before {
             content: "";
             position: absolute; inset: 0;
-            background-image: url('memo_frame.png'); /* image_3.png を使用 */
+            background-image: url('memo_frame.png'); 
             background-size: 100% 100%;
             background-repeat: no-repeat;
             z-index: -1;
@@ -151,8 +164,11 @@
 
         <div class="input-area">
             <div class="admin-pass-wrapper">
-                <span class="admin-pass-label">🗝️ 合言葉？</span>
-                <input type="password" style="display:none;">
+                <img src="gold_keyhole.png" class="gold-keyhole-icon" alt="🗝️">
+                <div class="admin-pass-label-area">
+                    <span class="admin-pass-label">合言葉？</span>
+                    <input type="password" style="display:none;">
+                </div>
             </div>
 
             <div class="stadium-select-wrapper">
