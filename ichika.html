@@ -32,26 +32,26 @@
             position: relative; 
             border: 2px solid #fff0f3;
             margin-bottom: 30px;
-            overflow: hidden; /* キャラクターがはみ出さないように */
+            overflow: hidden; /* キャラクターがカードからはみ出さないように */
         }
 
         /* ★いただいた一果ちゃんのキャラクター配置 */
         .ichika-chara {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 120px;
+            top: 10px;    /* 上からの位置 */
+            right: 10px;  /* 右からの位置 */
+            width: 120px; /* キャラクターの幅（画像のサイズに合わせて調整） */
             height: auto;
-            z-index: 1; /* タイトルより下に */
+            z-index: 1;   /* 他の要素より奥に配置 */
         }
 
         /* タイトルエリア */
         .card-header {
             text-align: center;
             margin-bottom: 20px;
-            margin-right: 130px; /* キャラクターを避ける */
+            margin-right: 130px; /* キャラクターと重ならないように余白を空ける */
             position: relative;
-            z-index: 2; /* キャラクターより上に */
+            z-index: 2; /* キャラクターより手前に表示 */
         }
 
         h1 {
@@ -66,7 +66,7 @@
         .admin-pass-row {
             text-align: right;
             margin-bottom: 20px;
-            margin-right: 130px;
+            margin-right: 130px; /* キャラクターを避ける */
             position: relative;
             z-index: 2;
         }
@@ -88,11 +88,11 @@
         .stadium-select-wrapper {
             position: relative;
             margin-bottom: 25px;
-            height: 60px; /* ★バー画像（image_9.png）の高さに合わせて調整 */
+            height: 60px; /* ★バー画像（image_13.png）の高さに合わせて調整 */
             background-image: url('stadium_bar.png'); /* いただいたバー画像 */
             background-size: 100% 100%;
             background-repeat: no-repeat;
-            z-index: 2;
+            z-index: 2; /* キャラクターより手前に */
         }
 
         /* 実際のセレクトボックス（透明にして画像の上に重ねる） */
@@ -101,14 +101,14 @@
             inset: 0; width: 100%; height: 100%;
             opacity: 0; /* 透明にする */
             cursor: pointer;
-            z-index: 2; /* 文字より上に */
+            z-index: 2; /* 文字より上に配置してクリックを有効に */
         }
 
-        /* 画像の上に表示される文字 */
+        /* 画像の上に表示される金色風の文字 */
         .stadium-text-display {
             position: absolute;
             top: 50%;
-            left: 55px; /* 左側の装飾を避ける */
+            left: 55px; /* 左側の装飾を避けて配置 */
             transform: translateY(-50%);
             color: #f1c40f; /* 金色風の色 */
             font-size: 1.3rem;
@@ -122,13 +122,13 @@
         .stadium-memo-wrapper {
             position: relative;
             margin-top: 20px;
-            padding: 20px 30px; /* 枠のゴールド装飾を避けて内側に余白 */
+            padding: 25px 35px; /* ゴールド装飾を避けて内側に余白を空ける */
             color: #666;
             line-height: 1.6;
             z-index: 2;
         }
 
-        /* ★いただいた特徴枠（image_15.png）を背景に指定 */
+        /* ★いただいた特徴枠（image_8.png）を背景に指定 */
         .stadium-memo-wrapper::before {
             content: "";
             position: absolute;
@@ -136,7 +136,7 @@
             background-image: url('memo_frame.png'); /* いただいた枠画像 */
             background-size: 100% 100%;
             background-repeat: no-repeat;
-            z-index: -1; /* テキストより下に配置 */
+            z-index: -1; /* テキストより奥に配置 */
         }
 
         .memo-title {
@@ -196,7 +196,7 @@
 </div>
 
 <script>
-    // セレクトボックスで選んだ場名を画面の金色文字に反映させる関数
+    // セレクトボックスで選んだ場名を金色文字に反映させる関数
     function updateStadiumName(select) {
         const stadiumNameDisplay = document.getElementById('stadiumNameDisplay');
         stadiumNameDisplay.innerText = select.value;
