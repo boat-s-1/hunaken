@@ -6,6 +6,42 @@
     <title>一果の1号艇・鬼絞り判定所 🌸</title>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
+        /* --- 開催場選択（黒いデザイン） --- */
+.stadium-select {
+    width: 100%;
+    padding: 12px 20px;
+    border-radius: 12px;
+    /* 背景を黒のグラデーションに */
+    background: linear-gradient(180deg, #333 0%, #000 100%);
+    /* 文字を白（または金）に */
+    color: #f1c40f; 
+    font-size: 1.2rem;
+    font-weight: 800;
+    /* 金色の枠線 */
+    border: 2px solid #b8860b;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    
+    appearance: none;
+    cursor: pointer;
+    position: relative;
+    
+    /* 右側の矢印を金色の🌸にするイメージ */
+    background-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="%23f1c40f"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+}
+
+/* 選択肢（option）の中身はOS標準になるので、シンプルに */
+.stadium-select option {
+    background: #222;
+    color: #fff;
+}
+
+/* マウスを乗せた時の光沢感 */
+.stadium-select:hover {
+    border-color: #ffd700;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+}
         /* --- 全体・背景の設定 --- */
         body {
             font-family: 'M PLUS Rounded 1c', sans-serif;
@@ -168,13 +204,13 @@
             <input type="password" class="admin-pass-input" placeholder="🔑 合言葉？">
         </div>
 
-        <div>
-            <div class="label-row">① 開催場を選択</div>
-            <select class="stadium-select">
-                <option value="01 桐生">01 桐生</option>
-                <option value="02 戸田">02 戸田</option>
-                </select>
-        </div>
+       <div style="position: relative;">
+    <select class="stadium-select">
+        <option value="01 桐生">01 桐生</option>
+        <option value="02 戸田">02 戸田</option>
+    </select>
+    <span style="position: absolute; top: -8px; right: 10px; font-size: 1.2rem; filter: drop-shadow(0 0 5px gold);">🌸</span>
+</div>
     </div>
 
     <div class="stadium-memo">
