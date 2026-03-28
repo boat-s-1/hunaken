@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: 'M PLUS Rounded 1c', sans-serif;
-            margin: 0; padding: 20px;
+            margin: 0; padding: 10px; /* スマホ用に余白を詰め */
             display: flex; justify-content: center;
             align-items: center; min-height: 100vh;
             background-color: #fdf2f4;
@@ -16,12 +16,12 @@
             background-size: 20px 20px;
         }
 
-        /* 外枠 */
+        /* 外枠：幅を100%にしてmax-widthで制限 */
         .outer-frame {
             position: relative;
             width: 100%;
-            max-width: 480px;
-            padding: 30px;
+            max-width: 420px; /* 少しスリムにしてスマホ適性を向上 */
+            padding: 20px;
             box-sizing: border-box;
             background: white;
             border: 3px solid #d4b185;
@@ -35,19 +35,17 @@
         /* --- 上部：キャラと入力エリア --- */
         .top-section {
             display: flex;
-            justify-content: space-between; /* 両端に配置 */
-            align-items: flex-end; /* 下揃え */
-            width: 100%; /* 下のメモ枠と幅を合わせる */
-            margin-bottom: -5px; /* メモ枠との隙間を詰める */
+            justify-content: space-between;
+            align-items: flex-end;
+            width: 100%;
+            margin-bottom: 5px;
             position: relative;
-            z-index: 5; /* メモ枠より前に */
+            z-index: 5;
         }
 
-        /* キャラクターエリア */
         .chara-container {
-            flex: 0 0 140px; /* キャラクターの幅を固定 */
-            margin-left: -5px; /* 少し左にはみ出させる */
-            position: relative;
+            flex: 0 0 35%; /* 比率で指定 */
+            max-width: 120px;
         }
         .ichika-chara {
             width: 100%;
@@ -55,80 +53,67 @@
             display: block;
         }
 
-        /* 入力エリア（合言葉、セレクトバー） */
         .input-area {
-            flex: 0 0 auto;
+            flex: 1;
             display: flex;
             flex-direction: column;
-            align-items: flex-end; /* 右寄せ */
-            gap: 10px; /* 合言葉とバーの間隔 */
-            padding-right: 5px; /* 右側の余白調整 */
+            align-items: flex-end;
+            gap: 8px;
         }
 
-        /* --- 【修正箇所】鍵と合言葉枠を綺麗に重ねる --- */
-   /* --- 鍵と合言葉枠を完璧に重ねる修正 --- */
+        /* 鍵と合言葉の重なり構造 */
         .admin-pass-wrapper {
             position: relative;
             display: flex;
             align-items: center;
-            margin-right: 5px; /* 右端に寄せすぎない調整 */
-            margin-bottom: 12px; /* 下のバーとの隙間 */
-            height: 40px; /* 高さを固定して安定させる */
+            width: 100%;
+            justify-content: flex-end;
+            height: 35px;
         }
         
-        /* 鍵の画像 */
         .gold-keyhole-icon {
-            width: 42px; /* 少し大きくして存在感を出す */
+            width: 38px;
             height: auto;
-            display: block;
-            position: absolute; /* 絶対配置に切り替え */
-            left: -15px; /* 枠の左側に食い込ませる */
-            top: 50%;
-            transform: translateY(-50%); /* 垂直中央に固定 */
+            position: absolute;
+            left: 15%; /* 枠のサイズに応じて調整 */
             z-index: 10;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
-        /* 合言葉の白い枠 */
         .admin-pass-label-area {
-            display: flex;
-            align-items: center;
             background: white;
             border: 1px solid #ddd;
             border-radius: 20px;
-            /* 鍵が被る左側の余白をしっかり取る（25px） */
-            padding: 4px 15px 4px 25px; 
+            padding: 4px 10px 4px 25px; /* 左側に鍵用の余白 */
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-            position: relative;
             z-index: 5;
-            height: 28px; /* 枠の高さを指定 */
-            line-height: 1;
+            min-width: 80px;
         }
-
         .admin-pass-label {
-            font-size: 0.8rem;
-            color: #a18e8e;
-            font-weight: 800;
+            font-size: 0.7rem; color: #a18e8e; font-weight: 800;
             white-space: nowrap;
         }
-        /* 開催場セレクトバー (image_3.pngを使用) */
+
+        /* 開催場セレクトバー：幅を可変に */
         .stadium-select-wrapper {
             position: relative;
-            width: 250px;
-            height: 48px;
+            width: 100%; /* 親のinput-areaいっぱいに広がる */
+            max-width: 220px;
+            height: 40px;
             background-image: url('stadium_bar.png'); 
             background-size: 100% 100%;
-            background-repeat: no-repeat;
             display: flex;
             align-items: center;
-            padding: 0 25px 0 15px;
+            justify-content: center;
+            padding: 0 15px;
             box-sizing: border-box;
         }
         .stadium-text-display {
             color: #d4b185; 
-            font-size: 1.1rem; 
+            font-size: 0.95rem; 
             font-weight: 800;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-            flex: 1;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
             text-align: center;
         }
         .stadium-select {
@@ -137,39 +122,44 @@
             z-index: 10;
         }
 
-        /* 下部：特徴メモ (image_4.pngを使用) */
+        /* 下部：特徴メモ：幅100% */
         .stadium-memo-wrapper {
             position: relative;
             width: 100%;
-            padding: 25px 20px;
+            padding: 20px 15px;
             box-sizing: border-box;
-            background-color: transparent;
-            z-index: 1;
+            margin-top: 10px;
         }
         .stadium-memo-wrapper::before {
             content: "";
             position: absolute; inset: 0;
             background-image: url('memo_frame.png'); 
             background-size: 100% 100%;
-            background-repeat: no-repeat;
             z-index: -1;
         }
 
         .memo-title {
             color: #8c6a4a; font-weight: 800;
-            margin-bottom: 12px; font-size: 1rem;
-            display: flex; align-items: center; gap: 5px;
-            justify-content: center;
+            margin-bottom: 8px; font-size: 0.9rem;
+            text-align: center;
         }
         .memo-content {
-            font-size: 0.85rem; color: #444; line-height: 1.7;
-            margin-bottom: 12px;
+            font-size: 0.75rem; color: #444; line-height: 1.6;
+            margin-bottom: 8px;
             padding: 0 10px;
+            word-break: break-all; /* 文字溢れ防止 */
         }
         .memo-link {
-            color: #d86d7e; font-size: 0.8rem; font-weight: 800;
-            text-decoration: underline; cursor: pointer;
+            color: #d86d7e; font-size: 0.75rem; font-weight: 800;
+            text-decoration: underline;
             display: block; text-align: center;
+        }
+
+        /* スマホ向け微調整 */
+        @media screen and (max-width: 380px) {
+            .stadium-text-display { font-size: 0.85rem; }
+            .gold-keyhole-icon { width: 32px; left: 10%; }
+            .admin-pass-label-area { padding-left: 20px; }
         }
     </style>
 </head>
@@ -178,16 +168,14 @@
 <div class="outer-frame">
     <div class="top-section">
         <div class="chara-container">
-            <img src="ichika_chara3.png" class="ichika-chara" alt="キャラクター">
+            <img src="ichika_chara3.png" class="ichika-chara">
         </div>
 
         <div class="input-area">
             <div class="admin-pass-wrapper">
-                <img src="gold_keyhole.png" class="gold-keyhole-icon" alt="🗝️">
-                
+                <img src="gold_keyhole.png" class="gold-keyhole-icon">
                 <div class="admin-pass-label-area">
                     <span class="admin-pass-label">合言葉？</span>
-                    <input type="password" style="display:none;">
                 </div>
             </div>
 
