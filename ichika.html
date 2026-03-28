@@ -6,182 +6,150 @@
     <title>一果の1号艇・鬼絞り判定所 🌸</title>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&display=swap" rel="stylesheet">
     <style>
-        /* --- 全体・背景の設定 --- */
+        /* --- 背景設定 --- */
         body {
             font-family: 'M PLUS Rounded 1c', sans-serif;
-            margin: 0; padding: 20px;
-            display: flex; justify-content: center; min-height: 100vh;
-            background-image: url('bg_pattern.png'); /* 背景画像 */
-            background-repeat: repeat; background-size: auto;
+            margin: 0; padding: 10px;
+            display: flex; justify-content: center;
+            background-image: url('Gemini_Generated_Image_vezwz5vezwz5vezw.png'); /* 背景画像 */
+            background-repeat: repeat; background-size: 200px;
         }
 
-        /* --- メインカード（上部パネル）の設定 --- */
+        /* --- メインカード --- */
         .main-card {
-            background-color: white;
-            border-radius: 30px;
-            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.2);
-            width: 100%; max-width: 600px;
-            padding: 30px;
-            position: relative; /* 子要素の配置基準 */
+            background-color: rgba(255, 255, 255, 0.98);
+            border-radius: 25px;
+            box-shadow: 0 10px 25px rgba(255, 182, 193, 0.3);
+            width: 100%; max-width: 480px;
+            padding: 20px;
+            position: relative;
             border: 2px solid #fff0f3;
-            margin-bottom: 30px;
-            overflow: hidden; /* キャラクターのはみ出し防止 */
+            margin-top: 30px;
+            min-height: 400px;
         }
 
-        /* キャラクター配置 */
+        /* --- 一果ちゃんの配置（左側） --- */
         .ichika-chara {
             position: absolute;
-            top: 10px; right: 10px;
-            width: 120px; height: auto;
-            z-index: 1; /* タイトルより下に */
+            top: 20px;
+            left: -10px; /* 左端に少しはみ出す */
+            width: 150px; /* 画像に合わせたサイズ */
+            height: auto;
+            z-index: 5;
         }
 
-        /* タイトルエリア */
-        .card-header {
-            text-align: center; margin-bottom: 20px;
-            margin-right: 130px; /* キャラクターを避ける */
-            position: relative; z-index: 2; /* キャラクターより上に */
+        /* --- 右側のコンテンツエリア（一果ちゃんを避ける） --- */
+        .content-right {
+            margin-left: 130px; /* キャラクターの幅分を空ける */
+            position: relative;
+            z-index: 10;
         }
+
+        /* タイトル */
         h1 {
-            font-size: 1.4rem; color: #ff6b81; font-weight: 800;
-            margin: 0; display: flex; align-items: center; justify-content: center; gap: 8px;
+            font-size: 1.1rem;
+            color: #ff6b81;
+            line-height: 1.3;
+            margin: 0 0 15px 0;
+            text-align: center;
         }
 
-        /* --- 【今回のメイン】合言葉（鍵画像）エリア --- */
+        /* 合言葉（カギ） */
         .admin-pass-wrapper {
             position: relative;
-            margin-bottom: 25px;
-            height: 50px; /* 鍵画像の高さに合わせて調整 */
-            display: flex; justify-content: flex-end; /* 右側に配置 */
-            margin-right: 130px; /* キャラクターを避ける */
-            z-index: 2;
+            width: 100px;
+            height: 35px;
+            margin: 0 auto 15px auto;
         }
-
-        /* ★ゴールドの鍵画像を背景に指定 */
         .gold-keyhole-bg {
-            position: absolute;
-            top: 0; right: 0;
-            width: 150px; /* 鍵画像（image_16.png）の幅に合わせて調整 */
-            height: 100%;
-            background-image: url('gold_keyhole.png'); /* いただいた鍵画像 */
-            background-size: 100% 100%;
-            background-repeat: no-repeat;
-            z-index: 1;
+            position: absolute; inset: 0;
+            background-image: url('9b2dffbd-c31d-424a-a268-cbabead83f6a.png'); /* 鍵画像 */
+            background-size: contain; background-repeat: no-repeat; background-position: center;
         }
-
-        /* 画像の上に表示される文字「🔑 合言葉？」 */
-        .admin-pass-label {
-            position: absolute;
-            top: 50%; right: 40px; /* 鍵の穴を避けて配置 */
-            transform: translateY(-50%);
-            font-size: 0.8rem; color: #ff8fa3; font-weight: 800;
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
-            z-index: 2;
-        }
-
-        /* 透明なパスワード入力欄（画像の上に重ねる） */
         .admin-pass-input {
-            position: absolute;
-            top: 0; right: 0;
-            width: 150px; /* 鍵画像の幅と同じに */
-            height: 100%;
-            opacity: 0; /* 透明にする */
-            cursor: text;
-            z-index: 3; /* 文字より上に配置して入力を有効に */
+            position: absolute; inset: 0; opacity: 0; z-index: 15; cursor: pointer;
+        }
+        .admin-pass-label {
+            position: absolute; left: 105%; top: 50%; transform: translateY(-50%);
+            white-space: nowrap; font-size: 0.7rem; color: #ff8fa3; font-weight: 800;
         }
 
-        /* 開催場選択ラベル */
-        .label-row {
-            font-size: 1rem; color: #ff8fa3; font-weight: 700;
-            border-left: 5px solid #ff6b81; padding-left: 10px;
-            margin-bottom: 5px; position: relative; z-index: 2;
-        }
-
-        /* 開催場選択（いただいた画像の上に文字を重ねる） */
+        /* 開催場バー */
         .stadium-select-wrapper {
-            position: relative; margin-bottom: 25px; height: 60px;
-            background-image: url('stadium_bar.png'); /* いただいたバー画像 */
-            background-size: 100% 100%; background-repeat: no-repeat;
-            z-index: 2;
+            position: relative;
+            width: 100%;
+            height: 45px;
+            background-image: url('830ab2a1-e175-4f48-ab50-7539524e4fd9.png'); /* バー画像 */
+            background-size: 100% 100%;
+            margin-bottom: 20px;
         }
         .stadium-select {
             position: absolute; inset: 0; width: 100%; height: 100%;
-            opacity: 0; cursor: pointer; z-index: 2;
+            opacity: 0; z-index: 20; cursor: pointer;
         }
         .stadium-text-display {
-            position: absolute; top: 50%; left: 55px; transform: translateY(-50%);
-            color: #f1c40f; font-size: 1.3rem; font-weight: 800;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.8); pointer-events: none; z-index: 1;
+            position: absolute; top: 50%; left: 35px; transform: translateY(-50%);
+            color: #f1c40f; font-size: 1rem; font-weight: 800;
+            text-shadow: 1px 1px 2px #000;
         }
 
-        /* 競艇場の特徴エリア（いただいた枠画像を使う） */
+        /* --- 特徴メモ（下部に広がる） --- */
         .stadium-memo-wrapper {
-            position: relative; margin-top: 20px;
-            padding: 25px 35px; color: #666; line-height: 1.6; z-index: 2;
+            position: relative;
+            margin-top: 10px;
+            padding: 30px 20px 20px 20px;
+            clear: both;
         }
         .stadium-memo-wrapper::before {
             content: ""; position: absolute; inset: 0;
-            background-image: url('memo_frame.png'); /* いただいた枠画像 */
-            background-size: 100% 100%; background-repeat: no-repeat; z-index: -1;
+            background-image: url('fd1c6064-ec6c-4917-9247-d1e04d2fad3d.png'); /* 枠画像 */
+            background-size: 100% 100%; z-index: -1;
         }
         .memo-title {
-            color: #ff6b81; font-weight: 800; font-size: 1.1rem;
-            margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 5px;
+            color: #ff6b81; font-weight: 800; text-align: center;
+            margin-bottom: 8px; font-size: 0.9rem;
+        }
+        .memo-content {
+            font-size: 0.8rem; color: #555; line-height: 1.5;
         }
         .memo-link {
-            color: #ff6b81; text-decoration: underline; font-weight: 700;
-            cursor: pointer; display: block; margin-top: 10px; text-align: center;
+            color: #ff6b81; text-align: center; display: block;
+            margin-top: 8px; font-weight: 800; font-size: 0.8rem;
         }
-        .flower-icon { font-size: 1.2rem; }
     </style>
 </head>
 <body>
 
 <div class="main-card">
-    <img src="ichika_chara.png" class="ichika-chara" alt="一果ちゃん">
+    <img src="e6fc69e5-6398-4ef7-a6fc-4f0e262879d3.png" class="ichika-chara">
 
-    <div class="card-header">
-        <h1>
-            <span class="flower-icon">🌸</span>
-            一果の1号艇・鬼絞り判定所
-        </h1>
-    </div>
+    <div class="content-right">
+        <h1>🌸 一果の1号艇・<br>鬼絞り判定所</h1>
 
-    <div class="admin-pass-wrapper">
-        <div class="gold-keyhole-bg"></div>
-        <div class="admin-pass-label">🔑 合言葉？</div>
-        <input type="password" class="admin-pass-input" placeholder="🔑">
-    </div>
+        <div class="admin-pass-wrapper">
+            <div class="gold-keyhole-bg"></div>
+            <div class="admin-pass-label">合言葉？</div>
+            <input type="password" class="admin-pass-input">
+        </div>
 
-    <div class="label-row">① 開催場を選択</div>
-    <div class="stadium-select-wrapper">
-        <select class="stadium-select" id="stadiumSelect" onchange="updateStadiumName(this)">
-            <option value="01 桐生">01 桐生</option>
-            <option value="02 戸田">02 戸田</option>
-            <option value="03 江戸川">03 江戸川</option>
-        </select>
-        <div class="stadium-text-display" id="stadiumNameDisplay">01 桐生</div>
+        <div class="stadium-select-wrapper">
+            <div class="stadium-text-display" id="stadiumName">01 桐生</div>
+            <select class="stadium-select" onchange="document.getElementById('stadiumName').innerText=this.value">
+                <option value="01 桐生">01 桐生</option>
+                <option value="02 戸田">02 戸田</option>
+            </select>
+        </div>
     </div>
 
     <div class="stadium-memo-wrapper">
-        <div class="memo-title">
-            <span class="flower-icon">🌸</span>
-            01 桐生 の特徴
-            <span class="flower-icon">🌸</span>
+        <div class="memo-title">🌸 01 桐生 の特徴 🌸</div>
+        <div class="memo-content">
+            平均イン逃げ率：51%<br>
+            標高が高くて、イン逃げ率は標準的ですぅ。夜はモーターの力が強くなるんですよぉ。
         </div>
-        平均イン逃げ率：<strong>51%</strong><br>
-        標高が高くて、イン逃げ率は標準的ですぅ。夜はモーターの力が強くなるんですよぉ。<br>
-        <span class="memo-link">もっと詳しいデータを見る？ 🌸</span>
+        <a href="data.html" class="memo-link">もっと詳しいデータを見る？ 🌸</a>
     </div>
 </div>
-
-<script>
-    // セレクトボックスで選んだ場名を金色文字に反映させる関数
-    function updateStadiumName(select) {
-        const stadiumNameDisplay = document.getElementById('stadiumNameDisplay');
-        stadiumNameDisplay.innerText = select.value;
-    }
-</script>
 
 </body>
 </html>
