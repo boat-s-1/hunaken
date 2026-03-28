@@ -341,9 +341,11 @@
                oninput="checkAdmin()">
     </div>
 
-   <div class="input-section">
+    <div class="input-section">
         <label>① 開催場を選択</label>
-        <select id="stadium" onchange="showStadiumMemo()"> <option value="">選択してください</option>  <option value="01 桐生">01 桐生</option><option value="02 戸田">02 戸田</option><option value="03 江戸川">03 江戸川</option>
+        <select id="stadium" onchange="showStadiumMemo()"> 
+            <option value="">選択してください</option>
+            <option value="01 桐生">01 桐生</option><option value="02 戸田">02 戸田</option><option value="03 江戸川">03 江戸川</option>
             <option value="04 平和島">04 平和島</option><option value="05 多摩川">05 多摩川</option><option value="06 浜名湖">06 浜名湖</option>
             <option value="07 蒲郡">07 蒲郡</option><option value="08 常滑">08 常滑</option><option value="09 津">09 津</option>
             <option value="10 三国">10 三国</option><option value="11 びわこ">11 びわこ</option><option value="12 住之江">12 住之江</option>
@@ -363,10 +365,7 @@
                 もっと詳しいデータを見る？ 🌸
             </a>
         </div>
-        </div>
-
     </div>
-
     <div class="input-section"><label>② 1号艇 2連対率</label><div class="input-group"><input type="range" id="rank1" min="0" max="100" value="70" oninput="updateVal('rank1Val', this.value + '%')"><span class="val-display" id="rank1Val">70%</span></div></div>
     <div class="input-section"><label>③ 1号艇 平均ST</label><div class="input-group"><input type="range" id="st1" min="10" max="25" value="15" step="1" oninput="updateVal('st1Val', '0.' + this.value + 's')"><span class="val-display" id="st1Val">0.15s</span></div></div>
     <div class="input-section"><label>④ 1号艇 展示気配</label><div class="input-group"><input type="range" id="tenji1" min="-2" max="2" value="0" oninput="updateTenjiDisplay(this.value)"><span class="val-display" id="tenjiVal">普通</span></div></div>
