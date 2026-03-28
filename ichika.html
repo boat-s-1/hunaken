@@ -17,8 +17,8 @@
             
             /* ★いただいた背景画像をここで指定します */
             background-image: url('bg_pattern.png');
-            background-repeat: repeat; /* 画像をリピートさせる */
-            background-size: auto; /* 元の画像の大きさで表示 */
+            background-repeat: repeat;
+            background-size: auto;
         }
 
         /* --- メインカード（上部パネル）の設定 --- */
@@ -34,25 +34,10 @@
             margin-bottom: 30px;
         }
 
-        /* 一果ちゃんのキャラクター配置（テスト用） */
-        .ichika-chara {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 100px;
-            height: 100px;
-            background-color: #f0f0f0; /* 画像がない場合のプレースホルダ */
-            border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.8rem; color: #999;
-        }
-
         /* タイトルエリア */
         .card-header {
             text-align: center;
             margin-bottom: 25px;
-            /* キャラクターを避けるための余白 */
-            margin-right: 120px; 
         }
 
         h1 {
@@ -66,26 +51,6 @@
             gap: 8px;
         }
 
-        /* 合言葉エリア */
-        .admin-pass-row {
-            text-align: right;
-            margin-bottom: 15px;
-        }
-
-        .admin-pass-label {
-            font-size: 0.8rem;
-            color: #ff8fa3;
-            margin-right: 5px;
-        }
-
-        .admin-pass-input {
-            font-size: 0.8rem;
-            padding: 5px 10px;
-            border-radius: 15px;
-            border: 1px solid #ddd;
-            width: 80px;
-        }
-
         /* 開催場選択ラベル */
         .label-row {
             font-size: 1rem;
@@ -96,42 +61,39 @@
             margin-bottom: 5px;
         }
 
-        /* --- 開催場選択（黒いデザイン） --- */
+        /* --- 開催場選択（いただいた画像を使うデザイン） --- */
         .stadium-select-wrapper {
             position: relative;
             margin-bottom: 25px;
+            /* ★バーの高さを画像に合わせます */
+            height: 60px; 
+            /* ★バーの画像を背景として指定します */
+            background-image: url('stadium_bar.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
         }
 
+        /* 実際のセレクトボックスは透明にして、画像の上に重ねます */
         .stadium-select {
+            position: absolute;
+            inset: 0; /* 画像の範囲いっぱいに広げる */
             width: 100%;
-            padding: 12px 20px;
-            border-radius: 12px;
-            background: linear-gradient(180deg, #333 0%, #000 100%);
-            color: #f1c40f; 
+            height: 100%;
+            opacity: 0; /* 透明にする */
+            cursor: pointer;
+        }
+
+        /* 選択されているテキストを表示するためのプレースホルダ */
+        .stadium-text-display {
+            position: absolute;
+            top: 50%;
+            left: 25px; /* 左側の装飾を避ける */
+            transform: translateY(-50%);
+            color: #f1c40f; /* 金色風のテキスト */
             font-size: 1.2rem;
             font-weight: 800;
-            border: 2px solid #b8860b;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            appearance: none;
-            cursor: pointer;
-            
-            background-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="%23f1c40f"><path d="M7 10l5 5 5-5z"/></svg>');
-            background-repeat: no-repeat;
-            background-position: right 15px center;
-        }
-
-        .stadium-select option {
-            background: #222;
-            color: #fff;
-        }
-
-        /* セレクトボックス右上の桜飾り */
-        .stadium-select-flower {
-            position: absolute;
-            top: -10px;
-            right: 15px;
-            font-size: 1.2rem;
-            filter: drop-shadow(0 0 5px gold);
+            pointer-events: none; /* クリックを貫通させる */
         }
 
         /* --- 競艇場の特徴エリア（点線枠） --- */
@@ -156,16 +118,6 @@
             gap: 5px;
         }
 
-        .memo-link {
-            color: #ff6b81;
-            text-decoration: underline;
-            font-weight: 700;
-            cursor: pointer;
-            display: block;
-            margin-top: 10px;
-            text-align: center;
-        }
-
         .flower-icon {
             font-size: 1.2rem;
         }
@@ -174,8 +126,6 @@
 <body>
 
 <div class="main-card">
-    <div class="ichika-chara">キャラクター<br>(ここに画像)</div>
-
     <div class="card-header">
         <h1>
             <span class="flower-icon">🌸</span>
@@ -183,18 +133,14 @@
         </h1>
     </div>
 
-    <div class="admin-pass-row">
-        <span class="admin-pass-label">🔑 合言葉？</span>
-        <input type="password" class="admin-pass-input" placeholder="🔑">
-    </div>
-
     <div class="label-row">① 開催場を選択</div>
     <div class="stadium-select-wrapper">
-        <select class="stadium-select">
+        <div class="stadium-text-display" id="stadiumName">01 桐生</div>
+        <select class="stadium-select" onchange="updateStadiumName(this)">
             <option value="01 桐生">01 桐生</option>
             <option value="02 戸田">02 戸田</option>
+            <option value="03 江戸川">03 江戸川</option>
         </select>
-        <span class="stadium-select-flower">🌸</span>
     </div>
 
     <div class="stadium-memo">
@@ -205,9 +151,16 @@
         </div>
         平均イン逃げ率：<strong>51%</strong><br>
         標高が高くて、イン逃げ率は標準的ですぅ。夜はモーターの力が強くなるんですよぉ。<br>
-        <span class="memo-link">もっと詳しいデータを見る？ 🌸</span>
     </div>
 </div>
+
+<script>
+    // セレクトボックスで選んだ名前を画面に反映させる関数
+    function updateStadiumName(select) {
+        const stadiumNameDisplay = document.getElementById('stadiumName');
+        stadiumNameDisplay.innerText = select.value;
+    }
+</script>
 
 </body>
 </html>
