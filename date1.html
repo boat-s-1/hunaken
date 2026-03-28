@@ -153,10 +153,10 @@
 
 <div class="ad-space">ここに広告🌸</div>
 
-<div class="tab-container">
-    <button class="tab-btn active" onclick="openTab(event, 'nige-data')">🌸 イン逃げ率</button>
-    <button class="tab-btn" onclick="openTab(event, 'kabe-data')">🛡️ 壁の強さ</button>
+<div class="tab-container" style="flex-wrap: wrap;"> <button class="tab-btn active" onclick="openTab(event, 'nige-data')">🌸 逃げ率</button>
+    <button class="tab-btn" onclick="openTab(event, 'kabe-data')">🛡️ 壁</button>
     <button class="tab-btn" onclick="openTab(event, 'condition-data')">🌀 風・スジ</button>
+    <button class="tab-btn" onclick="openTab(event, 'chaku2-data')">🎯 2着率</button>
 </div>
 
 <div id="nige-data" class="tab-content active">
@@ -264,6 +264,55 @@
         <div class="ichika-memo">
             <strong>一果の舟券術 🌸</strong><br>
             「イン逃げが不安なときは、この『負けスジ』を少ぉしだけ買っておくと、安心できるかもしれませんねぇ♪ 無理は禁物ですよぉ？」
+        </div>
+    </div>
+</div>
+    <div id="chaku2-data" class="tab-content">
+    <div class="data-card">
+        <h3 style="color: #ff6b81; font-size: 1rem; border-bottom: 2px solid #ffcad4; padding-bottom: 10px;">🎯 1着が1号艇の時の2着率（占有率）</h3>
+        <p style="font-size: 0.7rem; color: #666; margin-bottom: 10px; line-height: 1.4;">
+            1号艇が勝った時、誰が2着に来やすいかの統計ですぅ。<br>
+            <strong>2コース：</strong>差し残り / <strong>3コース：</strong>握り込み / <strong>4コース：</strong>差し・捲り差し
+        </p>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>競艇場</th>
+                    <th>2着：2号艇</th>
+                    <th>2着：3号艇</th>
+                    <th>2着：4号艇</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>24 大村</td><td class="rank-high">32.5%</td><td>23.1%</td><td>18.4%</td></tr>
+                <tr><td>18 徳山</td><td class="rank-high">31.8%</td><td>22.5%</td><td>17.9%</td></tr>
+                <tr><td>12 住之江</td><td class="rank-high">30.4%</td><td>21.8%</td><td>19.1%</td></tr>
+                <tr><td>02 戸田</td><td>24.5%</td><td class="rank-high">26.2%</td><td class="rank-high">21.5%</td></tr>
+                <tr><td>04 平和島</td><td>25.1%</td><td class="rank-high">24.8%</td><td>20.2%</td></tr>
+                <tr><td>13 尼崎</td><td class="rank-high">29.8%</td><td>22.1%</td><td>18.5%</td></tr>
+                <tr><td>01 桐生</td><td>27.5%</td><td>23.6%</td><td>19.8%</td></tr>
+                <tr><td>05 多摩川</td><td>26.9%</td><td>24.2%</td><td>19.4%</td></tr>
+                <tr><td>06 浜名湖</td><td>28.2%</td><td>23.0%</td><td>19.0%</td></tr>
+                <tr><td>07 蒲郡</td><td>27.8%</td><td>23.5%</td><td>19.2%</td></tr>
+                <tr><td>08 常滑</td><td>28.5%</td><td>22.8%</td><td>19.3%</td></tr>
+                <tr><td>09 津</td><td>28.0%</td><td>23.1%</td><td>19.5%</td></tr>
+                <tr><td>10 三国</td><td>28.1%</td><td>22.9%</td><td>19.2%</td></tr>
+                <tr><td>11 びわこ</td><td>26.5%</td><td>24.1%</td><td>20.4%</td></tr>
+                <tr><td>14 鳴門</td><td>26.2%</td><td>23.8%</td><td>20.8%</td></tr>
+                <tr><td>15 丸亀</td><td>27.6%</td><td>23.4%</td><td>19.7%</td></tr>
+                <tr><td>16 児島</td><td>28.9%</td><td>22.7%</td><td>19.0%</td></tr>
+                <tr><td>17 宮島</td><td>28.3%</td><td>22.9%</td><td>19.3%</td></tr>
+                <tr><td>19 下関</td><td class="rank-high">30.1%</td><td>22.0%</td><td>18.8%</td></tr>
+                <tr><td>20 若松</td><td>29.2%</td><td>22.5%</td><td>18.9%</td></tr>
+                <tr><td>21 芦屋</td><td class="rank-high">31.2%</td><td>22.4%</td><td>18.2%</td></tr>
+                <tr><td>22 福岡</td><td>25.8%</td><td class="rank-high">25.0%</td><td>20.5%</td></tr>
+                <tr><td>23 唐津</td><td>27.9%</td><td>23.5%</td><td>19.3%</td></tr>
+                <tr><td>03 江戸川</td><td>25.3%</td><td>24.5%</td><td>21.0%</td></tr>
+            </tbody>
+        </table>
+        <div class="ichika-memo">
+            <strong>一果の買い目予想術 🌸</strong><br>
+            「1-2が30%を超える場は、本命サイドがとっても強いんですぅ。逆に戸田さんみたいに1-3や1-4が高い場は、外の動きをよぉく見てくださいね♪」
         </div>
     </div>
 </div>
