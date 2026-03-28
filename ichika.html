@@ -133,16 +133,46 @@
         </h1>
     </div>
 
-    <div class="label-row">① 開催場を選択</div>
-    <div class="stadium-select-wrapper">
-        <div class="stadium-text-display" id="stadiumName">01 桐生</div>
-        <select class="stadium-select" onchange="updateStadiumName(this)">
-            <option value="01 桐生">01 桐生</option>
-            <option value="02 戸田">02 戸田</option>
-            <option value="03 江戸川">03 江戸川</option>
+  <div class="label-row">① 開催場を選択</div>
+<div class="stadium-select-wrapper" style="
+    position: relative; 
+    width: 100%; 
+    max-width: 500px; /* バーのサイズに合わせて調整 */
+    height: 60px;     /* バー画像の高さに合わせて調整 */
+    margin: 0 auto 25px auto;
+    background-image: url('830ab2a1-e175-4f48-ab50-7539524e4fd9.png'); /* いただいたバー画像 */
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+">
+    <select class="stadium-select" id="stadiumSelect" onchange="updateStadiumName(this)" style="
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0; /* 透明にする */
+        cursor: pointer;
+        z-index: 2; /* 文字より上に配置してクリックを有効に */
+    ">
+        <option value="01 桐生">01 桐生</option>
+        <option value="02 戸田">02 戸田</option>
+        <option value="03 江戸川">03 江戸川</option>
         </select>
-    </div>
 
+    <div id="stadiumName" style="
+        position: absolute;
+        top: 50%;
+        left: 55px; /* 画像の左側の装飾を避けて配置 */
+        transform: translateY(-50%);
+        color: #f1c40f; /* 金色風の色 */
+        font-size: 1.3rem;
+        font-weight: 800;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        pointer-events: none; /* クリックをセレクトボックスに貫通させる */
+        z-index: 1;
+    ">
+        01 桐生
+    </div>
+</div>
     <div class="stadium-memo">
         <div class="memo-title">
             <span class="flower-icon">🌸</span>
