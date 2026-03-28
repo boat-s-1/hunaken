@@ -6,44 +6,6 @@
     <title>一果の競艇場・攻略ノート 🌸</title>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
-        /* --- タブ機能のスタイル --- */
-.tab-container {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    justify-content: center;
-}
-
-.tab-btn {
-    flex: 1;
-    padding: 12px 5px;
-    border: none;
-    border-radius: 12px;
-    background: #f0f0f0;
-    color: #888;
-    font-weight: 800;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
-    cursor: pointer;
-    transition: 0.3s;
-    font-size: 0.8rem;
-}
-
-/* 選択されているタブのスタイル */
-.tab-btn.active {
-    background: #ff8fa3;
-    color: white;
-    box-shadow: 0 4px 10px rgba(255, 143, 163, 0.3);
-}
-
-/* コンテンツの表示・非表示 */
-.tab-content {
-    display: none;
-    animation: fadeIn 0.4s ease;
-}
-
-.tab-content.active {
-    display: block;
-}
         body {
             font-family: 'M PLUS Rounded 1c', sans-serif;
             background-color: #fff9fa;
@@ -53,7 +15,6 @@
             line-height: 1.6;
         }
 
-        /* ヘッダー：一果ちゃんのノート感 */
         header {
             text-align: center;
             padding: 20px 0;
@@ -67,7 +28,6 @@
         h1 { font-size: 1.3rem; color: #ff6b81; margin: 0; }
         .sub-title { font-size: 0.8rem; color: #ff8fa3; font-weight: 700; }
 
-        /* 広告エリアのプレースホルダ */
         .ad-space {
             background: #f0f0f0;
             margin: 15px auto;
@@ -79,7 +39,49 @@
             max-width: 320px;
         }
 
-        /* カード形式のデータ表示 */
+        /* --- タブ機能のスタイル --- */
+        .tab-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px 5px;
+            border: none;
+            border-radius: 12px;
+            background: #f0f0f0;
+            color: #888;
+            font-weight: 800;
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 0.8rem;
+        }
+
+        .tab-btn.active {
+            background: #ff8fa3;
+            color: white;
+            box-shadow: 0 4px 10px rgba(255, 143, 163, 0.3);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* カードとテーブルのデザイン */
         .data-card {
             background: white;
             border-radius: 20px;
@@ -108,9 +110,8 @@
             text-align: center;
         }
 
-        /* 逃げ率による色分け */
-        .rank-high { color: #ff4757; font-weight: 800; background: #fff0f3; } /* イン強い */
-        .rank-low { color: #2f3542; font-weight: 800; background: #f1f2f6; }  /* イン弱い */
+        .rank-high { color: #ff4757; font-weight: 800; background: #fff0f3; }
+        .rank-low { color: #2f3542; font-weight: 800; background: #f1f2f6; }
 
         .ichika-memo {
             margin-top: 20px;
@@ -141,16 +142,13 @@
 <header>
     <div class="sub-title">一果のBOAT STRIKE 攻略シリーズ</div>
     <h1>🌸 全24場 イン逃げ攻略データ</h1>
-    <div style="background: #fff5f6; border-radius: 10px; padding: 10px; margin: 10px 0; text-align: center; border: 1px solid #ffcad4;">
-    <p style="font-size: 0.75rem; margin: 0; color: #ff6b81; font-weight: 700;">
-        📊 データの信頼性について 🌸
-    </p>
-    <p style="font-size: 0.7rem; margin: 5px 0 0 0; color: #666; line-height: 1.4;">
-        集計期間：2025年度 年間データ（約54,000レース）<br>
-        公式サイトの公式結果に基づき、1コースの1着率を算出していますぅ。<br>
-        <span style="color: #ff8fa3;">※毎月最新の傾向に合わせて、一果がこっそり更新中♪</span>
-    </p>
-</div>
+    <div style="background: #fff5f6; border-radius: 10px; padding: 10px; margin: 10px 20px; text-align: center; border: 1px solid #ffcad4;">
+        <p style="font-size: 0.75rem; margin: 0; color: #ff6b81; font-weight: 700;">📊 データの信頼性について 🌸</p>
+        <p style="font-size: 0.7rem; margin: 5px 0 0 0; color: #666; line-height: 1.4;">
+            集計期間：2025年度 年間データ（約54,000レース）<br>
+            公式サイトの公式結果に基づき、1コースの1着率を算出していますぅ。
+        </p>
+    </div>
 </header>
 
 <div class="ad-space">ここに広告🌸</div>
@@ -165,102 +163,93 @@
         <h3 style="color: #ff6b81; font-size: 1rem; border-bottom: 2px solid #ffcad4; padding-bottom: 10px;">📊 全24場 イン逃げ率</h3>
         <table class="data-table">
             <thead>
-                <tr><th>競艇場</th><th>逃げ率</th><th>一果メモ</th></tr>
+                <tr><th>競艇場</th><th>逃げ率</th><th>特徴・狙い目</th></tr>
             </thead>
             <tbody>
                 <tr><td>24 大村</td><td class="rank-high">66.2%</td><td>絶対的なインの聖地🌸</td></tr>
-                </tbody>
+                <tr><td>18 徳山</td><td class="rank-high">63.8%</td><td>モーニングのシード番組が強力ですぅ。</td></tr>
+                <tr><td>21 芦屋</td><td class="rank-high">61.5%</td><td>企画レースの多さが秘密ですよぉ。</td></tr>
+                <tr><td>19 下関</td><td class="rank-high">60.1%</td><td>海水のナイター、逃げ率全国トップ！</td></tr>
+                <tr><td>12 住之江</td><td class="rank-high">58.9%</td><td>SG開催も多い聖地。信頼度抜群です。</td></tr>
+                <tr><td>20 若松</td><td>56.5%</td><td>夜の逃げ切りは定番ですねっ。</td></tr>
+                <tr><td>16 児島</td><td>55.8%</td><td>潮位変化はあるけど、1号艇は強め。</td></tr>
+                <tr><td>07 蒲郡</td><td>55.4%</td><td>広い水面でインが粘りやすいですぅ。</td></tr>
+                <tr><td>08 常滑</td><td>55.1%</td><td>インの強さは安定。伊勢湾の風を味方に。</td></tr>
+                <tr><td>17 宮島</td><td>54.7%</td><td>潮が満ちるとさらにイン有利ですよぉ。</td></tr>
+                <tr><td>23 唐津</td><td>54.3%</td><td>広大な水面。モーニングは狙い目ですっ。</td></tr>
+                <tr><td>13 尼崎</td><td>54.0%</td><td>静水面。センターの攻めを凌げば安泰。</td></tr>
+                <tr><td>15 丸亀</td><td>53.8%</td><td>女子戦のインも強力なナイター場🌸</td></tr>
+                <tr><td>09 津</td><td>53.2%</td><td>風が穏やかな時が狙い目ですぅ。</td></tr>
+                <tr><td>06 浜名湖</td><td>52.8%</td><td>日本一広い水面！のびのび回れます。</td></tr>
+                <tr><td>10 三国</td><td>52.3%</td><td>基本はインが主役の北陸コースですっ。</td></tr>
+                <tr><td>05 多摩川</td><td>51.9%</td><td>日本一の静水面。スピードある逃げ！</td></tr>
+                <tr><td>01 桐生</td><td>51.1%</td><td>標高によるパワーダウンに注意ですぅ。</td></tr>
+                <tr><td>14 鳴門</td><td>50.2%</td><td>1マークが狭く、差しとの激戦区！</td></tr>
+                <tr><td>11 びわこ</td><td>48.8%</td><td>独特のうねりに注意してくださいね。</td></tr>
+                <tr><td>03 江戸川</td><td class="rank-low">45.8%</td><td>【難所】波と流れでイン逃げは至難…</td></tr>
+                <tr><td>22 福岡</td><td class="rank-low">45.2%</td><td>うねりと特殊構造で波乱の宝庫ですっ。</td></tr>
+                <tr><td>04 平和島</td><td class="rank-low">44.8%</td><td>差しが決まるスリリングな場ですよぉ。</td></tr>
+                <tr><td>02 戸田</td><td class="rank-low">43.9%</td><td>【最激戦】日本一狭い。カド捲りに注意！</td></tr>
+            </tbody>
         </table>
+        <div class="ichika-memo">
+            <strong>一果のワンポイントアドバイス 🌸</strong><br>
+            「逃げ率が高い場でも、追い風が5mを超えるとインが流れやすくなるんですよぉ…。判定ツールと合わせて、現地の風もチェックしてみてくださいねっ♪」
+        </div>
     </div>
 </div>
 
 <div id="kabe-data" class="tab-content">
     <div class="data-card">
-        <h3 style="color: #ff6b81; font-size: 1rem; border-bottom: 2px solid #ffcad4; padding-bottom: 10px;">🛡️ 壁の信頼度（逃がし率）</h3>
+        <h3 style="color: #ff6b81; font-size: 1rem; border-bottom: 2px solid #ffcad4; padding-bottom: 10px;">🛡️ 壁の信頼度（2号艇 逃がし率）</h3>
+        <p style="font-size: 0.75rem; color: #666; margin-bottom: 15px;">2号艇がどれだけ1号艇を守って逃がしてくれたかの指標ですぅ🌸</p>
         <table class="data-table">
             <thead>
                 <tr><th>競艇場</th><th>逃がし率</th><th>一果メモ</th></tr>
             </thead>
             <tbody>
                 <tr><td>21 芦屋</td><td class="rank-high">65.4%</td><td>企画レースで壁が厚いですっ。</td></tr>
-                <tr><td>02 戸田</td><td class="rank-low">41.5%</td><td>壁が脆いので注意ですよぉ！</td></tr>
+                <tr><td>18 徳山</td><td class="rank-high">62.1%</td><td>隣がA級のときは、ほぼ逃げ確定♪</td></tr>
+                <tr><td>24 大村</td><td class="rank-high">61.5%</td><td>インが強いのは壁も厚いからですねぇ。</td></tr>
+                <tr><td>12 住之江</td><td>58.2%</td><td>地元の名手がしっかり壁になりますっ。</td></tr>
+                <tr><td>07 蒲郡</td><td>56.1%</td><td>広いコースでも2号艇がしっかり主張。</td></tr>
+                <tr><td>13 尼崎</td><td>55.5%</td><td>差しに構えても壁としての役割は十分。</td></tr>
+                <tr><td>08 常滑</td><td>54.8%</td><td>イン逃げを支える安定した壁ですぅ。</td></tr>
+                <tr><td>22 福岡</td><td class="rank-low">43.5%</td><td>うねりで壁が崩れやすいので注意です。</td></tr>
+                <tr><td>02 戸田</td><td class="rank-low">41.5%</td><td>壁が脆いので、外からの攻めに注意っ！</td></tr>
                 </tbody>
         </table>
+        <div class="ichika-memo">
+            <strong>一果の壁診断 🛡️</strong><br>
+            「2号艇の選手の平均STが遅いときは、この数字がもっと低くなっちゃうんですぅ…。壁が不安なときは判定ツールの『⑤壁』を下げてみてね？」
+        </div>
     </div>
 </div>
 
 <div class="ad-space">ここに広告🌸</div>
-<div class="data-card">
-    <p style="font-size: 0.8rem; font-weight: 700; color: #666; margin-bottom: 10px;">
-        ※データは直近の傾向を参考にしています。
-    </p>
-    <table class="data-table">
-        <thead>
-            <tr>
-                <th>競艇場</th>
-                <th>逃げ率</th>
-                <th>特徴・狙い目</th>
-            </tr>
-        </thead>
-       <tbody>
-    <tr><td>24 大村</td><td class="rank-high">66.2%</td><td>【2025年1位】絶対的なインの聖地ですっ🌸</td></tr>
-    <tr><td>18 徳山</td><td class="rank-high">63.8%</td><td>モーニングのシード番組が強力なんですよぉ。</td></tr>
-    <tr><td>21 芦屋</td><td class="rank-high">61.5%</td><td>企画レースの多さが、この高い数字の秘密ですっ。</td></tr>
-    <tr><td>19 下関</td><td class="rank-high">60.1%</td><td>海水のナイター場では、全国トップの逃げ率ですぅ。</td></tr>
-    <tr><td>12 住之江</td><td class="rank-high">58.9%</td><td>SG開催も多い聖地。インの信頼度は抜群ですねぇ。</td></tr>
-    <tr><td>20 若松</td><td>56.5%</td><td>インが強いナイター場。夜の逃げ切りは定番ですっ。</td></tr>
-    <tr><td>16 児島</td><td>55.8%</td><td>潮位の変化はありますが、地元の1号艇は強いですぅ。</td></tr>
-    <tr><td>07 蒲郡</td><td>55.4%</td><td>広い水面でスピード戦になりやすく、インも粘ります。</td></tr>
-    <tr><td>08 常滑</td><td>55.1%</td><td>インの強さは安定。伊勢湾の風を味方にっ🌸</td></tr>
-    <tr><td>17 宮島</td><td>54.7%</td><td>潮が満ちるとイン有利。干満差に注目ですよぉ。</td></tr>
-    <tr><td>23 唐津</td><td>54.3%</td><td>広大な水面。モーニングの1号艇は鉄板級ですっ。</td></tr>
-    <tr><td>13 尼崎</td><td>54.0%</td><td>「静水面」の代表格。センターの攻めを凌げば安泰。</td></tr>
-    <tr><td>15 丸亀</td><td>53.8%</td><td>ナイターの女王決定戦など、女子戦のインも強力。</td></tr>
-    <tr><td>09 津</td><td>53.2%</td><td>風の影響を受けやすいので、安定期を狙いたいですねぇ。</td></tr>
-    <tr><td>06 浜名湖</td><td>52.8%</td><td>広さは日本一！インが思い切り回れる水面ですぅ。</td></tr>
-    <tr><td>10 三国</td><td>52.3%</td><td>北陸の冬は荒れますが、基本はインが主役ですっ。</td></tr>
-    <tr><td>05 多摩川</td><td>51.9%</td><td>「日本一の静水面」。スピードある逃げが決まります。</td></tr>
-    <tr><td>01 桐生</td><td>51.1%</td><td>標高によるパワーダウンに注意。夜はイン復活ですっ。</td></tr>
-    <tr><td>14 鳴門</td><td>50.2%</td><td>1マークが狭く、逃げと差しがいつも激戦ですぅ。</td></tr>
-    <tr><td>11 びわこ</td><td>48.8%</td><td>独特の「うねり」が、1号艇の天敵なんですよぉ…。</td></tr>
-    <tr><td>03 江戸川</td><td class="rank-low">45.8%</td><td>【難所】波と流れで、イン逃げは至難の業ですぅ。</td></tr>
-    <tr><td>22 福岡</td><td class="rank-low">45.2%</td><td>うねりと独特の1マーク構造で、波乱の宝庫ですっ。</td></tr>
-    <tr><td>04 平和島</td><td class="rank-low">44.8%</td><td>「東のメッカ」は差しが決まるスリリングな場🌸</td></tr>
-    <tr><td>02 戸田</td><td class="rank-low">43.9%</td><td>【最激戦】日本一狭い水面。カド捲りにご用心！</td></tr>
-</tbody>
-    </table>
 
-    <div class="ichika-memo">
-        <strong>一果のワンポイントアドバイス 🌸</strong><br>
-        「逃げ率が高い場でも、追い風が5mを超えるとインが流れやすくなるんですよぉ…。判定ツールと合わせて、現地の風もチェックしてみてくださいねっ♪」
-    </div>
-</div>
-
-<div class="ad-space">ここにAdMaxなどの広告コードを貼ってください🌸</div>
-<div class="data-card">
-    <h3 style="color: #ff6b81; font-size: 1rem; border-bottom: 2px solid #ffcad4; padding-bottom: 5px;">
-        🛡️ インを守る「壁」の信頼度（2号艇 逃がし率）
-    </h3>
-    <table class="data-table">
-        <thead>
-            <tr>
-                <th>競艇場</th>
-                <th>2号艇 逃がし率</th>
-                <th>一果のひとこと</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr><td>芦屋</td><td style="color:#ff4757; font-weight:800;">65.4%</td><td>企画レースで2号艇がしっかり壁になりますっ。</td></tr>
-            <tr><td>徳山</td><td style="color:#ff4757; font-weight:800;">62.1%</td><td>隣がA級選手のときは、ほぼ逃げ確定ですねぇ♪</td></tr>
-            <tr><td>戸田</td><td style="color:#2f3542; font-weight:800;">41.5%</td><td>壁が脆いので、外からの攻めに注意ですよぉ！</td></tr>
-        </tbody>
-    </table>
-</div>
 <a href="index.html" class="back-btn">判定ツールに戻る</a>
 
 <footer style="text-align: center; font-size: 0.7rem; color: #ff8fa3; margin-bottom: 20px;">
     &copy; P-STAR / BOAT STRIKE Project
 </footer>
+
+<script>
+function openTab(evt, tabName) {
+    const contents = document.getElementsByClassName("tab-content");
+    for (let i = 0; i < contents.length; i++) {
+        contents[i].classList.remove("active");
+    }
+
+    const buttons = document.getElementsByClassName("tab-btn");
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].classList.remove("active");
+    }
+
+    document.getElementById(tabName).classList.add("active");
+    evt.currentTarget.classList.add("active");
+}
+</script>
 
 </body>
 </html>
