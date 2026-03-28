@@ -6,70 +6,62 @@
     <title>一果の1号艇・鬼絞り判定所 🌸</title>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&display=swap" rel="stylesheet">
     <style>
-        /* --- 背景設定 --- */
+        /* --- 全体・背景設定 --- */
         body {
             font-family: 'M PLUS Rounded 1c', sans-serif;
             margin: 0; padding: 10px;
             display: flex; justify-content: center; align-items: flex-start;
-            background-image: url('bg_pattern.png'); /* 背景画像 */
+            background-image: url('bg_pattern.png'); /* 背景パターン */
             background-repeat: repeat; background-size: 200px;
             min-height: 100vh;
         }
 
-        /* --- 一番外側のゴールド枠（image_23.png） --- */
+        /* --- 【今回のメイン】一番外側のゴールド枠 --- */
         .outer-frame {
             position: relative;
             width: 100%;
-            max-width: 550px;
+            max-width: 450px; /* スマホで見やすい幅に変更 */
             margin-top: 20px;
-            padding: 40px; /* 枠の装飾に被らないための余白 */
+            /* ★ここがポイント！枠の装飾に重ならないように、内側の余白を広げます */
+            padding: 50px 40px 40px 40px; 
             box-sizing: border-box;
-        }
-        .outer-frame::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background-image: url('598ebf7b-2370-472e-acba-c1507159c995.png'); /* 周りの枠画像 */
+            background-image: url('598ebf7b-2370-472e-acba-c1507159c995.png'); /* いただいた枠画像 */
             background-size: 100% 100%;
             background-repeat: no-repeat;
-            z-index: 1;
         }
 
-        /* --- メインカードの内容 --- */
+        /* --- メインカードの内容エリア --- */
         .main-card {
-            position: relative;
-            z-index: 2; /* 枠より上に配置 */
             display: flex;
-            flex-wrap: wrap; /* スマホで縦並びを許可 */
-            justify-content: space-between;
+            flex-direction: column; /* ★スマホでは縦並びにして、隙間と重なりを解消 */
+            align-items: center; /* 中央寄せ */
         }
 
-        /* --- 左側：一果ちゃん --- */
+        /* --- 一果ちゃん（上部に配置） --- */
         .chara-container {
-            flex: 0 0 40%;
-            position: relative;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px;
         }
         .ichika-chara {
-            width: 100%;
-            max-width: 180px;
+            width: 130px; /* スマホで見やすいサイズ */
             height: auto;
             filter: drop-shadow(5px 5px 10px rgba(0,0,0,0.1));
         }
 
-        /* --- 右側：タイトル・カギ・場選択 --- */
-        .content-right {
-            flex: 0 0 55%;
+        /* --- タイトル・カギ・場選択（下部に配置） --- */
+        .content-block {
+            width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
         }
 
         h1 {
-            font-size: 1rem;
+            font-size: 1.1rem;
             color: #ff6b81;
             text-align: center;
-            margin: 0 0 10px 0;
+            margin: 0 0 15px 0;
             line-height: 1.4;
         }
 
@@ -77,28 +69,41 @@
         .admin-pass-wrapper {
             position: relative;
             width: 80px; height: 35px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
         .gold-keyhole-bg {
             position: absolute; inset: 0;
             background-image: url('gold_keyhole.png'); /* 鍵画像 */
-            background-size: contain; background-repeat: no-repeat;
+            background-size: contain; background-repeat: no-repeat; background-position: center;
         }
         .admin-pass-input {
             position: absolute; inset: 0; opacity: 0; z-index: 10; cursor: pointer;
         }
+        .admin-pass-label {
+            position: absolute; left: 105%; top: 50%; transform: translateY(-50%);
+            white-space: nowrap; font-size: 0.7rem; color: #ff8fa3; font-weight: 800;
+        }
 
-        /* 開催場バー */
+        /* 開催場セレクトバー */
+        .label-row {
+            font-size: 0.9rem; color: #ff8fa3; font-weight: 800;
+            margin: 15px 0 5px 0; align-self: flex-start;
+            display: flex; align-items: center;
+        }
+        .label-row::before {
+            content: ""; display: inline-block; width: 4px; height: 15px; background: #ff6b81; margin-right: 8px; border-radius: 2px;
+        }
+
         .stadium-select-wrapper {
             position: relative;
             width: 100%;
-            height: 40px;
-            background-image: url('stadium_bar.png'); /* バー画像 */
+            height: 45px;
+            background-image: url('830ab2a1-e175-4f48-ab50-7539524e4fd9.png'); /* バー画像 */
             background-size: 100% 100%;
         }
         .stadium-text-display {
-            position: absolute; top: 50%; left: 30px; transform: translateY(-50%);
-            color: #f1c40f; font-size: 0.9rem; font-weight: 800;
+            position: absolute; top: 50%; left: 35px; transform: translateY(-50%);
+            color: #f1c40f; font-size: 1rem; font-weight: 800;
             text-shadow: 1px 1px 2px #000;
         }
         .stadium-select {
@@ -106,13 +111,14 @@
             opacity: 0; z-index: 20; cursor: pointer;
         }
 
-        /* --- 下部：特徴メモ --- */
+        /* --- 最下部：特徴メモ枠 --- */
         .stadium-memo-wrapper {
             position: relative;
             width: 100%;
-            margin-top: 20px;
+            margin-top: 25px;
             padding: 30px 20px;
             box-sizing: border-box;
+            z-index: 1;
         }
         .stadium-memo-wrapper::before {
             content: ""; position: absolute; inset: 0;
@@ -122,17 +128,13 @@
         .memo-content {
             font-size: 0.8rem; color: #555; line-height: 1.5;
         }
+        .memo-title {
+            color: #ff6b81; font-weight: 800; text-align: center;
+            margin-bottom: 8px; font-size: 0.9rem;
+        }
         .memo-link {
             color: #ff6b81; text-align: center; display: block;
             margin-top: 10px; font-weight: 800; text-decoration: underline; font-size: 0.8rem;
-        }
-
-        /* スマホ向け調整 */
-        @media (max-width: 400px) {
-            .outer-frame { padding: 30px 20px; }
-            .content-right { flex: 0 0 100%; margin-top: 10px; }
-            .chara-container { flex: 0 0 100%; text-align: center; }
-            .ichika-chara { max-width: 120px; }
         }
     </style>
 </head>
@@ -144,14 +146,16 @@
             <img src="ichika_chara3.png" class="ichika-chara">
         </div>
 
-        <div class="content-right">
-            <h1>🌸 一果の1号艇・<br>鬼絞り判定所</h1>
+        <div class="content-block">
+            <h1>🌸 一果の1号艇・鬼絞り判定所</h1>
             
             <div class="admin-pass-wrapper">
                 <div class="gold-keyhole-bg"></div>
+                <div class="admin-pass-label">合言葉？</div>
                 <input type="password" class="admin-pass-input">
             </div>
 
+            <div class="label-row">① 開催場を選択</div>
             <div class="stadium-select-wrapper">
                 <div class="stadium-text-display" id="stadiumName">01 桐生</div>
                 <select class="stadium-select" onchange="document.getElementById('stadiumName').innerText=this.value">
@@ -162,8 +166,8 @@
         </div>
 
         <div class="stadium-memo-wrapper">
+            <div class="memo-title">🌸 01 桐生 の特徴 🌸</div>
             <div class="memo-content">
-                <strong>🌸 01 桐生 の特徴 🌸</strong><br>
                 平均イン逃げ率：51%<br>
                 標高が高くて、イン逃げ率は標準的ですぅ。夜はモーターの力が強くなるんですよぉ。
             </div>
