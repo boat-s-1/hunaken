@@ -327,5 +327,39 @@
     <!-- admax -->
 <script src="https://adm.shinobi.jp/s/e65909d39a271ad3779bc0a29eca55ec"></script>
 <!-- admax -->
+    <script>
+window.onload = function() {
+    // URLからパラメータを取得
+    const urlParams = new URLSearchParams(window.location.search);
+    const stadium = urlParams.get('stadium');
+    const wind = urlParams.get('wind');
+    const dir = urlParams.get('dir');
+
+    if (stadium) {
+        // 競艇場を選択状態にする
+        const select = document.getElementById('stadiumSelect');
+        if(select) {
+            // optionのテキストが一致するものを探して選択
+            for(let i=0; i<select.options.length; i++){
+                if(select.options[i].text.includes(stadium)){
+                    select.selectedIndex = i;
+                    // 金色文字の表示も更新
+                    document.getElementById('stadiumNameDisplay').innerText = select.options[i].text;
+                    break;
+                }
+            }
+        }
+    }
+
+    if (wind) {
+        // 風速入力欄があれば反映（判定ツールに風速入力を作っている場合）
+        const windInput = document.getElementById('windInput');
+        if(windInput) windInput.value = wind;
+    }
+    
+    // 反映後に自動で一度「判定」を実行させるとさらに親切です！
+    // if(stadium) diagnose(); 
+};
+</script>
 </body>
 </html>
