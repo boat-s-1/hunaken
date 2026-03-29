@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>初音の女子戦データバンク 🛡️</title>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        /* --- 全体・背景設定（初音カラー：ミントブルー） --- */
+        body {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            margin: 0; padding: 10px;
+            display: flex; flex-direction: column; align-items: center;
+            background-color: #f0f7f7;
+            background-image: 
+                linear-gradient(90deg, rgba(175, 238, 238, 0.1) 1px, transparent 1px),
+                linear-gradient(rgba(175, 238, 238, 0.1) 1px, transparent 1px);
+            background-size: 25px 25px;
+        }
+
+        /* --- ヘッダー（近未来・分析画面風） --- */
+        .header-title {
+            width: 100%; max-width: 440px;
+            background: #2d3436;
+            color: #55efc4; /* 初音ミント */
+            padding: 15px; border-radius: 15px;
+            text-align: center; margin-bottom: 20px;
+            border-bottom: 4px solid #00b894;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        h1 { font-size: 1.1rem; margin: 0; letter-spacing: 2px; }
+
+        /* --- メインフレーム（初音ちゃん配置） --- */
+        .outer-frame {
+            position: relative; width: 100%; max-width: 440px;
+            padding: 20px; box-sizing: border-box;
+            background: white; border: 3px solid #00b894;
+            border-radius: 25px; box-shadow: 0 10px 25px rgba(0,184,148,0.1);
+        }
+
+        .top-section { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 15px; }
+        
+        /* 初音ちゃん画像（適宜初音ちゃんのパスに書き換えてください🌸） */
+        .hatsune-chara { width: 120px; height: auto; filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.1)); }
+        
+        /* 分析パネル風の入力エリア */
+        .analysis-panel {
+            flex: 1; background: #f9fdfc; border: 1px solid #d1f2eb;
+            padding: 10px; border-radius: 15px;
+        }
+
+        .label { font-size: 0.75rem; color: #00b894; font-weight: 800; display: block; margin-bottom: 5px; }
+        select { width: 100%; padding: 8px; border-radius: 10px; border: 1px solid #00b894; font-family: inherit; font-size: 0.8rem; }
+
+        /* スライダー調整 */
+        .control-row { margin-top: 15px; }
+        .slider-label { font-size: 0.8rem; font-weight: 800; color: #444; border-left: 4px solid #00b894; padding-left: 8px; margin-bottom: 5px; display: block; }
+        .slider-group { display: flex; align-items: center; gap: 10px; }
+        input[type="range"] { flex: 1; accent-color: #00b894; }
+        .val-disp { font-size: 1rem; font-weight: 800; color: #00b894; min-width: 50px; text-align: right; }
+
+        /* 判定ボタン（クールなデザイン） */
+        .analyze-btn {
+            width: 100%; padding: 15px; margin-top: 20px;
+            background: #2d3436; color: #55efc4;
+            border: 2px solid #00b894; border-radius: 15px;
+            font-weight: 800; font-size: 1.1rem; cursor: pointer;
+            transition: 0.3s;
+        }
+        .analyze-btn:hover { background: #00b894; color: white; }
+
+        /* 結果表示（分析レポート風） */
+        #result-box {
+            display: none; margin-top: 20px; padding: 15px;
+            background: #2d3436; color: white; border-radius: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+        .report-header { font-size: 0.7rem; color: #55efc4; border-bottom: 1px solid #55efc4; margin-bottom: 10px; padding-bottom: 5px; }
+        .score-val { font-size: 3rem; font-weight: 800; color: #55efc4; display: block; margin: 10px 0; text-align: center; }
+        .report-text { font-size: 0.8rem; line-height: 1.6; color: #ecf0f1; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<div class="header-title">
+    <h1>🔬 HATSUNE: LADIES DATA BANK</h1>
+</div>
+
+<div class="outer-frame">
+    <div class="top-section">
+        <img src="hatsune_chara.png" class="hatsune-chara" alt="初音ちゃん">
+        
+        <div class="analysis-panel">
+            <span class="label">ANALYSIS TARGET</span>
+            <select id="stadiumSelect">
+                <option value="55">24 大村（L戦 逃率高）</option>
+                <option value="50">15 丸亀（ナイター）</option>
+                <option value="42">02 戸田（荒れ注意）</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="control-row">
+        <span class="slider-label">① イン選手のA級・B級差</span>
+        <div class="slider-group">
+            <input type="range" id="levelDiff" min="-20" max="20" value="0" oninput="updateVal('levelVal', this.value)">
+            <span class="val-disp" id="levelVal">0</span>
+        </div>
+    </div>
+
+    <div class="control-row">
+        <span class="slider-label">② 展示気配（女子戦補正）</span>
+        <div class="slider-group">
+            <input type="range" id="motorPower" min="-10" max="10" value="0" oninput="updateVal('motorVal', this.value)">
+            <span class="val-disp" id="motorVal">0</span>
+        </div>
+    </div>
+
+    <button class="analyze-btn" onclick="analyze()">ANALYZE DATA</button>
+
+    <div id="result-box">
+        <div class="report-header">■ ANALYSIS REPORT</div>
+        <span class="score-val" id="score">0%</span>
+        <div class="report-text" id="report">分析を開始してください。</div>
+        
+        <div style="margin-top: 15px; border-top: 1px dashed #55efc4; padding-top: 10px;">
+            <span style="font-size: 0.7rem; color: #55efc4;">■ 推奨スジ:</span>
+            <div id="deme" style="font-weight: 800; font-size: 1.1rem; text-align: center; margin-top: 5px;"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function updateVal(id, val) {
+        document.getElementById(id).innerText = (val > 0 ? "+" : "") + val;
+    }
+
+    function analyze() {
+        const base = parseInt(document.getElementById('stadiumSelect').value);
+        const level = parseInt(document.getElementById('levelDiff').value);
+        const motor = parseInt(document.getElementById('motorPower').value);
+        
+        // 女子戦特化ロジック：男子より分散を大きくする
+        const total = Math.min(95, Math.max(10, base + level + motor));
+        
+        document.getElementById('result-box').style.display = 'block';
+        document.getElementById('score').innerText = total + "%";
+
+        let comment = "";
+        let deme = "";
+
+        if (total >= 70) {
+            comment = "「データ上、インの逃げ切りは濃厚です。格の違いを見せつけるでしょう。1-23を軸に。買い目を絞ります。」";
+            deme = "1-2-34 / 1-3-24";
+        } else if (total <= 45) {
+            comment = "「波乱のシグナルが出ています。女子戦特有の捲り差しが決まる展開。1号艇の過信は禁物です。」";
+            deme = "3-4-全 / 4-5-全";
+        } else {
+            comment = "「標準的な数値です。横一線のスタートならインが残りますが、展示で伸びている選手には注意を払ってください。」";
+            deme = "1-23-全";
+        }
+
+        document.getElementById('report').innerText = comment;
+        document.getElementById('deme').innerText = deme;
+    }
+</script>
+
+</body>
+</html>
