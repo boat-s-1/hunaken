@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>初音の女子戦攻略データバンク 📘</title>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            margin: 0; padding: 10px;
+            display: flex; flex-direction: column; align-items: center;
+            background-color: #f0f7f7;
+            color: #2d3436;
+        }
+
+        /* --- ヘッダー --- */
+        .header-banner {
+            width: 100%; max-width: 500px;
+            background: #2d3436; color: #55efc4;
+            padding: 20px; border-radius: 20px;
+            text-align: center; margin-bottom: 20px;
+            border-bottom: 5px solid #00b894;
+        }
+
+        .container {
+            width: 100%; max-width: 500px;
+            background: white; border-radius: 25px;
+            padding: 20px; box-sizing: border-box;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid #d1f2eb;
+        }
+
+        /* --- セクションタイトル --- */
+        h2 {
+            font-size: 1.1rem; color: #00b894;
+            border-left: 5px solid #00b894;
+            padding-left: 10px; margin: 25px 0 15px 0;
+        }
+
+        /* --- 初音の分析メモ --- */
+        .analysis-note {
+            background: #f9fdfc; border: 1px dashed #00b894;
+            padding: 15px; border-radius: 15px; margin-bottom: 20px;
+            font-size: 0.85rem; line-height: 1.6;
+        }
+
+        /* --- 24場データテーブル --- */
+        .stadium-table {
+            width: 100%; border-collapse: collapse;
+            font-size: 0.8rem; margin-top: 10px;
+        }
+        .stadium-table th {
+            background: #00b894; color: white;
+            padding: 10px; text-align: center;
+        }
+        .stadium-table td {
+            padding: 10px; border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+        .rank-high { color: #ff4757; font-weight: 800; } /* 逃げやすい */
+        .rank-low { color: #1e90ff; font-weight: 800; }  /* 荒れやすい */
+
+        /* --- 戻るボタン --- */
+        .back-btn {
+            display: inline-block; margin-top: 30px;
+            padding: 12px 30px; background: #2d3436;
+            color: #55efc4; text-decoration: none;
+            border-radius: 50px; font-weight: 800;
+            transition: 0.3s;
+        }
+        .back-btn:hover { background: #00b894; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="header-banner">
+    <div style="font-size: 0.7rem; letter-spacing: 2px;">LADIES DATA ARCHIVE</div>
+    <h1 style="font-size: 1.2rem; margin: 5px 0;">📘 初音の女子戦攻略データバンク</h1>
+</div>
+
+<div class="container">
+    <div class="analysis-note">
+        <strong>🛡️ 初音の分析レポート</strong><br>
+        「女子戦は男子戦と異なり、イン選手の『スタートのバラつき』と『旋回精度の差』が顕著に出ます。特に、風が強い日の江戸川や、コースが狭い戸田は、データ上でもイン逃げ率が極端に低下する傾向にありますね。まずはこのリストで各場の特性を把握してください。」
+    </div>
+
+    <h2>📊 全24場・女子戦イン逃げ傾向</h2>
+    <table class="stadium-table">
+        <thead>
+            <tr>
+                <th>場名</th>
+                <th>難易度</th>
+                <th>特徴・狙い目</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>24 大村</td>
+                <td class="rank-high">特A</td>
+                <td>日本一の逃げ水面。1-23が基本。</td>
+            </tr>
+            <tr>
+                <td>18 徳山</td>
+                <td class="rank-high">A</td>
+                <td>企画レース多。イン信頼度高。</td>
+            </tr>
+            <tr>
+                <td>12 住之江</td>
+                <td class="rank-high">B+</td>
+                <td>看板場。インが強いが差しも入る。</td>
+            </tr>
+            <tr>
+                <td>01 桐生</td>
+                <td>B</td>
+                <td>ナイター。夜はインが加速する。</td>
+            </tr>
+            <tr>
+                <td>02 戸田</td>
+                <td class="rank-low">D</td>
+                <td>狭い。女子戦は3,4まくりが多発。</td>
+            </tr>
+            <tr>
+                <td>04 平和島</td>
+                <td class="rank-low">D</td>
+                <td>差し場。インが残るのが難しい。</td>
+            </tr>
+            </tbody>
+    </table>
+
+    <h2>💡 女子戦の「鉄板」の見極め方</h2>
+    <div class="analysis-note">
+        1. **2コースの壁性能:** 2号艇がA級のベテランなら、イン逃げ率は跳ね上がります。<br>
+        2. **体重差の活用:** 静水面（多摩川など）では、体重の軽い若手選手の「伸び」に注意してください。<br>
+        3. **F休み明け:** 女子選手はフライングを極端に恐れる傾向があります。休み明けの選手が内にいる時は逆張りのチャンスです。
+    </div>
+
+    <div style="text-align: center;">
+        <a href="ichika_hatsune.html" class="back-btn">シミュレーターに戻る</a>
+    </div>
+</div>
+
+<footer style="margin-top: 20px; font-size: 0.7rem; color: #999;">
+    &copy; 2026 BOAT STRIKE - Hatsune Precision Analysis
+</footer>
+
+</body>
+</html>
