@@ -139,7 +139,7 @@
 </div>
 
 <script>
-// 1. 全24場の基本逃げ率データ（攻略ノートの数値）
+// 1. 全24場の基本逃げ率データ
 const stadiumBaseData = {
     "01 桐生": 0.51, "02 戸田": 0.43, "03 江戸川": 0.45, "04 平和島": 0.44,
     "05 多摩川": 0.51, "06 浜名湖": 0.52, "07 蒲郡": 0.55, "08 常滑": 0.55,
@@ -152,11 +152,10 @@ const stadiumBaseData = {
 // 2. 初期生成
 function init() {
     const list = document.getElementById('stadiumList');
-    // stadiumBaseDataのキー（場名）をループしてカードを作る
     for (const name in stadiumBaseData) {
         const card = document.createElement('div');
         card.className = 'stadium-card';
-        card.id = `card-${name}`; // IDを振っておく
+        card.id = `card-${name}`;
 
         card.innerHTML = `
             <div class="status-badge" id="status-${name}"></div>
@@ -166,25 +165,25 @@ function init() {
         `;
         list.appendChild(card);
     }
-    updateAll(); // 最初の計算
+    updateAll(); 
 }
 
-// 3. 全体更新関数（スライダーを動かすたびに呼ばれる）
+// 3. 全体更新関数
 function updateAll() {
     const direction = document.getElementById('windDirection').value;
     const speed = parseInt(document.getElementById('windSpeed').value);
-    document.getElementById('windSpeedDisplay').innerText = speed; // 数字を表示
+    document.getElementById('windSpeedDisplay').innerText = speed;
 
- for (const name in stadiumBaseData) {
+    for (const name in stadiumBaseData) {
         const baseRate = stadiumBaseData[name];
         let adjust = 0;
 
         // --- 補正ロジック ---
         if (direction === "追い風") {
-            if (speed <= 2) { adjust = 0.03; } // 絶好の逃げ🌸
-            else if (speed >= 5) { adjust = -0.05; } // 差し場⚠️
+            if (speed <= 2) { adjust = 0.03; } 
+            else if (speed >= 5) { adjust = -0.05; } 
         } else if (direction === "向かい風") {
-            if (speed >= 3) { adjust = -(speed * 0.02); } // 捲り場⚠️
+            if (speed >= 3) { adjust = -(speed * 0.02); } 
         }
 
         const finalRate = Math.round((baseRate + adjust) * 100);
@@ -192,32 +191,34 @@ function updateAll() {
         // --- 画面への反映 ---
         const rateDisp = document.getElementById(`rate-${name}`);
         const statusDisp = document.getElementById(`status-${name}`);
-        const card = document.getElementById(`card-${name}`); // カード要素を取得
+        const card = document.getElementById(`card-${name}`);
 
         rateDisp.innerText = `${finalRate}%`;
 
-        // --- ★ここから追加：タップした時のリンク処理 ---
-        const directionNum = (direction === "追い風") ? 0 : 1; // 追い風=0, 向かい風=1
-        
-        card.style.cursor = "pointer"; // 指マークにして「押せる」ことを伝える
+        // --- タップした時のリンク処理 ---
+        const directionNum = (direction === "追い風") ? 0 : 1;
+        card.style.cursor = "pointer";
         card.onclick = () => {
-            // ichika.html にデータを乗せてジャンプ！
             window.location.href = `ichika.html?stadium=${encodeURIComponent(name)}&wind=${speed}&dir=${directionNum}`;
         };
-        // --- ここまで追加 ---
 
-        // 逃げ率に応じて色と文字色を変える
+        // 逃げ率に応じて色を変える
         if (finalRate >= 60) {
-            rateDisp.style.color = '#ff4757'; // 赤文字（アツい）
-            statusDisp.className = 'status-badge safe'; // 緑信号
+            rateDisp.style.color = '#ff4757'; 
+            statusDisp.className = 'status-badge safe';
         } else if (finalRate < 50) {
-            rateDisp.style.color = '#57606f'; // 灰色文字
-            statusDisp.className = 'status-badge danger'; // 赤信号
+            rateDisp.style.color = '#57606f'; 
+            statusDisp.className = 'status-badge danger';
         } else {
-            rateDisp.style.color = '#ff6b81'; // 通常ピンク文字
-            statusDisp.className = 'status-badge caution'; // 黄信号
+            rateDisp.style.color = '#ff6b81'; 
+            statusDisp.className = 'status-badge caution';
         }
     }
+} // ← ここに updateAll の閉じカッコが必要でした！
+
+window.onload = init; 
+</script>
+
 
 window.onload = init; // ページ読み込み時に初期化
 </script>
