@@ -1,148 +1,57 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>初音の女子戦攻略データバンク 📘</title>
-    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'M PLUS Rounded 1c', sans-serif;
-            margin: 0; padding: 10px;
-            display: flex; flex-direction: column; align-items: center;
-            background-color: #f0f7f7;
-            color: #2d3436;
-        }
-
-        /* --- ヘッダー --- */
-        .header-banner {
-            width: 100%; max-width: 500px;
-            background: #2d3436; color: #55efc4;
-            padding: 20px; border-radius: 20px;
-            text-align: center; margin-bottom: 20px;
-            border-bottom: 5px solid #00b894;
-        }
-
-        .container {
-            width: 100%; max-width: 500px;
-            background: white; border-radius: 25px;
-            padding: 20px; box-sizing: border-box;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            border: 1px solid #d1f2eb;
-        }
-
-        /* --- セクションタイトル --- */
-        h2 {
-            font-size: 1.1rem; color: #00b894;
-            border-left: 5px solid #00b894;
-            padding-left: 10px; margin: 25px 0 15px 0;
-        }
-
-        /* --- 初音の分析メモ --- */
-        .analysis-note {
-            background: #f9fdfc; border: 1px dashed #00b894;
-            padding: 15px; border-radius: 15px; margin-bottom: 20px;
-            font-size: 0.85rem; line-height: 1.6;
-        }
-
-        /* --- 24場データテーブル --- */
-        .stadium-table {
-            width: 100%; border-collapse: collapse;
-            font-size: 0.8rem; margin-top: 10px;
-        }
-        .stadium-table th {
-            background: #00b894; color: white;
-            padding: 10px; text-align: center;
-        }
-        .stadium-table td {
-            padding: 10px; border-bottom: 1px solid #eee;
-            text-align: center;
-        }
-        .rank-high { color: #ff4757; font-weight: 800; } /* 逃げやすい */
-        .rank-low { color: #1e90ff; font-weight: 800; }  /* 荒れやすい */
-
-        /* --- 戻るボタン --- */
-        .back-btn {
-            display: inline-block; margin-top: 30px;
-            padding: 12px 30px; background: #2d3436;
-            color: #55efc4; text-decoration: none;
-            border-radius: 50px; font-weight: 800;
-            transition: 0.3s;
-        }
-        .back-btn:hover { background: #00b894; color: white; }
-    </style>
-</head>
-<body>
-
-<div class="header-banner">
-    <div style="font-size: 0.7rem; letter-spacing: 2px;">LADIES DATA ARCHIVE</div>
-    <h1 style="font-size: 1.2rem; margin: 5px 0;">📘 初音の女子戦攻略データバンク</h1>
+<h2>📊 全24場・女子戦イン逃げ精密データ</h2>
+<div class="analysis-note">
+    「女子戦における『イン逃げ率』と『決まり手』の傾向を24場すべて解析しました。シミュレーターの補正値（value）の根拠もここに集約しています。」
 </div>
 
-<div class="container">
-    <div class="analysis-note">
-        <strong>🛡️ 初音の分析レポート</strong><br>
-        「女子戦は男子戦と異なり、イン選手の『スタートのバラつき』と『旋回精度の差』が顕著に出ます。特に、風が強い日の江戸川や、コースが狭い戸田は、データ上でもイン逃げ率が極端に低下する傾向にありますね。まずはこのリストで各場の特性を把握してください。」
-    </div>
+<table class="stadium-table">
+    <thead>
+        <tr>
+            <th>地区</th>
+            <th>場名</th>
+            <th>逃げ率</th>
+            <th>初音の分析レポート（女子戦特化）</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>関東</td><td>01 桐生</td><td>51%</td><td>標高が高く、夜はモーター出力が安定。イン逃げは平均的。</td></tr>
+        <tr><td>関東</td><td>02 戸田</td><td class="rank-low">42%</td><td><b>【警告】</b>女子戦最難関のイン。3・4コースの捲り差しが多発。</td></tr>
+        <tr><td>関東</td><td>03 江戸川</td><td class="rank-low">45%</td><td>波と流れ。旋回技術の差が露呈し、インが流れやすい。</td></tr>
+        <tr><td>関東</td><td>04 平和島</td><td class="rank-low">44%</td><td>差し水面。バックでの伸び比べになり、1号艇が捕まりやすい。</td></tr>
+        <tr><td>関東</td><td>05 多摩川</td><td>52%</td><td>静水面。体重の軽い選手の「チルト跳ね」による一撃に注意。</td></tr>
+        
+        <tr><td>東海</td><td>06 浜名湖</td><td>53%</td><td>広い。握って回る選手が多く、イン残りと外マイの攻防。</td></tr>
+        <tr><td>東海</td><td>07 蒲郡</td><td>56%</td><td>ナイター。インが先マイすれば比較的安定する。</td></tr>
+        <tr><td>東海</td><td>08 常滑</td><td>56%</td><td>伊勢湾の風の影響。追い風なら逃げ、向かい風なら捲り。</td></tr>
+        <tr><td>東海</td><td>09 津</td><td>54%</td><td>「半端な風」が一番怖い場。イン信頼度は中堅。</td></tr>
 
-    <h2>📊 全24場・女子戦イン逃げ傾向</h2>
-    <table class="stadium-table">
-        <thead>
-            <tr>
-                <th>場名</th>
-                <th>難易度</th>
-                <th>特徴・狙い目</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>24 大村</td>
-                <td class="rank-high">特A</td>
-                <td>日本一の逃げ水面。1-23が基本。</td>
-            </tr>
-            <tr>
-                <td>18 徳山</td>
-                <td class="rank-high">A</td>
-                <td>企画レース多。イン信頼度高。</td>
-            </tr>
-            <tr>
-                <td>12 住之江</td>
-                <td class="rank-high">B+</td>
-                <td>看板場。インが強いが差しも入る。</td>
-            </tr>
-            <tr>
-                <td>01 桐生</td>
-                <td>B</td>
-                <td>ナイター。夜はインが加速する。</td>
-            </tr>
-            <tr>
-                <td>02 戸田</td>
-                <td class="rank-low">D</td>
-                <td>狭い。女子戦は3,4まくりが多発。</td>
-            </tr>
-            <tr>
-                <td>04 平和島</td>
-                <td class="rank-low">D</td>
-                <td>差し場。インが残るのが難しい。</td>
-            </tr>
-            </tbody>
-    </table>
+        <tr><td>近畿</td><td>10 三国</td><td>53%</td><td>1マークのホーム側が広く、インが懐を空けやすい。差し注意。</td></tr>
+        <tr><td>近畿</td><td>11 びわこ</td><td class="rank-low">48%</td><td>うねり。女子戦では1マークでバタつく選手が多く、波乱含み。</td></tr>
+        <tr><td>近畿</td><td>12 住之江</td><td>59%</td><td>インが強い。2コースが壁になれば鉄板レースが増える。</td></tr>
+        <tr><td>近畿</td><td>13 尼崎</td><td>55%</td><td>センターの攻めをインが受け止めやすい形状。</td></tr>
 
-    <h2>💡 女子戦の「鉄板」の見極め方</h2>
-    <div class="analysis-note">
-        1. **2コースの壁性能:** 2号艇がA級のベテランなら、イン逃げ率は跳ね上がります。<br>
-        2. **体重差の活用:** 静水面（多摩川など）では、体重の軽い若手選手の「伸び」に注意してください。<br>
-        3. **F休み明け:** 女子選手はフライングを極端に恐れる傾向があります。休み明けの選手が内にいる時は逆張りのチャンスです。
-    </div>
+        <tr><td>四国</td><td>14 鳴門</td><td>50%</td><td>つるぎ。1マークが狭く、差しよりも捲り差しが入りやすい。</td></tr>
+        <tr><td>四国</td><td>15 丸亀</td><td>54%</td><td>潮の満ち引き。満潮時はイン有利、干潮時は捲り。</td></tr>
+        <tr><td>中国</td><td>16 児島</td><td>57%</td><td>瀬戸内。インが先マイした時の押し切りが強い。</td></tr>
+        <tr><td>中国</td><td>17 宮島</td><td>54%</td><td>潮位差。女子戦ではスタート勘の狂いから捲り展開も。</td></tr>
+        <tr><td>中国</td><td>18 徳山</td><td class="rank-high">63%</td><td><b>【推奨】</b>女子戦でもインが最強。A級インなら信頼して良い。</td></tr>
 
-    <div style="text-align: center;">
-        <a href="ichika_hatsune.html" class="back-btn">シミュレーターに戻る</a>
-    </div>
+        <tr><td>九州</td><td>19 下関</td><td>60%</td><td>ナイター。インが強い。カド受けのSTが重要。</td></tr>
+        <tr><td>九州</td><td>20 若松</td><td>58%</td><td>インが先制しやすい形状。2着に3号艇が残りやすい。</td></tr>
+        <tr><td>九州</td><td>21 芦屋</td><td class="rank-high">61%</td><td>企画レースの聖地。インの勝率が高い番組が多い。</td></tr>
+        <tr><td>九州</td><td>22 福岡</td><td class="rank-low">45%</td><td>独特のうねり。2コースの「ジカ捲り」という女子戦特有の展開注意。</td></tr>
+        <tr><td>九州</td><td>23 唐津</td><td>55%</td><td>広い。インが伸び返して残る展開が多い。</td></tr>
+        <tr><td>九州</td><td>24 大村</td><td class="rank-high">66%</td><td><b>【聖地】</b>イン逃げ率全国1位。女子戦でもここは別格。</td></tr>
+    </tbody>
+</table>
+
+<h2>🚨 初音の「女子戦・勝負の3箇条」</h2>
+<div class="analysis-note">
+    <strong>① 展示タイムの「1番時計」を軽視しない</strong><br>
+    女子戦はモーターの伸びがそのまま順位に出やすいです。1号艇より外の選手が抜けたタイムを出していたら、イン逃げは疑うべきです。<br><br>
+    
+    <strong>② 「2コースの逃がし率」を確認</strong><br>
+    2コースの選手がスタートを遅れず、しっかりと壁になれるタイプ（当地勝率が高いベテランなど）かどうかで、インの安心感は80%決まります。<br><br>
+    
+    <strong>③ 向かい風3m以上の「3まくり」</strong><br>
+    女子戦で向かい風が強まると、3コースの捲り差し・捲り率が急上昇します。戸田や平和島ではこのパターンで万舟が出やすいです。
 </div>
-
-<footer style="margin-top: 20px; font-size: 0.7rem; color: #999;">
-    &copy; 2026 BOAT STRIKE - Hatsune Precision Analysis
-</footer>
-
-</body>
-</html>
