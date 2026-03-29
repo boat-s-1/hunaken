@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一果の鬼絞り・本命Navi 🌸</title>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            margin: 0; padding: 15px;
+            background-image: url('bg_pattern.png');
+            background-repeat: repeat; background-size: 200px;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        /* --- メインパネル --- */
+        .navi-panel {
+            background-color: white;
+            border: 3px solid #ffcad4;
+            border-radius: 30px;
+            width: 100%; max-width: 450px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.3);
+            position: relative;
+        }
+
+        h1 { font-size: 1.3rem; color: #ff6b81; text-align: center; margin-bottom: 20px; }
+
+        /* --- 入力エリア --- */
+        .input-group {
+            background: #fff5f6;
+            padding: 15px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+        .label { font-size: 0.9rem; color: #ff8fa3; font-weight: 800; margin-bottom: 10px; display: block; }
+        
+        select, input {
+            width: 100%; padding: 10px; border-radius: 10px; border: 2px solid #ffcad4;
+            font-family: inherit; font-size: 1rem; margin-bottom: 10px;
+        }
+
+        /* --- 判定結果（信号機） --- */
+        #result-area {
+            display: none; /* 初期は非表示 */
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .safe { background: #2ecc71; box-shadow: 0 0 15px rgba(46, 204, 113, 0.5); }
+        .caution { background: #f1c40f; box-shadow: 0 0 15px rgba(241, 196, 15, 0.5); }
+        .danger { background: #e74c3c; box-shadow: 0 0 15px rgba(231, 76, 60, 0.5); }
+
+        .ichika-comment {
+            background: #fff0f6;
+            padding: 15px;
+            border-radius: 15px;
+            border-left: 5px solid #ff8fa3;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .deme-box {
+            margin-top: 15px;
+            border: 2px dashed #ffcad4;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: 800;
+            color: #ff6b81;
+        }
+
+        button.btn-calc {
+            width: 100%; padding: 15px; border: none; border-radius: 50px;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            color: white; font-weight: 800; font-size: 1.1rem; cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 107, 129, 0.3);
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="navi-panel">
+    <h1>🌸 本命Navi：安全診断</h1>
+
+    <div class="input-group">
+        <span class="label">① 会場を選んでください</span>
+        <select id="stadium">
+            <option value="0.66">24 大村（逃げ率 66%）</option>
+            <option value="0.51">01 桐生（逃げ率 51%）</option>
+            <option value="0.43">02 戸田（逃げ率 43%）</option>
+        </select>
+
+        <span class="label">② 今の風速は？</span>
+        <input type="number" id="wind" placeholder="例：3" min="0">
+        
+        <button class="btn-calc" onclick="diagnose()">一果に聞いてみる 🌸</button>
+    </div>
+
+    <div id="result-area">
+        <div id="status" class="status-badge">判定中...</div>
+        <div class="ichika-comment" id="comment"></div>
+        <div class="deme-box" id="deme"></div>
+    </div>
+</div>
+
+<script>
+function diagnose() {
+    const nigeRate = parseFloat(document.getElementById('stadium').value);
+    const wind = parseInt(document.getElementById('wind').value) || 0;
+    const resultArea = document.getElementById('result-area');
+    const status = document.getElementById('status');
+    const comment = document.getElementById('comment');
+    const deme = document.getElementById('deme');
+
+    resultArea.style.display = 'block';
+
+    // 簡易ロジック
+    if (nigeRate >= 0.6 && wind <= 2) {
+        status.innerText = "青：鬼絞りチャンス！🌸";
+        status.className = "status-badge safe";
+        comment.innerText = "一果の目から見ても、ここは盤石ですぅ！イン逃げを信じて、点数を絞って狙いましょう♪";
+        deme.innerText = "推奨：1-2-34, 1-3-24";
+    } else if (wind >= 5 || nigeRate < 0.5) {
+        status.innerText = "赤：波乱の予感…！⚠️";
+        status.className = "status-badge danger";
+        comment.innerText = "風が強すぎますぅ…。インが流れて高配当になるかも。無理に本命で勝負するのは危険ですよぉ。";
+        deme.innerText = "推奨：見送り（または 2-3-全）";
+    } else {
+        status.innerText = "黄：中堅レベル。慎重に。";
+        status.className = "status-badge caution";
+        comment.innerText = "悪くはないですが、絶対とは言えませんねぇ。展示タイムをよく見て、伸びが良い選手がいたら注意ですっ。";
+        deme.innerText = "推奨：1-23-全";
+    }
+}
+</script>
+
+</body>
+</html>
