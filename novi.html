@@ -175,7 +175,7 @@ function updateAll() {
     const speed = parseInt(document.getElementById('windSpeed').value);
     document.getElementById('windSpeedDisplay').innerText = speed; // 数字を表示
 
-    for (const name in stadiumBaseData) {
+ for (const name in stadiumBaseData) {
         const baseRate = stadiumBaseData[name];
         let adjust = 0;
 
@@ -192,8 +192,19 @@ function updateAll() {
         // --- 画面への反映 ---
         const rateDisp = document.getElementById(`rate-${name}`);
         const statusDisp = document.getElementById(`status-${name}`);
+        const card = document.getElementById(`card-${name}`); // カード要素を取得
 
         rateDisp.innerText = `${finalRate}%`;
+
+        // --- ★ここから追加：タップした時のリンク処理 ---
+        const directionNum = (direction === "追い風") ? 0 : 1; // 追い風=0, 向かい風=1
+        
+        card.style.cursor = "pointer"; // 指マークにして「押せる」ことを伝える
+        card.onclick = () => {
+            // ichika.html にデータを乗せてジャンプ！
+            window.location.href = `ichika.html?stadium=${encodeURIComponent(name)}&wind=${speed}&dir=${directionNum}`;
+        };
+        // --- ここまで追加 ---
 
         // 逃げ率に応じて色と文字色を変える
         if (finalRate >= 60) {
@@ -207,7 +218,6 @@ function updateAll() {
             statusDisp.className = 'status-badge caution'; // 黄信号
         }
     }
-}
 
 window.onload = init; // ページ読み込み時に初期化
 </script>
