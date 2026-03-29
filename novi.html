@@ -3,149 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>一果の鬼絞り・本命Navi 🌸</title>
+    <title>一果の24場一斉・風速補正シミュレーター 🌸</title>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&display=swap" rel="stylesheet">
     <style>
+        /* --- 全体・背景設定 --- */
         body {
             font-family: 'M PLUS Rounded 1c', sans-serif;
-            margin: 0; padding: 15px;
-            background-image: url('bg_pattern.png');
-            background-repeat: repeat; background-size: 200px;
+            margin: 0; padding: 10px;
             display: flex; flex-direction: column; align-items: center;
+            background-image: url('bg_pattern.png'); /* いただいた背景画像 */
+            background-repeat: repeat; background-size: 200px;
+            color: #4a4a4a;
         }
 
-        /* --- メインパネル --- */
-        .navi-panel {
-            background-color: white;
+        /* --- ヘッダー（ノート表紙風） --- */
+        header {
+            text-align: center;
+            padding: 20px 15px;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.2);
+            margin-bottom: 20px;
             border: 3px solid #ffcad4;
-            border-radius: 30px;
-            width: 100%; max-width: 450px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.3);
-            position: relative;
+            width: 100%; max-width: 480px;
+            box-sizing: border-box;
         }
+        h1 { font-size: 1.2rem; color: #ff6b81; margin: 5px 0; }
+        .sub-title { font-size: 0.8rem; color: #ff8fa3; font-weight: 800; }
 
-        h1 { font-size: 1.3rem; color: #ff6b81; text-align: center; margin-bottom: 20px; }
-
-        /* --- 入力エリア --- */
-        .input-group {
-            background: #fff5f6;
-            padding: 15px;
+        /* --- コントロールパネル（風速・風向き設定） --- */
+        .control-panel {
+            background: white;
             border-radius: 20px;
+            padding: 20px;
+            width: 100%; max-width: 480px;
+            box-sizing: border-box;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 1px solid #fff0f3;
             margin-bottom: 20px;
         }
-        .label { font-size: 0.9rem; color: #ff8fa3; font-weight: 800; margin-bottom: 10px; display: block; }
-        
-        select, input {
+        .control-title {
+            color: #ff6b81; font-size: 1rem; font-weight: 800;
+            margin-bottom: 15px; text-align: center;
+        }
+        .control-group { margin-bottom: 15px; }
+        .label { font-size: 0.9rem; color: #ff8fa3; font-weight: 800; display: block; margin-bottom: 8px; }
+
+        /* スライダー・セレクトボックス */
+        input[type="range"] {
+            width: 100%; cursor: pointer; accent-color: #ff6b81;
+        }
+        select {
             width: 100%; padding: 10px; border-radius: 10px; border: 2px solid #ffcad4;
-            font-family: inherit; font-size: 1rem; margin-bottom: 10px;
+            font-family: inherit; font-size: 1rem; color: #4a4a4a;
         }
 
-        /* --- 判定結果（信号機） --- */
-        #result-area {
-            display: none; /* 初期は非表示 */
-            text-align: center;
-            animation: fadeIn 0.5s ease;
+        /* --- 24場リストエリア --- */
+        .stadium-list {
+            width: 100%; max-width: 480px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2列並び */
+            gap: 10px;
+        }
+        @media (max-width: 400px) {
+            .stadium-list { grid-template-columns: 1fr; } /* 超小型スマホは1列 */
         }
 
-        .status-badge {
-            display: inline-block;
-            padding: 10px 25px;
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-            color: white;
-        }
-
-        .safe { background: #2ecc71; box-shadow: 0 0 15px rgba(46, 204, 113, 0.5); }
-        .caution { background: #f1c40f; box-shadow: 0 0 15px rgba(241, 196, 15, 0.5); }
-        .danger { background: #e74c3c; box-shadow: 0 0 15px rgba(231, 76, 60, 0.5); }
-
-        .ichika-comment {
-            background: #fff0f6;
-            padding: 15px;
+        /* 各会場カード */
+        .stadium-card {
+            background: white;
             border-radius: 15px;
-            border-left: 5px solid #ff8fa3;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            text-align: left;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+            border: 1px solid #fff0f3;
+            position: relative;
+            transition: transform 0.3s;
         }
+        .stadium-card:hover { transform: translateY(-3px); }
 
-        .deme-box {
-            margin-top: 15px;
-            border: 2px dashed #ffcad4;
-            padding: 10px;
-            border-radius: 10px;
-            font-weight: 800;
-            color: #ff6b81;
+        .stadium-name { font-size: 0.9rem; color: #4a4a4a; font-weight: 800; margin-bottom: 5px; }
+        .rate-display { font-size: 1.3rem; font-weight: 800; }
+        .base-rate { font-size: 0.7rem; color: #999; margin-top: 3px; }
+
+        /* 判定信号（バッジ） */
+        .status-badge {
+            position: absolute; top: 10px; right: 10px;
+            width: 15px; height: 15px; border-radius: 50%;
         }
+        .safe { background: #2ecc71; box-shadow: 0 0 10px rgba(46, 204, 113, 0.5); }
+        .caution { background: #f1c40f; box-shadow: 0 0 10px rgba(241, 196, 15, 0.5); }
+        .danger { background: #e74c3c; box-shadow: 0 0 10px rgba(231, 76, 60, 0.5); }
 
-        button.btn-calc {
-            width: 100%; padding: 15px; border: none; border-radius: 50px;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-            color: white; font-weight: 800; font-size: 1.1rem; cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 107, 129, 0.3);
+        /* 一果の付箋メモ */
+        .ichika-memo {
+            grid-column: 1 / -1; /* 全幅 */
+            background: #ffffd1; padding: 15px; border-radius: 5px;
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.1);
+            font-size: 0.8rem; border-left: 5px solid #ffd32a;
+            margin-top: 10px;
         }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-<div class="navi-panel">
-    <h1>🌸 本命Navi：安全診断</h1>
+<header>
+    <div class="sub-title">一果のBOAT STRIKE プロシリーズ</div>
+    <h1>🌸 24場一斉・風速補正シミュレーター</h1>
+</header>
 
-    <div class="input-group">
-        <span class="label">① 会場を選んでください</span>
-        <select id="stadium">
-            <option value="0.66">24 大村（逃げ率 66%）</option>
-            <option value="0.51">01 桐生（逃げ率 51%）</option>
-            <option value="0.43">02 戸田（逃げ率 43%）</option>
+<div class="control-panel">
+    <div class="control-title">🌀 今の風の状態を入力</div>
+    
+    <div class="control-group">
+        <label class="label">① 風向きは？</label>
+        <select id="windDirection" onchange="updateAll()">
+            <option value="追い風">追い風（イン有利🌸）</option>
+            <option value="向かい風">向かい風（センター捲り注意⚠️）</option>
         </select>
-
-        <span class="label">② 今の風速は？</span>
-        <input type="number" id="wind" placeholder="例：3" min="0">
-        
-        <button class="btn-calc" onclick="diagnose()">一果に聞いてみる 🌸</button>
     </div>
 
-    <div id="result-area">
-        <div id="status" class="status-badge">判定中...</div>
-        <div class="ichika-comment" id="comment"></div>
-        <div class="deme-box" id="deme"></div>
+    <div class="control-group">
+        <label class="label">② 風速は？：<span id="windSpeedDisplay" style="color:#ff6b81; font-weight:800;">0</span> m</label>
+        <input type="range" id="windSpeed" min="0" max="10" value="0" step="1" oninput="updateAll()">
+    </div>
+</div>
+
+<div class="stadium-list" id="stadiumList">
+    </div>
+
+<div class="stadium-list">
+    <div class="ichika-memo">
+        <strong>一果のシミュレーション術 🌸</strong>
+        「追い風2mまではインが盤石ですぅ。でも向かい風が3mを超えると、大村さんでも捲られやすくなるんですよぉ…。判定ツールと合わせて、現地の風もチェックしてみてくださいねっ♪」
     </div>
 </div>
 
 <script>
-function diagnose() {
-    const nigeRate = parseFloat(document.getElementById('stadium').value);
-    const wind = parseInt(document.getElementById('wind').value) || 0;
-    const resultArea = document.getElementById('result-area');
-    const status = document.getElementById('status');
-    const comment = document.getElementById('comment');
-    const deme = document.getElementById('deme');
+// 1. 全24場の基本逃げ率データ（攻略ノートの数値）
+const stadiumBaseData = {
+    "01 桐生": 0.51, "02 戸田": 0.43, "03 江戸川": 0.45, "04 平和島": 0.44,
+    "05 多摩川": 0.51, "06 浜名湖": 0.52, "07 蒲郡": 0.55, "08 常滑": 0.55,
+    "09 津": 0.53, "10 三国": 0.52, "11 びわこ": 0.48, "12 住之江": 0.58,
+    "13 尼崎": 0.54, "14 鳴門": 0.50, "15 丸亀": 0.53, "16 児島": 0.55,
+    "17 宮島": 0.54, "18 徳山": 0.63, "19 下関": 0.60, "20 若松": 0.56,
+    "21 芦屋": 0.61, "22 福岡": 0.45, "23 唐津": 0.54, "24 大村": 0.66
+};
 
-    resultArea.style.display = 'block';
+// 2. 初期生成
+function init() {
+    const list = document.getElementById('stadiumList');
+    // stadiumBaseDataのキー（場名）をループしてカードを作る
+    for (const name in stadiumBaseData) {
+        const card = document.createElement('div');
+        card.className = 'stadium-card';
+        card.id = `card-${name}`; // IDを振っておく
 
-    // 簡易ロジック
-    if (nigeRate >= 0.6 && wind <= 2) {
-        status.innerText = "青：鬼絞りチャンス！🌸";
-        status.className = "status-badge safe";
-        comment.innerText = "一果の目から見ても、ここは盤石ですぅ！イン逃げを信じて、点数を絞って狙いましょう♪";
-        deme.innerText = "推奨：1-2-34, 1-3-24";
-    } else if (wind >= 5 || nigeRate < 0.5) {
-        status.innerText = "赤：波乱の予感…！⚠️";
-        status.className = "status-badge danger";
-        comment.innerText = "風が強すぎますぅ…。インが流れて高配当になるかも。無理に本命で勝負するのは危険ですよぉ。";
-        deme.innerText = "推奨：見送り（または 2-3-全）";
-    } else {
-        status.innerText = "黄：中堅レベル。慎重に。";
-        status.className = "status-badge caution";
-        comment.innerText = "悪くはないですが、絶対とは言えませんねぇ。展示タイムをよく見て、伸びが良い選手がいたら注意ですっ。";
-        deme.innerText = "推奨：1-23-全";
+        card.innerHTML = `
+            <div class="status-badge" id="status-${name}"></div>
+            <div class="stadium-name">${name}</div>
+            <div class="rate-display" id="rate-${name}">--%</div>
+            <div class="base-rate">基本: ${Math.round(stadiumBaseData[name] * 100)}%</div>
+        `;
+        list.appendChild(card);
+    }
+    updateAll(); // 最初の計算
+}
+
+// 3. 全体更新関数（スライダーを動かすたびに呼ばれる）
+function updateAll() {
+    const direction = document.getElementById('windDirection').value;
+    const speed = parseInt(document.getElementById('windSpeed').value);
+    document.getElementById('windSpeedDisplay').innerText = speed; // 数字を表示
+
+    for (const name in stadiumBaseData) {
+        const baseRate = stadiumBaseData[name];
+        let adjust = 0;
+
+        // --- 補正ロジック ---
+        if (direction === "追い風") {
+            if (speed <= 2) { adjust = 0.03; } // 絶好の逃げ🌸
+            else if (speed >= 5) { adjust = -0.05; } // 差し場⚠️
+        } else if (direction === "向かい風") {
+            if (speed >= 3) { adjust = -(speed * 0.02); } // 捲り場⚠️
+        }
+
+        const finalRate = Math.round((baseRate + adjust) * 100);
+        
+        // --- 画面への反映 ---
+        const rateDisp = document.getElementById(`rate-${name}`);
+        const statusDisp = document.getElementById(`status-${name}`);
+
+        rateDisp.innerText = `${finalRate}%`;
+
+        // 逃げ率に応じて色と文字色を変える
+        if (finalRate >= 60) {
+            rateDisp.style.color = '#ff4757'; // 赤文字（アツい）
+            statusDisp.className = 'status-badge safe'; // 緑信号
+        } else if (finalRate < 50) {
+            rateDisp.style.color = '#57606f'; // 灰色文字
+            statusDisp.className = 'status-badge danger'; // 赤信号
+        } else {
+            rateDisp.style.color = '#ff6b81'; // 通常ピンク文字
+            statusDisp.className = 'status-badge caution'; // 黄信号
+        }
     }
 }
+
+window.onload = init; // ページ読み込み時に初期化
 </script>
 
 </body>
