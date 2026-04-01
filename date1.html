@@ -103,11 +103,24 @@
         }
         .ichika-memo strong { color: #e58e00; display: block; margin-bottom: 5px; }
 
-        /* --- 広告＆ボタン --- */
+       /* --- 広告枠の調整：サイズを適正化 --- */
         .ad-space {
-            background: #f8f9fa; border: 2px dashed #ddd;
-            margin: 20px auto; text-align: center;
-            padding: 15px; font-size: 0.75rem; color: #bbb; border-radius: 15px;
+            background: #f8f9fa; 
+            border: 2px dashed #ddd;
+            margin: 20px auto; 
+            text-align: center;
+            padding: 10px; 
+            font-size: 0.75rem; 
+            color: #bbb; 
+            border-radius: 15px;
+            /* ここを追加 🌸 */
+            max-width: 336px; /* 広告の最大幅に合わせる */
+            min-height: 250px; /* 広告が表示される前のガタつき防止 */
+            overflow: hidden; /* はみ出し防止 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
         .back-btn {
             display: flex; align-items: center; justify-content: center;
@@ -276,11 +289,12 @@
     </div>
 </div>
 
-<div class="ad-space"><!-- admax -->
-<script src="https://adm.shinobi.jp/s/00848ad75df65c15ca7f98de1efcf942"></script>
-<!-- admax --></div>
+<div class="ad-space">
+    <div style="margin-bottom: 5px;">Sponsered Link</div>
+    <script src="https://adm.shinobi.jp/s/00848ad75df65c15ca7f98de1efcf942"></script>
+</div>
 
-<a href="index.html" class="back-btn">🌸 判定ツールに戻る</a>
+<a href="ichika.html" class="back-btn">🌸 判定ツールに戻る</a>
 
 <footer style="text-align: center; font-size: 0.7rem; color: #ff8fa3; margin: 20px 0;">
     &copy; P-STAR / BOAT STRIKE Project
