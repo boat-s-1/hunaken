@@ -261,8 +261,29 @@
         img.classList.remove('ichika-bounce');
         balloon.classList.remove('gold-mode');
 
-        let comment = (lastScore >= 85) ? "「ふわぁ…！一果の**“鬼絞り”**発動ですっ。1号艇さんは盤石ですね♪」" : (lastScore >= 75) ? "「イン逃げ濃厚ですねぇ。期待大、ですよぉ。」" : "「んん〜…ちょっと混戦模様。無理は禁物ですよぉ？」";
-        if(lastScore >= 85) { img.classList.add('ichika-bounce'); balloon.classList.add('gold-mode'); }
+        let comment = = "";
+        if (lastScore >= 90) {
+            comment = "「ふわぁぁ…！究極の**“鬼絞り”**発動ですっ！一果、ノートに特大の花丸をつけちゃいます🌸」";
+        } else if (lastScore >= 80) {
+            comment = "「1号艇さんは盤石ですね♪ イン逃げを信じて、点数を絞って勝負ですよぉ🌸」";
+        } else if (lastScore >= 65) {
+            comment = "「逃げの気配は十分ですが、2号艇さんの差しが鋭いとヒモが荒れるかも…？注意してくださいねぇ。」";
+        } else if (lastScore >= 50) {
+            comment = "「うぅ〜ん、五分五分くらいでしょうか。外枠の選手の足音が聞こえますぅ。捲り差しに注意ですよぉ。」";
+        } else if (lastScore >= 35) {
+            comment = "「ちょっと混戦模様ですねぇ…。無理して勝負するのは、一果、あんまりオススメしませんっ。」";
+        } else {
+            comment = "「ここは波乱の香りがぷんぷんしますっ！一果なら、大切なお金を守るために“見”に徹しちゃいますねぇ…。」";
+        }
+
+        // 演出の切り替え
+        if(lastScore >= 80) { 
+            img.classList.add('ichika-bounce'); 
+            balloon.classList.add('gold-mode'); 
+        } else {
+            img.classList.remove('ichika-bounce'); 
+            balloon.classList.remove('gold-mode');
+        }
 
         document.getElementById('score').innerText = lastScore + "%";
         document.getElementById('advice').innerHTML = `<strong>${comment}</strong>`;
