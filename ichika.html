@@ -90,6 +90,7 @@
         #result.low { background: #fff5f5; border: 2px solid #ffc9c9; }
         .reset-btn { font-size: 0.7rem; color: #ffcad4; background: none; border: none; cursor: pointer; text-decoration: underline; margin-top: 15px; display: block; width: 100%; }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
 
@@ -145,6 +146,20 @@
         <div style="font-size: 0.75rem; color: #8c6a4a;">推定逃げ確率</div>
         <span class="score-display" id="score">0%</span>
 
+　　　　<div id="result">
+    <div id="share-card-area">
+        <div class="share-title">🌸 一果の1号艇・鬼絞り判定 🌸</div>
+        <div class="share-stadium" id="share-stadium-name">--</div>
+        <div style="font-size: 0.7rem; color: #8c6a4a;">推定イン逃げ確率</div>
+        <div class="share-score" id="share-score-val">0%</div>
+        <div id="share-advice" style="font-size: 0.8rem; margin-top: 10px; font-weight: 800; color: #444;"></div>
+        <img src="ichika_chara3.png" style="width: 100px; position: absolute; bottom: 10px; right: 10px; opacity: 0.9;">
+        <div class="share-footer">#BOATSTRIKE #一果の鬼絞り判定</div>
+    </div>
+
+    <button class="save-btn" onclick="saveAsImage()">画像を保存してSNSに投稿する 🌸</button>
+</div>
+        
         <button class="correction-toggle-btn" id="toggleBtn" onclick="toggleCorrection()">選手個別のデータでさらに補正する ＋</button>
 
         <div id="player-correction">
@@ -381,6 +396,68 @@
 
     function resetStats() { if(confirm("リセットしちゃいますかぁ？")) { localStorage.clear(); renderTable(); } }
     window.onload = () => { renderTable(); loadAdminStats(); };
+
+    /* SNSシェア用カードの隠しレイアウト（判定後に出現） */
+#share-card-area {
+    display: none;
+    width: 380px;
+    padding: 20px;
+    background: white;
+    border: 5px solid #ffcad4;
+    border-radius: 20px;
+    text-align: center;
+    position: relative;
+    margin: 20px auto;
+    background-image: url('bg_pattern.png'); /* 共通背景 */
+    background-size: 150px;
+}
+
+.share-title { font-size: 0.9rem; color: #ff8fa3; font-weight: 800; margin-bottom: 5px; }
+.share-stadium { font-size: 1.4rem; color: #4a4a4a; font-weight: 800; margin-bottom: 10px; }
+.share-score { font-size: 4rem; font-weight: 800; color: #ff6b81; line-height: 1; }
+.share-footer { font-size: 0.7rem; color: #ff8fa3; margin-top: 15px; }
+
+/* 保存ボタンのスタイル */
+.save-btn {
+    width: 100%;
+    padding: 15px;
+    background: #ff8fa3;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-weight: 800;
+    margin-top: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(255, 143, 163, 0.3);
+}
+
+    // calculate() 関数の最後で、シェア用カードにも値をセットするようにします
+function calculate() {
+    // ...既存の計算処理...
+
+    // シェア用カードに値を反映
+    document.getElementById('share-card-area').style.display = 'block';
+    document.getElementById('share-stadium-name').innerText = currentStadium;
+    document.getElementById('share-score-val').innerText = lastScore + "%";
+    document.getElementById('share-advice').innerText = comment.replace(/<br>/g, ""); // タグ除去
+}
+
+// 画像として保存する関数
+function saveAsImage() {
+    const card = document.getElementById('share-card-area');
+    
+    html2canvas(card, {
+        scale: 2, // 高画質にする
+        backgroundColor: null,
+    }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `ichika_nige_${currentStadium}.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+        
+        alert("画像を保存しましたっ🌸 SNSに貼り付けて自慢しちゃいましょう！");
+    });
+}
 </script>
 </body>
 </html>
