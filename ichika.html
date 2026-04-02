@@ -6,6 +6,84 @@
     <title>一果の1号艇・鬼絞り判定所 🌸</title>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&display=swap" rel="stylesheet">
     <style>
+        /* --- サイトマップ（フッターナビ）のデザイン --- */
+        .footer-sitemap {
+            width: 100%;
+            max-width: 440px;
+            margin: 30px auto 10px;
+            padding: 20px;
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 25px;
+            border: 1px solid #ffcad4;
+        }
+
+        .sitemap-title {
+            font-size: 0.9rem;
+            color: #ff8fa3;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .sitemap-title::before, .sitemap-title::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #ffcad4;
+        }
+
+        .sitemap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .sitemap-item {
+            background: white;
+            padding: 12px;
+            border-radius: 15px;
+            text-decoration: none;
+            color: #666;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            border: 1px solid #fff0f3;
+            transition: 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        .sitemap-item:hover {
+            transform: translateY(-3px);
+            border-color: #ff8fa3;
+            color: #ff8fa3;
+            box-shadow: 0 5px 15px rgba(255, 143, 163, 0.1);
+        }
+
+        .sitemap-icon {
+            font-size: 1.2rem;
+        }
+
+        .sitemap-desc {
+            font-size: 0.6rem;
+            color: #999;
+            font-weight: normal;
+        }
+
+        .footer-copy {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #ff8fa3;
+            margin: 20px 0;
+            font-weight: 700;
+        }
         /* --- 既存のスタイル --- */
         body {
             font-family: 'M PLUS Rounded 1c', sans-serif;
@@ -356,5 +434,37 @@
     <!-- admax -->
 <script src="https://adm.shinobi.jp/s/e65909d39a271ad3779bc0a29eca55ec"></script>
 <!-- admax -->
+    <nav class="footer-sitemap">
+    <div class="sitemap-title">一果の案内所 🌸</div>
+    <div class="sitemap-grid">
+        <a href="date1.html" class="sitemap-item">
+            <span class="sitemap-icon">📚</span>
+            <span>24場・攻略ノート</span>
+            <span class="sitemap-desc">全国の傾向を丸裸に🌸</span>
+        </a>
+        
+        <a href="https://note.com/あなたのID" class="sitemap-item" target="_blank">
+            <span class="sitemap-icon">📝</span>
+            <span>一果のnote</span>
+            <span class="sitemap-desc">限定・鬼絞り予想公開中！</span>
+        </a>
+
+        <a href="https://fantia.jp/あなたのID" class="sitemap-item" target="_blank">
+            <span class="sitemap-icon">🎀</span>
+            <span>Fantiaサポーター</span>
+            <span class="sitemap-desc">一果を応援してねぇ♪</span>
+        </a>
+
+        <a href="index.html" class="sitemap-item">
+            <span class="sitemap-icon">🏠</span>
+            <span>サイトトップ</span>
+            <span class="sitemap-desc">ホームに戻りますぅ。</span>
+        </a>
+    </div>
+</nav>
+
+<div class="footer-copy">
+    &copy; P-STAR / BOAT STRIKE Project 2026
+</div>
 </body>
 </html>
