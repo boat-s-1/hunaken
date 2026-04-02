@@ -10,252 +10,250 @@
             font-family: 'M PLUS Rounded 1c', sans-serif;
             margin: 0; padding: 10px;
             display: flex; flex-direction: column; align-items: center;
-            background-color: #f0f7f7;
+            background-color: #0a191e; /* 深海のようなダークブルー */
             background-image: 
-                linear-gradient(90deg, rgba(175, 238, 238, 0.15) 1px, transparent 1px),
-                linear-gradient(rgba(175, 238, 238, 0.15) 1px, transparent 1px);
-            background-size: 30px 30px;
-            color: #2d3436;
+                linear-gradient(rgba(0, 184, 148, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 184, 148, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: #dfe6e9;
         }
 
+        /* --- ヘッダー：ラボのモニター風 --- */
         .header-title {
-            width: 100%; max-width: 460px;
-            background: #2d3436; color: #55efc4;
-            padding: 15px; border-radius: 20px;
+            width: 100%; max-width: 480px;
+            background: #1e272e; color: #55efc4;
+            padding: 15px; border-radius: 15px;
             text-align: center; margin-bottom: 20px;
-            border-bottom: 4px solid #00b894;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            border: 1px solid #00b894;
+            box-shadow: 0 0 15px rgba(0, 184, 148, 0.3);
         }
-        h1 { font-size: 1rem; margin: 0; letter-spacing: 2px; }
+        h1 { font-size: 1rem; margin: 0; letter-spacing: 3px; text-shadow: 0 0 10px #55efc4; }
 
         .outer-frame {
-            position: relative; width: 100%; max-width: 460px;
+            width: 100%; max-width: 480px;
             padding: 20px; box-sizing: border-box;
-            background: white; border: 2px solid #00b894;
-            border-radius: 25px; box-shadow: 0 10px 30px rgba(0,184,148,0.1);
+            background: rgba(30, 39, 46, 0.9);
+            border: 1px solid #00b894;
+            border-radius: 20px;
         }
 
-        /* --- 修正ポイント：ボタンの配置を内側に最適化 --- */
         .data-link-btn {
             display: block; width: 100%; text-align: center;
-            background: #e0f2f1; color: #00b894;
-            padding: 12px; border-radius: 12px;
-            font-size: 0.8rem; font-weight: 800;
-            text-decoration: none; 
-            margin: 0 auto 20px auto; /* 枠の内側で中央寄せ、下に余白 */
-            border: 2px solid #b2dfdb;
-            transition: 0.3s;
-            box-sizing: border-box;
+            background: rgba(0, 184, 148, 0.1); color: #55efc4;
+            padding: 10px; border-radius: 10px; font-size: 0.8rem;
+            text-decoration: none; border: 1px solid #00b894;
+            margin-bottom: 20px;
         }
-        .data-link-btn:hover { background: #b2dfdb; }
 
-        .top-section { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
-        .hatsune-chara { width: 120px; height: auto; filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.1)); }
-        
-        .analysis-target {
-            flex: 1; background: #f9fdfc; border: 1px solid #d1f2eb;
-            padding: 12px; border-radius: 15px;
+        /* 入力エリアのグリッド化 */
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
         }
-        .label { font-size: 0.7rem; color: #00b894; font-weight: 800; display: block; margin-bottom: 5px; }
-        select { width: 100%; padding: 10px; border-radius: 10px; border: 2px solid #d1f2eb; font-family: inherit; font-size: 0.85rem; background: white; color: #2d3436; }
 
-        /* 入力ブロック */
         .input-block {
-            border: 1px solid #d1f2eb; border-radius: 15px;
-            padding: 15px; margin-bottom: 15px; background: #f9fdfc;
+            background: #2d3436; border: 1px solid #636e72;
+            padding: 10px; border-radius: 12px;
+            position: relative;
         }
         .block-title {
-            font-size: 0.85rem; font-weight: 800; color: #fff;
-            padding: 5px 12px; border-radius: 50px;
-            display: inline-block; margin-bottom: 12px;
+            font-size: 0.7rem; font-weight: 800; padding: 2px 8px;
+            border-radius: 4px; margin-bottom: 8px; display: inline-block;
         }
-        .b1 { background: #ff4757; }
-        .b2 { background: #1e90ff; }
-        .b3 { background: #f1c40f; color: #2d3436; }
+        .b1 { background: #ff4757; color: white; }
+        .b2 { background: #1e90ff; color: white; }
+        .b3 { background: #f1c40f; color: #000; }
+        .b4 { background: #34495e; color: white; }
+        .b5 { background: #e67e22; color: white; }
+        .b6 { background: #8e44ad; color: white; }
 
-        .control-row { margin-bottom: 15px; }
-        .slider-label { font-size: 0.75rem; font-weight: 800; color: #636e72; margin-bottom: 5px; display: block; }
-        .slider-group { display: flex; align-items: center; gap: 12px; }
-        input[type="range"] { flex: 1; cursor: pointer; accent-color: #00b894; }
-        .val-disp { font-size: 1rem; font-weight: 800; color: #00b894; min-width: 55px; text-align: right; }
+        .slider-label { font-size: 0.65rem; color: #b2bec3; display: block; margin-top: 5px; }
+        input[type="range"] { width: 100%; accent-color: #55efc4; cursor: pointer; }
+        .val-disp { font-size: 0.85rem; font-weight: 800; color: #55efc4; display: block; text-align: right; }
+
+        /* 特殊条件（風・波） */
+        .env-block {
+            background: #0a3d34; border: 1px solid #00b894;
+            padding: 15px; border-radius: 12px; margin-bottom: 20px;
+        }
 
         .analyze-btn {
-            width: 100%; padding: 18px; margin-top: 10px;
-            background: #2d3436; color: #55efc4;
-            border: 2px solid #00b894; border-radius: 15px;
-            font-weight: 800; font-size: 1.2rem; cursor: pointer;
+            width: 100%; padding: 20px;
+            background: #00b894; color: #0a191e;
+            border: none; border-radius: 12px;
+            font-weight: 800; font-size: 1.1rem; cursor: pointer;
+            transition: 0.3s;
         }
+        .analyze-btn:active { transform: scale(0.98); }
 
+        /* 解析結果のモニター表示 */
         #result-box {
             display: none; margin-top: 25px; padding: 20px;
-            background: #2d3436; color: white; border-radius: 20px;
+            background: #000; border: 2px solid #55efc4;
+            border-radius: 15px; box-shadow: inset 0 0 20px rgba(85, 239, 196, 0.2);
         }
-        .report-header { font-size: 0.75rem; color: #55efc4; border-bottom: 1px solid #55efc4; margin-bottom: 15px; padding-bottom: 5px; }
-        .report-text { font-size: 0.85rem; line-height: 1.7; color: #dfe6e9; margin: 15px 0; border-left: 3px solid #00b894; padding-left: 12px; }
-        .deme-box { font-weight: 800; font-size: 1.2rem; text-align: center; color: #fff; margin-top: 5px; border: 1px solid #55efc4; padding: 10px; border-radius: 10px; }
+        .loading-text { color: #55efc4; font-family: monospace; font-size: 0.8rem; }
+        
+        .result-content { display: none; }
+        .deme-row {
+            background: #1e272e; padding: 15px; border-radius: 10px;
+            margin-top: 15px; border-left: 4px solid #55efc4;
+        }
     </style>
 </head>
 <body>
 
 <div class="header-title">
-    <h1>🔬 HATSUNE: PRECISION SIMULATOR</h1>
+    <h1>🔬 HATSUNE: PRECISION SIMULATOR v2.0</h1>
 </div>
 
 <div class="outer-frame">
-    <a href="ladies_data.html" class="data-link-btn">📘 初音の女子戦攻略データを見る 🌸</a>
+    <a href="ladies_data.html" class="data-link-btn">📘 初音の女子戦攻略データベースを開く</a>
 
-    <div class="top-section">
-        <img src="hatsune_chara.png" class="hatsune-chara" alt="初音">
-        
-        <div class="analysis-target">
-            <span class="label">SELECT STADIUM (全国24場)</span>
-            <select id="stadiumSelect">
-                <option value="-4">01 桐生</option><option value="-12">02 戸田</option><option value="-8">03 江戸川</option>
-                <option value="-10">04 平和島</option><option value="-3">05 多摩川</option><option value="-2">06 浜名湖</option>
-                <option value="1">07 蒲郡</option><option value="1">08 常滑</option><option value="-1">09 津</option>
-                <option value="-2">10 三国</option><option value="-6">11 びわこ</option><option value="4">12 住之江</option>
-                <option value="0">13 尼崎</option><option value="-5">14 鳴門</option><option value="0">15 丸亀</option>
-                <option value="2">16 児島</option><option value="0">17 宮島</option><option value="7">18 徳山</option>
-                <option value="5">19 下関</option><option value="3">20 若松</option><option value="6">21 芦屋</option>
-                <option value="-9">22 福岡</option><option value="0">23 唐津</option><option value="8">24 大村</option>
+    <div class="env-block">
+        <span class="label" style="color:#55efc4; font-size:0.7rem; font-weight:800;">STADIUM & ENVIRONMENT</span>
+        <div style="display:flex; gap:10px; margin-top:10px;">
+            <select id="stadiumSelect" style="flex:1; background:#1e272e; color:white; border:1px solid #00b894; padding:8px; border-radius:5px;">
+                <option value="52">24 大村 (イン最強)</option>
+                <option value="48">12 住之江 (標準)</option>
+                <option value="42">02 戸田 (イン脆弱)</option>
+                </select>
+            <select id="weatherSelect" style="flex:1; background:#1e272e; color:white; border:1px solid #00b894; padding:8px; border-radius:5px;">
+                <option value="0">穏やか (通常)</option>
+                <option value="-5">追い風強 (差し有利)</option>
+                <option value="-8">向かい風強 (捲り有利)</option>
             </select>
         </div>
     </div>
 
-    <div class="input-block">
-        <span class="block-title b1">1号艇（イン）</span>
-        <div class="control-row">
-            <span class="slider-label">当地勝率</span>
-            <div class="slider-group">
-                <input type="range" id="localRate1" min="100" max="950" value="700" step="10" oninput="updateVal('localVal1', (this.value/100).toFixed(2))">
-                <span class="val-disp" id="localVal1">7.00</span>
-            </div>
+    <div class="input-grid">
+        <div class="input-block">
+            <span class="block-title b1">1号艇</span>
+            <span class="slider-label">能力値</span>
+            <input type="range" id="p1_power" min="30" max="95" value="70" oninput="updateVal('v1', this.value)">
+            <span class="val-disp" id="v1">70</span>
         </div>
-        <div class="control-row">
-            <span class="slider-label">モーター2連率 (%)</span>
-            <div class="slider-group">
-                <input type="range" id="motorRate1" min="10" max="60" value="40" oninput="updateVal('motorVal1', this.value + '%')">
-                <span class="val-disp" id="motorVal1">40%</span>
-            </div>
+        <div class="input-block">
+            <span class="block-title b2">2号艇</span>
+            <span class="slider-label">能力値</span>
+            <input type="range" id="p2_power" min="30" max="95" value="60" oninput="updateVal('v2', this.value)">
+            <span class="val-disp" id="v2">60</span>
         </div>
-        <div class="control-row">
-            <span class="slider-label">平均スタート (ST)</span>
-            <div class="slider-group">
-                <input type="range" id="st1" min="10" max="25" value="15" oninput="updateVal('stVal1', '0.' + this.value + 's')">
-                <span class="val-disp" id="stVal1">0.15s</span>
-            </div>
+        <div class="input-block">
+            <span class="block-title b3">3号艇</span>
+            <span class="slider-label">能力値</span>
+            <input type="range" id="p3_power" min="30" max="95" value="60" oninput="updateVal('v3', this.value)">
+            <span class="val-disp" id="v3">60</span>
         </div>
-    </div>
-
-    <div class="input-block">
-        <span class="block-title b2">2号艇（差し・壁）</span>
-        <div class="control-row">
-            <span class="slider-label">当地勝率</span>
-            <div class="slider-group">
-                <input type="range" id="localRate2" min="100" max="950" value="550" step="10" oninput="updateVal('localVal2', (this.value/100).toFixed(2))">
-                <span class="val-disp" id="localVal2">5.50</span>
-            </div>
+        <div class="input-block">
+            <span class="block-title b4">4号艇</span>
+            <span class="slider-label">能力値</span>
+            <input type="range" id="p4_power" min="30" max="95" value="55" oninput="updateVal('v4', this.value)">
+            <span class="val-disp" id="v4">55</span>
         </div>
-        <div class="control-row">
-            <span class="slider-label">モーター2連率 (%)</span>
-            <div class="slider-group">
-                <input type="range" id="motorRate2" min="10" max="60" value="35" oninput="updateVal('motorVal2', this.value + '%')">
-                <span class="val-disp" id="motorVal2">35%</span>
-            </div>
+        <div class="input-block">
+            <span class="block-title b5">5号艇</span>
+            <span class="slider-label">能力値</span>
+            <input type="range" id="p5_power" min="30" max="95" value="50" oninput="updateVal('v5', this.value)">
+            <span class="val-disp" id="v5">50</span>
         </div>
-        <div class="control-row">
-            <span class="slider-label">平均スタート (ST)</span>
-            <div class="slider-group">
-                <input type="range" id="st2" min="10" max="25" value="16" oninput="updateVal('stVal2', '0.' + this.value + 's')">
-                <span class="val-disp" id="stVal2">0.16s</span>
-            </div>
+        <div class="input-block">
+            <span class="block-title b6">6号艇</span>
+            <span class="slider-label">能力値</span>
+            <input type="range" id="p6_power" min="30" max="95" value="45" oninput="updateVal('v6', this.value)">
+            <span class="val-disp" id="v6">45</span>
         </div>
     </div>
 
-    <div class="input-block">
-        <span class="block-title b3">3号艇（捲り・捲差し）</span>
-        <div class="control-row">
-            <span class="slider-label">当地勝率</span>
-            <div class="slider-group">
-                <input type="range" id="localRate3" min="100" max="950" value="580" step="10" oninput="updateVal('localVal3', (this.value/100).toFixed(2))">
-                <span class="val-disp" id="localVal3">5.80</span>
-            </div>
-        </div>
-        <div class="control-row">
-            <span class="slider-label">モーター2連率 (%)</span>
-            <div class="slider-group">
-                <input type="range" id="motorRate3" min="10" max="60" value="35" oninput="updateVal('motorVal3', this.value + '%')">
-                <span class="val-disp" id="motorVal3">35%</span>
-            </div>
-        </div>
-        <div class="control-row">
-            <span class="slider-label">平均スタート (ST)</span>
-            <div class="slider-group">
-                <input type="range" id="st3" min="10" max="25" value="14" oninput="updateVal('stVal3', '0.' + this.value + 's')">
-                <span class="val-disp" id="stVal3">0.14s</span>
-            </div>
-        </div>
-    </div>
-
-    <button class="analyze-btn" onclick="analyzeDevelopment()">SIMULATE DEVELOPMENT</button>
+    <button class="analyze-btn" onclick="startAnalysis()">EXECUTE SIMULATION</button>
 
     <div id="result-box">
-        <div class="report-header">■ DEVELOPMENT REPORT</div>
-        <div id="mainResult" style="font-size: 1.5rem; font-weight: 800; color: #55efc4; text-align: center;">--</div>
-        <div class="report-text" id="report">--</div>
-        <div class="deme-box" id="deme">---</div>
+        <div id="loading" class="loading-text"></div>
+        <div id="analysis-result" class="result-content">
+            <div style="font-size: 0.7rem; color: #55efc4; margin-bottom: 10px;">PROBABILITY REPORT:</div>
+            <div id="main-status" style="font-size: 1.4rem; font-weight: 800; margin-bottom: 15px;"></div>
+            <div id="hatsune-comment" style="font-size: 0.85rem; line-height: 1.6; color: #bdc3c7;"></div>
+            <div class="deme-row">
+                <span style="font-size: 0.7rem; color: #55efc4; display: block; margin-bottom: 5px;">EXPECTED NUMBERS:</span>
+                <div id="deme-list" style="font-size: 1.2rem; letter-spacing: 2px;"></div>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
     function updateVal(id, val) { document.getElementById(id).innerText = val; }
 
-    function analyzeDevelopment() {
-        const stadiumFix = parseInt(document.getElementById('stadiumSelect').value);
+    function startAnalysis() {
+        const box = document.getElementById('result-box');
+        const loading = document.getElementById('loading');
+        const result = document.getElementById('analysis-result');
         
-        const r1 = parseInt(document.getElementById('localRate1').value) / 100;
-        const m1 = parseInt(document.getElementById('motorRate1').value);
-        const st1 = parseInt(document.getElementById('st1').value);
-        const p1 = (r1 * 8) + (m1 * 0.5) + (15 - st1) * 2 + stadiumFix;
+        box.style.display = 'block';
+        result.style.display = 'none';
+        loading.innerText = "Analyzing race data...";
+        
+        // 解析中アニメーション（1.5秒）
+        let dots = "";
+        const timer = setInterval(() => {
+            dots += ".";
+            loading.innerText = "Calculating trajectories" + dots;
+            if (dots.length > 3) dots = "";
+        }, 300);
 
-        const r2 = parseInt(document.getElementById('localRate2').value) / 100;
-        const m2 = parseInt(document.getElementById('motorRate2').value);
-        const st2 = parseInt(document.getElementById('st2').value);
-        const p2 = (r2 * 6) + (m2 * 0.4) + (15 - st2) * 2;
+        setTimeout(() => {
+            clearInterval(timer);
+            loading.style.display = 'none';
+            result.style.display = 'block';
+            runLogic();
+        }, 1500);
+    }
 
-        const r3 = parseInt(document.getElementById('localRate3').value) / 100;
-        const m3 = parseInt(document.getElementById('motorRate3').value);
-        const st3 = parseInt(document.getElementById('st3').value);
-        const p3 = (r3 * 6) + (m3 * 0.6) + (15 - st3) * 5;
+    function runLogic() {
+        const stadium = parseInt(document.getElementById('stadiumSelect').value);
+        const weather = parseInt(document.getElementById('weatherSelect').value);
+        
+        const powers = [
+            parseInt(document.getElementById('p1_power').value) + stadium + weather,
+            parseInt(document.getElementById('p2_power').value) + 5,
+            parseInt(document.getElementById('p3_power').value) + 3,
+            parseInt(document.getElementById('p4_power').value),
+            parseInt(document.getElementById('p5_power').value),
+            parseInt(document.getElementById('p6_power').value)
+        ];
 
-        document.getElementById('result-box').style.display = 'block';
-        let resTitle = ""; let comment = ""; let deme = "";
+        let status = "";
+        let comment = "";
+        let demes = "";
 
-        if (p1 > p2 + 10 && p1 > p3 + 10) {
-            resTitle = "👑 イン逃げ濃厚";
-            comment = "「解析完了。1号艇の能力値が他を圧倒しています。当地勝率を背景にした盤石の逃げ切り。1-23が軸です。」";
-            deme = "1-2-34 / 1-3-24";
-        } else if (p2 > p1 && p2 > p3) {
-            resTitle = "🥈 2差し注意";
-            comment = "「2号艇の差し足、または1号艇の旋回不安を検知。差しによる逆転の可能性。1=2が濃厚です。」";
-            deme = "1=2-全 / 2-1-全";
-        } else if (p3 > p1 && p3 > p2 + 3) {
-            resTitle = "🌪️ 3まくり警戒";
-            comment = "「危険信号。3号艇のスタートと伸び足が突出。一気に飲み込むセンター捲りの展開を検知しました。」";
-            deme = "3-45-全 / 1-3-全";
-        } else if (p1 < 45 && p2 < 45 && p3 < 45) {
-            resTitle = "💥 大荒れ注意";
-            comment = "「警告。内枠の信頼度が極めて低い状態。機力不足による総崩れの可能性。高配当を推奨します。」";
-            deme = "45-全-全";
+        // 展開ロジック
+        if (powers[0] > 110) {
+            status = "🚨 ESCAPE: ABSOLUTE (イン逃げ鉄板)";
+            comment = "初音です。解析の結果、1号艇の逃げ率は極めて高いです。女子戦特有のスタートのバラつきも、機力でカバー可能。1-23-全の構成を推奨。";
+            demes = "1-2-345, 1-3-245";
+        } else if (powers[2] > powers[0] && powers[2] > powers[1]) {
+            status = "🌪️ ATTACK: CENTER (3号艇まくり)";
+            comment = "警告。3号艇がスリット後に突出するシミュレーションを確認。内2艇を引き波に沈める展開。3-45の連動に注意してください。";
+            demes = "3-4-全, 3-5-全, 3-1-全";
+        } else if (powers[1] > powers[0]) {
+            status = "🥈 ATTACK: GAP-SASHI (2号艇差し)";
+            comment = "解析完了。1号艇がターンで膨らむ確率が高いです。2号艇がその懐を鋭く突く展開。女子戦ではよく見られる逆転パターンです。";
+            demes = "2-1-全, 2-3-全, 1-2-全";
+        } else if (powers[3] > 70 && weather < 0) {
+            status = "⚡ ATTACK: DASH-KADO (4号艇角まくり)";
+            comment = "風速の影響により、ダッシュ勢に有利な展開。4号艇が角から仕掛け、5号艇が展開を突く「4-5」のスジを検知しました。";
+            demes = "4-5-全, 4-1-全, 5-4-全";
         } else {
-            resTitle = "🌸 イン逃げ（標準）";
-            comment = "「標準的な期待値。女子戦特有の握り合いでヒモ荒れに注意。1-23を中心に構えてください。」";
-            deme = "1-23-全";
+            status = "📊 ESCAPE: STANDARD (イン逃げ優勢)";
+            comment = "シミュレーションの結果、大きな波乱要素はありません。1号艇の逃げを中心に、機力の良い外枠を3着に加えるのが合理的です。";
+            demes = "1-23-全";
         }
 
-        document.getElementById('mainResult').innerText = resTitle;
-        document.getElementById('report').innerText = comment;
-        document.getElementById('deme').innerText = deme;
+        document.getElementById('main-status').innerText = status;
+        document.getElementById('hatsune-comment').innerText = comment;
+        document.getElementById('deme-list').innerText = demes;
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
 </script>
