@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>BOAT STRIKE - リザルトメーカー</title>
+    <style>
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f0f2f5; display: flex; flex-direction: column; align-items: center; }
+        canvas { border: 2px solid #333; box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 20px; }
+        .editor { background: white; padding: 20px; border-radius: 10px; width: 600px; }
+        .input-group { margin-bottom: 10px; }
+        input { padding: 5px; width: 80px; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<h1>BOAT STRIKE リザルトメーカー</h1>
+
+<canvas id="resultCanvas" width="800" height="450"></canvas>
+
+<div class="editor">
+    <div class="input-group">
+        開催地: <input type="text" id="place" value="蒲郡">
+        レース番号: <input type="number" id="raceNo" value="12">
+        決まり手: <input type="text" id="kimarite" value="逃げ">
+    </div>
+    <div class="input-group">
+        1着: <input type="number" id="rank1" value="1"> ST: <input type="text" id="st1" value="0.12">
+        2着: <input type="number" id="rank2" value="3"> ST: <input type="text" id="st2" value="0.15">
+        3着: <input type="number" id="rank3" value="4"> ST: <input type="text" id="st3" value="0.18">
+    </div>
+    <div class="input-group">
+        3連単 払戻金: <input type="text" id="payoff" value="1,240円">
+    </div>
+    <button onclick="generateImage()">画像を生成・更新する</button>
+    <button style="background:#28a745;" onclick="downloadImage()">画像を保存する</button>
+</div>
+
+<script>
+const canvas = document.getElementById('resultCanvas');
+const ctx = canvas.getContext('2d');
+
+// キャラクター画像の読み込み（仮のパス。ご自身の画像パスに変更してください）
+const charImg = new Image();
+charImg.src = 'https://via.placeholder.com/200x350?text=Ichika'; // ここを一果ちゃんの画像パスに！
+
+function generateImage() {
+    // 1. 背景の描画
+    ctx.fillStyle = "#004d40"; // 競艇場をイメージしたグリーン
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // 2. ヘッダー情報の描画
+    ctx.fillStyle = "white";
+    ctx.font = "bold 24px Arial";
+    ctx.fillText(`${document.getElementById('place').value} 第${document.getElementById('raceNo').value}R 最終結果`, 40, 50);
+    ctx.font = "20px Arial";
+    ctx.fillText(`決まり手：${document.getElementById('kimarite').value}`, 40, 85);
+
+    // 3. 着順リストの描画
+    const boatColors = ["#ffffff", "#cc0000", "#0000cc", "#ccaa00", "#ffff00", "#008800"];
+    const ranks = [
+        {pos: "1着", num: document.getElementById('rank1').value, st: document.getElementById('st1').value},
+        {pos: "2着", num: document.getElementById('rank2').value, st: document.getElementById('st2').value},
+        {pos: "3着", num: document.getElementById('rank3').value, st: document.getElementById('st3').value}
+    ];
+
+    ranks.forEach((r, i) => {
+        const y = 140 + (i * 70);
+        // 着順ラベル
+        ctx.fillStyle = "white";
+        ctx.font = "bold 22px Arial";
+        ctx.fillText(r.pos, 40, y + 25);
+
+        // 艇番ボックス
+        ctx.fillStyle = boatColors[r.num - 1];
+        ctx.fillRect(100, y, 150, 40);
+        
+        // 艇番テキスト
+        ctx.fillStyle = (r.num == 1 || r.num == 5) ? "black" : "white";
+        ctx.font = "bold 20px Arial";
+        ctx.fillText(`${r.num}号艇 (ST ${r.st})`, 110, y + 28);
+    });
+
+    // 4. 払戻金の表示
+    ctx.fillStyle = "#ffeb3b";
+    ctx.font = "bold 26px Arial";
+    ctx.fillText(`3連単：${document.getElementById('payoff').value}`, 40, 380);
+
+    // 5. キャラクターの描画
+    // 画像がロードされていれば描画
+    ctx.drawImage(charImg, 550, 80, 220, 350); 
+    
+    // 6. キャラクターのセリフ（吹き出し）
+    ctx.fillStyle = "white";
+    ctx.beginPath();
+    ctx.ellipse(500, 100, 120, 40, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = "black";
+    ctx.font = "bold 16px Arial";
+    ctx.fillText("完璧な逃げだったね！", 410, 105);
+}
+
+// 画像保存機能
+function downloadImage() {
+    const link = document.createElement('a');
+    link.download = `result_${document.getElementById('place').value}_${document.getElementById('raceNo').value}R.png`;
+    link.href = canvas.toDataURL();
+    link.click();
+}
+
+// 初回起動
+charImg.onload = generateImage;
+</script>
+
+</body>
+</html>
