@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔥 5アタマ分析ツール</title>
+<title>5アタマ予想ちゃん</title>
 
 <style>
 body {
   font-family: 'Arial', sans-serif;
-  background: linear-gradient(135deg, #ffd6ec, #ffe9f5);
+  background: linear-gradient(135deg, #fff4cc, #ffe0f0);
   margin: 0;
   padding: 10px;
 }
@@ -19,13 +19,12 @@ body {
   background: white;
   padding: 15px;
   border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(255, 102, 163, 0.2);
+  box-shadow: 0 8px 20px rgba(255, 204, 0, 0.3);
 }
 
 h2 {
   text-align: center;
-  color: #ff3399;
-  font-size: 22px;
+  color: #ff9900;
 }
 
 h4 {
@@ -33,32 +32,29 @@ h4 {
   color: #ff66a3;
 }
 
-input, select {
+input {
   width: 100%;
   padding: 12px;
   margin-top: 5px;
   border-radius: 12px;
   border: 1px solid #ffcce6;
   background: #fff5fa;
-  font-size: 16px;
 }
 
 button {
   width: 100%;
   padding: 15px;
   margin-top: 15px;
-  background: linear-gradient(45deg, #ff66a3, #ff99cc);
+  background: linear-gradient(45deg, #ffcc00, #ff66a3);
   color: white;
   border: none;
   border-radius: 15px;
   font-size: 18px;
   font-weight: bold;
-  box-shadow: 0 5px 15px rgba(255, 102, 163, 0.4);
 }
 
 .result {
   margin-top: 15px;
-  font-size: 16px;
 }
 
 .buy {
@@ -79,7 +75,6 @@ button {
   border-radius: 15px;
   text-decoration: none;
   font-weight: bold;
-  font-size: 16px;
 }
 </style>
 </head>
@@ -87,109 +82,121 @@ button {
 <body>
 
 <div class="container">
-<h2>🔥 5アタマ分析ツール</h2>
 
+<!-- キャラ -->
+<div style="text-align:center;">
+  <img src="ここにキャラ画像URL" style="width:120px;">
+  <h2>💖 5アタマ予想ちゃん 💖</h2>
+  <p style="color:#ff6600; font-weight:bold;">
+    この子が当てる👇
+  </p>
+</div>
+
+<!-- 煽り -->
+<p style="text-align:center; color:#ff3399; font-weight:bold;">
+当たる人だけ使ってる裏ツール👇
+</p>
+
+<!-- 入力 -->
 <div id="inputs"></div>
 
-<button onclick="calc()">分析する🔥</button>
+<button onclick="calc()">🔥 分析する 🔥</button>
 
+<!-- キャラセリフ -->
+<div id="talk" style="
+  background:#fff8e6;
+  padding:10px;
+  border-radius:10px;
+  margin-top:10px;
+  font-size:14px;
+">
+💬「このレース…5きそうだよ！」
+</div>
+
+<!-- 結果 -->
 <div class="result" id="result"></div>
 <div class="buy" id="buy"></div>
 
-<a class="line-btn" href="#">
-👉 本気の買い目はLINEで公開
+<!-- LINE -->
+<a class="line-btn" href="https://lin.ee/あなたのリンク">
+💖 続きはこっちで教えるね！
 </a>
 
 </div>
 
 <script>
-// 入力フォーム生成
+// 入力生成
 let html = "";
 for(let i=1;i<=6;i++){
   html += `<h4>${i}号艇</h4>
-  展示順位<input type="number" id="t${i}" min="1" max="6">
-  ST順位<input type="number" id="s${i}" min="1" max="6">
-  コース<select id="c${i}">
-    <option>1</option><option>2</option><option>3</option>
-    <option>4</option><option>5</option><option>6</option>
-  </select>
-  モーター<select id="m${i}">
-    <option>◎</option><option>○</option><option>△</option>
-  </select>`;
+  展示タイム<input type="number" step="0.01" id="t${i}">
+  1周タイム<input type="number" step="0.01" id="l${i}">
+  直線<input type="number" step="0.01" id="s${i}">
+  回り足<input type="number" step="0.01" id="m${i}">`;
 }
 document.getElementById("inputs").innerHTML = html;
 
-// スコア計算
-function getScore(i){
-  let t = Number(document.getElementById("t"+i).value);
-  let s = Number(document.getElementById("s"+i).value);
-  let c = Number(document.getElementById("c"+i).value);
-  let m = document.getElementById("m"+i).value;
-
-  let score = (6 - t) + (6 - s);
-
-  if(c == 5) score += 5;
-  else if(c == 6) score += 2;
-  else if(c == 4) score += 1;
-  else score -= 2;
-
-  if(m == "◎") score += 3;
-  else if(m == "○") score += 2;
-  else score += 1;
-
-  return score;
-}
-
-// 分析
+// 計算
 function calc(){
-  let boats = [];
+  let scores = [];
 
   for(let i=1;i<=6;i++){
-    boats.push({num:i, score:getScore(i)});
+    let t = parseFloat(document.getElementById(`t${i}`).value) || 0;
+    let l = parseFloat(document.getElementById(`l${i}`).value) || 0;
+    let s = parseFloat(document.getElementById(`s${i}`).value) || 0;
+    let m = parseFloat(document.getElementById(`m${i}`).value) || 0;
+
+    let score = (10 - t) + (10 - l) + s + m;
+    scores.push({num:i, score:score});
   }
 
-  boats.sort((a,b)=>b.score-a.score);
+  scores.sort((a,b)=>b.score-a.score);
 
-  // ランキング表示
-  let rankText = "🏆スコアランキング<br>";
-  boats.forEach((b,i)=>{
-    rankText += `${i+1}位：${b.num}号艇 (${b.score})<br>`;
+  let rankText = "🏆ランキング<br>";
+  scores.forEach((r,i)=>{
+    rankText += `${i+1}位：${r.num}号艇<br>`;
   });
 
-  document.getElementById("result").innerHTML = rankText;
-
-  // 5号艇順位
-  let rank5 = boats.findIndex(b=>b.num==5)+1;
-
-  let buy = "";
+  // 5号艇評価
+  let fiveRank = scores.findIndex(r=>r.num===5)+1;
   let evalText = "";
 
-  if(rank5 == 1){
-    evalText = "★★★★★ 激アツ🔥";
-    buy = `
-    5-${boats[1].num}-${boats[2].num}<br>
-    5-${boats[2].num}-${boats[1].num}<br>
-    5-${boats[1].num}-${boats[3].num}<br>
-    ${boats[1].num}-5-${boats[2].num}`;
-  }
-  else if(rank5 == 2){
-    evalText = "★★★★☆ 狙い目";
-    buy = `
-    ${boats[0].num}-5-${boats[2].num}<br>
-    5-${boats[0].num}-${boats[2].num}`;
-  }
-  else if(rank5 == 3){
-    evalText = "★★★☆☆ 抑え";
-    buy = `
-    ${boats[0].num}-${boats[1].num}-5`;
-  }
-  else{
-    evalText = "見送り";
-    buy = "今回は見送り推奨";
+  if(fiveRank === 1){
+    evalText = "🔥 激アツ！5アタマ期待大！";
+  }else if(fiveRank <= 3){
+    evalText = "⚡ チャンスあり！";
+  }else{
+    evalText = "❌ 厳しいかも";
   }
 
+  // 買い目生成
+  let first = scores[0].num;
+  let second = scores[1].num;
+  let third = scores[2].num;
+
+  let buy = `
+  ${first}-${second}-${third}<br>
+  ${first}-5-${second}<br>
+  5-${first}-${second}
+  `;
+
+  // キャラセリフ変化
+  let talk = "";
+  if(fiveRank === 1){
+    talk = "💬「きた！5頭あるよこれ🔥」";
+  }else if(fiveRank <=3){
+    talk = "💬「5絡み狙えるかも✨」";
+  }else{
+    talk = "💬「今回は見送りがいいかも💦」";
+  }
+
+  document.getElementById("talk").innerHTML = talk;
+
+  document.getElementById("result").innerHTML =
+    rankText + "<br>💖予想ちゃんの結論💖<br>" + evalText;
+
   document.getElementById("buy").innerHTML =
-    `💰評価：${evalText}<br><br>おすすめ買い目<br>${buy}`;
+    "💰おすすめ買い目<br>" + buy;
 }
 </script>
 
