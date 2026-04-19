@@ -1,286 +1,227 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>初音の女子戦・ひらめき鑑定所 🍀 BOAT STRIKE</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>初音の女子戦・ひらめき鑑定所 🍀 BOAT STRIKE</title>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        body {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            margin: 0; padding: 10px;
+            background-color: #f0fff4;
+            background-image: radial-gradient(#c6f6d5 1px, transparent 1px);
+            background-size: 25px 25px;
+            display: flex; flex-direction: column; align-items: center;
+        }
 
-<style>
-/* 初音ちゃんカラー：ミントグリーン ＆ パステルイエロー */
-body {
-  font-family: 'Helvetica Neue', Arial, "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
-  background-color: #f0fff4;
-  background-image: radial-gradient(#c6f6d5 1px, transparent 1px);
-  background-size: 25px 25px;
-  margin: 0;
-  padding: 10px;
-  color: #2d6a4f;
-}
+        /* --- 鍵画面（ロック） --- */
+        #lock-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #f0fff4; z-index: 9999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; color: #2d6a4f; padding: 20px; box-sizing: border-box;
+        }
+        .lock-card {
+            background: white; padding: 30px; border-radius: 30px; border: 3px solid #b2f2bb;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); width: 100%; max-width: 320px;
+        }
+        .lock-input {
+            width: 100%; padding: 15px; border-radius: 15px; border: 2px solid #b2f2bb;
+            text-align: center; font-size: 1.1rem; margin-bottom: 15px; box-sizing: border-box;
+        }
+        .lock-btn {
+            background: linear-gradient(135deg, #63e6be 0%, #38a169 100%);
+            color: white; border: none; padding: 12px 30px; border-radius: 50px;
+            font-weight: 800; cursor: pointer; width: 100%;
+        }
 
-.container {
-  max-width: 480px;
-  margin: 20px auto;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 20px;
-  border-radius: 30px;
-  border: 3px solid #b2f2bb;
-  box-shadow: 0 10px 30px rgba(47, 158, 68, 0.1);
-}
+        /* --- メインコンテンツ --- */
+        #main-content { display: none; width: 100%; max-width: 440px; }
 
-.header-img {
-  width: 100%;
-  border-radius: 20px;
-  margin-bottom: 15px;
-}
+        .header-banner { width: 100%; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(47, 158, 68, 0.2); margin-bottom: 15px; }
+        .header-banner img { width: 100%; display: block; }
 
-h2 {
-  text-align: center;
-  color: #2f855a;
-  font-size: 22px;
-  margin-bottom: 5px;
-}
+        .outer-frame {
+            background: white; border: 3px solid #b2f2bb; border-radius: 25px;
+            padding: 20px; box-sizing: border-box; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
 
-.description {
-  text-align: center;
-  font-size: 13px;
-  color: #666;
-  margin-bottom: 20px;
-}
+        .chara-section {
+            display: flex; align-items: center; background: #e6fffa;
+            padding: 15px; border-radius: 20px; margin-bottom: 20px; border: 1px solid #b2f2bb;
+        }
+        .chara-img { width: 80px; margin-right: 12px; }
+        .advice-bubble { font-size: 0.8rem; line-height: 1.5; color: #2d6a4f; }
 
-/* 初音ちゃんのSDキャラ＆フキダシ */
-.chara-section {
-  display: flex;
-  align-items: center;
-  background: #e6fffa;
-  padding: 15px;
-  border-radius: 20px;
-  margin-bottom: 20px;
-  border: 1px solid #b2f2bb;
-}
+        label {
+            display: block; font-weight: 800; font-size: 0.85rem; color: #2f855a;
+            margin-bottom: 8px; border-left: 5px solid #63e6be; padding-left: 10px; margin-top: 15px;
+        }
+        select {
+            width: 100%; padding: 12px; border-radius: 12px; border: 2px solid #dfffee;
+            font-family: inherit; font-weight: 700; color: #2d6a4f; cursor: pointer;
+        }
 
-.chara-img {
-  width: 90px;
-  flex-shrink: 0;
-  margin-right: 12px;
-}
+        .calc-btn {
+            width: 100%; padding: 18px; margin-top: 20px;
+            background: linear-gradient(135deg, #63e6be 0%, #38a169 100%);
+            color: white; border: none; border-radius: 15px; font-weight: 800;
+            font-size: 1.2rem; cursor: pointer; box-shadow: 0 5px 15px rgba(56, 161, 105, 0.2);
+        }
 
-.advice-bubble {
-  font-size: 13px;
-  line-height: 1.5;
-  color: #2d6a4f;
-}
+        /* --- 結果表示 --- */
+        #result {
+            display: none; margin-top: 25px; padding: 20px; border-radius: 20px;
+            background: #f0fff4; border: 2px solid #38a169; text-align: center;
+        }
+        .score-val { font-size: 3.5rem; font-weight: 800; color: #2f855a; line-height: 1; }
+        
+        /* --- SNSシェア用 --- */
+        #share-card {
+            background: white; border: 4px solid #b2f2bb; border-radius: 20px;
+            padding: 20px; margin: 20px 0; position: relative; display: none;
+        }
+        .share-tag { color: #38a169; font-size: 0.7rem; font-weight: 800; }
+        .save-btn {
+            width: 100%; padding: 15px; background: #2d6a4f; color: white;
+            border: none; border-radius: 50px; font-weight: 800; cursor: pointer;
+        }
 
-/* 入力エリア */
-.input-section {
-  background: #fff;
-  padding: 15px;
-  border-radius: 20px;
-  margin-bottom: 15px;
-  border: 1px solid #dfffee;
-}
-
-label {
-  display: block;
-  font-weight: bold;
-  margin: 15px 0 5px;
-  font-size: 13px;
-  color: #2f855a;
-  border-left: 4px solid #63e6be;
-  padding-left: 10px;
-}
-
-label span {
-  color: #38a169;
-  margin-right: 5px;
-}
-
-select {
-  width: 100%;
-  padding: 12px;
-  border-radius: 12px;
-  border: 2px solid #c6f6d5;
-  background: #fff;
-  font-size: 16px;
-  color: #2d6a4f;
-  cursor: pointer;
-}
-
-/* 鑑定ボタン */
-.calc-btn {
-  width: 100%;
-  padding: 20px;
-  background: linear-gradient(135deg, #63e6be 0%, #38a169 100%);
-  color: white;
-  border: none;
-  border-radius: 50px;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 6px 15px rgba(56, 161, 105, 0.2);
-  margin: 10px 0;
-}
-
-.calc-btn:active { transform: scale(0.96); }
-
-/* 結果表示 */
-.result-box {
-  margin-top: 25px;
-  padding: 25px;
-  border-radius: 20px;
-  background: #f0fff4;
-  border: 3px solid #38a169;
-  display: none;
-  text-align: center;
-  animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-@keyframes popIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-.score-display {
-  font-size: 55px;
-  font-weight: bold;
-  color: #2f855a;
-  margin: 10px 0;
-  font-family: 'Arial Black', sans-serif;
-}
-
-.eye-box {
-  margin-top: 20px;
-  padding: 15px;
-  background: #fff;
-  border-radius: 12px;
-  font-weight: bold;
-  color: #38a169;
-  border: 2px dashed #b2f2bb;
-}
-
-footer { text-align: center; margin-top: 30px; font-size: 11px; color: #999; }
-</style>
+        footer { text-align: center; font-size: 0.7rem; color: #2f855a; margin: 20px 0; opacity: 0.6; }
+    </style>
 </head>
-
 <body>
 
-<div class="container">
-  <img src="hatsune_header.png" alt="初音の鑑定所" class="header-img">
-  
-  <h2>🍀 初音の女子戦・ひらめき鑑定所 🍀</h2>
-  <p class="description">女子戦特有の「荒れる予感」をふわっと鑑定♪</p>
-
-  <div class="chara-section">
-    <img src="hatsune_sd.png" alt="初音" class="chara-img">
-    <div class="advice-bubble" id="hatsune-talk">
-      💬「女子戦は甘く見ちゃダメですよぉ？初音が荒れる予感を鑑定しちゃいますっ♪」
+<div id="lock-screen">
+    <div class="lock-card">
+        <img src="hatsune_sd.png" style="width: 100px; margin-bottom: 10px;">
+        <h3 style="margin: 0 0 10px 0;">秘密の楽屋 🍀</h3>
+        <p style="font-size: 0.7rem; margin-bottom: 20px;">合言葉を知っているプロの方だけ<br>お入りいただけますっ♪</p>
+        <input type="password" id="pass" class="lock-input" placeholder="合言葉は？">
+        <button class="lock-btn" onclick="checkPass()">扉をあける 🍀</button>
     </div>
-  </div>
+</div>
 
-  <div class="input-section">
-    <label><span>①</span> 選手の「格」はどうですか？</label>
-    <select id="rank">
-      <option value="0.8">A1級が1人だけ（逃げそう）</option>
-      <option value="1.0">実力がみんな同じくらい</option>
-      <option value="1.8">全員B級！何が起きるかナゾ！</option>
-    </select>
+<div id="main-content">
+    <header class="header-banner">
+        <img src="hatsune_header.png" alt="初音の女子戦鑑定所">
+    </header>
 
-    <label><span>②</span> スタートの不安度は？</label>
-    <select id="start">
-      <option value="1.0">みんな早い（安定）</option>
-      <option value="1.5">F持ちがいたり、バラバラ</option>
-      <option value="2.0">スタート事故の予感がするっ！</option>
-    </select>
+    <div class="outer-frame">
+        <div class="chara-section">
+            <img src="hatsune_sd.png" class="chara-img">
+            <div class="advice-bubble" id="talk">
+                💬「女子戦は場によって『おてんば』具合が変わるんですよぉ♪ 初音がバッチリ鑑定しちゃいますっ！」
+            </div>
+        </div>
 
-    <label><span>③</span> コース取りに動きはありそう？</label>
-    <select id="shinnyu">
-      <option value="1.0">枠なりでおだやか♪</option>
-      <option value="1.4">前付けや進入乱れの気配！</option>
-    </select>
+        <label>① 開催される「場」の傾向は？</label>
+        <select id="stadium-type">
+            <option value="1.0">イン最強場（大村・徳山・芦屋など）</option>
+            <option value="1.2">標準的な場</option>
+            <option value="1.6">激荒れ注意報！（江戸川・鳴門・戸田など）</option>
+        </select>
 
-    <label><span>④</span> お化けモーター（超抜機）の予感？</label>
-    <select id="motor">
-      <option value="1.0">みんな普通かな</option>
-      <option value="1.7">1人だけ展示タイムがヤバい！</option>
-    </select>
+        <label>② 選手の「格」の差（女王様の有無）</label>
+        <select id="rank">
+            <option value="0.7">A1級が1人だけ（圧倒的）</option>
+            <option value="1.0">実力がみんな同じくらい</option>
+            <option value="1.8">全員B級！何が起きるかナゾ！</option>
+        </select>
 
-    <label><span>⑤</span> 会場のコンディションは？</label>
-    <select id="wind">
-      <option value="1.0">穏やか（静水面）</option>
-      <option value="1.6">風や波が強いっ（荒れ気配）</option>
-    </select>
+        <label>③ コース取りに動きはありそう？</label>
+        <select id="shinnyu">
+            <option value="1.0">枠なりでおだやか♪</option>
+            <option value="1.4">前付けや進入乱れあり！</option>
+        </select>
 
-    <label><span>⑥</span> 今日はシリーズの何日目？</label>
-    <select id="day">
-      <option value="1.2">初日（まだ手探り）</option>
-      <option value="1.5">勝負駆け（バチバチ！）</option>
-      <option value="1.0">優勝戦（ガチガチ？）</option>
-    </select>
-  </div>
+        <label>④ お化けモーター（超抜機）の予感？</label>
+        <select id="motor">
+            <option value="1.0">みんな普通かな</option>
+            <option value="1.7">1人だけ展示タイムがヤバい！</option>
+        </select>
 
-  <button class="calc-btn" onclick="analyze()">🍀 鑑定を実行するっ！ 🍀</button>
+        <label>⑤ 会場のコンディションは？</label>
+        <select id="wind">
+            <option value="1.0">穏やか（静水面）</option>
+            <option value="1.5">風や波が強いっ（荒れ気配）</option>
+        </select>
 
-  <div id="result-area" class="result-box">
-    <div style="font-size:14px; font-weight:bold; color:#666;">初音のひらめき：推定波乱度</div>
-    <div class="score-display"><span id="score-val">0</span>%</div>
-    
-    <div id="hatsune-res-msg" style="font-size:13px; font-weight:bold; color:#2d6a4f; margin-top:10px;"></div>
+        <button class="calc-btn" onclick="analyze()">🍀 鑑定を実行するっ！ 🍀</button>
 
-    <div class="eye-box">
-      💰 初音の狙い目アドバイス:<br>
-      <span id="eye-text" style="font-size:14px;">データを入力してください♪</span>
+        <div id="result">
+            <div style="font-size: 0.8rem; font-weight: 800; color: #666;">初音のひらめき：推定波乱度</div>
+            <div class="score-val"><span id="score">0</span>%</div>
+            <p id="res-msg" style="font-size: 0.85rem; font-weight: 800; color: #2d6a4f; margin: 15px 0;"></p>
+            
+            <div id="share-card">
+                <div class="share-tag">🍀 初音の女子戦・ひらめき鑑定 🍀</div>
+                <div style="font-size: 0.7rem; color: #999; margin: 5px 0;">推定波乱度（荒れる確率）</div>
+                <div class="score-val" id="share-score" style="font-size: 3rem;">0%</div>
+                <div id="share-txt" style="font-size: 0.8rem; margin-top: 10px; font-weight: 800;"></div>
+                <div style="font-size: 0.6rem; color: #38a169; margin-top: 10px;">#BOATSTRIKE #女子戦 #初音の鑑定所</div>
+            </div>
+
+            <button class="save-btn" onclick="saveImage()">画像を保存してSNSへ 🍀</button>
+        </div>
     </div>
-  </div>
 
-  <footer>
-    &copy; 2026 BOAT STRIKE Project / HATSUNE
-  </footer>
+    <footer>&copy; 2026 BOAT STRIKE Project / HATSUNE</footer>
 </div>
 
 <script>
-function analyze() {
-    const r = parseFloat(document.getElementById('rank').value);
-    const s = parseFloat(document.getElementById('start').value);
-    const sn = parseFloat(document.getElementById('shinnyu').value);
-    const m = parseFloat(document.getElementById('motor').value);
-    const w = parseFloat(document.getElementById('wind').value);
-    const d = parseFloat(document.getElementById('day').value);
-
-    // 波乱度の計算式（女子戦特化型）
-    // ベース20%から始まり、各要素を掛け合わせる
-    let score = Math.round(20 * r * s * sn * m * w * d);
-    
-    if(score > 100) score = 100;
-    if(score < 5) score = 5;
-
-    document.getElementById('result-area').style.display = 'block';
-    document.getElementById('score-val').innerText = score;
-
-    let resMsg = "";
-    let eye = "";
-
-    if (score >= 80) {
-        resMsg = "ひゃわわわっ！大波乱アイドル降臨ですっ！万舟券のサインが見えちゃいましたぁ🍀";
-        eye = "インは捨てて、外枠のまくりや差しを広く狙うのがおすすめですよぉ！";
-    } else if (score >= 50) {
-        resMsg = "ちょっと荒れる予感がしますぅ。中配当を狙うチャンスかもですっ♪";
-        eye = "1号艇さんを軸にしつつ、相手に穴っぽい子を混ぜてみてはどうでしょうかっ？";
-    } else if (score >= 20) {
-        resMsg = "ここはガチガチの予感。本命さんを信じて絞って勝負ですよぉ🍀";
-        eye = "1号艇さんから、実力上位の選手に絞って流すのが正解かもです♪";
-    } else {
-        resMsg = "とっても穏やかなレースになりそうですっ。お昼寝しちゃうくらい堅いかも？";
-        eye = "1-2、1-3の超本命サイドだけで十分だと思いますよぉ♪";
+    function checkPass() {
+        const p = document.getElementById('pass').value;
+        if(p === "はつね") { // ここに合言葉を設定
+            document.getElementById('lock-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+        } else {
+            alert("合言葉が違いますぅ…(泣)");
+        }
     }
 
-    document.getElementById('hatsune-res-msg').innerText = resMsg;
-    document.getElementById('eye-text').innerText = eye;
-    
-    // スムーズスクロール
-    window.scrollTo({
-        top: document.getElementById('result-area').offsetTop,
-        behavior: 'smooth'
-    });
-}
+    function analyze() {
+        const st = parseFloat(document.getElementById('stadium-type').value);
+        const r = parseFloat(document.getElementById('rank').value);
+        const sn = parseFloat(document.getElementById('shinnyu').value);
+        const m = parseFloat(document.getElementById('motor').value);
+        const w = parseFloat(document.getElementById('wind').value);
+
+        // 基本波乱度20%に各係数を掛ける
+        let score = Math.round(20 * st * r * sn * m * w);
+        if(score > 100) score = 100;
+        if(score < 5) score = 5;
+
+        document.getElementById('result').style.display = 'block';
+        document.getElementById('score').innerText = score;
+        document.getElementById('share-score').innerText = score + "%";
+
+        let msg = "";
+        if(score >= 80) {
+            msg = "ひゃわわ！大波乱アイドル降臨ですっ！万舟券のサインが見えちゃいましたぁ🍀";
+        } else if(score >= 50) {
+            msg = "ちょっと注意が必要ですねぇ。中配当を狙ってみるのがいいかもですっ♪";
+        } else {
+            msg = "ここはガチガチの予感。本命さんを信じて絞って勝負ですよぉ🍀";
+        }
+
+        document.getElementById('res-msg').innerText = msg;
+        document.getElementById('share-txt').innerText = msg;
+        document.getElementById('share-card').style.display = 'block';
+        
+        window.scrollTo({ top: document.getElementById('result').offsetTop, behavior: 'smooth' });
+    }
+
+    function saveImage() {
+        html2canvas(document.getElementById('share-card')).then(canvas => {
+            const link = document.createElement('a');
+            link.download = 'hatsune_kantei.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        });
+    }
 </script>
 
 </body>
