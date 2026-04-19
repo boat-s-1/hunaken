@@ -5,141 +5,186 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>5 Master 24場攻略ノート ⚡ BOAT STRIKE</title>
 <style>
-/* date1.htmlをリスペクトしたキイナ・スタイル */
+/* 稲妻背景を活かすダークモード×ブルーデザイン */
 body {
   font-family: 'Helvetica Neue', Arial, sans-serif;
-  background: #0a1929; /* 紺色背景 */
+  background-image: url('image_1.png'); /* 稲妻の背景 */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   color: #fff;
-  margin: 0; padding: 10px;
+  margin: 0;
+  padding: 10px;
 }
 
 .container {
   max-width: 600px;
   margin: auto;
+  background: rgba(10, 25, 41, 0.9);
+  backdrop-filter: blur(10px);
+  padding: 20px;
+  border-radius: 25px;
+  border: 1px solid rgba(0, 210, 255, 0.3);
 }
 
 h1 {
   text-align: center;
-  font-size: 20px;
+  font-size: 22px;
   color: #ffcc00;
   text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
-  margin: 20px 0;
 }
 
-/* 24場クイックリンク（date1風） */
+/* クイックナビゲーション */
 .stadium-nav {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 5px;
-  margin-bottom: 30px;
+  margin: 20px 0;
 }
-
 .stadium-nav a {
   background: rgba(255, 255, 255, 0.1);
-  color: #fff;
+  color: #00d2ff;
   text-decoration: none;
   font-size: 11px;
   padding: 8px 0;
   text-align: center;
   border-radius: 5px;
-  border: 1px solid #00d2ff;
+  border: 1px solid rgba(0, 210, 255, 0.3);
 }
 
-/* 各場のデータカード */
+/* 攻略カード */
 .venue-card {
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(0, 210, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 15px;
   padding: 15px;
   margin-bottom: 25px;
+  border-top: 3px solid #00d2ff;
 }
 
 .venue-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid #00d2ff;
-  padding-bottom: 5px;
   margin-bottom: 10px;
 }
 
-.venue-name {
-  font-size: 18px;
-  font-weight: bold;
-  color: #00d2ff;
-}
+.venue-name { font-size: 18px; font-weight: bold; color: #00d2ff; }
+.rank-tag { font-size: 10px; background: #ffcc00; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
 
-.rank-badge {
-  background: #ffcc00;
-  color: #000;
-  font-size: 10px;
-  font-weight: bold;
-  padding: 2px 6px;
-  border-radius: 3px;
-}
-
-.data-row {
-  display: flex;
-  justify-content: space-around;
-  margin: 15px 0;
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 10px 0;
   background: rgba(0, 0, 0, 0.3);
   padding: 10px;
   border-radius: 10px;
 }
-
 .data-item { text-align: center; }
-.data-label { font-size: 10px; color: #aaa; }
-.data-value { font-size: 18px; font-weight: bold; color: #ffcc00; }
+.label { font-size: 10px; color: #aaa; margin-bottom: 3px; }
+.val { font-size: 16px; font-weight: bold; color: #fff; }
 
-.advice-text {
+.advice-bubble {
   font-size: 13px;
   line-height: 1.6;
   background: rgba(255, 255, 255, 0.05);
-  padding: 10px;
-  border-radius: 8px;
+  padding: 12px;
+  border-radius: 10px;
+  color: #e0f7ff;
   border-left: 3px solid #ffcc00;
 }
 
-.tool-link {
+.tool-btn {
   display: block;
   text-align: center;
   background: linear-gradient(45deg, #0052d4, #00d2ff);
-  color: white;
+  color: #fff;
   text-decoration: none;
   padding: 10px;
   border-radius: 20px;
   margin-top: 15px;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 13px;
 }
+
+footer { text-align: center; font-size: 11px; margin: 40px 0; color: #666; }
 </style>
 </head>
 <body>
 
 <div class="container">
-  <h1>⚡ 24場 5 Master 徹底解析ノート ⚡</h1>
-
-  <div class="stadium-nav">
-    <a href="#st02">戸田</a><a href="#st14">鳴門</a><a href="#st04">平和島</a><a href="#st11">びわこ</a>
-    <a href="#st03">江戸川</a><a href="#st06">浜名湖</a><a href="#st09">津</a><a href="#st05">多摩川</a>
+  <h1>⚡ 24場 5 Master 解析ノート ⚡</h1>
+  
+  <div class="stadium-nav" id="nav-top">
     </div>
 
-  <div class="venue-card" id="st02">
+  <div id="cards-container">
+    </div>
+
+  <footer>&copy; 2026 BOAT STRIKE Project</footer>
+</div>
+
+<script>
+// 全24場のデータ（5.index.htmlの数値を完全網羅）
+const venues = [
+  {id:"01", name:"桐生", rate:"6.10%", boost:"1.6倍", note:"冬の赤城おろしに注目！気温低下時の出足が良い時が狙い目だよッ！"},
+  {id:"02", name:"戸田", rate:"7.51%", boost:"1.9倍", note:"5枠1着率・全国No.1！狭い1Mで4カドが攻めた時の差し抜けを狙え！", hot:true},
+  {id:"03", name:"江戸川", rate:"6.66%", boost:"1.4倍", note:"上げ潮×向かい風時の波乱展開は、5号艇の出番だよッ！"},
+  {id:"04", name:"平和島", rate:"6.81%", boost:"2.1倍", note:"バックストレッチの伸びは全国屈指。展示1位なら迷わずアタマ！"},
+  {id:"05", name:"多摩川", rate:"6.33%", boost:"1.3倍", note:"日本一の静水面。スピード重視のまくり差しが決まりやすいよ！"},
+  {id:"06", name:"浜名湖", rate:"6.43%", boost:"1.2倍", note:"広い1M。長い直線での逆転劇に期待しちゃおう！"},
+  {id:"07", name:"蒲郡", rate:"5.35%", boost:"0.8倍", note:"ナイターで気温が下がった時の差し場を精密に読んでね！"},
+  {id:"08", name:"常滑", rate:"5.67%", boost:"1.6倍", note:"追い風3m以上の時、カド連動の展開から突き抜けがあるよ！"},
+  {id:"09", name:"津", rate:"6.40%", boost:"1.4倍", note:"鈴鹿おろし（強風）で1Mがもつれた時がキイナの出番！"},
+  {id:"10", name:"三国", rate:"5.23%", boost:"1.5倍", note:"向かい風4m以上でのまくり差し。直線勝負の明暗が出る場だよ！"},
+  {id:"11", name:"びわこ", rate:"6.67%", boost:"1.6倍", note:"うねりと水位変動に注意。外枠強襲が決まりやすい特殊な場！"},
+  {id:"12", name:"住之江", rate:"5.28%", boost:"1.8倍", note:"聖地ナイター。4カド仕掛けに連動する二の足が重要だよ！"},
+  {id:"13", name:"尼崎", rate:"5.44%", boost:"1.1倍", note:"センター競り合い時の最内差し。テクニックが光る展開を狙って！"},
+  {id:"14", name:"鳴門", rate:"6.93%", boost:"1.2倍", note:"狭い旋回域と潮流の影響。もつれた時に5号艇が浮上するよ！", hot:true},
+  {id:"15", name:"丸亀", rate:"5.45%", boost:"1.5倍", note:"潮位変化があるナイター特化型。展示機力の突出を見逃さないで！"},
+  {id:"16", name:"児島", rate:"5.40%", boost:"1.3倍", note:"瀬戸内の潮位変化を読んで。展示タイム差-0.08以上なら勝負！"},
+  {id:"17", name:"宮島", rate:"6.22%", boost:"2.0倍", note:"干満差が激しい場。展示タイムが抜けていればまくり差し炸裂！"},
+  {id:"18", name:"徳山", rate:"3.44%", boost:"1.1倍", note:"インが強固な場。逆にインが崩れた時の配当はデカいよッ！"},
+  {id:"19", name:"下関", rate:"4.87%", boost:"1.2倍", note:"ナイターの行き足勝負。スリット先制できる機力があるかチェック！"},
+  {id:"20", name:"若松", rate:"5.83%", boost:"1.2倍", note:"夜間の差し。満潮時に外枠の有利性が増すタイミングがあるよッ！"},
+  {id:"21", name:"芦屋", rate:"4.27%", boost:"1.2倍", note:"一般戦の混戦番組。攻めのバリエーションがある選手を狙って！"},
+  {id:"22", name:"福岡", rate:"3.81%", boost:"1.1倍", note:"独特のうねり。抜き・二の足の技術がある実力者なら5枠でも！"},
+  {id:"23", name:"唐津", rate:"5.05%", boost:"1.6倍", note:"展示タイム差が結果に直結。全速ターンの押しに注目だよッ！"},
+  {id:"24", name:"大村", rate:"3.01%", boost:"1.1倍", note:"イン最強の聖地。海風影響でインが流れた時の最内差しを狙え！"}
+];
+
+// ナビとカードの生成
+const nav = document.getElementById('nav-top');
+const container = document.getElementById('cards-container');
+
+venues.forEach(v => {
+  // ナビ生成
+  const a = document.createElement('a');
+  a.href = `#st${v.id}`;
+  a.innerText = v.name;
+  nav.appendChild(a);
+
+  // カード生成
+  const card = document.createElement('div');
+  card.className = 'venue-card';
+  card.id = `st${v.id}`;
+  card.innerHTML = `
     <div class="venue-header">
-      <span class="venue-name">02# 戸田</span>
-      <span class="rank-badge">5枠1着率 全国1位</span>
+      <span class="venue-name">${v.id}# ${v.name}</span>
+      ${v.hot ? '<span class="rank-tag">注目場⚡</span>' : ''}
     </div>
-    <div class="data-row">
-      <div class="data-item"><div class="data-label">1着率</div><div class="data-value">7.51%</div></div>
-      <div class="data-item"><div class="data-label">平均配当</div><div class="data-value">¥3,964</div></div>
-      <div class="data-item"><div class="data-label">ブースト</div><div class="data-value">1.9倍</div></div>
+    <div class="data-grid">
+      <div class="data-item"><div class="label">5枠1着率</div><div class="val">${v.rate}</div></div>
+      <div class="data-item"><div class="label">期待度</div><div class="val">${v.id === "02" ? "最高" : "高"}</div></div>
+      <div class="data-item"><div class="label">ブースト</div><div class="val">${v.boost}</div></div>
     </div>
-    <div class="advice-text">
-      💬⚡「戸田は1Mが極端に狭いから、4カドが攻めた時に最内の差し場がポッカリ空きやすいんだッ！展示タイムが良い時は一撃のチャンスだよ！」
-    </div>
-    <a href="kiina_tool.html" class="tool-link">この場で判定する！⚡</a>
-  </div>
+    <div class="advice-bubble">💬⚡「${v.note}」</div>
+    <a href="kiina_tool.html?st=${v.id}" class="tool-btn">この場で精密判定を実行ッ！</a>
+  `;
+  container.appendChild(card);
+});
+</script>
 
-  </div>
 </body>
 </html>
