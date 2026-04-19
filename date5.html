@@ -180,14 +180,18 @@ venueDetails.forEach(v => {
   navArea.appendChild(n);
 
   // 詳細カード生成
-  const card = document.createElement('div');
-  card.className = 'venue-detail-card';
-  card.id = `v${v.id}`;
-  card.innerHTML = `
-    <div class="card-header">
-      <div class="venue-title">${v.id}# ${v.name}</div>
-      <div class="venue-sub">${v.sub}</div>
-    </div>
+// カード生成のループ内で、リンク先を kiina5.html に指定します
+const card = document.createElement('div');
+card.className = 'venue-detail-card';
+card.id = `v${v.id}`;
+card.innerHTML = `
+  <div class="kiina-comment">${v.kiina}</div>
+
+  <a href="kiina5.html" class="tool-btn">この場で精密判定を実行ッ！⚡</a>
+
+  <div class="back-to-top"><a href="#nav">▲ クイックナビに戻る</a></div>
+`;
+
 
     <div class="stats-box">
       <div class="stat-item"><span class="stat-label">5枠1着率</span><span class="stat-val">${v.rate}</span></div>
