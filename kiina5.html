@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>キイナの5枠突破・精密解析所 ⚡</title>
+
+<style>
+/* ichika風のカラーリングとスタイル */
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  background: #f0f2f5;
+  margin: 0;
+  padding: 10px;
+  color: #333;
+}
+
+.container {
+  max-width: 450px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 25px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.header-img {
+  width: 100%;
+  border-radius: 15px;
+  margin-bottom: 15px;
+}
+
+h2 {
+  text-align: center;
+  color: #0066ff; /* 5号艇カラーの青 */
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.input-group {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 15px;
+  margin-bottom: 15px;
+  border: 1px solid #eee;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin: 10px 0 5px;
+  font-size: 14px;
+}
+
+select, input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+}
+
+button {
+  width: 100%;
+  padding: 18px;
+  background: linear-gradient(45deg, #0052d4, #4364f7, #6fb1fc);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(67, 100, 247, 0.4);
+}
+
+.result-box {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 15px;
+  background: #eef5ff;
+  border: 2px solid #0066ff;
+  display: none;
+}
+
+.percent-display {
+  font-size: 40px;
+  font-weight: bold;
+  text-align: center;
+  color: #0066ff;
+}
+
+.talk-bubble {
+  background: #fff;
+  border: 2px solid #ddd;
+  padding: 10px;
+  border-radius: 10px;
+  position: relative;
+  margin-top: 15px;
+  font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <img src="kiina_header.png" alt="キイナ" class="header-img">
+  <h2>⚡ キイナの5枠突破解析所 ⚡</h2>
+  <p style="text-align:center; font-size:12px; color:#666;">高配当の使者、5号艇の「マクリ差し」を精密解析</p>
+
+  <div class="input-group">
+    <label>🎯 開催場を選択</label>
+    <select id="stadium" onchange="updateMessage()">
+      <option value="0.05">会場を選択（平均5%）</option>
+      <option value="0.075">戸田（5枠激アツ場）</option>
+      <option value="0.069">鳴門（潮流注意）</option>
+      <option value="0.068">平和島（差し抜け）</option>
+      </select>
+
+    <label>🏎 5号艇の機力評価（展示/直線の伸び）</label>
+    <select id="motor-power">
+      <option value="1.0">普通</option>
+      <option value="1.5">良い（展示タイム1位）</option>
+      <option value="2.0">超抜（他を圧倒）</option>
+    </select>
+
+    <label>💥 4カドの攻め期待度</label>
+    <select id="kado-attack">
+      <option value="1.0">期待薄（壁になる）</option>
+      <option value="1.8">期待大（マクリ展開）</option>
+    </select>
+  </div>
+
+  <button onclick="analyze()">キイナに聞いてみる♪</button>
+
+  <div id="result-area" class="result-box">
+    <div style="text-align:center; font-weight:bold;">推定5枠1着確率</div>
+    <div class="percent-display"><span id="prob-value">0</span>%</div>
+    
+    <div class="talk-bubble">
+      <span id="kiina-talk">💬「データを入力してね！」</span>
+    </div>
+    
+    <div id="recommend-eye" style="margin-top:15px; font-weight:bold; color:#d63384;">
+      💰 おすすめの買い目:<br>
+      <span id="eye-text">5-124-1246</span>
+    </div>
+  </div>
+</div>
+
+<script>
+function analyze() {
+    const baseProb = parseFloat(document.getElementById('stadium').value);
+    const motor = parseFloat(document.getElementById('motor-power').value);
+    const kado = parseFloat(document.getElementById('kado-attack').value);
+    
+    // 計算ロジック（簡易版）
+    let finalProb = (baseProb * motor * kado * 100).toFixed(1);
+    if(finalProb > 45) finalProb = 45; // 上限設定
+
+    document.getElementById('result-area').style.display = 'block';
+    document.getElementById('prob-value').innerText = finalProb;
+
+    // セリフ分岐
+    let talk = "";
+    if(finalProb > 15) {
+        talk = "💬「きたきた！これ5頭の展開だよ！思い切って狙ってみて！🔥」";
+    } else if(finalProb > 8) {
+        talk = "💬「悪くないね。4カドが連れて行ってくれればチャンスありそう✨」";
+    } else {
+        talk = "💬「うーん、今回は展開が厳しそうかな。無理は禁物だよ💦」";
+    }
+    document.getElementById('kiina-talk').innerText = talk;
+}
+</script>
+
+</body>
+</html>
