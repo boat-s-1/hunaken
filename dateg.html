@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>初音の女子戦・24場精密解析ノート 🍀 BOAT STRIKE</title>
+<style>
+/* 初音ちゃんカラー：ミントグリーン ＆ ホワイト */
+body {
+  font-family: 'Helvetica Neue', Arial, "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background-color: #f0fff4;
+  background-image: radial-gradient(#c6f6d5 1px, transparent 1px);
+  background-size: 25px 25px;
+  color: #2d6a4f;
+  margin: 0; padding: 10px;
+}
+
+.container {
+  max-width: 650px;
+  margin: auto;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 20px;
+  border-radius: 30px;
+  border: 3px solid #b2f2bb;
+  box-shadow: 0 10px 30px rgba(47, 158, 68, 0.1);
+}
+
+h1 {
+  text-align: center;
+  font-size: 22px;
+  color: #2f855a;
+  text-shadow: 0 0 10px rgba(178, 242, 187, 0.5);
+  margin-bottom: 25px;
+}
+
+/* 24場ナビゲーション */
+.stadium-nav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+  margin-bottom: 35px;
+}
+.stadium-nav a {
+  background: #fff;
+  color: #38a169;
+  text-decoration: none;
+  font-size: 11px;
+  padding: 10px 0;
+  text-align: center;
+  border-radius: 8px;
+  border: 1px solid #c6f6d5;
+  font-weight: bold;
+}
+
+/* 解析カード */
+.venue-detail-card {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 40px;
+  border: 2px solid #dfffee;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+  position: relative;
+  overflow: hidden;
+}
+.venue-detail-card::after {
+  content: "🍀"; position: absolute; top: -10px; right: -10px; 
+  font-size: 50px; opacity: 0.05; transform: rotate(15deg);
+}
+
+.card-header {
+  border-bottom: 2px solid #b2f2bb;
+  padding-bottom: 8px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.venue-title { font-size: 20px; font-weight: bold; color: #2f855a; }
+.venue-sub { font-size: 11px; color: #888; }
+
+/* 女子戦統計セクション */
+.stats-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.stat-item {
+  background: #f7fffb;
+  padding: 12px;
+  border-radius: 12px;
+  text-align: center;
+  border: 1px solid #e6fffa;
+}
+.stat-label { font-size: 10px; color: #38a169; display: block; margin-bottom: 4px; }
+.stat-val { font-size: 18px; font-weight: bold; color: #2d6a4f; }
+
+/* 攻略テキスト */
+.analysis-content { margin-top: 15px; }
+.analysis-item { margin-bottom: 15px; }
+.analysis-label {
+  display: inline-block;
+  background: #c6f6d5;
+  color: #2f855a;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-bottom: 6px;
+}
+.analysis-text { font-size: 13px; line-height: 1.7; color: #444; }
+
+/* 初音のひらめきアドバイス */
+.hatsune-comment {
+  background: #f0fff4;
+  border: 1px dashed #38a169;
+  padding: 12px;
+  border-radius: 15px;
+  font-size: 13px;
+  margin-top: 15px;
+  color: #2d6a4f;
+  line-height: 1.5;
+}
+.hatsune-comment::before { content: "💬🍀 "; font-weight: bold; }
+
+/* 鑑定所へのボタン */
+.tool-btn {
+  display: block;
+  text-align: center;
+  background: linear-gradient(135deg, #63e6be 0%, #38a169 100%);
+  color: #fff;
+  text-decoration: none;
+  padding: 12px;
+  border-radius: 30px;
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(56, 161, 105, 0.2);
+}
+
+.back-to-top { text-align: right; margin-top: 15px; }
+.back-to-top a { color: #aaa; font-size: 11px; text-decoration: none; }
+
+footer { text-align: center; margin-top: 50px; font-size: 12px; color: #999; padding-bottom: 30px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🍀 女子戦・24場精密解析ノート 🍀</h1>
+
+  <div class="stadium-nav" id="nav"></div>
+
+  <div id="content"></div>
+
+  <footer>&copy; 2026 BOAT STRIKE Project / HATSUNE</footer>
+</div>
+
+<script>
+const girlsVenueData = [
+  {id:"01", name:"桐生", sub:"ナイター女子戦の聖地", rate:"52.1%", wave:"中", winType:"差し(40%) / まくり差し(35%)", strategy:"気温が下がる夜のレースは、女子選手だと回転調整がズレやすいんですっ。展示タイムが良い子の『まくり差し』を狙うのが初音流ですよぉ🍀", hat: "夜風でお肌が乾燥しちゃうけど、予想はしっとり的中させたいですねっ♪"},
+  {id:"02", name:"戸田", sub:"女子戦は波乱の予感", rate:"41.5%", wave:"高", winType:"まくり(50%) / 差し(30%)", strategy:"コースが狭いから、1マークの混戦で女子選手がバタバタしちゃうことも…。カドから思い切って握る子に注目ですっ！", hat: "戸田の女子戦は、ひゃわわ！ってなる展開が多いので要注意ですよぉ🍀"},
+  {id:"03", name:"江戸川", sub:"激流おてんば水面", rate:"38.9%", wave:"最高", winType:"まくり(45%) / 抜き(20%)", strategy:"流れが強くて、女子選手にはとっても過酷な水面ですぅ。波乗りの上手なベテランさんを軸にするのが安心かもですっ！", hat: "江戸川の波に負けない、強い心を持った子を応援したくなりますっ♪"},
+  {id:"04", name:"平和島", sub:"差し抜け女子戦", rate:"44.2%", wave:"高", winType:"差し(45%) / 抜き(25%)", strategy:"インが流されやすい平和島。女子戦だと、バックストレッチでの逆転劇（抜き）がとっても多いのが特徴なんですっ🍀", hat: "最後まで目が離せないのが平和島の女子戦。ドキドキしちゃいますねぇ♪"},
+  {id:"05", name:"多摩川", sub:"日本一の女子戦水面", rate:"55.8%", wave:"低", winType:"逃げ / まくり差し", water:"静水面。スピード勝負。", strategy:"女子戦が頻繁に開催される聖地！水面が穏やかだから、実力通りに決まりやすい、初心者さんにも優しい場ですよぉ🌸", hat: "多摩川は一果ちゃんも大好きなんですって！女子戦も堅めですぅ🍀"},
+  {id:"06", name:"浜名湖", rate:"54.1%", sub:"広い水面のスピード戦", wave:"低", winType:"逃げ / まくり差し", strategy:"広い1Mで全速旋回が決まる場です。女子選手の華麗なターンが見られますよぉ。機力が良い子の突き抜けに注意！", hat: "広いから事故も少なくて、初音も安心して見ていられる場なんですっ♪"},
+  {id:"07", name:"蒲郡", rate:"56.3%", sub:"夜のイン逃げ女子戦", wave:"低", winType:"逃げ / 差し", strategy:"ナイター場の中でもインが強い場です。女子戦でもA1級が1枠なら、かなり信頼できちゃいますよぉ🍀", hat: "夜の蒲郡はとっても綺麗っ♪ 本命党さんの味方ですねぇ。"},
+  {id:"08", name:"常滑", rate:"54.5%", sub:"招き猫の安定女子戦", wave:"低", winType:"逃げ / まくり差し", strategy:"平均的な水面ですが、風の影響を受けると外枠が届くようになります。特に追い風時の差しには気をつけてねっ！", hat: "常滑の招き猫さん、女子戦の的中も招いてくれるといいなぁ🍀"},
+  {id:"09", name:"津", rate:"53.0%", sub:"伊勢湾の風を読んで", wave:"中", winType:"まくり差し", strategy:"強風が吹くと難水面に。女子選手だとハンドルが取られやすいので、安定感のある選手を選びましょうっ！", hat: "風が強い日は、初音の帽子も飛ばされちゃいそうで大変ですぅ。"},
+  {id:"10", name:"三国", rate:"51.8%", sub:"北陸のパワフル女子戦", wave:"中", winType:"まくり差し / 差し", strategy:"直線が長いので、伸びるモーターを持った子が強いです。展示タイムのチェックは絶対に忘れないでくださいねぇ🍀", hat: "三国のお魚は美味しいけど、予想は甘く見ちゃダメですよぉ？"},
+  {id:"11", name:"びわこ", rate:"46.5%", sub:"うねりに注意の湖畔戦", wave:"高", winType:"まくり / まくり差し", strategy:"独特のうねりがある場。女子選手がターンで流れる場面をよく見かけます。外枠の『まくり差し』に高配当の予感っ🍀", hat: "琵琶湖の景色に癒やされるけど、レースは波乱の予感がプンプンですっ！"},
+  {id:"12", name:"住之江", rate:"58.2%", sub:"聖地ナイターの女王戦", wave:"低", winType:"逃げ / 差し", strategy:"イン逃げ率が高い聖地。女子戦でも安定の逃げが決まりやすいです。相手を絞って勝負するのが初音のおすすめっ♪", hat: "住之江の夜は、一流の女子選手たちが一番輝く場所なんですっ🍀"},
+  {id:"13", name:"尼崎", rate:"55.1%", sub:"センターが強い尼崎女子", wave:"低", winType:"逃げ / まくり差し", strategy:"3・4枠のセンター勢が強い場。彼女たちが攻めれば、5号艇にもチャンスが巡ってくる展開になりますよぉ！", hat: "センターから攻める強い女の子、初音も憧れちゃいますっ♪"},
+  {id:"14", name:"鳴門", rate:"48.2%", sub:"渦巻く激流女子戦", wave:"高", winType:"まくり / 差し", strategy:"潮流の影響を強く受ける場。インが簡単に沈むこともあるので、波乱度鑑定の結果を信じてみてねっ🍀", hat: "鳴門の渦潮みたいに、配当も大きくぐるぐる回っちゃうかも…！？"},
+  {id:"15", name:"丸亀", rate:"54.0%", sub:"潮位で変わる女子の脚", wave:"中", winType:"まくり差し / 差し", strategy:"潮が引いている時間はダッシュ勢が有利。満潮の時間はイン逃げを信じるのがセオリーですよぉ♪", hat: "潮の満ち引きで、女の子の気持ちも変わっちゃうのかもですねぇ🍀"},
+  {id:"16", name:"児島", rate:"53.5%", sub:"瀬戸内の穏やかな女子戦", wave:"中", winType:"逃げ / まくり差し", strategy:"潮の影響はありますが、基本は穏やか。機力の良い子が順当に勝ち上がることが多い場ですねっ🍀", hat: "児島のデニム、初音も欲しいなぁ…あ！予想の話でしたねっ！"},
+  {id:"17", name:"宮島", rate:"52.8%", sub:"宮島の潮干狩り女子戦", wave:"高", winType:"まくり差し中心", strategy:"干満差が激しい特殊な場。女子戦だと潮位による有利・不利がハッキリ出るので、直前の展示は必見ですぅ！", hat: "鳥居が見える素敵な場だけど、イン受難の時間帯には気をつけてねっ🍀"},
+  {id:"18", name:"徳山", rate:"64.5%", sub:"イン鉄板！女子の楽園", wave:"低", winType:"逃げ(圧倒的)", strategy:"インが全国一強い場！女子戦でも1号艇にA1級がいれば、ほぼ間違いないです。ここはガチガチ鑑定ですよぉ♪", hat: "徳山でインが飛んだら、それはもう大ニュース級の波乱ですっ🍀"},
+  {id:"19", name:"下関", rate:"59.2%", sub:"海峡ナイターの逃げ脚", wave:"低", winType:"逃げ / 差し", strategy:"ナイターになって気温が下がると、さらにインが安定します。本命党さんは下関の女子戦を狙いましょうっ🍀", hat: "夜の下関はインが強い…これ、テストに出る女子戦の常識ですよぉ♪"},
+  {id:"20", name:"若松", rate:"56.0%", sub:"洞海湾のまくり差し", wave:"低", winType:"逃げ / まくり差し", strategy:"夜の海水面。満潮時はインが少し危ないことも。相手には機力上位の差し馬を絡めてねっ🍀", hat: "若松のナイターは雰囲気が最高っ♪ 初音も歌いたくなっちゃいます！"},
+  {id:"21", name:"芦屋", rate:"62.5%", sub:"モーニング女子の逃げ", wave:"低", winType:"逃げ / 差し", strategy:"朝の番組構成はインがとっても強いです。女子戦でも1枠が信頼できるので、鉄板狙いが正解ですぅ🍀", hat: "朝からイン逃げが決まると、一日中ハッピーな気分になれますねぇ♪"},
+  {id:"22", name:"福岡", rate:"42.1%", sub:"うねりに泣く女子たち", wave:"最高", winType:"差し / 抜き", strategy:"独自のうねりがある1M。女子選手にはとっても難しい場です。道中での逆転劇（抜き）に要注意ですよぉ！", hat: "福岡の1マークは魔物が住んでますっ…。イン逃げ過信は禁物ですぅ⚠️"},
+  {id:"23", name:"唐津", rate:"54.8%", sub:"広い水面の全力旋回", wave:"中", winType:"逃げ / まくり差し", strategy:"広い水面を活かしたスピード勝負。展示でタイムが出ている子は、外からでも届くパワーがありますよぉ🍀", hat: "広いから思い切り走れる唐津、女子選手のポテンシャルが爆発ですっ！"},
+  {id:"24", name:"大村", rate:"66.8%", sub:"インの聖地・女王の間", wave:"低", winType:"逃げ(鉄板級)", strategy:"日本一のイン最強場！女子戦でもそれは変わりません。インが飛ぶ確率の方が低い、まさに楽園ですねぇ🍀", hat: "大村でインを外すのは、初音がアイドルを辞めるくらい勇気がいりますっ！"}
+];
+
+const navArea = document.getElementById('nav');
+const contentArea = document.getElementById('content');
+
+girlsVenueData.forEach(v => {
+  // ナビ生成
+  const n = document.createElement('a');
+  n.href = `#v${v.id}`;
+  n.innerText = v.name;
+  navArea.appendChild(n);
+
+  // カード生成
+  const card = document.createElement('div');
+  card.className = 'venue-detail-card';
+  card.id = `v${v.id}`;
+  card.innerHTML = `
+    <div class="card-header">
+      <div class="venue-title">${v.id}# ${v.name}</div>
+      <div class="venue-sub">${v.sub}</div>
+    </div>
+
+    <div class="stats-box">
+      <div class="stat-item"><span class="stat-label">女子戦イン逃げ率</span><span class="stat-val">${v.rate}</span></div>
+      <div class="stat-item"><span class="stat-label">波乱危険度</span><span class="stat-val">${v.wave}</span></div>
+    </div>
+
+    <div class="analysis-content">
+      <div class="analysis-item">
+        <span class="analysis-label">女子戦決まり手傾向</span>
+        <div class="analysis-text">${v.winType}</div>
+      </div>
+      <div class="analysis-item">
+        <span class="analysis-label">初音の鑑定ポイント</span>
+        <div class="analysis-text">${v.strategy}</div>
+      </div>
+    </div>
+
+    <div class="hatsune-comment">${v.hat}</div>
+
+    <a href="hatsune_tool.html" class="tool-btn">この場で波乱鑑定をするっ🍀</a>
+
+    <div class="back-to-top"><a href="#nav">▲ クイックナビに戻る</a></div>
+  `;
+  contentArea.appendChild(card);
+});
+</script>
+</body>
+</html>
