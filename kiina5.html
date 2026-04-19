@@ -3,139 +3,163 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>キイナの5枠突破・精密解析所 ⚡</title>
+<title>キイナの5枠突破・精密解析所 ⚡ BOAT STRIKE</title>
 
 <style>
-/* 全体のデザイン調整 */
+/* 全体のデザイン：ichika風かつ5枠カラー（青）を基調 */
 body {
   font-family: 'Helvetica Neue', Arial, "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
-  background: #eef2f7;
+  background: #f4f7fa;
   margin: 0;
   padding: 10px;
   color: #333;
 }
 
 .container {
-  max-width: 450px;
+  max-width: 480px;
   margin: auto;
   background: white;
   padding: 20px;
-  border-radius: 25px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  border-radius: 30px;
+  box-shadow: 0 12px 40px rgba(0, 82, 212, 0.15);
 }
 
 .header-img {
   width: 100%;
-  border-radius: 15px;
-  margin-bottom: 10px;
+  border-radius: 20px;
+  margin-bottom: 15px;
 }
 
 h2 {
   text-align: center;
   color: #0052d4;
-  font-size: 20px;
+  font-size: 22px;
   margin-bottom: 5px;
 }
 
 .description {
   text-align: center;
-  font-size: 12px;
+  font-size: 13px;
   color: #666;
   margin-bottom: 20px;
 }
 
-/* 入力エリア */
-.input-group {
-  background: #fdfdfd;
-  padding: 15px;
-  border-radius: 15px;
+/* 入力エリアのグループ化 */
+.input-section {
+  background: #f9fbff;
+  padding: 18px;
+  border-radius: 20px;
   margin-bottom: 15px;
-  border: 1px solid #eee;
+  border: 1px solid #e1e8f0;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #0052d4;
+  margin-bottom: 10px;
+  border-left: 4px solid #0052d4;
+  padding-left: 8px;
 }
 
 label {
   display: block;
   font-weight: bold;
   margin: 12px 0 5px;
-  font-size: 14px;
-  color: #444;
+  font-size: 13px;
 }
 
 select {
   width: 100%;
   padding: 12px;
-  border-radius: 10px;
-  border: 2px solid #ddd;
+  border-radius: 12px;
+  border: 2px solid #ced4da;
   background: #fff;
   font-size: 16px;
   cursor: pointer;
-  appearance: none; /* デフォルトの矢印を消す（モダンブラウザ用） */
+  margin-bottom: 5px;
 }
 
 /* 判定ボタン */
 .calc-btn {
   width: 100%;
-  padding: 18px;
+  padding: 20px;
   background: linear-gradient(45deg, #0052d4, #4364f7);
   color: white;
   border: none;
   border-radius: 50px;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(67, 100, 247, 0.4);
+  box-shadow: 0 6px 20px rgba(67, 100, 247, 0.4);
   transition: 0.3s;
+  margin: 10px 0;
 }
 
 .calc-btn:active {
-  transform: scale(0.98);
+  transform: scale(0.96);
 }
 
-/* 結果表示エリア */
+/* 結果表示 */
 .result-box {
   margin-top: 20px;
-  padding: 20px;
-  border-radius: 15px;
-  background: #f0f7ff;
-  border: 2px solid #0052d4;
-  display: none; /* 初期は非表示 */
+  padding: 25px;
+  border-radius: 20px;
+  background: #eef5ff;
+  border: 3px solid #0052d4;
+  display: none;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .percent-display {
-  font-size: 45px;
+  font-size: 50px;
   font-weight: bold;
   text-align: center;
   color: #0052d4;
+  text-shadow: 1px 1px 0 #fff;
 }
 
 .talk-bubble {
   background: #fff;
   border: 2px solid #4364f7;
-  padding: 12px;
-  border-radius: 12px;
+  padding: 15px;
+  border-radius: 15px;
   position: relative;
-  margin-top: 15px;
+  margin-top: 20px;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .talk-bubble::after {
   content: "";
   position: absolute;
   top: -12px;
-  left: 20px;
+  left: 30px;
   border-style: solid;
   border-width: 0 10px 12px 10px;
   border-color: transparent transparent #4364f7 transparent;
 }
 
 .eye-box {
-  margin-top: 15px;
-  padding: 10px;
+  margin-top: 20px;
+  padding: 15px;
   background: #fff0f5;
-  border-radius: 8px;
+  border-radius: 12px;
   font-weight: bold;
   color: #d63384;
+  border: 1px dashed #d63384;
+}
+
+footer {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 12px;
+  color: #999;
 }
 </style>
 </head>
@@ -146,15 +170,16 @@ select {
   <img src="kiina_main.png" alt="キイナ" class="header-img">
   
   <h2>⚡ キイナの5枠突破解析所 ⚡</h2>
-  <p class="description">5号艇の「マクリ差し」から高配当を導き出すッ！</p>
+  <p class="description">全国24場対応・5号艇専用の精密診断ツール</p>
 
-  <div class="input-group">
+  <div class="input-section">
+    <div class="section-title">STEP1: 会場・気象条件</div>
     <label>🎯 開催場を選択</label>
-    <select id="stadium" onchange="updateVenueInfo()">
+    <select id="stadium">
       <option value="">会場を選択してください</option>
       <optgroup label="関東">
         <option value="0.061">01# 桐生 (6.1%)</option>
-        <option value="0.075">02# 戸田 (7.5%)</option>
+        <option value="0.075">02# 戸田 (7.5%) ★激高</option>
         <option value="0.066">03# 江戸川 (6.6%)</option>
         <option value="0.068">04# 平和島 (6.8%)</option>
         <option value="0.063">05# 多摩川 (6.3%)</option>
@@ -171,7 +196,7 @@ select {
         <option value="0.052">12# 住之江 (5.2%)</option>
         <option value="0.054">13# 尼崎 (5.4%)</option>
       </optgroup>
-      <optgroup label="中国・四国">
+      <optgroup label="中四国">
         <option value="0.069">14# 鳴門 (6.9%)</option>
         <option value="0.054">15# 丸亀 (5.4%)</option>
         <option value="0.054">16# 児島 (5.4%)</option>
@@ -188,17 +213,50 @@ select {
       </optgroup>
     </select>
 
-    <label>🏎 5号艇の伸び足（展示・直線）</label>
+    <label>🚩 風向きと風速</label>
+    <select id="wind">
+      <option value="1.0">無風〜弱風 (影響なし)</option>
+      <option value="1.3">向かい風 4m以上 (ダッシュ有利⚡)</option>
+      <option value="1.1">追い風 3m以上 (1Mもつれ期待)</option>
+      <option value="0.9">追い風 6m以上 (差しが入りにくい)</option>
+    </select>
+  </div>
+
+  <div class="input-section">
+    <div class="section-title">STEP2: 機力・スリット展開</div>
+    <label>🏎 5号艇の伸び足 (展示・直線)</label>
     <select id="motor">
       <option value="1.0">普通</option>
-      <option value="1.5">良い（展示タイム抜けている）</option>
-      <option value="2.1">超抜（明らかに伸びが違う）</option>
+      <option value="1.5">良い (展示タイム上位)</option>
+      <option value="2.2">超抜 (スリット後に出ていく🔥)</option>
     </select>
 
-    <label>💥 4カド（4号艇）の攻め期待度</label>
+    <label>💫 周回展示の気配 (回り足・押し)</label>
+    <select id="turn">
+      <option value="1.0">普通</option>
+      <option value="1.4">力強い (出口の押しが良い)</option>
+    </select>
+
+    <label>💥 4カド(4号艇)の攻め期待度</label>
     <select id="kado">
-      <option value="1.0">期待薄（壁になりそう）</option>
-      <option value="1.8">期待大（まくり展開濃厚）</option>
+      <option value="1.0">期待薄 (カド受けが強い)</option>
+      <option value="1.8">期待大 (絞ってまくる展開)</option>
+    </select>
+  </div>
+
+  <div class="input-section">
+    <div class="section-title">STEP3: 内枠の不安要素</div>
+    <label>🛡 2号艇の壁信頼度</label>
+    <select id="wall">
+      <option value="1.0">普通</option>
+      <option value="1.3">壁が薄い (凹む・B級選手など)</option>
+      <option value="0.8">壁が厚い (A1級・差し構え)</option>
+    </select>
+
+    <label>🌀 1号艇のイン耐性</label>
+    <select id="in-race">
+      <option value="1.0">普通</option>
+      <option value="1.2">不安定 (差され・まくられ率高い)</option>
     </select>
   </div>
 
@@ -218,25 +276,20 @@ select {
     </div>
   </div>
 
-  <div style="margin-top:20px; text-align:center;">
-    <a href="index.html" style="color:#0052d4; font-size:13px; text-decoration:none;">← ポータルへ戻る</a>
-  </div>
+  <footer>
+    &copy; 2026 舟券メーカー P-STAR / BOAT STRIKE
+  </footer>
 </div>
 
 <script>
-// 場別の豆知識データ
-const venueNotes = {
-    "0.075": "戸田は1Mが狭いから、4カドが攻めれば5枚目に絶好の差し場が生まれるよ！",
-    "0.061": "桐生は冬場の赤城おろしに注目。パワー差が出やすいからチャンスあり！",
-    "0.069": "鳴門は潮流が複雑。荒れた水面なら5号艇の出番だねッ！",
-    "0.030": "大村はインが強すぎる…ここで5頭を狙うなら相当な機力差が必要だよ。",
-    "0.068": "平和島はバックの伸び勝負！5号艇が突き抜ける展開も多いんだよ。"
+// 場別のアドバイス
+const venueAdvice = {
+    "0.075": "戸田は1マークが超近いから、4番目がまくればアタシの差し場がポッカリ空くよッ！",
+    "0.069": "鳴門は向かい風が吹くとダッシュ勢の独壇場。一撃狙い時だね！",
+    "0.030": "大村はインが強すぎるから、よっぽど条件が揃わないと厳しいかも…。",
+    "0.105": "住之江は2マークの引き波に注意。機力がないと差し抜けても逆転されちゃうよ！",
+    "0.068": "平和島はバックストレッチが広いから、差し抜けた後の伸び比べで勝負だよ！"
 };
-
-function updateVenueInfo() {
-    const val = document.getElementById('stadium').value;
-    // 場を選んだだけで期待感を煽る演出を入れるならここに記述
-}
 
 function analyze() {
     const base = parseFloat(document.getElementById('stadium').value);
@@ -245,26 +298,45 @@ function analyze() {
         return;
     }
 
+    // 各要素の取得
+    const wind = parseFloat(document.getElementById('wind').value);
     const motor = parseFloat(document.getElementById('motor').value);
+    const turn = parseFloat(document.getElementById('turn').value);
     const kado = parseFloat(document.getElementById('kado').value);
+    const wall = parseFloat(document.getElementById('wall').value);
+    const inRace = parseFloat(document.getElementById('in-race').value);
     
-    // 計算式
-    let prob = (base * motor * kado * 100).toFixed(1);
+    // 計算ロジック
+    let prob = (base * wind * motor * turn * kado * wall * inRace * 100).toFixed(1);
     
+    // 現実的な上限を45.0%に設定
+    if(prob > 45) prob = 45.0;
+
     // 表示処理
     document.getElementById('result-area').style.display = 'block';
     document.getElementById('prob-display').innerText = prob;
 
     // メッセージ分岐
     let msg = "";
-    if (prob > 20) {
-        msg = "キタキタ！激アツ展開だねッ⚡ 5号艇がマクリ差して突き抜ける予感がプンプンするよ！";
-    } else if (prob > 10) {
-        msg = "チャンスあり！" + (venueNotes[base] || "展開ひとつで5頭まで届くポテンシャルはあるよ。");
+    if (prob > 25) {
+        msg = "きたきたッ！これぞ5頭の鉄板（？）展開！アタシを信じて高配当狙っちゃいなッ⚡";
+    } else if (prob > 15) {
+        msg = "いい感じ！内側がバタつけば十分届くよ。風と機力の後押しを信じよう！";
+    } else if (prob > 8) {
+        msg = "チャンスはあるけど、展開待ちかな。2号艇が凹んでくれるのを祈ろう！";
     } else {
-        msg = "うーん、少し厳しいかな…。でも、展示で5号艇がもっと伸びてきたら再検討してね！";
+        msg = "うーん、今はちょっと5枠の出番じゃなさそう。次のレースを待とうか！";
     }
-    document.getElementById('kiina-msg').innerText = "💬「" + msg + "」";
+
+    // 場別のアドバイスがあれば追加
+    const advice = venueAdvice[base.toString()] || "5号艇のまくり差しは、スリットの踏み込みが全てだよ！";
+    document.getElementById('kiina-msg').innerText = "💬「" + msg + " " + advice + "」";
+    
+    // スムーズに結果までスクロール
+    window.scrollTo({
+        top: document.getElementById('result-area').offsetTop,
+        behavior: 'smooth'
+    });
 }
 </script>
 
