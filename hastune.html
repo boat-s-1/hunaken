@@ -7,6 +7,19 @@
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
+
+        /* 1. ヘッダー画像の角丸を一果ちゃん風に緩やかに */
+.header-banner {
+  border-radius: 20px; /* 角丸を少し大きく */
+  border: 2px solid #b2f2bb; /* パステルグリーンの細い枠線を追加 */
+}
+
+/* 2. SDキャラのフキダシを、音符やキラキラで装飾 */
+.advice-bubble::after {
+  content: " 🎵✨"; /* フキダシの最後に音符とキラキラを追加 */
+  font-size: 0.7rem;
+}
+
         body {
             font-family: 'M PLUS Rounded 1c', sans-serif;
             margin: 0; padding: 10px;
