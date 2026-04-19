@@ -3,73 +3,89 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>キイナの5枠突破解析所 ⚡ BOAT STRIKE</title>
+<title>キイナの5 Master判定所 ⚡ BOAT STRIKE</title>
 
 <style>
-/* 背景画像の設定 */
+/* 背景：ご提示いただいた稲妻画像 */
 body {
   font-family: 'Helvetica Neue', Arial, "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
-  background-image: url('IMG_4726.png'); /* 保存した画像ファイル名に合わせてください */
+  background-image: url('image.png'); /* 保存した稲妻画像の名前 */
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
   margin: 0;
-  padding: 15px 10px;
+  padding: 10px;
   color: #fff;
 }
 
-/* すりガラス状のコンテナ（背景を透かす） */
+/* メインコンテナ：一果風の角丸と透過感 */
 .container {
   max-width: 480px;
-  margin: 40px auto;
-  background: rgba(16, 42, 67, 0.85); /* 深いネイビーを透過 */
-  backdrop-filter: blur(10px); /* 背景をぼかす */
+  margin: 20px auto;
+  background: rgba(10, 25, 41, 0.93); /* 深い紺色を透過 */
+  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  padding: 25px;
-  border-radius: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 25px;
+  border: 1px solid rgba(0, 210, 255, 0.3);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
 }
 
-h2 {
-  text-align: center;
-  color: #00d2ff;
-  font-size: 24px;
-  margin-bottom: 5px;
-  text-shadow: 0 0 15px rgba(0, 210, 255, 0.8);
-}
-
-.description {
-  text-align: center;
-  font-size: 13px;
-  color: #ccc;
-  margin-bottom: 25px;
-}
-
-/* 入力エリアのスタイル */
-.input-section {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 18px;
-  border-radius: 20px;
+/* ヘッダー画像 */
+.header-img-area {
+  width: 100%;
   margin-bottom: 15px;
+  text-align: center;
+}
+.header-img-area img {
+  width: 100%;
+  border-radius: 15px;
+}
+
+/* キャラクター＆アドバイス枠（一果UIを完全再現） */
+.chara-section {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px;
+  border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
-
-.section-title {
-  font-size: 14px;
-  font-weight: bold;
-  color: #ffcc00; /* 稲妻に合わせたイエロー */
-  margin-bottom: 12px;
-  border-left: 4px solid #ffcc00;
-  padding-left: 10px;
+.chara-img {
+  width: 100px;
+  flex-shrink: 0;
+  margin-right: 15px;
+}
+.chara-img img {
+  width: 100%;
+  height: auto;
+}
+.advice-bubble {
+  flex: 1;
+  background: rgba(0, 82, 212, 0.2);
+  border: 1px solid #00d2ff;
+  border-radius: 15px;
+  padding: 12px;
+  position: relative;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #e0f7ff;
 }
 
+/* 入力ラベル（一果風の番号付き） */
 label {
   display: block;
   font-weight: bold;
-  margin: 15px 0 5px;
-  font-size: 13px;
+  margin: 20px 0 8px;
+  font-size: 14px;
   color: #eee;
+  border-left: 4px solid #ffcc00; /* 稲妻の黄色 */
+  padding-left: 10px;
+}
+label span {
+  color: #ffcc00;
+  margin-right: 5px;
 }
 
 select {
@@ -77,14 +93,13 @@ select {
   padding: 12px;
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   color: #fff;
   font-size: 16px;
-  cursor: pointer;
-  outline: none;
+  appearance: none;
 }
 
-/* 判定ボタン：ネオンエフェクト */
+/* 判定ボタン：一撃ネオン */
 .calc-btn {
   width: 100%;
   padding: 20px;
@@ -96,51 +111,26 @@ select {
   font-weight: bold;
   cursor: pointer;
   box-shadow: 0 0 20px rgba(0, 210, 255, 0.6);
-  transition: 0.3s;
-  margin: 15px 0;
+  margin: 30px 0 10px;
 }
 
-.calc-btn:hover {
-  box-shadow: 0 0 30px rgba(0, 210, 255, 0.9);
-  transform: translateY(-2px);
-}
-
-/* 結果表示エリア */
+/* 判定結果エリア */
 .result-box {
   margin-top: 25px;
   padding: 25px;
   border-radius: 20px;
-  background: rgba(0, 0, 0, 0.4);
-  border: 2px solid #00d2ff;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid #ffcc00;
   display: none;
-  animation: slideUp 0.5s ease;
+  text-align: center;
 }
-
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
 .percent-display {
   font-size: 55px;
   font-weight: bold;
-  text-align: center;
-  color: #ffcc00; /* 数値は稲妻カラー */
+  color: #ffcc00;
   text-shadow: 0 0 20px rgba(255, 204, 0, 0.5);
   font-family: 'Impact', sans-serif;
 }
-
-.talk-bubble {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(0, 210, 255, 0.5);
-  padding: 15px;
-  border-radius: 15px;
-  position: relative;
-  margin-top: 20px;
-  font-size: 14px;
-  line-height: 1.6;
-}
-
 .eye-box {
   margin-top: 20px;
   padding: 15px;
@@ -149,32 +139,36 @@ select {
   font-weight: bold;
   color: #ff66b2;
   border: 1px dashed #ff66b2;
-  text-align: center;
 }
 
-footer {
-  text-align: center;
-  margin-top: 30px;
-  font-size: 11px;
-  color: rgba(255,255,255,0.4);
-}
+footer { text-align: center; margin-top: 30px; font-size: 11px; color: rgba(255,255,255,0.3); }
 </style>
 </head>
 
 <body>
 
 <div class="container">
-  <h2>⚡ KIINA 5-MASTER ⚡</h2>
-  <p class="description">精密統計×展開解析で5枠の「一撃」を暴く</p>
+  
+  <div class="header-img-area">
+    <img src="kiina_header.png" alt="キイナの5 Master判定所">
+  </div>
 
-  <div class="input-section">
-    <div class="section-title">FIELD & WIND</div>
-    <label>🎯 開催場を選択</label>
+  <div class="chara-section">
+    <div class="chara-img">
+      <img src="kiina_sd.png" alt="キイナちゃん">
+    </div>
+    <div class="advice-bubble" id="kiina-talk">
+      💬⚡「データを入力してねッ！アタシが精密解析で一撃の可能性を暴いてあげるよ！」
+    </div>
+  </div>
+
+  <div class="input-group">
+    <label><span>①</span> 開催場を選択</label>
     <select id="stadium">
       <option value="">会場を選択...</option>
       <optgroup label="関東">
         <option value="0.061">01# 桐生 (6.1%)</option>
-        <option value="0.075">02# 戸田 (7.5%) ★</option>
+        <option value="0.075">02# 戸田 (7.5%) ★激高</option>
         <option value="0.066">03# 江戸川 (6.6%)</option>
         <option value="0.068">04# 平和島 (6.8%)</option>
         <option value="0.063">05# 多摩川 (6.3%)</option>
@@ -204,47 +198,41 @@ footer {
       </optgroup>
     </select>
 
-    <label>🚩 風のコンディション</label>
+    <label><span>②</span> 風のコンディション</label>
     <select id="wind">
       <option value="1.0">無風〜弱風</option>
-      <option value="1.3">向かい風 4m↑ (ダッシュ有利)</option>
+      <option value="1.3">向かい風 4m↑ (ダッシュ有利⚡)</option>
       <option value="1.1">追い風 3m↑ (もつれ期待)</option>
       <option value="0.9">強風 6m↑ (差し不発リスク)</option>
     </select>
-  </div>
 
-  <div class="input-section">
-    <div class="section-title">MACHINE & TACTICS</div>
-    <label>🏎 5号艇の機力 (直線・伸び)</label>
+    <label><span>③</span> 5号艇の機力 (直線・伸び)</label>
     <select id="motor">
       <option value="1.0">普通</option>
       <option value="1.5">上位 (展示タイム良好)</option>
       <option value="2.2">超抜 (スリット後伸びる🔥)</option>
     </select>
 
-    <label>💫 周回展示 (回り足・押し)</label>
+    <label><span>④</span> 周回展示 (回り足・押し)</label>
     <select id="turn">
       <option value="1.0">普通</option>
       <option value="1.4">強力 (出口の押し◎)</option>
     </select>
 
-    <label>💥 4カド(4号艇)の攻め</label>
+    <label><span>⑤</span> 4カド(4号艇)の攻め期待度</label>
     <select id="kado">
       <option value="1.0">期待薄</option>
       <option value="1.8">期待大 (まくり展開狙い)</option>
     </select>
-  </div>
 
-  <div class="input-section">
-    <div class="section-title">INSIDE STATUS</div>
-    <label>🛡 2号艇の「壁」信頼度</label>
+    <label><span>⑥</span> 2号艇の「壁」信頼度</label>
     <select id="wall">
       <option value="1.0">普通</option>
-      <option value="1.3">壁が薄い (凹む可能性)</option>
-      <option value="0.8">壁が厚い (A1級など)</option>
+      <option value="1.3">壁が薄い (凹む可能性アリ)</option>
+      <option value="0.8">壁が厚い (A1級・安定感)</option>
     </select>
 
-    <label>🌀 1号艇のイン信頼度</label>
+    <label><span>⑦</span> 1号艇のイン信頼度</label>
     <select id="in-race">
       <option value="1.0">普通</option>
       <option value="1.2">不安定 (逃げ失敗率高い)</option>
@@ -254,53 +242,39 @@ footer {
   <button class="calc-btn" onclick="analyze()">⚡ 精密解析を実行！ ⚡</button>
 
   <div id="result-area" class="result-box">
-    <div style="text-align:center; font-size:13px; color:#aaa;">推定5枠1着確率</div>
+    <div style="font-size:13px; color:#aaa;">推定5枠1着確率</div>
     <div class="percent-display"><span id="prob-display">0</span>%</div>
-    
-    <div class="talk-bubble">
-      <span id="kiina-msg"></span>
-    </div>
-
-    <div class="eye-box">
-      💰 推奨買い目: <span id="recommend-eye">5 - 124 - 1246</span>
-    </div>
+    <div class="eye-box">💰 推奨: <span id="recommend-eye">5 - 124 - 1246</span></div>
   </div>
 
-  <footer>
-    &copy; 2026 BOAT STRIKE Project / 5-MASTER
-  </footer>
+  <footer>&copy; 2026 BOAT STRIKE Project / 5-MASTER</footer>
 </div>
 
 <script>
 function analyze() {
     const base = parseFloat(document.getElementById('stadium').value);
-    if(!base) { alert("会場を選択してねッ！"); return; }
+    if(!base) { alert("会場を選んでねッ！"); return; }
 
-    const factors = [
-        parseFloat(document.getElementById('wind').value),
-        parseFloat(document.getElementById('motor').value),
-        parseFloat(document.getElementById('turn').value),
-        parseFloat(document.getElementById('kado').value),
-        parseFloat(document.getElementById('wall').value),
-        parseFloat(document.getElementById('in-race').value)
-    ];
+    const wind = parseFloat(document.getElementById('wind').value);
+    const motor = parseFloat(document.getElementById('motor').value);
+    const turn = parseFloat(document.getElementById('turn').value);
+    const kado = parseFloat(document.getElementById('kado').value);
+    const wall = parseFloat(document.getElementById('wall').value);
+    const inRace = parseFloat(document.getElementById('in-race').value);
     
-    let prob = base;
-    factors.forEach(f => prob *= f);
-    prob = (prob * 100).toFixed(1);
-    
+    let prob = (base * wind * motor * turn * kado * wall * inRace * 100).toFixed(1);
     if(prob > 45) prob = 45.0;
 
     document.getElementById('result-area').style.display = 'block';
     document.getElementById('prob-display').innerText = prob;
 
     let msg = "";
-    if (prob > 25) msg = "最高だね！アタシの稲妻が突き刺さる最高の展開だよッ⚡ 迷わず狙っちゃいな！";
-    else if (prob > 15) msg = "いい条件が揃ったね！4カドが連れて行ってくれれば突き抜けるよ！";
-    else if (prob > 8) msg = "チャンスはあるけど、内枠の動き次第かな。展示を見て再判断してね。";
-    else msg = "今は静観。無理に狙うレースじゃないかもね。";
+    if (prob > 25) msg = "キタキタ！アタシの稲妻が突き刺さる最高の展開だよッ⚡ 迷わず狙っちゃいな！";
+    else if (prob > 15) msg = "いい条件だね！4カドが連れて行ってくれれば一気に突き抜けるよ！";
+    else if (prob > 8) msg = "チャンスはあるけど展開待ち。2号艇が凹めばアタシの出番だねッ。";
+    else msg = "今は静観。無理に狙うレースじゃないかも。次を待とう！";
 
-    document.getElementById('kiina-msg').innerText = "💬「" + msg + "」";
+    document.getElementById('kiina-talk').innerText = "💬「" + msg + "」";
 
     window.scrollTo({ top: document.getElementById('result-area').offsetTop, behavior: 'smooth' });
 }
