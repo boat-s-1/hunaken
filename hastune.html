@@ -7,19 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-
-        /* 1. ヘッダー画像の角丸を一果ちゃん風に緩やかに */
-.header-banner {
-  border-radius: 20px; /* 角丸を少し大きく */
-  border: 2px solid #b2f2bb; /* パステルグリーンの細い枠線を追加 */
-}
-
-/* 2. SDキャラのフキダシを、音符やキラキラで装飾 */
-.advice-bubble::after {
-  content: " 🎵✨"; /* フキダシの最後に音符とキラキラを追加 */
-  font-size: 0.7rem;
-}
-
+        /* --- 全体スタイル --- */
         body {
             font-family: 'M PLUS Rounded 1c', sans-serif;
             margin: 0; padding: 10px;
@@ -53,7 +41,11 @@
         /* --- メインコンテンツ --- */
         #main-content { display: none; width: 100%; max-width: 440px; }
 
-        .header-banner { width: 100%; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(47, 158, 68, 0.2); margin-bottom: 15px; }
+        .header-banner { 
+            width: 100%; border-radius: 20px; overflow: hidden; 
+            box-shadow: 0 4px 15px rgba(47, 158, 68, 0.2); 
+            margin-bottom: 15px; border: 2px solid #b2f2bb; 
+        }
         .header-banner img { width: 100%; display: block; }
 
         .outer-frame {
@@ -66,7 +58,8 @@
             padding: 15px; border-radius: 20px; margin-bottom: 20px; border: 1px solid #b2f2bb;
         }
         .chara-img { width: 80px; margin-right: 12px; }
-        .advice-bubble { font-size: 0.8rem; line-height: 1.5; color: #2d6a4f; }
+        .advice-bubble { font-size: 0.8rem; line-height: 1.5; color: #2d6a4f; position: relative; }
+        .advice-bubble::after { content: " 🎵✨"; font-size: 0.7rem; }
 
         label {
             display: block; font-weight: 800; font-size: 0.85rem; color: #2f855a;
@@ -99,8 +92,19 @@
         .share-tag { color: #38a169; font-size: 0.7rem; font-weight: 800; }
         .save-btn {
             width: 100%; padding: 15px; background: #2d6a4f; color: white;
-            border: none; border-radius: 50px; font-weight: 800; cursor: pointer;
+            border: none; border-radius: 50px; font-weight: 800; cursor: pointer; margin-top: 10px;
         }
+
+        /* --- サイトマップ（一果ちゃんツール風の調整） --- */
+        .footer-sitemap {
+            width: 100%; max-width: 440px; margin: 30px auto 10px;
+            padding: 20px; box-sizing: border-box; background: rgba(255, 255, 255, 0.6);
+            border-radius: 25px; border: 1px solid #b2f2bb;
+        }
+        .sitemap-title { font-size: 0.9rem; color: #2f855a; font-weight: 800; text-align: center; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .sitemap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .sitemap-item { background: white; padding: 12px; border-radius: 15px; text-decoration: none; color: #666; font-size: 0.75rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 5px; border: 1px solid #e6fffa; transition: 0.3s; }
+        .sitemap-item:hover { transform: translateY(-3px); border-color: #38a169; color: #38a169; }
 
         footer { text-align: center; font-size: 0.7rem; color: #2f855a; margin: 20px 0; opacity: 0.6; }
     </style>
@@ -109,8 +113,7 @@
 
 <div id="lock-screen">
     <div class="lock-card">
-        <img src="bbce91ad-666f-4178-ac48-c15c46fbde64.png
-" style="width: 100px; margin-bottom: 10px;">
+        <img src="bbce91ad-666f-4178-ac48-c15c46fbde64.png" style="width: 100px; margin-bottom: 10px;">
         <h3 style="margin: 0 0 10px 0;">秘密の楽屋 🍀</h3>
         <p style="font-size: 0.7rem; margin-bottom: 20px;">合言葉を知っているプロの方だけ<br>お入りいただけますっ♪</p>
         <input type="password" id="pass" class="lock-input" placeholder="合言葉は？">
@@ -181,43 +184,25 @@
             <button class="save-btn" onclick="saveImage()">画像を保存してSNSへ 🍀</button>
         </div>
     </div>
-<div style="text-align: center; margin-top: 20px;">
-    <a href="dateg.html#nav" style="
-        display: inline-block;
-        width: 90%;
-        max-width: 380px;
-        padding: 15px;
-        background: #fff;
-        color: #38a169;
-        border: 2px solid #b2f2bb;
-        border-radius: 50px;
-        text-decoration: none;
-        font-size: 14px;
-        font-weight: bold;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    ">📚 初音の24場解析ノートを見るっ🍀</a>
-</div>
-<nav class="footer-sitemap">
-    <div class="sitemap-title">BOAT STRIKE 案内所 🌟</div>
-    <div class="sitemap-grid">
-        <a href="ichika.html" class="sitemap-item">
-            <span class="sitemap-icon">🌸</span>
-            <span>1号艇・鬼絞り</span>
-        </a>
-        <a href="kiina5.html" class="sitemap-item">
-            <span class="sitemap-icon">⚡</span>
-            <span>5 Master判定</span>
-        </a>
-        <a href="hatsune.html" class="sitemap-item">
-            <span class="sitemap-icon">🍀</span>
-            <span>女子戦・ひらめき鑑定</span>
-        </a>
-        <a href="dateg.html" class="sitemap-item">
-            <span class="sitemap-icon">📗</span>
-            <span>女子戦・解析ノート</span>
-        </a>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="dateg.html#nav" style="
+            display: inline-block; width: 90%; max-width: 380px; padding: 15px;
+            background: #fff; color: #38a169; border: 2px solid #b2f2bb;
+            border-radius: 50px; text-decoration: none; font-size: 14px;
+            font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        ">📚 初音の24場解析ノートを見るっ🍀</a>
     </div>
-</nav>
+
+    <nav class="footer-sitemap">
+        <div class="sitemap-title">BOAT STRIKE 案内所 🌟</div>
+        <div class="sitemap-grid">
+            <a href="ichika.html" class="sitemap-item">🌸 1号艇・鬼絞り</a>
+            <a href="kiina5.html" class="sitemap-item">⚡ 5 Master判定</a>
+            <a href="hatsune.html" class="sitemap-item">🍀 女子戦鑑定</a>
+            <a href="dateg.html" class="sitemap-item">📗 解析ノート</a>
+        </div>
+    </nav>
 
     <footer>&copy; 2026 BOAT STRIKE Project / HATSUNE</footer>
 </div>
@@ -225,7 +210,7 @@
 <script>
     function checkPass() {
         const p = document.getElementById('pass').value;
-        if(p === "0011") { // ここに合言葉を設定
+        if(p === "0011") { // 合言葉
             document.getElementById('lock-screen').style.display = 'none';
             document.getElementById('main-content').style.display = 'block';
         } else {
@@ -240,7 +225,6 @@
         const m = parseFloat(document.getElementById('motor').value);
         const w = parseFloat(document.getElementById('wind').value);
 
-        // 基本波乱度20%に各係数を掛ける
         let score = Math.round(20 * st * r * sn * m * w);
         if(score > 100) score = 100;
         if(score < 5) score = 5;
@@ -262,7 +246,7 @@
         document.getElementById('share-txt').innerText = msg;
         document.getElementById('share-card').style.display = 'block';
         
-        window.scrollTo({ top: document.getElementById('result').offsetTop, behavior: 'smooth' });
+        window.scrollTo({ top: document.getElementById('result').offsetTop - 20, behavior: 'smooth' });
     }
 
     function saveImage() {
