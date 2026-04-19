@@ -1,221 +1,145 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>初音の女子戦精密展開シミュレーター 🔬</title>
-    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&display=swap" rel="stylesheet">
-    <style>
-        /* --- デザインは前回のラボスタイルを継承 --- */
-        body {
-            font-family: 'M PLUS Rounded 1c', sans-serif;
-            margin: 0; padding: 10px;
-            display: flex; flex-direction: column; align-items: center;
-            background-color: #0a191e;
-            background-image: 
-                linear-gradient(rgba(0, 184, 148, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 184, 148, 0.05) 1px, transparent 1px);
-            background-size: 20px 20px;
-            color: #dfe6e9;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>初音の女子戦・ひらめき鑑定所 🍀</title>
+<style>
+/* 初音ちゃんカラー：ミントグリーンベース */
+body {
+  font-family: 'Hiragino Kaku Gothic ProN', sans-serif;
+  background: #f0fff4; /* 薄いミント */
+  background-image: radial-gradient(#dfffee 1px, transparent 1px);
+  background-size: 20px 20px;
+  margin: 0; padding: 10px;
+}
 
-        .header-title {
-            width: 100%; max-width: 480px;
-            background: #1e272e; color: #55efc4;
-            padding: 15px; border-radius: 15px;
-            text-align: center; margin-bottom: 20px;
-            border: 1px solid #00b894;
-            box-shadow: 0 0 15px rgba(0, 184, 148, 0.3);
-        }
+.container {
+  max-width: 450px;
+  margin: 20px auto;
+  background: white;
+  padding: 20px;
+  border-radius: 30px;
+  border: 3px solid #b2f2bb; /* パステルグリーン */
+  box-shadow: 0 8px 20px rgba(47, 158, 68, 0.1);
+}
 
-        .outer-frame {
-            width: 100%; max-width: 480px;
-            padding: 20px; box-sizing: border-box;
-            background: rgba(30, 39, 46, 0.9);
-            border: 1px solid #00b894;
-            border-radius: 20px;
-        }
+h2 {
+  text-align: center;
+  color: #2f855a;
+  font-size: 20px;
+}
 
-        /* 24場セレクトボックスの強化 */
-        .stadium-box {
-            background: #0a3d34; border: 1px solid #00b894;
-            padding: 15px; border-radius: 12px; margin-bottom: 20px;
-        }
-        select {
-            width: 100%; padding: 12px; border-radius: 8px;
-            background: #1e272e; color: #55efc4;
-            border: 1px solid #00b894; font-family: inherit; font-weight: 800;
-        }
+/* 初音ちゃんのアドバイス枠 */
+.advice-box {
+  display: flex;
+  align-items: center;
+  background: #e6fffa;
+  padding: 15px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
 
-        /* 入力グリッド */
-        .input-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;
-        }
-        .input-block {
-            background: #2d3436; border: 1px solid #636e72;
-            padding: 10px; border-radius: 12px;
-        }
-        .block-title { font-size: 0.7rem; font-weight: 800; padding: 2px 8px; border-radius: 4px; margin-bottom: 5px; display: inline-block; }
-        .b1 { background: #ff4757; } .b2 { background: #1e90ff; } .b3 { background: #f1c40f; color: #000; }
-        .b4 { background: #34495e; } .b5 { background: #e67e22; } .b6 { background: #8e44ad; }
+label {
+  display: block;
+  font-weight: bold;
+  margin: 15px 0 5px;
+  color: #38a169;
+  border-left: 4px solid #38a169;
+  padding-left: 10px;
+}
 
-        .slider-label { font-size: 0.6rem; color: #b2bec3; display: block; }
-        input[type="range"] { width: 100%; accent-color: #55efc4; }
-        .val-disp { font-size: 0.8rem; font-weight: 800; color: #55efc4; text-align: right; display: block; }
+select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 2px solid #c6f6d5;
+  font-size: 16px;
+}
 
-        .analyze-btn {
-            width: 100%; padding: 20px; background: #00b894; color: #0a191e;
-            border: none; border-radius: 12px; font-weight: 800; font-size: 1.1rem; cursor: pointer;
-        }
+.calc-btn {
+  width: 100%;
+  padding: 18px;
+  background: linear-gradient(135deg, #63e6be 0%, #38a169 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(56, 161, 105, 0.3);
+}
 
-        #result-box {
-            display: none; margin-top: 25px; padding: 20px;
-            background: #000; border: 2px solid #55efc4; border-radius: 15px;
-        }
-        .deme-row { background: #1e272e; padding: 15px; border-radius: 10px; margin-top: 15px; border-left: 4px solid #55efc4; }
-    </style>
+.result-area {
+  display: none;
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 20px;
+  background: #f0fff4;
+  border: 2px solid #38a169;
+  text-align: center;
+}
+</style>
 </head>
 <body>
 
-<div class="header-title">
-    <h1>🔬 HATSUNE: 24-STADIUM ANALYZER</h1>
-</div>
+<div class="container">
+  <img src="hatsune_header.png" style="width:100%; border-radius:15px;">
+  <h2>🍀 初音の女子戦・鑑定所 🍀</h2>
 
-<div class="outer-frame">
-    <div class="stadium-box">
-        <span style="font-size: 0.7rem; color: #55efc4; font-weight: 800;">TARGET STADIUM DATA</span>
-        <select id="stadiumSelect" style="margin-top: 10px;">
-            <optgroup label="--- イン最強クラス ---">
-                <option value="24">24 大村 (逃げ率No.1)</option>
-                <option value="18">18 徳山 (企画レース強)</option>
-                <option value="21">21 芦屋 (モーニング強)</option>
-                <option value="19">19 下関 (ナイター特化)</option>
-            </optgroup>
-            <optgroup label="--- イン安定クラス ---">
-                <option value="12">12 住之江 (2差し注)</option>
-                <option value="16">16 児島</option>
-                <option value="13">13 尼崎</option>
-                <option value="07">07 蒲郡</option>
-                <option value="08">08 常滑</option>
-                <option value="15">15 丸亀</option>
-                <option value="17">17 宮島</option>
-            </optgroup>
-            <optgroup label="--- 標準・波乱含み ---">
-                <option value="01">01 桐生</option>
-                <option value="06">06 浜名湖</option>
-                <option value="09">09 津</option>
-                <option value="10">10 三国</option>
-                <option value="14">14 鳴門</option>
-                <option value="20">20 若松</option>
-                <option value="23">23 唐津</option>
-                <option value="05">05 多摩川 (静水面)</option>
-            </optgroup>
-            <optgroup label="--- イン受難・荒れる場 ---">
-                <option value="11">11 びわこ (うねり注)</option>
-                <option value="03">03 江戸川 (難所)</option>
-                <option value="22">22 福岡 (うねり強)</option>
-                <option value="04">04 平和島 (差し天国)</option>
-                <option value="02">02 戸田 (捲り天国)</option>
-            </optgroup>
-        </select>
-    </div>
+  <div class="advice-box">
+    <img src="hatsune_sd.png" style="width:80px; margin-right:10px;">
+    <p style="font-size:12px; color:#2d6a4f;">💬「女子戦は甘く見ちゃダメですよぉ？初音が荒れる予感を鑑定しちゃいますっ♪」</p>
+  </div>
 
-    <div class="input-grid">
-        <div class="input-block"><span class="block-title b1">1号艇</span><input type="range" id="p1" min="10" max="99" value="70"><span class="val-disp" id="v1">70</span></div>
-        <div class="input-block"><span class="block-title b2">2号艇</span><input type="range" id="p2" min="10" max="99" value="60"><span class="val-disp" id="v2">60</span></div>
-        <div class="input-block"><span class="block-title b3">3号艇</span><input type="range" id="p3" min="10" max="99" value="60"><span class="val-disp" id="v3">60</span></div>
-        <div class="input-block"><span class="block-title b4">4号艇</span><input type="range" id="p4" min="10" max="99" value="55"><span class="val-disp" id="v4">55</span></div>
-        <div class="input-block"><span class="block-title b5">5号艇</span><input type="range" id="p5" min="10" max="99" value="50"><span class="val-disp" id="v5">50</span></div>
-        <div class="input-block"><span class="block-title b6">6号艇</span><input type="range" id="p6" min="10" max="99" value="45"><span class="val-disp" id="v6">45</span></div>
-    </div>
+  <label>① 選手の「格」はどうですか？</label>
+  <select id="rank">
+    <option value="1.0">A級が揃ってて堅そう</option>
+    <option value="1.5">A級とB級が混ざってる</option>
+    <option value="2.5">ほとんどB級！大混戦！</option>
+  </select>
 
-    <button class="analyze-btn" onclick="startAnalysis()">SIMULATE ALL STATIONS</button>
+  <label>② スタートの不安度は？</label>
+  <select id="start">
+    <option value="1.0">みんな早い（安定）</option>
+    <option value="1.8">F持ちがいたり、バラバラ</option>
+  </select>
 
-    <div id="result-box">
-        <div id="loading" style="color:#55efc4; font-family:monospace;"></div>
-        <div id="analysis-result">
-            <div id="main-status" style="font-size: 1.3rem; font-weight: 800; color: #fff; margin-bottom: 10px;"></div>
-            <div id="hatsune-comment" style="font-size: 0.8rem; line-height: 1.6; color: #bdc3c7;"></div>
-            <div class="deme-row">
-                <span style="font-size: 0.6rem; color: #55efc4; display: block;">SIMULATED NUMBERS:</span>
-                <div id="deme-list" style="font-size: 1.2rem; letter-spacing: 2px;"></div>
-            </div>
-        </div>
-    </div>
+  <label>③ 会場のコンディションは？</label>
+  <select id="wind">
+    <option value="1.0">穏やか（静水面）</option>
+    <option value="2.0">風や波が強いっ（荒れ気配）</option>
+  </select>
+
+  <button class="calc-btn" onclick="鑑定()">鑑定するっ🍀</button>
+
+  <div id="result" class="result-area">
+    <p style="font-size:14px; font-weight:bold;">鑑定結果：波乱度</p>
+    <div id="score" style="font-size:40px; font-weight:bold; color:#2f855a;">0%</div>
+    <p id="msg" style="font-size:12px; margin-top:10px;"></p>
+  </div>
 </div>
 
 <script>
-    // 各場のイン特性（イン逃げ率、2差し率、3捲り率、4捲り率の傾向）
-    const stadiumData = {
-        "01": {nige: 51, sashi2: 14, maku3: 12, maku4: 10}, "02": {nige: 44, sashi2: 13, maku3: 15, maku4: 18},
-        "03": {nige: 45, sashi2: 15, maku3: 13, maku4: 11}, "04": {nige: 45, sashi2: 18, maku3: 12, maku4: 10},
-        "05": {nige: 53, sashi2: 15, maku3: 13, maku4: 9},  "06": {nige: 54, sashi2: 14, maku3: 11, maku4: 11},
-        "07": {nige: 55, sashi2: 16, maku3: 11, maku4: 8},  "08": {nige: 55, sashi2: 15, maku3: 12, maku4: 9},
-        "09": {nige: 54, sashi2: 14, maku3: 12, maku4: 10}, "10": {nige: 53, sashi2: 15, maku3: 11, maku4: 11},
-        "11": {nige: 49, sashi2: 14, maku3: 15, maku4: 10}, "12": {nige: 58, sashi2: 19, maku3: 9,  maku4: 7},
-        "13": {nige: 54, sashi2: 15, maku3: 12, maku4: 9},  "14": {nige: 50, sashi2: 13, maku3: 14, maku4: 11},
-        "15": {nige: 54, sashi2: 16, maku3: 11, maku4: 9},  "16": {nige: 55, sashi2: 15, maku3: 11, maku4: 10},
-        "17": {nige: 54, sashi2: 16, maku3: 11, maku4: 9},  "18": {nige: 63, sashi2: 16, maku3: 8,  maku4: 6},
-        "19": {nige: 60, sashi2: 17, maku3: 9,  maku4: 7},  "20": {nige: 56, sashi2: 16, maku3: 11, maku4: 8},
-        "21": {nige: 61, sashi2: 17, maku3: 9,  maku4: 6},  "22": {nige: 45, sashi2: 13, maku3: 16, maku4: 12},
-        "23": {nige: 55, sashi2: 15, maku3: 12, maku4: 9},  "24": {nige: 66, sashi2: 17, maku3: 7,  maku4: 5}
-    };
+function 鑑定() {
+  const r = parseFloat(document.getElementById('rank').value);
+  const s = parseFloat(document.getElementById('start').value);
+  const w = parseFloat(document.getElementById('wind').value);
+  
+  let score = Math.round(r * s * w * 10);
+  if(score > 100) score = 100;
 
-    function startAnalysis() {
-        const box = document.getElementById('result-box');
-        box.style.display = 'block';
-        document.getElementById('analysis-result').style.display = 'none';
-        document.getElementById('loading').innerText = "Accessing 24-stadium database...";
-        
-        setTimeout(() => {
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('analysis-result').style.display = 'block';
-            runPrecisionLogic();
-        }, 1000);
-    }
-
-    function runPrecisionLogic() {
-        const sid = document.getElementById('stadiumSelect').value;
-        const sInfo = stadiumData[sid];
-        
-        // 各艇のパワー（入力値 + 場のバイアス）
-        const p1 = parseInt(document.getElementById('p1').value) + (sInfo.nige - 50);
-        const p2 = parseInt(document.getElementById('p2').value) + (sInfo.sashi2 - 15);
-        const p3 = parseInt(document.getElementById('p3').value) + (sInfo.maku3 - 12);
-        const p4 = parseInt(document.getElementById('p4').value) + (sInfo.maku4 - 10);
-
-        let status = ""; let comment = ""; let demes = "";
-
-        // 解析分岐
-        if (p1 > 75 && p1 > p3 + 15) {
-            status = "🔬 [REPORT] イン逃げ高確率";
-            comment = `初音です。${sid}場のイン逃げ期待値は${sInfo.nige}%。解析の結果、1号艇の逃げ切りが最も合理的です。`;
-            demes = "1-2-34, 1-3-24";
-        } else if (p2 > p1 - 5) {
-            status = "🔬 [REPORT] 2コース逆転検知";
-            comment = `警告。${sid}場は2コースからの差しが入りやすい特性があります。1=2の折り返し、または2-1のスジを検知しました。`;
-            demes = "2-1-全, 1-2-全";
-        } else if (p3 > p1 - 10) {
-            status = "🔬 [REPORT] センター急襲注意";
-            comment = `${sid}場の3コース捲り率は${sInfo.maku3}%。1号艇の旋回が甘くなれば、3号艇がスリットから飲み込む展開が見えます。`;
-            demes = "3-4-全, 3-1-全";
-        } else {
-            status = "🔬 [REPORT] 展開混戦";
-            comment = "データに偏りがありません。女子戦特有の「道中逆転」を視野に、ヒモを広げる戦略を推奨します。";
-            demes = "1-全-全";
-        }
-
-        document.getElementById('main-status').innerText = status;
-        document.getElementById('hatsune-comment').innerText = comment;
-        document.getElementById('deme-list').innerText = demes;
-    }
-
-    // スライダー更新用
-    for(let i=1; i<=6; i++) {
-        document.getElementById('p'+i).oninput = function() {
-            document.getElementById('v'+i).innerText = this.value;
-        };
-    }
+  document.getElementById('result').style.display = 'block';
+  document.getElementById('score').innerText = score + "%";
+  
+  let m = "";
+  if(score > 70) m = "💬「ひゃわわ！これは大波乱の予感ですっ！万舟券が飛び出しちゃうかも…！」";
+  else if(score > 40) m = "💬「ちょっと注意が必要ですねぇ。中配当を狙ってみるのがいいかもですっ♪」";
+  else m = "💬「ここはガチガチの予感。本命さんを信じて絞って勝負ですよぉ🍀」";
+  
+  document.getElementById('msg').innerText = m;
+}
 </script>
 </body>
 </html>
