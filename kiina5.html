@@ -6,6 +6,48 @@
 <title>キイナの5 Master判定所 ⚡ BOAT STRIKE</title>
 
 <style>
+  /* --- ヘッダー・ステータスバー --- */
+.status-bar {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(0, 210, 255, 0.4);
+    border-radius: 50px;
+    padding: 5px 15px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    overflow: hidden; /* 文字がはみ出ないように */
+}
+
+.system-clock {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    color: #ffcc00; /* 稲妻イエロー */
+    font-size: 14px;
+    margin-right: 15px;
+    white-space: nowrap;
+    border-right: 1px solid rgba(0, 210, 255, 0.3);
+    padding-right: 10px;
+}
+
+.ticker-wrap {
+    flex: 1;
+    overflow: hidden;
+}
+
+.ticker-content {
+    display: inline-block;
+    white-space: nowrap;
+    font-size: 12px;
+    font-weight: bold;
+    color: #00d2ff;
+    animation: k-ticker 15s linear infinite;
+}
+
+@keyframes k-ticker {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
 /* 背景：ご提示いただいた稲妻画像 */
 body {
   font-family: 'Helvetica Neue', Arial, "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
@@ -249,6 +291,15 @@ footer { text-align: center; margin-top: 30px; font-size: 11px; color: rgba(255,
 
 <div class="container" id="main-content" style="display: none;">
     </div>
+<div class="status-bar">
+    <div class="system-clock" id="k-clock">00:00:00</div>
+    
+    <div class="ticker-wrap">
+        <div class="ticker-content" id="k-ticker-msg">
+            SYSTEM BOOTING... ANALYZING DATA...
+        </div>
+    </div>
+</div>
 
 <div class="container">
   
@@ -413,6 +464,39 @@ function analyze() {
 
     window.scrollTo({ top: document.getElementById('result-area').offsetTop, behavior: 'smooth' });
 }
+
+function updateStatus() {
+    const now = new Date();
+    const h = now.getHours();
+    const m = String(now.getMinutes()).padStart(2, '0');
+    const s = String(now.getSeconds()).padStart(2, '0');
+    
+    // 時計更新
+    document.getElementById('k-clock').innerText = `${String(h).padStart(2, '0')}:${m}:${s}`;
+    
+    // メッセージ判定
+    let msg = "";
+    if (h >= 8 && h < 11) {
+        msg = "⚡ モーニング開催中ッ！早い時間の5アタマは、展示の伸びを要チェックだよ！";
+    } else if (h >= 11 && h < 15) {
+        msg = "⚡ デイレース真っ最中ッ！アタシの解析で中穴〜万舟をズバッと暴いてやるよ！";
+    } else if (h >= 15 && h < 21) {
+        msg = "⚡ ナイター開催中ッ！夜の5枠突き抜けは破壊力抜群。一撃狙っていきなッ！";
+    } else {
+        msg = "⚡ 現在ミッドナイト/非開催中... 明日のレースに向けて、今のうちに軍資金を貯めとこッ！";
+    }
+    
+    // メッセージが現在と違う場合のみ更新（アニメーションリセット防止）
+    const ticker = document.getElementById('k-ticker-msg');
+    if (ticker.innerText !== msg) {
+        ticker.innerText = msg;
+    }
+}
+
+// 1秒ごとに更新
+setInterval(updateStatus, 1000);
+updateStatus();
+  
 </script>
 <div class="footer-fixed-nav">
     <a href="ichika.html" class="nav-item nav-ichika">
