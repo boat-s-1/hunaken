@@ -6,6 +6,7 @@
     <title>軍資金チャージ所 💰 BOAT STRIKE</title>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&display=swap" rel="stylesheet">
     <style>
+        /* --- 全体スタイル --- */
         body {
             font-family: 'M PLUS Rounded 1c', sans-serif;
             background-color: #fdfbf7;
@@ -30,34 +31,50 @@
             margin-bottom: 25px; border: 2px solid #eee; text-align: center;
         }
         .chara-group { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; }
-        .chara-mini { width: 70px; height: auto; border-radius: 50%; background: #f9f9f9; }
+        .chara-mini { width: 70px; height: 70px; border-radius: 50%; background: #f9f9f9; border: 2px solid #eee; object-fit: cover;}
 
-        /* 共通カードスタイル */
+        /* --- 案件カード共通スタイル --- */
         .mission-card {
             background: white; border-radius: 25px; padding: 25px;
-            margin-bottom: 25px; position: relative; box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            margin-bottom: 30px; position: relative; box-shadow: 0 8px 20px rgba(0,0,0,0.05);
             border: 2px solid #eee;
         }
-        .mission-tag {
-            position: absolute; top: -12px; left: 20px; padding: 5px 15px;
-            border-radius: 50px; color: white; font-size: 0.75rem; font-weight: 800;
+
+        /* --- オススメタイトル（キャラアイコン付き） --- */
+        .recommend-title {
+            position: absolute; top: -20px; left: 15px;
+            display: flex; align-items: center;
+            background: white; padding: 5px 15px 5px 5px;
+            border-radius: 50px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .recommend-icon {
+            width: 35px; height: 35px; border-radius: 50%;
+            margin-right: 8px; object-fit: cover; border: 2px solid #fff;
+        }
+        .recommend-text {
+            color: white; font-size: 0.75rem; font-weight: 800;
+            padding: 3px 12px; border-radius: 50px;
         }
 
         /* キャラ別デザイン */
+        /* 一果 */
         .ichika { border-color: #ffcad4; }
-        .ichika .mission-tag { background: #ff8fa3; }
+        .ichika .recommend-icon { border-color: #ff8fa3; background-color: #fff1f3; }
+        .ichika .recommend-text { background: #ff8fa3; }
         .ichika .site-name { color: #ff6b81; }
-
+        /* 初音 */
         .hatsune { border-color: #b2f2bb; }
-        .hatsune .mission-tag { background: #38a169; }
+        .hatsune .recommend-icon { border-color: #38a169; background-color: #f0fff4; }
+        .hatsune .recommend-text { background: #38a169; }
         .hatsune .site-name { color: #2d6a4f; }
-
+        /* キイナ */
         .kiina { border-color: #a1c4fd; }
-        .kiina .mission-tag { background: #0052d4; }
+        .kiina .recommend-icon { border-color: #0052d4; background-color: #f0f5ff; }
+        .kiina .recommend-text { background: #0052d4; }
         .kiina .site-name { color: #0052d4; }
 
         /* 案件内容 */
-        .site-name { font-size: 1.6rem; font-weight: 800; display: block; margin: 10px 0; }
+        .site-name { font-size: 1.6rem; font-weight: 800; display: block; margin: 25px 0 10px; }
         .site-desc { font-size: 0.85rem; line-height: 1.6; color: #666; margin-bottom: 15px; }
         
         .recommend-point {
@@ -98,7 +115,10 @@
     </div>
 
     <div class="mission-card ichika">
-        <span class="mission-tag">一果オススメ🌸 コツコツ派へ</span>
+        <div class="recommend-title">
+            <img src="ichika_icon.png" class="recommend-icon"> <span class="recommend-text">一果オススメ🌸 コツコツ派へ</span>
+        </div>
+        
         <span class="site-name">モッピー</span>
         <p class="site-desc">
             「日本で一番有名なサイトですぉ🌸 毎日ガチャを回したり、アンケートに答えるだけで、1レース分の100円はすぐに貯まっちゃいます！」
@@ -111,7 +131,10 @@
     </div>
 
     <div class="mission-card hatsune">
-        <span class="mission-tag">初音オススメ🍀 楽しく稼ぐ派へ</span>
+        <div class="recommend-title">
+            <img src="hatsune_icon.png" class="recommend-icon"> <span class="recommend-text">初音オススメ🍀 楽しく稼ぐ派へ</span>
+        </div>
+
         <span class="site-name">ポイントインカム</span>
         <p class="site-desc">
             「ログインするだけでポイントがもらえるイベントが盛りだくさんっ🍀 女子戦を毎日楽しみたい人にピッタリのサイトですよぉ♪」
@@ -124,7 +147,10 @@
     </div>
 
     <div class="mission-card kiina">
-        <span class="mission-tag">キイナオススメ⚡ 一撃勝負派へ</span>
+        <div class="recommend-title">
+            <img src="kiina_icon.png" class="recommend-icon"> <span class="recommend-text">キイナオススメ⚡ 一撃勝負派へ</span>
+        </div>
+
         <span class="site-name">ハピタス</span>
         <p class="site-desc">
             「チマチマやるのが面倒ならここだ⚡ クレカ発行や口座開設の還元率がズバ抜けてる。万舟狙いの大金が欲しいならココ一択だッ！」
