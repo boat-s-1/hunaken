@@ -2,26 +2,32 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>キイナの5 Master判定所 ⚡ BOAT STRIKE</title>
 
 <style>
-  /* --- ヘッダー・ステータスバー --- */
+/* --- ヘッダー・ステータスバー（最上部に固定） --- */
 .status-bar {
-    background: rgba(0, 0, 0, 0.6);
-    border: 1px solid rgba(0, 210, 255, 0.4);
-    border-radius: 50px;
-    padding: 5px 15px;
-    margin-bottom: 15px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(10, 25, 41, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 210, 255, 0.4);
+    padding: 8px 15px;
     display: flex;
     align-items: center;
-    overflow: hidden; /* 文字がはみ出ないように */
+    overflow: hidden;
+    z-index: 1000;
+    box-sizing: border-box;
 }
 
 .system-clock {
     font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
-    color: #ffcc00; /* 稲妻イエロー */
+    color: #ffcc00;
     font-size: 14px;
     margin-right: 15px;
     white-space: nowrap;
@@ -48,10 +54,10 @@
     100% { transform: translateX(-100%); }
 }
 
-/* 背景：ご提示いただいた稲妻画像 */
+/* 背景：稲妻画像 */
 body {
   font-family: 'Helvetica Neue', Arial, "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
-  background-image: url('IMG_4726.png'); /* 保存した稲妻画像の名前 */
+  background-image: url('IMG_4726.png');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -60,31 +66,25 @@ body {
   color: #fff;
 }
 
-/* メインコンテナ：一果風の角丸と透過感 */
+/* メインコンテナ：ステータスバー分(約50px)の余白を上に確保 */
 .container {
   max-width: 480px;
-  margin: 20px auto;
-  background: rgba(10, 25, 41, 0.93); /* 深い紺色を透過 */
+  margin: 55px auto 20px; /* 上の余白を55pxに設定 */
+  background: rgba(10, 25, 41, 0.93);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   padding: 20px;
   border-radius: 25px;
   border: 1px solid rgba(0, 210, 255, 0.3);
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
 }
 
-/* ヘッダー画像 */
-.header-img-area {
-  width: 100%;
-  margin-bottom: 15px;
-  text-align: center;
-}
 .header-img-area img {
   width: 100%;
   border-radius: 15px;
 }
 
-/* キャラクター＆アドバイス枠（一果UIを完全再現） */
 .chara-section {
   display: flex;
   align-items: center;
@@ -94,41 +94,30 @@ body {
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
-.chara-img {
-  width: 100px;
-  flex-shrink: 0;
-  margin-right: 15px;
-}
-.chara-img img {
-  width: 100%;
-  height: auto;
-}
+.chara-img { width: 100px; flex-shrink: 0; margin-right: 15px; }
+.chara-img img { width: 100%; height: auto; }
+
 .advice-bubble {
   flex: 1;
   background: rgba(0, 82, 212, 0.2);
   border: 1px solid #00d2ff;
   border-radius: 15px;
   padding: 12px;
-  position: relative;
   font-size: 13px;
   line-height: 1.5;
   color: #e0f7ff;
 }
 
-/* 入力ラベル（一果風の番号付き） */
 label {
   display: block;
   font-weight: bold;
   margin: 20px 0 8px;
   font-size: 14px;
   color: #eee;
-  border-left: 4px solid #ffcc00; /* 稲妻の黄色 */
+  border-left: 4px solid #ffcc00;
   padding-left: 10px;
 }
-label span {
-  color: #ffcc00;
-  margin-right: 5px;
-}
+label span { color: #ffcc00; margin-right: 5px; }
 
 select {
   width: 100%;
@@ -141,7 +130,6 @@ select {
   appearance: none;
 }
 
-/* 判定ボタン：一撃ネオン */
 .calc-btn {
   width: 100%;
   padding: 20px;
@@ -156,7 +144,6 @@ select {
   margin: 30px 0 10px;
 }
 
-/* 判定結果エリア */
 .result-box {
   margin-top: 25px;
   padding: 25px;
@@ -184,6 +171,7 @@ select {
 }
 
 footer { text-align: center; margin-top: 30px; font-size: 11px; color: rgba(255,255,255,0.3); }
+
 /* --- 下部固定ナビゲーション --- */
 .footer-fixed-nav {
     position: fixed;
@@ -193,12 +181,12 @@ footer { text-align: center; margin-top: 30px; font-size: 11px; color: rgba(255,
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 10px;
-    padding: 12px 15px 25px; /* iPhoneの下部バー対策 */
+    padding: 10px 15px 25px;
     background: rgba(10, 25, 41, 0.95);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border-top: 2px solid rgba(0, 210, 255, 0.3);
-    z-index: 2000;
+    z-index: 1000;
     box-sizing: border-box;
 }
 
@@ -216,32 +204,27 @@ footer { text-align: center; margin-top: 30px; font-size: 11px; color: rgba(255,
     background: rgba(255, 255, 255, 0.05);
 }
 
-.nav-item:active { transform: scale(0.95); }
-
-/* 各ボタンのカラー */
 .nav-ichika { color: #ff8fa3; border-color: rgba(255, 143, 163, 0.3); }
 .nav-hatsune { color: #69f0ae; border-color: rgba(105, 240, 174, 0.3); }
 .nav-home { color: #00d2ff; border-color: rgba(0, 210, 255, 0.3); }
 
-.nav-icon { font-size: 1.2rem; margin-bottom: 2px; }
-.nav-label { font-size: 10px; white-space: nowrap; font-weight: 900; }
+.nav-icon { font-size: 1.2rem; }
+.nav-label { font-size: 10px; font-weight: 900; }
 
-/* コンテンツがナビに被らないように余白を追加 */
-.container {
-    margin-bottom: 120px !important;
-}
-
+/* 下部ナビの被り防止 */
+.container-wrap { margin-bottom: 110px; }
 
 </style>
 </head>
 
 <body>
+
 <div id="lock-screen" style="
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: radial-gradient(circle at center, #0a1929 0%, #000 100%); z-index: 9999;
     display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
     backdrop-filter: blur(15px); text-align: center; color: #fff; padding: 40px 20px; box-sizing: border-box;
-    overflow-y: auto; /* スマホで説明文が長い場合にスクロール可能に */
+    overflow-y: auto;
 ">
     <div style="font-size: 50px; margin-bottom: 10px; filter: drop-shadow(0 0 10px #ffcc00);">⚡</div>
     <h2 style="color: #ffcc00; font-family: 'Orbitron', sans-serif; letter-spacing: 2px; margin: 0;">5-MASTER</h2>
@@ -254,189 +237,122 @@ footer { text-align: center; margin-top: 30px; font-size: 11px; color: rgba(255,
             <li><b>激熱の「万舟チャンス」を逃さない</b><br>条件が揃った時の爆発力はアタシの折り紙付きだッ！</li>
             <li><b>一撃特化の推奨買い目を自動生成</b><br>解析結果に合わせて、高配当狙いの目を弾き出すよ。</li>
         </ul>
-        <p style="font-size: 11px; color: #82b1ff; margin-top: 10px; text-align: center; font-style: italic;">「自腹ゼロで万舟、獲らせてやるよ。ついてきなッ⚡」</p>
     </div>
 
     <div style="background: rgba(255,255,255,0.05); padding: 25px; border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.1); width: 100%; max-width: 320px;">
-        <p style="font-size: 12px; color: #aaa; margin-bottom: 15px;">アクセスコードを入力してねッ！</p>
-        <input type="text" id="pass-input" placeholder="合言葉は？" style="
-            padding: 15px; border-radius: 12px; border: 2px solid #0052d4;
-            background: rgba(0,0,0,0.7); color: #fff; text-align: center; font-size: 20px; width: 100%;
-            box-sizing: border-box; outline: none; transition: 0.3s;
-        " onfocus="this.style.borderColor='#00d2ff'">
-        
-        <button onclick="checkPass()" style="
-            margin-top: 20px; padding: 15px; border-radius: 50px; width: 100%;
-            background: linear-gradient(45deg, #0052d4, #00d2ff); color: #fff; 
-            border: none; font-weight: bold; cursor: pointer; font-size: 16px;
-            box-shadow: 0 5px 15px rgba(0, 82, 212, 0.4);
-        ">MISSION START</button>
-        
-        <p id="error-msg" style="color: #ff4444; font-size: 12px; margin-top: 15px; display: none; font-weight: bold;">合言葉が違うよッ！やり直し！</p>
+        <input type="text" id="pass-input" placeholder="合言葉は？" style="padding: 15px; border-radius: 12px; border: 2px solid #0052d4; background: rgba(0,0,0,0.7); color: #fff; text-align: center; font-size: 20px; width: 100%; box-sizing: border-box;">
+        <button onclick="checkPass()" style="margin-top: 20px; padding: 15px; border-radius: 50px; width: 100%; background: linear-gradient(45deg, #0052d4, #00d2ff); color: #fff; border: none; font-weight: bold; cursor: pointer;">MISSION START</button>
+        <p id="error-msg" style="color: #ff4444; font-size: 12px; margin-top: 15px; display: none;">合言葉が違うよッ！やり直し！</p>
     </div>
 
-    <div style="margin-top: 30px; padding: 15px; width: 100%; max-width: 320px;">
-        <p style="font-size: 13px; color: #eee; margin-bottom: 12px;">合言葉を持っていない人は<br>公式LINEで「<b>合言葉</b>」って送ってねッ！⚡</p>
-        <a href="https://lin.ee/y2p5W3n" target="_blank" style="
-            display: inline-flex; align-items: center; justify-content: center;
-            background: #06c755; color: #fff; text-decoration: none; padding: 12px 30px;
-            border-radius: 50px; font-weight: bold; font-size: 14px; box-shadow: 0 4px 10px rgba(6, 199, 85, 0.3);
-        ">
-            <span style="margin-right: 8px;">💬</span> 公式LINEで合言葉をGET
-        </a>
+    <div style="margin-top: 30px; padding: 15px;">
+        <p style="font-size: 13px; color: #eee; margin-bottom: 12px;">公式LINEで「<b>合言葉</b>」って送ってねッ！⚡</p>
+        <a href="https://lin.ee/y2p5W3n" target="_blank" style="background: #06c755; color: #fff; text-decoration: none; padding: 12px 30px; border-radius: 50px; font-weight: bold; font-size: 14px; display: inline-block;">公式LINEで合言葉をGET</a>
     </div>
 </div>
 
-
-
-<div class="container" id="main-content" style="display: none;">
-    </div>
-<div class="status-bar">
-    <div class="system-clock" id="k-clock">00:00:00</div>
-    
-    <div class="ticker-wrap">
-        <div class="ticker-content" id="k-ticker-msg">
-            SYSTEM BOOTING... ANALYZING DATA...
+<div id="main-content" style="display: none;">
+    <div class="status-bar">
+        <div class="system-clock" id="k-clock">00:00:00</div>
+        <div class="ticker-wrap">
+            <div class="ticker-content" id="k-ticker-msg">SYSTEM BOOTING... ANALYZING DATA...</div>
         </div>
     </div>
-</div>
 
-<div class="container">
-  
-  <div class="header-img-area">
-    <img src="IMG_4729.png" alt="キイナの5 Master判定所">
-  </div>
+    <div class="container-wrap">
+        <div class="container">
+          <div class="header-img-area">
+            <img src="IMG_4729.png" alt="キイナの5 Master判定所">
+          </div>
 
-  <div class="chara-section">
-    <div class="chara-img">
-      <img src="cd0f5f2e-605b-4bd7-83d9-2b904ddc07b1.png" alt="キイナちゃん">
+          <div class="chara-section">
+            <div class="chara-img"><img src="cd0f5f2e-605b-4bd7-83d9-2b904ddc07b1.png"></div>
+            <div class="advice-bubble" id="kiina-talk">💬⚡「データを入力してねッ！精密解析で一撃の可能性を暴いてあげるよ！」</div>
+          </div>
+
+          <div class="input-group">
+            <label><span>①</span> 開催場を選択</label>
+            <select id="stadium">
+              <option value="">会場を選択...</option>
+              <optgroup label="関東"><option value="0.061">01# 桐生</option><option value="0.075">02# 戸田 ★激高</option><option value="0.066">03# 江戸川</option><option value="0.068">04# 平和島</option><option value="0.063">05# 多摩川</option></optgroup>
+              <optgroup label="東海/近畿"><option value="0.064">06# 浜名湖</option><option value="0.053">07# 蒲郡</option><option value="0.056">08# 常滑</option><option value="0.064">09# 津</option><option value="0.052">10# 三国</option><option value="0.066">11# びわこ</option><option value="0.052">12# 住之江</option><option value="0.054">13# 尼崎</option></optgroup>
+              <optgroup label="中四国/九州"><option value="0.069">14# 鳴門</option><option value="0.054">15# 丸亀</option><option value="0.054">16# 児島</option><option value="0.062">17# 宮島</option><option value="0.034">18# 徳山</option><option value="0.048">19# 下関</option><option value="0.058">20# 若松</option><option value="0.042">21# 芦屋</option><option value="0.038">22# 福岡</option><option value="0.050">23# 唐津</option><option value="0.030">24# 大村</option></optgroup>
+            </select>
+
+            <label><span>②</span> 風のコンディション</label>
+            <select id="wind">
+              <option value="1.0">無風〜弱風</option>
+              <option value="1.3">向かい風 4m↑ (ダッシュ有利⚡)</option>
+              <option value="1.1">追い風 3m↑</option>
+              <option value="0.9">強風 6m↑</option>
+            </select>
+
+            <label><span>③</span> 5号艇の機力 (直線・伸び)</label>
+            <select id="motor">
+              <option value="1.0">普通</option>
+              <option value="1.5">上位</option>
+              <option value="2.2">超抜🔥</option>
+            </select>
+
+            <label><span>④</span> 周回展示 (回り足・押し)</label>
+            <select id="turn">
+              <option value="1.0">普通</option>
+              <option value="1.4">強力◎</option>
+            </select>
+
+            <label><span>⑤</span> 4カドの攻め期待度</label>
+            <select id="kado">
+              <option value="1.0">期待薄</option>
+              <option value="1.8">期待大⚡</option>
+            </select>
+
+            <label><span>⑥</span> 2号艇の「壁」信頼度</label>
+            <select id="wall">
+              <option value="1.0">普通</option>
+              <option value="1.3">壁が薄い</option>
+              <option value="0.8">壁が厚い</option>
+            </select>
+
+            <label><span>⑦</span> 1号艇のイン信頼度</label>
+            <select id="in-race">
+              <option value="1.0">普通</option>
+              <option value="1.2">不安定</option>
+            </select>
+          </div>
+
+          <button class="calc-btn" onclick="analyze()">⚡ 精密解析を実行！ ⚡</button>
+
+          <div id="result-area" class="result-box">
+            <div style="font-size:13px; color:#aaa;">推定5枠1着確率</div>
+            <div class="percent-display"><span id="prob-display">0</span>%</div>
+            <div class="eye-box">💰 推奨: <span id="recommend-eye">5 - 124 - 1246</span></div>
+          </div>
+          
+          <a href="date5.html#nav" style="display: block; text-align: center; margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.1); color: #00d2ff; border: 1px solid #00d2ff; border-radius: 50px; text-decoration: none; font-size: 14px; font-weight: bold;">📚 24場・攻略ノートを見るッ！⚡</a>
+
+          <footer>&copy; 2026 BOAT STRIKE Project / 5-MASTER</footer>
+        </div>
     </div>
-    <div class="advice-bubble" id="kiina-talk">
-      💬⚡「データを入力してねッ！アタシが精密解析で一撃の可能性を暴いてあげるよ！」
+
+    <div class="footer-fixed-nav">
+        <a href="ichika.html" class="nav-item nav-ichika"><span class="nav-icon">🌸</span><span class="nav-label">一果ツール</span></a>
+        <a href="hatsune.html" class="nav-item nav-hatsune"><span class="nav-icon">🍀</span><span class="nav-label">初音ツール</span></a>
+        <a href="index.html" class="nav-item nav-home"><span class="nav-icon">🏠</span><span class="nav-label">HOME</span></a>
     </div>
-  </div>
-
-  <div class="input-group">
-    <label><span>①</span> 開催場を選択</label>
-    <select id="stadium">
-      <option value="">会場を選択...</option>
-      <optgroup label="関東">
-        <option value="0.061">01# 桐生 (6.1%)</option>
-        <option value="0.075">02# 戸田 (7.5%) ★激高</option>
-        <option value="0.066">03# 江戸川 (6.6%)</option>
-        <option value="0.068">04# 平和島 (6.8%)</option>
-        <option value="0.063">05# 多摩川 (6.3%)</option>
-      </optgroup>
-      <optgroup label="東海/近畿">
-        <option value="0.064">06# 浜名湖 (6.4%)</option>
-        <option value="0.053">07# 蒲郡 (5.3%)</option>
-        <option value="0.056">08# 常滑 (5.6%)</option>
-        <option value="0.064">09# 津 (6.4%)</option>
-        <option value="0.052">10# 三国 (5.2%)</option>
-        <option value="0.066">11# びわこ (6.6%)</option>
-        <option value="0.052">12# 住之江 (5.2%)</option>
-        <option value="0.054">13# 尼崎 (5.4%)</option>
-      </optgroup>
-      <optgroup label="中四国/九州">
-        <option value="0.069">14# 鳴門 (6.9%)</option>
-        <option value="0.054">15# 丸亀 (5.4%)</option>
-        <option value="0.054">16# 児島 (5.4%)</option>
-        <option value="0.062">17# 宮島 (6.2%)</option>
-        <option value="0.034">18# 徳山 (3.4%)</option>
-        <option value="0.048">19# 下関 (4.8%)</option>
-        <option value="0.058">20# 若松 (5.8%)</option>
-        <option value="0.042">21# 芦屋 (4.2%)</option>
-        <option value="0.038">22# 福岡 (3.8%)</option>
-        <option value="0.050">23# 唐津 (5.0%)</option>
-        <option value="0.030">24# 大村 (3.0%)</option>
-      </optgroup>
-    </select>
-
-    <label><span>②</span> 風のコンディション</label>
-    <select id="wind">
-      <option value="1.0">無風〜弱風</option>
-      <option value="1.3">向かい風 4m↑ (ダッシュ有利⚡)</option>
-      <option value="1.1">追い風 3m↑ (もつれ期待)</option>
-      <option value="0.9">強風 6m↑ (差し不発リスク)</option>
-    </select>
-
-    <label><span>③</span> 5号艇の機力 (直線・伸び)</label>
-    <select id="motor">
-      <option value="1.0">普通</option>
-      <option value="1.5">上位 (展示タイム良好)</option>
-      <option value="2.2">超抜 (スリット後伸びる🔥)</option>
-    </select>
-
-    <label><span>④</span> 周回展示 (回り足・押し)</label>
-    <select id="turn">
-      <option value="1.0">普通</option>
-      <option value="1.4">強力 (出口の押し◎)</option>
-    </select>
-
-    <label><span>⑤</span> 4カド(4号艇)の攻め期待度</label>
-    <select id="kado">
-      <option value="1.0">期待薄</option>
-      <option value="1.8">期待大 (まくり展開狙い)</option>
-    </select>
-
-    <label><span>⑥</span> 2号艇の「壁」信頼度</label>
-    <select id="wall">
-      <option value="1.0">普通</option>
-      <option value="1.3">壁が薄い (凹む可能性アリ)</option>
-      <option value="0.8">壁が厚い (A1級・安定感)</option>
-    </select>
-
-    <label><span>⑦</span> 1号艇のイン信頼度</label>
-    <select id="in-race">
-      <option value="1.0">普通</option>
-      <option value="1.2">不安定 (逃げ失敗率高い)</option>
-    </select>
-  </div>
-
-  <button class="calc-btn" onclick="analyze()">⚡ 精密解析を実行！ ⚡</button>
-
-  <div id="result-area" class="result-box">
-    <div style="font-size:13px; color:#aaa;">推定5枠1着確率</div>
-    <div class="percent-display"><span id="prob-display">0</span>%</div>
-    <div class="eye-box">💰 推奨: <span id="recommend-eye">5 - 124 - 1246</span></div>
-  </div>
-<a href="date5.html#nav" style="
-  display: block;
-  text-align: center;
-  margin-top: 20px;
-  padding: 15px;
-  background: rgba(255, 255, 255, 0.1);
-  color: #00d2ff;
-  border: 1px solid #00d2ff;
-  border-radius: 50px;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: bold;
-">📚 24場・攻略ノートを見るッ！⚡</a>
-
-  <footer>&copy; 2026 BOAT STRIKE Project / 5-MASTER</footer>
 </div>
 
 <script>
 function checkPass() {
     const pass = document.getElementById('pass-input').value;
-    const secret = "1130"; // ここに好きな合言葉を設定してください
-
-    if (pass === secret) {
-        // 合言葉が合っていたらロックを解除
+    if (pass === "1130") {
         document.getElementById('lock-screen').style.display = 'none';
         document.getElementById('main-content').style.display = 'block';
-        
-        // 解除成功のメッセージ（任意）
-        alert("認証成功！キイナの精密解析を許可するよッ⚡");
     } else {
-        // 間違っていたらエラー表示
         document.getElementById('error-msg').style.display = 'block';
-        document.getElementById('pass-input').value = ""; // 入力をリセット
+        document.getElementById('pass-input').value = "";
     }
 }
 
-  
 function analyze() {
     const base = parseFloat(document.getElementById('stadium').value);
     if(!base) { alert("会場を選んでねッ！"); return; }
@@ -454,15 +370,12 @@ function analyze() {
     document.getElementById('result-area').style.display = 'block';
     document.getElementById('prob-display').innerText = prob;
 
-    let msg = "";
-    if (prob > 25) msg = "キタキタ！アタシの稲妻が突き刺さる最高の展開だよッ⚡ 迷わず狙っちゃいな！";
-    else if (prob > 15) msg = "いい条件だね！4カドが連れて行ってくれれば一気に突き抜けるよ！";
-    else if (prob > 8) msg = "チャンスはあるけど展開待ち。2号艇が凹めばアタシの出番だねッ。";
-    else msg = "今は静観。無理に狙うレースじゃないかも。次を待とう！";
+    let msg = prob > 25 ? "キタキタ！稲妻が突き刺さる最高の展開だよッ⚡" : 
+              prob > 15 ? "いい条件だね！4カドが連れて行ってくれればッ！" : 
+              prob > 8 ? "チャンスはあるけど展開待ちだねッ。" : "今は静観。次を待とう！";
 
     document.getElementById('kiina-talk').innerText = "💬「" + msg + "」";
-
-    window.scrollTo({ top: document.getElementById('result-area').offsetTop, behavior: 'smooth' });
+    window.scrollTo({ top: document.getElementById('result-area').offsetTop - 100, behavior: 'smooth' });
 }
 
 function updateStatus() {
@@ -470,50 +383,19 @@ function updateStatus() {
     const h = now.getHours();
     const m = String(now.getMinutes()).padStart(2, '0');
     const s = String(now.getSeconds()).padStart(2, '0');
-    
-    // 時計更新
     document.getElementById('k-clock').innerText = `${String(h).padStart(2, '0')}:${m}:${s}`;
     
-    // メッセージ判定
-    let msg = "";
-    if (h >= 8 && h < 11) {
-        msg = "⚡ モーニング開催中ッ！早い時間の5アタマは、展示の伸びを要チェックだよ！";
-    } else if (h >= 11 && h < 15) {
-        msg = "⚡ デイレース真っ最中ッ！アタシの解析で中穴〜万舟をズバッと暴いてやるよ！";
-    } else if (h >= 15 && h < 21) {
-        msg = "⚡ ナイター開催中ッ！夜の5枠突き抜けは破壊力抜群。一撃狙っていきなッ！";
-    } else {
-        msg = "⚡ 現在ミッドナイト/非開催中... 明日のレースに向けて、今のうちに軍資金を貯めとこッ！";
-    }
+    let msg = (h >= 8 && h < 11) ? "⚡ モーニング開催中ッ！早い時間の5アタマは展示の伸びをチェック！" :
+              (h >= 11 && h < 15) ? "⚡ デイレース真っ最中ッ！解析で中穴〜万舟を暴いてやるよ！" :
+              (h >= 15 && h < 21) ? "⚡ ナイター開催中ッ！夜の5枠突き抜けは破壊力抜群だッ！" :
+              "⚡ 現在非開催中... 明日に向けて、今のうちに軍資金を貯めとこッ！";
     
-    // メッセージが現在と違う場合のみ更新（アニメーションリセット防止）
     const ticker = document.getElementById('k-ticker-msg');
-    if (ticker.innerText !== msg) {
-        ticker.innerText = msg;
-    }
+    if (ticker.innerText !== msg) ticker.innerText = msg;
 }
-
-// 1秒ごとに更新
 setInterval(updateStatus, 1000);
 updateStatus();
-  
 </script>
-<div class="footer-fixed-nav">
-    <a href="ichika.html" class="nav-item nav-ichika">
-        <span class="nav-icon">🌸</span>
-        <span class="nav-label">一果ツール</span>
-    </a>
-
-    <a href="hastune.html" class="nav-item nav-hatsune">
-        <span class="nav-icon">🍀</span>
-        <span class="nav-label">初音ツール</span>
-    </a>
-
-    <a href="index.html" class="nav-item nav-home">
-        <span class="nav-icon">🏠</span>
-        <span class="nav-label">HOME</span>
-    </a>
-</div>
 
 </body>
 </html>
