@@ -3,140 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BOAT STRIKE ｜ 三姉妹の競艇攻略ポータル</title>
-    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&display=swap" rel="stylesheet">
+    <title>BOAT STRIKE ｜ 三姉妹の競艇解析ポータル</title>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --ichika-main: #ff8fa3;
-            --hatsune-main: #38a169;
-            --kiina-main: #0052d4;
-            --bg-color: #f8fafc;
+            --ichika: #ff4d6d;
+            --hatsune: #00c853;
+            --kiina: #2962ff;
+            --dark: #0f172a;
         }
 
         body {
             font-family: 'M PLUS Rounded 1c', sans-serif;
-            background-color: var(--bg-color);
-            margin: 0; padding: 0; color: #334155;
+            margin: 0; padding: 0;
+            background: #0f172a; /* 深みのある紺色背景 */
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(255, 77, 109, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(41, 98, 255, 0.15) 0%, transparent 40%);
+            color: #f8fafc;
             display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh;
         }
 
-        .container { width: 100%; max-width: 480px; padding: 20px; box-sizing: border-box; }
+        .container { width: 100%; max-width: 440px; padding: 20px; box-sizing: border-box; }
 
-        /* --- ヘッダー --- */
+        /* --- ヘッダー（近未来感） --- */
         header {
-            text-align: center; padding: 30px 0 20px;
-            background: linear-gradient(135deg, #fff 0%, #f1f5f9 100%);
-            width: 100%; border-radius: 0 0 40px 40px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            text-align: center; padding: 40px 0 30px;
+            width: 100%; position: relative;
         }
-        .logo-main { font-size: 1.8rem; font-weight: 800; color: #1e293b; letter-spacing: -1px; }
-        .logo-main span { color: var(--ichika-main); }
-        .sub-copy { font-size: 0.75rem; color: #64748b; margin-top: 5px; font-weight: 700; }
+        .logo-main {
+            font-size: 2.2rem; font-weight: 900; letter-spacing: -2px;
+            text-transform: uppercase; margin: 0;
+            background: linear-gradient(to right, #ff4d6d, #2962ff);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+        }
+        .sub-copy { font-size: 0.8rem; color: #94a3b8; margin-top: 8px; font-weight: 800; }
 
-        /* --- 三姉妹セレクト（メインメニュー） --- */
-        .section-title { font-size: 1rem; font-weight: 800; margin: 30px 0 15px; padding-left: 10px; border-left: 5px solid #1e293b; }
-
+        /* --- ツールカード（浮遊感・リッチ） --- */
         .tool-card {
-            background: white; border-radius: 25px; padding: 20px; margin-bottom: 15px;
-            display: flex; align-items: center; text-decoration: none; color: inherit;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.03); transition: 0.3s;
-            border: 2px solid transparent; position: relative; overflow: hidden;
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 30px; padding: 15px 20px; margin-bottom: 25px;
+            display: flex; align-items: center; text-decoration: none;
+            position: relative; border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
-        .tool-card:active { transform: scale(0.97); }
+        .tool-card:active { transform: translateY(-5px) scale(1.02); }
 
-        .chara-icon { width: 85px; height: 85px; border-radius: 50%; margin-right: 15px; object-fit: cover; background: #f8fafc; }
+        /* キャライラストをはみ出させる */
+        .chara-wrap {
+            width: 100px; height: 100px; margin-right: 15px;
+            position: relative; flex-shrink: 0;
+        }
+        .chara-icon {
+            width: 120%; height: 120%; object-fit: contain;
+            position: absolute; bottom: 0; left: -10%;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));
+        }
         
-        .tool-info { flex: 1; }
-        .tool-name { font-size: 1.1rem; font-weight: 800; margin-bottom: 4px; display: block; }
-        .tool-desc { font-size: 0.7rem; color: #64748b; line-height: 1.4; }
+        .tool-info { flex: 1; z-index: 1; }
+        .tool-name { font-size: 1.2rem; font-weight: 900; margin-bottom: 4px; display: block; }
+        .tool-desc { font-size: 0.75rem; color: #cbd5e1; line-height: 1.5; }
 
-        /* キャラ別着色 */
-        .card-ichika { border-color: #ffe4e8; }
-        .card-ichika .tool-name { color: var(--ichika-main); }
-        .card-hatsune { border-color: #dcfce7; }
-        .card-hatsune .tool-name { color: var(--hatsune-main); }
-        .card-kiina { border-color: #dbeafe; }
-        .card-kiina .tool-name { color: var(--kiina-main); }
+        /* キャラ別ネオン発光 */
+        .card-ichika { box-shadow: 0 0 20px rgba(255, 77, 109, 0.2); }
+        .card-ichika .tool-name { color: #ff8fa3; }
+        .card-hatsune { box-shadow: 0 0 20px rgba(0, 200, 83, 0.2); }
+        .card-hatsune .tool-name { color: #69f0ae; }
+        .card-kiina { box-shadow: 0 0 20px rgba(41, 98, 255, 0.2); }
+        .card-kiina .tool-name { color: #82b1ff; }
 
-        /* --- 下段サブメニュー（解析ノート・ポイ活） --- */
-        .sub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 40px; }
-        
+        /* --- サブメニュー（グリッド） --- */
+        .sub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px; }
         .sub-card {
-            background: white; padding: 15px; border-radius: 20px; text-decoration: none;
-            text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid #e2e8f0;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            padding: 18px 10px; border-radius: 20px; text-decoration: none;
+            text-align: center; transition: 0.3s;
         }
-        .sub-icon { font-size: 1.5rem; display: block; margin-bottom: 8px; }
-        .sub-label { font-size: 0.75rem; font-weight: 800; color: #475569; }
+        .sub-card:active { background: rgba(255,255,255,0.15); }
+        .sub-icon { font-size: 1.6rem; display: block; margin-bottom: 8px; }
+        .sub-label { font-size: 0.75rem; font-weight: 800; color: #f1f5f9; }
 
-        /* --- インフォメーション --- */
-        .info-banner {
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-            color: white; border-radius: 20px; padding: 20px; text-align: center;
-            text-decoration: none; display: block; margin-bottom: 20px;
+        /* 特大ポイ活ボタン */
+        .money-btn {
+            grid-column: span 2;
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+            border: none; margin-top: 10px;
         }
+        .money-btn .sub-label { color: #78350f; font-size: 0.9rem; }
 
-        footer { font-size: 0.65rem; color: #94a3b8; text-align: center; margin-bottom: 30px; }
+        footer { text-align: center; padding: 40px 0; font-size: 0.7rem; color: #475569; }
+
+        .section-tag {
+            font-size: 0.7rem; color: white; background: rgba(255,255,255,0.1);
+            padding: 4px 12px; border-radius: 50px; display: inline-block; margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="logo-main">BOAT <span>STRIKE</span></div>
-    <div class="sub-copy">三姉妹の「勝てる」競艇解析ポータル</div>
-</header>
-
 <div class="container">
-    
-    <div class="section-title">MAIN TOOLS</div>
+    <header>
+        <div class="logo-main">BOAT STRIKE</div>
+        <div class="sub-copy">三姉妹の最強解析ツール ｜ 2026年最新版</div>
+    </header>
+
+    <span class="section-tag">MAIN ANALYSIS</span>
 
     <a href="ichika.html" class="tool-card card-ichika">
-        <img src="ichika_sd.png" class="chara-icon">
+        <div class="chara-wrap">
+            <img src="ichika_sd.png" class="chara-icon">
+        </div>
         <div class="tool-info">
             <span class="tool-name">1号艇 鬼絞り判定 🌸</span>
-            <span class="tool-desc">「ここ、逃げますぉ！」本命レースを統計データで精密に絞り込みます。</span>
+            <span class="tool-desc">的中重視。1号艇の「逃げ信頼度」を極限まで解析。</span>
         </div>
     </a>
 
     <a href="hatsune.html" class="tool-card card-hatsune">
-        <img src="hatsune_sd.png" class="chara-icon">
+        <div class="chara-wrap">
+            <img src="hatsune_sd.png" class="chara-icon">
+        </div>
         <div class="tool-info">
             <span class="tool-name">女子戦 ひらめき鑑定 🍀</span>
-            <span class="tool-desc">「波乱の予感ですっ！」女子戦特有の荒れるレースを鋭くひらめきます。</span>
+            <span class="tool-desc">中穴狙い。女子戦特有の「おてんば波乱」を予測。</span>
         </div>
     </a>
 
     <a href="kiina5.html" class="tool-card card-kiina">
-        <img src="kiina_sd.png" class="chara-icon">
+        <div class="chara-wrap">
+            <img src="kiina_sd.png" class="chara-icon">
+        </div>
         <div class="tool-info">
             <span class="tool-name">5 Master 精密解析 ⚡</span>
-            <span class="tool-desc">「万舟、獲らせてやるよ。」5枠の突き抜けをAI級の精度で弾き出します。</span>
+            <span class="tool-desc">万舟特化。5枠の「一撃突き抜け」を高精度で検出。</span>
         </div>
     </a>
 
-    <div class="section-title">DATABASE & SUPPORT</div>
+    <span class="section-tag">DATABASE & SUPPORT</span>
+    
     <div class="sub-grid">
         <a href="date1.html" class="sub-card">
-            <span class="sub-icon">📗</span>
+            <span class="sub-icon">📘</span>
             <span class="sub-label">イン逃げ攻略ノート</span>
         </a>
         <a href="dateg.html" class="sub-card">
-            <span class="sub-icon">🍀</span>
+            <span class="sub-icon">📗</span>
             <span class="sub-label">女子戦解析ノート</span>
         </a>
         <a href="date5.html" class="sub-card">
             <span class="sub-icon">⚡</span>
             <span class="sub-label">5 Masterノート</span>
         </a>
-        <a href="poikatsu.html" class="sub-card" style="background: #fffbeb; border-color: #fef3c7;">
-            <span class="sub-icon">💰</span>
-            <span class="sub-label" style="color: #92400e;">軍資金を稼ぐ</span>
+        <a href="https://line.me/R/ti/p/あなたのLINE" class="sub-card">
+            <span class="sub-icon">💬</span>
+            <span class="sub-label">公式LINE限定特典</span>
+        </a>
+        <a href="poikatsu.html" class="sub-card money-btn">
+            <span class="sub-label">💰 <b>三姉妹の軍資金チャージ所へ</b> 💰</span>
         </a>
     </div>
-
-    <a href="https://line.me/R/ti/p/あなたのLINE" class="info-banner">
-        <div style="font-size: 0.9rem; font-weight: 800;">公式LINE限定</div>
-        <div style="font-size: 0.7rem; opacity: 0.9;">合言葉やゲリラ予想を配信中！</div>
-    </a>
 
     <footer>
         &copy; 2026 BOAT STRIKE Project<br>
