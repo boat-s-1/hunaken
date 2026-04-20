@@ -2,49 +2,56 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>BOAT STRIKE ｜ TACTICAL HUB</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=M+PLUS+Rounded+1c:wght@700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --ichika: #ff4d6d; --hatsune: #00c853; --kiina: #2962ff; --accent: #00f2ff;
+            --dark-bg: #020617;
         }
+        
         body {
-            margin: 0; background: #020617; color: #e2e8f0;
+            margin: 0; background: var(--dark-bg); color: #e2e8f0;
             font-family: 'M PLUS Rounded 1c', sans-serif;
             display: flex; flex-direction: column; align-items: center;
             overflow-x: hidden;
         }
 
-        /* --- サイバー背景 --- */
+        /* --- サイバー背景演出 --- */
         .cyber-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
-            z-index: -1;
+            z-index: -2;
         }
         .cyber-grid {
             position: absolute; width: 100%; height: 100%;
             background-image: linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px),
                               linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
             background-size: 40px 40px; transform: perspective(500px) rotateX(60deg);
-            transform-origin: top; bottom: 0;
+            transform-origin: top; bottom: 0; opacity: 0.4;
+        }
+        .scanline {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            z-index: 9999; background-size: 100% 4px, 3px 100%; pointer-events: none;
         }
 
-        .container { width: 100%; max-width: 440px; padding-bottom: 100px; }
-
-        /* --- ヘッダー（ステータス表示風） --- */
+        /* --- 上部固定ユニット --- */
+        .fixed-header-unit {
+            position: sticky; top: 0; z-index: 1000; width: 100%;
+        }
         header {
-            padding: 20px; border-bottom: 1px solid rgba(0, 242, 255, 0.2);
+            padding: 15px 20px; border-bottom: 1px solid rgba(0, 242, 255, 0.3);
             display: flex; justify-content: space-between; align-items: center;
-            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px);
+            background: rgba(2, 6, 23, 0.9); backdrop-filter: blur(15px);
         }
         .logo { font-family: 'Orbitron', sans-serif; font-size: 1.2rem; font-weight: 900; color: white; letter-spacing: 2px; }
         .system-time { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; color: var(--accent); }
 
-        /* --- ライブテロップ --- */
         .ticker {
             background: rgba(0, 242, 255, 0.1); border-bottom: 1px solid rgba(0, 242, 255, 0.2);
-            padding: 5px 0; overflow: hidden; white-space: nowrap;
+            padding: 6px 0; overflow: hidden; white-space: nowrap; backdrop-filter: blur(10px);
         }
         .ticker-text {
             display: inline-block; font-size: 0.65rem; font-weight: 800; color: var(--accent);
@@ -52,66 +59,64 @@
         }
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* --- ニュース・サマリーエリア --- */
-        .news-section { padding: 15px; margin-top: 10px; }
-        .section-label { font-family: 'Orbitron', sans-serif; font-size: 0.6rem; color: #64748b; letter-spacing: 2px; margin-bottom: 10px; display: block; }
+        /* --- メインコンテンツ --- */
+        .container {
+            width: 100%; max-width: 440px;
+            padding-top: 10px; padding-bottom: 140px; /* 下部ボタン被り防止 */
+            box-sizing: border-box;
+        }
+        .section-label { font-family: 'Orbitron', sans-serif; font-size: 0.6rem; color: #64748b; letter-spacing: 2px; margin: 20px 15px 10px; display: block; }
         
-        /* --- 3姉妹タクティカルパネル --- */
+        /* ツールパネル */
         .panel-grid { display: grid; gap: 15px; padding: 0 15px; }
         .chara-panel {
             background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px; padding: 15px; display: flex; align-items: center;
+            border-radius: 25px; padding: 15px; display: flex; align-items: center;
             text-decoration: none; color: inherit; position: relative; overflow: hidden;
-            transition: 0.3s;
+            transition: 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
-        .chara-panel:active { transform: scale(0.98); background: rgba(255,255,255,0.08); }
-        .chara-panel::before {
-            content: ""; position: absolute; left: 0; top: 0; width: 4px; height: 100%;
-        }
-
-        /* 個別カラー */
+        .chara-panel:active { transform: scale(0.96); background: rgba(255,255,255,0.1); }
+        .chara-panel::before { content: ""; position: absolute; left: 0; top: 0; width: 5px; height: 100%; }
         .p-ichika::before { background: var(--ichika); box-shadow: 0 0 15px var(--ichika); }
         .p-hatsune::before { background: var(--hatsune); box-shadow: 0 0 15px var(--hatsune); }
         .p-kiina::before { background: var(--kiina); box-shadow: 0 0 15px var(--kiina); }
 
-        .chara-mini-wrap { width: 70px; height: 70px; margin-right: 15px; position: relative; }
-        .chara-mini-wrap img { width: 100%; height: 100%; object-fit: contain; }
-        
+        .chara-mini-wrap { width: 80px; height: 80px; margin-right: 15px; position: relative; flex-shrink: 0; }
+        .chara-mini-wrap img { width: 120%; height: 120%; object-fit: contain; position: absolute; bottom: -5%; left: -10%; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)); }
         .panel-info { flex: 1; }
-        .panel-title { font-size: 0.95rem; font-weight: 900; margin: 0; letter-spacing: 0.5px; }
-        .panel-status { font-size: 0.6rem; margin-top: 3px; display: block; opacity: 0.6; }
-        .panel-desc { font-size: 0.7rem; color: #94a3b8; margin-top: 5px; line-height: 1.4; }
+        .panel-title { font-size: 1.1rem; font-weight: 900; color: #fff; margin: 0; }
+        .panel-desc { font-size: 0.75rem; color: #94a3b8; margin-top: 5px; line-height: 1.5; }
 
-        /* --- データナビゲーション --- */
-        .data-nav {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 20px 15px;
-        }
+        /* サブナビ */
+        .data-nav { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 10px 15px; }
         .nav-item {
-            background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255,255,255,0.05);
-            padding: 12px 5px; border-radius: 12px; text-align: center; text-decoration: none; color: white;
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255,255,255,0.1);
+            padding: 15px 5px; border-radius: 18px; text-align: center; text-decoration: none; color: #f1f5f9;
         }
-        .nav-icon { font-size: 1.2rem; display: block; margin-bottom: 5px; }
-        .nav-label { font-size: 0.6rem; font-weight: bold; }
+        .nav-label { font-size: 0.65rem; font-weight: bold; display: block; margin-top: 5px; }
 
-        /* --- 軍資金フッターボタン --- */
-        .footer-action {
-            position: fixed; bottom: 0; left: 0; width: 100%; padding: 15px;
-            background: linear-gradient(to top, #020617 80%, transparent);
-            display: flex; justify-content: center; z-index: 100;
+        /* --- 下部3点固定ナビゲーション --- */
+        .footer-fixed-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            display: grid; grid-template-columns: 1fr 1fr 1.2fr;
+            gap: 8px; padding: 12px 10px 25px; /* iPhone下部バー回避 */
+            background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(15px);
+            border-top: 1px solid rgba(0, 242, 255, 0.2);
+            z-index: 2000; box-sizing: border-box;
         }
-        .money-btn {
-            width: 100%; max-width: 400px; background: linear-gradient(90deg, #f59e0b, #fbbf24);
-            border: none; padding: 15px; border-radius: 50px; text-decoration: none;
-            text-align: center; color: #78350f; font-weight: 900; font-size: 1rem;
-            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+        .nav-btn {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-decoration: none; border-radius: 15px; padding: 10px 5px;
+            font-weight: 800; transition: 0.3s; border: 1px solid rgba(255, 255, 255, 0.1);
         }
+        .nav-btn:active { transform: scale(0.95); }
+        .btn-line { background: rgba(6, 199, 85, 0.1); color: #06c755; border-color: rgba(6, 199, 85, 0.3); }
+        .btn-note { background: rgba(255, 255, 255, 0.05); color: #fff; border-color: rgba(255, 255, 255, 0.2); }
+        .btn-money { background: linear-gradient(135deg, #f59e0b, #fbbf24); color: #78350f; border: none; box-shadow: 0 0 15px rgba(245, 158, 11, 0.3); }
+        .nav-btn span.icon { font-size: 1.3rem; margin-bottom: 2px; }
+        .nav-btn span.label { font-size: 0.65rem; white-space: nowrap; }
 
-        /* 装飾的な走査線アニメーション */
-        .scanline {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 999; background-size: 100% 4px, 3px 100%; pointer-events: none;
-        }
+        footer { text-align: center; padding: 40px 0; font-size: 0.65rem; color: #475569; }
     </style>
 </head>
 <body>
@@ -119,86 +124,77 @@
 <div class="cyber-bg"><div class="cyber-grid"></div></div>
 <div class="scanline"></div>
 
-<header>
-    <div class="logo">BOAT STRIKE</div>
-    <div class="system-time" id="clock">00:00:00</div>
-</header>
-
-<div class="ticker">
-    <div class="ticker-text">
-        [SYSTEM] 本日の注目レース: 多摩川12R 女子優勝戦ひらめき度85% / [WARNING] 江戸川は強風につき波乱警報発令中 / [MISSION] 軍資金チャージ完了者: 3,421名突破
+<div class="fixed-header-unit">
+    <header>
+        <div class="logo">BOAT STRIKE</div>
+        <div class="system-time" id="clock">00:00:00</div>
+    </header>
+    <div class="ticker">
+        <div class="ticker-text">
+            [SYSTEM] 24場リアルタイムデータ同期完了... [UPDATE] 予想noteに最新の激熱レースを投稿しました / [LIVE] 軍資金チャージミッション開催中！自腹ゼロで万舟を狙え / [STATUS] 全解析ユニット稼働中...
+        </div>
     </div>
 </div>
 
 <div class="container">
     
-    <div class="news-section">
-        <span class="section-label">ANALYSIS UNIT SELECT</span>
-        <div class="panel-grid">
-            
-            <a href="ichika.html" class="chara-panel p-ichika">
-                <div class="chara-mini-wrap"><img src="ichika_sd.png"></div>
-                <div class="panel-info">
-                    <span class="panel-title">1号艇 鬼絞り判定 <span style="color:var(--ichika); font-size:0.6rem;">[ACTIVE]</span></span>
-                    <span class="panel-status">IN-SIDE PRECISION ANALYZER</span>
-                    <p class="panel-desc">統計に基づき「逃げ信頼度」を極限まで算出。本命党のための精密ツール。</p>
-                </div>
-            </a>
-
-            <a href="hatsune.html" class="chara-panel p-hatsune">
-                <div class="chara-mini-wrap"><img src="hatsune_sd.png"></div>
-                <div class="panel-info">
-                    <span class="panel-title">女子戦 ひらめき鑑定 <span style="color:var(--hatsune); font-size:0.6rem;">[READY]</span></span>
-                    <span class="panel-status">GIRLS RACE SPECIALIST</span>
-                    <p class="panel-desc">女子戦特有の波乱パターンを網羅。穴党必携の期待値鑑定デバイス。</p>
-                </div>
-            </a>
-
-            <a href="kiina5.html" class="chara-panel p-kiina">
-                <div class="chara-mini-wrap"><img src="kiina_sd.png"></div>
-                <div class="panel-info">
-                    <span class="panel-title">5 Master 精密解析 <span style="color:var(--kiina); font-size:0.6rem;">[STANDBY]</span></span>
-                    <span class="panel-status">OUT-SIDE ATTACK DETECTOR</span>
-                    <p class="panel-desc">5枠の突き抜け展開をAI予測。万舟券を射止めるための一撃特化解析。</p>
-                </div>
-            </a>
-
-        </div>
-    </div>
-
-    <div class="news-section">
-        <span class="section-label">DATABASE ARCHIVE</span>
-        <div class="data-nav">
-            <a href="date1.html" class="nav-item">
-                <span class="nav-icon">📘</span>
-                <span class="nav-label">イン逃げノート</span>
-            </a>
-            <a href="dateg.html" class="nav-item">
-                <span class="nav-icon">📗</span>
-                <span class="nav-label">女子戦ノート</span>
-            </a>
-            <a href="date5.html" class="nav-item">
-                <span class="nav-icon">⚡</span>
-                <span class="nav-label">5 Masterノート</span>
-            </a>
-        </div>
-    </div>
-
-    <div class="news-section" style="padding-top: 0;">
-        <span class="section-label">COMMUNICATION</span>
-        <a href="https://line.me/R/ti/p/あなたのLINE" style="display:flex; align-items:center; background:rgba(0,242,255,0.05); border:1px solid rgba(0,242,255,0.2); padding:15px; border-radius:15px; text-decoration:none; color:white;">
-            <span style="font-size:1.5rem; margin-right:15px;">💬</span>
-            <div style="font-size:0.75rem;">
-                <b>公式LINEを同期する</b><br>
-                <span style="opacity:0.6;">合言葉の確認、ゲリラ予想の受信はこちらから。</span>
+    <span class="section-label">TACTICAL ANALYSIS UNITS</span>
+    <div class="panel-grid">
+        <a href="ichika.html" class="chara-panel p-ichika">
+            <div class="chara-mini-wrap"><img src="ichika_sd.png"></div>
+            <div class="panel-info">
+                <span class="panel-title">1号艇 鬼絞り判定</span>
+                <p class="panel-desc">「ここ、逃げますぉ！」本命レースを統計データで精密に絞り込み。的中重視の司令塔。</p>
+            </div>
+        </a>
+        <a href="hatsune.html" class="chara-panel p-hatsune">
+            <div class="chara-mini-wrap"><img src="hatsune_sd.png"></div>
+            <div class="panel-info">
+                <span class="panel-title">女子戦 ひらめき鑑定</span>
+                <p class="panel-desc">「波乱の予感っ♪」女子戦特有の荒れる展開を鑑定。中穴〜大穴を狙うひらめきユニット。</p>
+            </div>
+        </a>
+        <a href="kiina5.html" class="chara-panel p-kiina">
+            <div class="chara-mini-wrap"><img src="kiina_sd.png"></div>
+            <div class="panel-info">
+                <span class="panel-title">5 Master 精密解析</span>
+                <p class="panel-desc">「万舟、獲らせてやるよ。」5枠の突き抜けをAI予測。一撃必殺の破壊兵器ツール。</p>
             </div>
         </a>
     </div>
 
+    <span class="section-label">DATABASE ARCHIVES</span>
+    <div class="data-nav">
+        <a href="date1.html" class="nav-item">
+            <span style="font-size:1.4rem;">📘</span><span class="nav-label">イン逃げノート</span>
+        </a>
+        <a href="dateg.html" class="nav-item">
+            <span style="font-size:1.4rem;">📗</span><span class="nav-label">女子戦ノート</span>
+        </a>
+        <a href="date5.html" class="nav-item">
+            <span style="font-size:1.4rem;">⚡</span><span class="nav-label">5Masterノート</span>
+        </a>
+    </div>
+
+    <footer>
+        &copy; 2026 BOAT STRIKE Project<br>
+        ギャンブルは20歳になってから。無理のない範囲で楽しみましょう。
+    </footer>
 </div>
 
-<div class="footer-action">
-    <a href="poikatsu.html" class="money-btn">💰 <b>軍資金ブーストを開始する</b> 💰</a>
+<div class="footer-fixed-nav">
+    <a href="https://line.me/R/ti/p/あなたのLINE" class="nav-btn btn-line">
+        <span class="icon">💬</span>
+        <span class="label">公式LINE</span>
+    </a>
+    <a href="あなたのnoteURL" class="nav-btn btn-note">
+        <span class="icon">📝</span>
+        <span class="label">予想note</span>
+    </a>
+    <a href="poikatsu.html" class="nav-btn btn-money">
+        <span class="icon">💰</span>
+        <span class="label">軍資金チャージ</span>
+    </a>
 </div>
 
 <script>
