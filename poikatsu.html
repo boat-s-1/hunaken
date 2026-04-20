@@ -8,17 +8,17 @@
     <style>
         :root {
             --ichika: #ff4d6d; --hatsune: #00c853; --kiina: #2962ff; --accent: #00f2ff;
+            --dark-bg: #020617;
         }
         
-        /* --- ベース設定 --- */
         body {
-            margin: 0; background: #020617; color: #e2e8f0;
+            margin: 0; background: var(--dark-bg); color: #e2e8f0;
             font-family: 'M PLUS Rounded 1c', sans-serif;
             display: flex; flex-direction: column; align-items: center;
             overflow-x: hidden;
         }
 
-        /* --- サイバー背景 --- */
+        /* --- サイバー背景演出 --- */
         .cyber-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
@@ -29,14 +29,18 @@
             background-image: linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px),
                               linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
             background-size: 40px 40px; transform: perspective(500px) rotateX(60deg);
-            transform-origin: top; bottom: 0; opacity: 0.5;
+            transform-origin: top; bottom: 0; opacity: 0.4;
+        }
+        .scanline {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            z-index: 9999; background-size: 100% 4px, 3px 100%; pointer-events: none;
         }
 
-        /* --- 【最重要】上下固定ユニット --- */
+        /* --- 上部固定ユニット --- */
         .fixed-header-unit {
             position: sticky; top: 0; z-index: 1000; width: 100%;
         }
-
         header {
             padding: 15px 20px; border-bottom: 1px solid rgba(0, 242, 255, 0.3);
             display: flex; justify-content: space-between; align-items: center;
@@ -46,7 +50,7 @@
         .system-time { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; color: var(--accent); }
 
         .ticker {
-            background: rgba(0, 242, 255, 0.15); border-bottom: 1px solid rgba(0, 242, 255, 0.2);
+            background: rgba(0, 242, 255, 0.1); border-bottom: 1px solid rgba(0, 242, 255, 0.2);
             padding: 6px 0; overflow: hidden; white-space: nowrap; backdrop-filter: blur(10px);
         }
         .ticker-text {
@@ -55,15 +59,15 @@
         }
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* --- メインコンテンツ（スクロールエリア） --- */
+        /* --- メインコンテンツ --- */
         .container {
             width: 100%; max-width: 440px;
-            padding-top: 10px; padding-bottom: 130px; /* 上下の被り防止 */
+            padding-top: 10px; padding-bottom: 140px; /* 下部ボタン被り防止 */
             box-sizing: border-box;
         }
-
         .section-label { font-family: 'Orbitron', sans-serif; font-size: 0.6rem; color: #64748b; letter-spacing: 2px; margin: 20px 15px 10px; display: block; }
         
+        /* ツールパネル */
         .panel-grid { display: grid; gap: 15px; padding: 0 15px; }
         .chara-panel {
             background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
@@ -72,7 +76,6 @@
             transition: 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
         .chara-panel:active { transform: scale(0.96); background: rgba(255,255,255,0.1); }
-        
         .chara-panel::before { content: ""; position: absolute; left: 0; top: 0; width: 5px; height: 100%; }
         .p-ichika::before { background: var(--ichika); box-shadow: 0 0 15px var(--ichika); }
         .p-hatsune::before { background: var(--hatsune); box-shadow: 0 0 15px var(--hatsune); }
@@ -80,31 +83,9 @@
 
         .chara-mini-wrap { width: 80px; height: 80px; margin-right: 15px; position: relative; flex-shrink: 0; }
         .chara-mini-wrap img { width: 120%; height: 120%; object-fit: contain; position: absolute; bottom: -5%; left: -10%; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)); }
-        
         .panel-info { flex: 1; }
-        .panel-title { font-size: 1.1rem; font-weight: 900; margin: 0; color: #fff; }
+        .panel-title { font-size: 1.1rem; font-weight: 900; color: #fff; margin: 0; }
         .panel-desc { font-size: 0.75rem; color: #94a3b8; margin-top: 5px; line-height: 1.5; }
-
-        /* --- 下部固定ユニット --- */
-        .footer-action {
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            padding: 15px 20px 30px; /* iPhoneの下部バー回避 */
-            background: linear-gradient(to top, #020617 90%, transparent);
-            display: flex; justify-content: center; z-index: 1000;
-            box-sizing: border-box;
-        }
-        .money-btn {
-            width: 100%; max-width: 400px;
-            background: linear-gradient(90deg, #f59e0b, #fbbf24);
-            border: none; padding: 18px; border-radius: 50px; text-decoration: none;
-            text-align: center; color: #78350f; font-weight: 900; font-size: 1rem;
-            box-shadow: 0 0 30px rgba(245, 158, 11, 0.3);
-            animation: money-glow 2s infinite alternate;
-        }
-        @keyframes money-glow { 
-            0% { box-shadow: 0 0 10px rgba(245, 158, 11, 0.3); } 
-            100% { box-shadow: 0 0 25px rgba(245, 158, 11, 0.6); } 
-        }
 
         /* サブナビ */
         .data-nav { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 10px 15px; }
@@ -114,12 +95,28 @@
         }
         .nav-label { font-size: 0.65rem; font-weight: bold; display: block; margin-top: 5px; }
 
-        /* 装飾 */
-        .scanline {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-            z-index: 9999; background-size: 100% 4px, 3px 100%; pointer-events: none;
+        /* --- 下部3点固定ナビゲーション --- */
+        .footer-fixed-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            display: grid; grid-template-columns: 1fr 1fr 1.2fr;
+            gap: 8px; padding: 12px 10px 25px; /* iPhone下部バー回避 */
+            background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(15px);
+            border-top: 1px solid rgba(0, 242, 255, 0.2);
+            z-index: 2000; box-sizing: border-box;
         }
+        .nav-btn {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-decoration: none; border-radius: 15px; padding: 10px 5px;
+            font-weight: 800; transition: 0.3s; border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .nav-btn:active { transform: scale(0.95); }
+        .btn-line { background: rgba(6, 199, 85, 0.1); color: #06c755; border-color: rgba(6, 199, 85, 0.3); }
+        .btn-note { background: rgba(255, 255, 255, 0.05); color: #fff; border-color: rgba(255, 255, 255, 0.2); }
+        .btn-money { background: linear-gradient(135deg, #f59e0b, #fbbf24); color: #78350f; border: none; box-shadow: 0 0 15px rgba(245, 158, 11, 0.3); }
+        .nav-btn span.icon { font-size: 1.3rem; margin-bottom: 2px; }
+        .nav-btn span.label { font-size: 0.65rem; white-space: nowrap; }
+
+        footer { text-align: center; padding: 40px 0; font-size: 0.65rem; color: #475569; }
     </style>
 </head>
 <body>
@@ -134,7 +131,7 @@
     </header>
     <div class="ticker">
         <div class="ticker-text">
-            [ANALYSIS] 24場データ同期完了... [LIVE] 本日の「一果・鬼絞り」対象レース: 12件検出 / [MISSION] 自腹ゼロ攻略ページを更新しました / [HATSUNE] 女子戦ひらめき鑑定・稼働中...
+            [SYSTEM] 24場リアルタイムデータ同期完了... [UPDATE] 予想noteに最新の激熱レースを投稿しました / [LIVE] 軍資金チャージミッション開催中！自腹ゼロで万舟を狙え / [STATUS] 全解析ユニット稼働中...
         </div>
     </div>
 </div>
@@ -143,34 +140,30 @@
     
     <span class="section-label">TACTICAL ANALYSIS UNITS</span>
     <div class="panel-grid">
-        
         <a href="ichika.html" class="chara-panel p-ichika">
             <div class="chara-mini-wrap"><img src="ichika_sd.png"></div>
             <div class="panel-info">
                 <span class="panel-title">1号艇 鬼絞り判定</span>
-                <p class="panel-desc">的中重視。1号艇の逃げ信頼度を徹底解析。確実に獲りたい時のための鉄板ツール。</p>
+                <p class="panel-desc">「ここ、逃げますぉ！」本命レースを統計データで精密に絞り込み。的中重視の司令塔。</p>
             </div>
         </a>
-
         <a href="hatsune.html" class="chara-panel p-hatsune">
             <div class="chara-mini-wrap"><img src="hatsune_sd.png"></div>
             <div class="panel-info">
                 <span class="panel-title">女子戦 ひらめき鑑定</span>
-                <p class="panel-desc">波乱重視。女子戦特有の「おてんば傾向」を鑑定。高配当のひらめきをあなたに。</p>
+                <p class="panel-desc">「波乱の予感っ♪」女子戦特有の荒れる展開を鑑定。中穴〜大穴を狙うひらめきユニット。</p>
             </div>
         </a>
-
         <a href="kiina5.html" class="chara-panel p-kiina">
             <div class="chara-mini-wrap"><img src="kiina_sd.png"></div>
             <div class="panel-info">
                 <span class="panel-title">5 Master 精密解析</span>
-                <p class="panel-desc">万舟重視。5号艇の一撃突破をAI級予測。一撃で人生を変えたい時のための破壊兵器。</p>
+                <p class="panel-desc">「万舟、獲らせてやるよ。」5枠の突き抜けをAI予測。一撃必殺の破壊兵器ツール。</p>
             </div>
         </a>
-
     </div>
 
-    <span class="section-label">STRATEGY ARCHIVES</span>
+    <span class="section-label">DATABASE ARCHIVES</span>
     <div class="data-nav">
         <a href="date1.html" class="nav-item">
             <span style="font-size:1.4rem;">📘</span><span class="nav-label">イン逃げノート</span>
@@ -183,21 +176,25 @@
         </a>
     </div>
 
-    <span class="section-label">SUPPORT LINKS</span>
-    <div style="padding: 0 15px;">
-        <a href="https://line.me/R/ti/p/あなたのLINE" style="display:flex; align-items:center; background:rgba(0,242,255,0.05); border:1px solid rgba(0,242,255,0.15); padding:15px; border-radius:20px; text-decoration:none; color:white;">
-            <span style="font-size:1.5rem; margin-right:15px;">💬</span>
-            <div style="font-size:0.75rem;">
-                <b style="color:var(--accent);">公式LINEと同期</b><br>
-                <span style="opacity:0.6;">ツールの合言葉確認、ゲリラ予想の受信。</span>
-            </div>
-        </a>
-    </div>
+    <footer>
+        &copy; 2026 BOAT STRIKE Project<br>
+        ギャンブルは20歳になってから。無理のない範囲で楽しみましょう。
+    </footer>
+</div>
 
-    <div style="height: 50px;"></div> </div>
-
-<div class="footer-action">
-    <a href="poikatsu.html" class="money-btn">💰 <b>軍資金チャージ（自腹ゼロ攻略）</b></a>
+<div class="footer-fixed-nav">
+    <a href="https://line.me/R/ti/p/あなたのLINE" class="nav-btn btn-line">
+        <span class="icon">💬</span>
+        <span class="label">公式LINE</span>
+    </a>
+    <a href="あなたのnoteURL" class="nav-btn btn-note">
+        <span class="icon">📝</span>
+        <span class="label">予想note</span>
+    </a>
+    <a href="poikatsu.html" class="nav-btn btn-money">
+        <span class="icon">💰</span>
+        <span class="label">軍資金チャージ</span>
+    </a>
 </div>
 
 <script>
