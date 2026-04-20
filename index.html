@@ -3,1083 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BOAT STRIKE | 競艇予想ツールポータル</title>
+    <title>BOAT STRIKE ｜ 三姉妹の競艇攻略ポータル</title>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&display=swap" rel="stylesheet">
     <style>
-        /* 広告スロットの共通スタイル */
-.ad-slot {
-    max-width: 100%;
-    margin: 30px auto;
-    background: rgba(15, 23, 34, 0.6);
-    border: 1px solid rgba(0, 229, 255, 0.2);
-    position: relative;
-    padding: 15px;
-    text-align: center;
-    border-radius: 4px;
-}
-
-/* 四隅のサイバー装飾 */
-.ad-slot::before, .ad-slot::after {
-    content: "";
-    position: absolute;
-    width: 10px; height: 10px;
-    border: 2px solid var(--accent-blue);
-}
-.ad-slot::before { top: -2px; left: -2px; border-right: none; border-bottom: none; }
-.ad-slot::after { bottom: -2px; right: -2px; border-left: none; border-top: none; }
-
-.ad-label {
-    position: absolute;
-    top: -10px;
-    left: 20px;
-    background: var(--main-bg);
-    color: var(--accent-blue);
-    font-size: 0.6rem;
-    padding: 0 10px;
-    letter-spacing: 1px;
-    font-weight: bold;
-}
-
-/* 広告が入るエリア（忍者アドなどのコードをここに貼る） */
-.ad-content {
-    min-height: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #475569;
-    font-size: 0.8rem;
-}
-        /* デジタル背景全体の制御 */
-body {
-    position: relative;
-    overflow-x: hidden;
-}
-
-/* 背景のグリッド模様 */
-body::before {
-    content: "";
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background-image: 
-        linear-gradient(rgba(0, 229, 255, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 229, 255, 0.05) 1px, transparent 1px);
-    background-size: 40px 40px; /* グリッドのサイズ */
-    z-index: -2;
-}
-
-/* 流れるスキャンライン演出 */
-body::after {
-    content: "";
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: linear-gradient(
-        to bottom,
-        transparent 0%,
-        rgba(0, 229, 255, 0.03) 50%,
-        transparent 100%
-    );
-    background-size: 100% 200%;
-    animation: scan-move 8s linear infinite;
-    pointer-events: none;
-    z-index: -1;
-}
-
-/* 光のラインが上から下に流れるアニメーション */
-@keyframes scan-move {
-    0% { background-position: 0 0%; }
-    100% { background-position: 0 100%; }
-}
-
-/* さらにカッコよくするための追加：浮かぶ光の粒子 */
-.bg-glow {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: radial-gradient(circle at 50% 50%, rgba(0, 229, 255, 0.02) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: -1;
-}
         :root {
-            --main-bg: #050a0f;
-            --card-bg: #0f1722;
-            --accent-blue: #00e5ff;
-            --accent-gold: #ffc107;
-            --text-main: #ffffff;
-            --text-sub: #94a3b8;
+            --ichika-main: #ff8fa3;
+            --hatsune-main: #38a169;
+            --kiina-main: #0052d4;
+            --bg-color: #f8fafc;
         }
 
         body {
-            background-color: var(--main-bg);
-            color: var(--text-main);
-            font-family: 'Avenir Next', 'Helvetica Neue', Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0; padding: 0; color: #334155;
+            display: flex; flex-direction: column; align-items: center;
         }
 
-        .hero-banner {
-            width: 100%;
-            height: 350px;
-            overflow: hidden;
-            position: relative;
-            border-bottom: 3px solid var(--accent-blue);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        .container { width: 100%; max-width: 480px; padding: 20px; box-sizing: border-box; }
+
+        /* --- ヘッダー --- */
+        header {
+            text-align: center; padding: 30px 0 20px;
+            background: linear-gradient(135deg, #fff 0%, #f1f5f9 100%);
+            width: 100%; border-radius: 0 0 40px 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
         }
+        .logo-main { font-size: 1.8rem; font-weight: 800; color: #1e293b; letter-spacing: -1px; }
+        .logo-main span { color: var(--ichika-main); }
+        .sub-copy { font-size: 0.75rem; color: #64748b; margin-top: 5px; font-weight: 700; }
 
-        .hero-banner img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center 20%;
-            display: block;
-        }
-
-        @media (max-width: 600px) {
-            .hero-banner { height: 200px; }
-        }
-
-        .container { 
-            max-width: 800px; 
-            margin: 0 auto; 
-            padding: 20px; 
-        }
-
-        /* --- 右下の追従案内係 --- */
-        #floating-navi {
-    position: fixed;
-    bottom: 70px; /* 広告の高さ(50px) + 余白(20px) */
-    right: 15px;
-    z-index: 10000; /* 広告より確実に上に表示 */
-    display: flex;
-    align-items: flex-end;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-        #floating-navi:hover { transform: scale(1.05); }
-
-        .balloon {
-    position: relative;
-    background: #ffffff;
-    color: #000;
-    padding: 8px 12px;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: bold;
-    margin-right: 5px;
-    margin-bottom: 50px;
-    box-shadow: 0 4px 15px rgba(0, 229, 255, 0.4);
-    border: 2px solid var(--accent-blue); /* 枠線をつけて目立たせる */
-    max-width: 140px;
-    line-height: 1.3;
-    animation: balloon-float 2s ease-in-out infinite; /* ふわふわ動かす */
-}
-
-/* 吹き出しが浮遊するアニメーション */
-@keyframes balloon-float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
-}
-        .balloon::after {
-            content: "";
-            position: absolute;
-            top: 50%; right: -10px;
-            margin-top: -5px;
-            border-style: solid;
-            border-width: 5px 0 5px 10px;
-            border-color: transparent transparent transparent rgba(255, 255, 255, 0.95);
-        }
-
-        .navi-char {
-            width: 110px;
-            height: auto;
-            filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.4));
-        }
-
-        /* --- ナビゲーター紹介セクション --- */
-        .char-profile {
-            display: flex;
-            align-items: center;
-            background: linear-gradient(135deg, #162130 0%, #050a0f 100%);
-            border-radius: 20px;
-            margin: 30px 0;
-            padding: 20px;
-            border: 1px solid rgba(0, 229, 255, 0.3);
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.1);
-        }
-
-        .char-img-container {
-            width: 120px;
-            height: 120px;
-            flex-shrink: 0;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 2px solid var(--accent-blue);
-        }
-
-        .char-img-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: top;
-        }
-
-        .char-info { margin-left: 20px; }
-        .char-info h3 { color: var(--accent-gold); margin: 0 0 5px 0; font-size: 1.2rem; }
-        .char-info p { font-size: 0.85rem; margin: 0; color: #ccc; }
-
-        .sns-links { margin-top: 12px; }
-        .sns-btn {
-            display: inline-block;
-            padding: 6px 12px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 0.75rem;
-            margin-right: 8px;
-            transition: opacity 0.2s;
-            text-align: center;
-            min-width: 70px;
-        }
-        .btn-x { background: #000; color: #fff; border: 1px solid #333; }
-        .btn-youtube { background: #ff0000; color: #fff; }
-        .btn-tiktok { background: #fff; color: #000; }
-        .sns-btn:hover { opacity: 0.8; }
-
-        @media (max-width: 600px) {
-            .char-profile { flex-direction: column; text-align: center; }
-            .char-info { margin-left: 0; margin-top: 15px; }
-            #floating-navi { transform: scale(0.85); right: 5px; bottom: 5px; }
-        }
-
-        /* --- ツールデザイン --- */
-        .section-title {
-            font-size: 0.9rem;
-            color: var(--accent-gold);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin: 40px 0 20px;
-            padding-left: 15px;
-            border-left: 4px solid var(--accent-gold);
-        }
-
-        .tool-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
+        /* --- 三姉妹セレクト（メインメニュー） --- */
+        .section-title { font-size: 1rem; font-weight: 800; margin: 30px 0 15px; padding-left: 10px; border-left: 5px solid #1e293b; }
 
         .tool-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 20px;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.3s ease;
-            display: block;
+            background: white; border-radius: 25px; padding: 20px; margin-bottom: 15px;
+            display: flex; align-items: center; text-decoration: none; color: inherit;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.03); transition: 0.3s;
+            border: 2px solid transparent; position: relative; overflow: hidden;
+        }
+        .tool-card:active { transform: scale(0.97); }
+
+        .chara-icon { width: 85px; height: 85px; border-radius: 50%; margin-right: 15px; object-fit: cover; background: #f8fafc; }
+        
+        .tool-info { flex: 1; }
+        .tool-name { font-size: 1.1rem; font-weight: 800; margin-bottom: 4px; display: block; }
+        .tool-desc { font-size: 0.7rem; color: #64748b; line-height: 1.4; }
+
+        /* キャラ別着色 */
+        .card-ichika { border-color: #ffe4e8; }
+        .card-ichika .tool-name { color: var(--ichika-main); }
+        .card-hatsune { border-color: #dcfce7; }
+        .card-hatsune .tool-name { color: var(--hatsune-main); }
+        .card-kiina { border-color: #dbeafe; }
+        .card-kiina .tool-name { color: var(--kiina-main); }
+
+        /* --- 下段サブメニュー（解析ノート・ポイ活） --- */
+        .sub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 40px; }
+        
+        .sub-card {
+            background: white; padding: 15px; border-radius: 20px; text-decoration: none;
+            text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid #e2e8f0;
+        }
+        .sub-icon { font-size: 1.5rem; display: block; margin-bottom: 8px; }
+        .sub-label { font-size: 0.75rem; font-weight: 800; color: #475569; }
+
+        /* --- インフォメーション --- */
+        .info-banner {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white; border-radius: 20px; padding: 20px; text-align: center;
+            text-decoration: none; display: block; margin-bottom: 20px;
         }
 
-        .tool-card:hover {
-            transform: translateY(-5px);
-            background: #162130;
-            border-color: var(--accent-blue);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-        }
-
-        .tool-thumb {
-            width: 100%;
-            height: 140px;
-            background: #050a0f;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .tool-thumb img { width: 100%; height: 100%; object-fit: cover; }
-
-        .tool-name {
-            font-size: 1.1rem;
-            font-weight: bold;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .tool-desc { font-size: 0.8rem; color: var(--text-sub); line-height: 1.4; }
-        .badge { background: var(--accent-blue); color: #000; font-size: 0.6rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
-
-        .info-panel {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
-            padding: 20px;
-            font-size: 0.85rem;
-            border: 1px dashed rgba(148, 163, 184, 0.2);
-            margin: 40px 0;
-        }
-
-        footer {
-            text-align: center;
-            padding: 50px 20px;
-            color: var(--text-sub);
-            font-size: 0.8rem;
-            background: #000;
-        }
-        .x-timeline-container {
-    background: rgba(15, 23, 34, 0.8);
-    border: 1px solid rgba(0, 225, 255, 0.2);
-    border-radius: 16px;
-    padding: 10px;
-    margin-bottom: 40px;
-    overflow: hidden;
-    max-height: 500px; /* 高さを制限してスクロール可能に */
-}
-
-/* スマホでの表示調整 */
-@media (max-width: 600px) {
-    .x-timeline-container {
-        max-height: 400px;
-    }
-}
-        /* タブのスタイル */
-.tabs-container {
-    margin-bottom: 20px;
-}
-.tab-buttons {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-    justify-content: center;
-}
-.tab-btn {
-    flex: 1;
-    padding: 10px;
-    background: #162130;
-    border: 1px solid var(--accent-blue);
-    color: var(--text-main);
-    cursor: pointer;
-    border-radius: 8px;
-    font-weight: bold;
-    transition: 0.3s;
-    font-size: 0.9rem;
-}
-.tab-btn.active {
-    background: var(--accent-blue);
-    color: #000;
-}
-.tab-content {
-    display: none; /* 最初は隠す */
-}
-.tab-content.active {
-    display: block; /* activeなものだけ表示 */
-}
-        /* 的中実績セクション */
-.win-slider-container {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    margin: 40px 0;
-    background: rgba(0, 229, 255, 0.05);
-    border-radius: 20px;
-    padding: 20px 0;
-    border-top: 1px solid rgba(0, 229, 255, 0.2);
-    border-bottom: 1px solid rgba(0, 229, 255, 0.2);
-}
-
-.win-slider-track {
-    display: flex;
-    gap: 20px;
-    /* 自動スクロールアニメーション */
-    animation: scroll 40s linear infinite;
-    width: calc(300px * 10); /* 画像の幅 × 枚数 */
-}
-
-.win-item {
-    flex-shrink: 0;
-    width: 280px;
-    background: #0f1722;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid rgba(255, 193, 7, 0.3); /* 金色の縁取り */
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-    transition: transform 0.3s;
-}
-
-.win-item:hover {
-    transform: translateY(-10px) scale(1.05);
-    border-color: var(--accent-gold);
-}
-
-.win-item img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-}
-
-.win-info {
-    padding: 10px;
-    text-align: center;
-    background: linear-gradient(to top, #162130, transparent);
-}
-
-.win-tag {
-    font-size: 0.7rem;
-    color: var(--accent-gold);
-    font-weight: bold;
-    display: block;
-}
-
-.win-price {
-    font-size: 1.1rem;
-    color: #fff;
-    font-weight: bold;
-}
-
-/* 無限ループアニメーション */
-@keyframes scroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(calc(-300px * 5)); } /* 画像5枚分進んだら戻る */
-}
-
-/* ホバーで停止 */
-.win-slider-track:hover {
-    animation-play-state: paused;
-}
-        /* クリック時のアニメーション */
-.bounce-animation {
-    animation: char-bounce 0.4s ease;
-}
-
-@keyframes char-bounce {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-30px) scale(1.1); }
-}
-
-/* 吹き出しの強調演出 */
-.balloon.active-pop {
-    background: var(--accent-gold);
-    color: #000;
-    transform: scale(1.2);
-    transition: 0.2s;
-}
-        /* ローディング画面のスタイル */
-#loader {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background: #050a0f;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    transition: opacity 0.8s ease;
-}
-
-.loader-logo {
-    font-size: 2rem;
-    font-weight: bold;
-    color: var(--accent-blue);
-    letter-spacing: 5px;
-    margin-bottom: 20px;
-    text-shadow: 0 0 15px var(--accent-blue);
-    animation: pulse 1.5s infinite;
-}
-
-.loader-bar-container {
-    width: 250px;
-    height: 4px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 2px;
-    position: relative;
-    overflow: hidden;
-}
-
-.loader-bar {
-    width: 0%;
-    height: 100%;
-    background: var(--accent-blue);
-    box-shadow: 0 0 10px var(--accent-blue);
-    animation: loading-progress 2s forwards;
-}
-
-.loader-status {
-    margin-top: 15px;
-    font-size: 0.7rem;
-    color: var(--accent-gold);
-    font-family: monospace;
-    text-transform: uppercase;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-}
-
-@keyframes loading-progress {
-    0% { width: 0%; }
-    30% { width: 40%; }
-    60% { width: 70%; }
-    100% { width: 100%; }
-}
-        /* 初音の女子戦ボード */
-.hatsune-board {
-    background: linear-gradient(135deg, #1a0b2e 0%, #0f1722 100%);
-    border: 2px solid #ff00ff; /* 女子戦カラーのネオンピンク */
-    border-radius: 16px;
-    padding: 20px;
-    margin: 40px 0;
-    box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);
-}
-
-.board-header {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid rgba(255, 0, 255, 0.3);
-    padding-bottom: 10px;
-}
-
-.board-title {
-    color: #ff00ff;
-    font-size: 1.1rem;
-    font-weight: bold;
-    text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
-}
-
-.ladies-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.85rem;
-}
-
-.ladies-table th {
-    text-align: left;
-    color: var(--accent-gold);
-    padding: 8px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.ladies-table td {
-    padding: 12px 8px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.venue-badge {
-    background: #ff00ff;
-    color: #fff;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-weight: bold;
-    font-size: 0.75rem;
-}
-
-.status-check {
-    color: #00ff00; /* 開催中は緑 */
-    font-family: monospace;
-}
-        /* キイナの穴狙いボード */
-.kiina-board {
-    background: linear-gradient(135deg, #050a0f 0%, #162130 100%);
-    border: 2px solid var(--accent-blue);
-    border-radius: 16px;
-    padding: 20px;
-    margin: 40px 0;
-    box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
-    position: relative;
-}
-
-.kiina-board::before {
-    content: "HIGH PAYOUT ANALYSIS";
-    position: absolute;
-    top: -10px; right: 20px;
-    background: var(--accent-blue);
-    color: #000;
-    font-size: 0.6rem;
-    padding: 2px 10px;
-    font-weight: bold;
-    border-radius: 4px;
-}
-
-.rank-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px;
-    border-bottom: 1px solid rgba(0, 229, 255, 0.1);
-    transition: background 0.3s;
-}
-
-.rank-item:hover {
-    background: rgba(0, 229, 255, 0.05);
-}
-
-.rank-num {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: var(--accent-gold);
-    width: 30px;
-    font-style: italic;
-}
-
-.rank-venue {
-    flex: 1;
-    margin-left: 10px;
-    font-weight: bold;
-    letter-spacing: 1px;
-}
-
-.rank-data {
-    text-align: right;
-}
-
-.rank-label {
-    display: block;
-    font-size: 0.6rem;
-    color: var(--text-sub);
-}
-
-.rank-value {
-    color: var(--accent-blue);
-    font-weight: bold;
-    font-family: monospace;
-}
-        /* --- 重なり解消の最終調整 --- */
-
-/* 1. 吹き出しの位置を微調整（画像に被らないように） */
-.balloon {
-    margin-bottom: 10px !important; /* 無駄な余白を削る */
-    margin-right: -10px !important; /* キャラに少し近づける */
-}
-
-/* 2. スマホ表示(横幅600px以下)の時だけ、全体をグイッと上に上げる */
-@media (max-width: 600px) {
-    #floating-navi {
-        /* 忍者アドのオーバーレイ広告(約50-100px)を避けるための高さ */
-        bottom: 110px !important; 
-        right: 10px !important;
-        transform: scale(0.9); /* スマホでは少し小さくして圧迫感を減らす */
-    }
-
-    /* 吹き出しをもう少し目立たせる */
-    .balloon {
-        font-size: 0.8rem !important;
-        padding: 10px 15px !important;
-        max-width: 160px !important;
-    }
-}
-
-/* 3. 広告より絶対手前に出す設定を念押し */
-#floating-navi {
-    z-index: 999999 !important;
-}
+        footer { font-size: 0.65rem; color: #94a3b8; text-align: center; margin-bottom: 30px; }
     </style>
 </head>
 <body>
-<div id="loader">
-    <div class="loader-logo">BOAT STRIKE</div>
-    <div class="loader-bar-container">
-        <div class="loader-bar"></div>
-    </div>
-    <div id="loader-status" class="loader-status">SYSTEM BOOTING...</div>
-</div>
-    <div class="bg-glow"></div>
-<header class="hero-banner">
-    <img src="S__14368789.jpg" alt="BOAT STRIKE PORTAL">
+
+<header>
+    <div class="logo-main">BOAT <span>STRIKE</span></div>
+    <div class="sub-copy">三姉妹の「勝てる」競艇解析ポータル</div>
 </header>
-<h2 class="section-title">RECENT BIG WINS (的中実績)</h2>
-<div class="win-slider-container">
-    <div class="win-slider-track">
-        <div class="win-item">
-            <img src="S__14434317.jpg" alt="的中実績">
-            <div class="win-info">
-                <span class="win-tag">初音の女子戦セレクト</span>
-                <span class="win-price">払戻金: ¥12,290</span>
-            </div>
-        </div>
-        <div class="win-item">
-            <img src="p-star_hunaken (15).png" alt="的中実績">
-            <div class="win-info">
-                <span class="win-tag">初音の女子戦セレクト</span>
-                <span class="win-price">払戻金: ¥7,630</span>
-            </div>
-        </div>
-        <div class="win-item">
-            <img src="win3.jpg" alt="的中実績">
-            <div class="win-info">
-                <span class="win-tag">児島10R 3連単的中</span>
-                <span class="win-price">払戻金: ¥28,900</span>
-            </div>
-        </div>
-        <div class="win-item">
-            <img src="win1.jpg" alt="的中実績">
-            <div class="win-info">
-                <span class="win-tag">宮島12R 5号艇頭</span>
-                <span class="win-price">払戻金: ¥45,200</span>
-            </div>
-        </div>
-        <div class="win-item">
-            <img src="win2.jpg" alt="的中実績">
-            <div class="win-info">
-                <span class="win-tag">初音の女子戦セレクト</span>
-                <span class="win-price">払戻金: ¥12,800</span>
-            </div>
-        </div>
-    </div>
-</div>
-    
+
 <div class="container">
-    <h2 class="section-title">予想ツール</h2>
-    <div class="tool-grid">
-        <a href="5.index.html" class="tool-card">
-            <div class="tool-thumb"><img src="5.png" alt="5号艇ツール"></div>
-            <div class="tool-name">５号艇特化ツール<span class="badge">キイナ愛用</span></div>
-            <div class="tool-desc">全場網羅💛データ随時更新中</div>
-        </a>
-        <a href="1.index.html" class="tool-card">
-            <div class="tool-thumb"><img src="S__14647310_0.jpg" alt="5号艇ツール"></div>
-            <div class="tool-name">１号艇特化ツール<span class="badge">一果愛用</span></div>
-            <div class="tool-desc">逃げ率丸わかり♦データ随時更新中</div>
-        </a>
-        <a href="2rentan3.html" class="tool-card">
-            <div class="tool-thumb"><img src="S__14368791.jpg" alt="事前予想ツール"></div>
-             <div class="tool-name">事前予想ツール<span class="badge">初音愛用</span></div>
-            <div class="tool-desc">全場過去２年分のデータから算出</div>
-        </a>
-        <a href="2.3.box.html" class="tool-card">
-            <div class="tool-thumb"><img src="S__14368791.jpg" alt="BOX"></div>
-            <div class="tool-name">展示タイム補正ツール</div>
-            <div class="tool-desc">場ごとの差異やコース別の差異を各場5000レースから算出</div>
-        </a>
-    </div>
-
-    <h2 class="section-title">ボートレースツール</h2>
-    <div class="tool-grid">
-        <a href="index2.html" class="tool-card">
-            <div class="tool-thumb"><img src="S__14368794.jpg" alt="舟券ツール"></div>
-            <div class="tool-name">舟券メーカー ①</div>
-            <div class="tool-desc">オリジナル舟券作成で簡単SNS投稿</div>
-        </a>
-        <a href="index3.html" class="tool-card">
-            <div class="tool-thumb"><img src="S__14434316.jpg" alt="簡易2"></div>
-            <div class="tool-name">簡易版メーカー ②</div>
-            <div class="tool-desc">シンプルで視認性の高いデザイン。</div>
-        </a>
-    </div>
-    <div class="kiina-board">
-    <div class="board-header">
-        <div class="char-img-container" style="width: 50px; height: 50px; border-color: var(--accent-blue);">
-            <img src="S__14409739_0.jpg" alt="キイナ">
-        </div>
-        <div>
-            <div class="board-title" style="color: var(--accent-blue);">KIINA'S ATTACK RANKING</div>
-            <div style="font-size: 0.7rem; color: #ccc;">随時更新中💛2026/03/11更新</div>
-        </div>
-    </div>
-
-    <div class="rank-item">
-        <div class="rank-num">01</div>
-        <div class="rank-venue">平和島 (HEIWAJIMA)</div>
-        <div class="rank-data">
-            <span class="rank-label">5頭出現率</span>
-            <span class="rank-value">12.8%</span>
-        </div>
-    </div>
-
-    <div class="rank-item">
-        <div class="rank-num">02</div>
-        <div class="rank-venue">戸田 (TODA)</div>
-        <div class="rank-data">
-            <span class="rank-label">5頭出現率</span>
-            <span class="rank-value">11.5%</span>
-        </div>
-    </div>
-
-    <div class="rank-item">
-        <div class="rank-num">03</div>
-        <div class="rank-venue">江戸川 (EDOGAWA)</div>
-        <div class="rank-data">
-            <span class="rank-label">5頭出現率</span>
-            <span class="rank-value">10.2%</span>
-        </div>
-    </div>
-
-    <div style="margin-top: 15px; font-size: 0.7rem; color: var(--text-sub); background: rgba(0,0,0,0.3); padding: 8px; border-radius: 6px;">
-        <span style="color: var(--accent-gold);">● KIINA'S ADVICE:</span> <br>
-        平和島の5号艇は展開ひとつで万舟の宝庫。カドが攻める展開を狙い撃ち！
-    </div>
-</div>
-    <div class="hatsune-board">
-    <div class="board-header">
-        <div class="char-img-container" style="width: 50px; height: 50px; border-color: #ff00ff;">
-            <img src="S__14409740_0.jpg" alt="初音">
-        </div>
-        <div>
-            <div class="board-title">HATSUNE'S LADIES DATA</div>
-            <div style="font-size: 0.7rem; color: #ccc;">初音の女子戦・初日特化ボード</div>
-        </div>
-    </div>
-
-    <table class="ladies-table">
-        <thead>
-            <tr>
-                <th>開催場</th>
-                <th>グレード</th>
-                <th>初音の狙い目</th>
-                <th>状態</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><span class="venue-badge">多摩川</span></td>
-                <td>G3 オールレディース</td>
-                <td>イン強気、4カド注目</td>
-                <td class="status-check">● ON AIR</td>
-            </tr>
-            <tr>
-                <td><span class="venue-badge">児島</span></td>
-                <td>一般 ヴィーナスシリーズ</td>
-                <td>初日の展示タイム重視</td>
-                <td class="status-check">● ON AIR</td>
-            </tr>
-            <tr>
-                <td style="color: #666;">---</td>
-                <td style="color: #666;">次節開催待ち</td>
-                <td style="color: #666;">-</td>
-                <td style="color: #666;">OFFLINE</td>
-            </tr>
-        </tbody>
-    </table>
     
-    <div style="margin-top: 15px; font-size: 0.75rem; color: var(--text-sub); text-align: right;">
-        ※随時初音が更新中♪
-    </div>
-</div>
-<h2 class="section-title">TODAY'S PREDICTIONS</h2>
+    <div class="section-title">MAIN TOOLS</div>
 
-<div class="tabs-container">
-    <div class="tab-buttons">
-        <button class="tab-btn active" onclick="openTab(event, 'kiina-xtalk')">キイナの穴予想</button>
-        <button class="tab-btn" onclick="openTab(event, 'hatsune-xtalk')">初音の女子戦予想</button>
-    </div>
-
-    <div id="kiina-xtalk" class="tab-content active">
-        <div class="x-timeline-container">
-            <a class="twitter-timeline" data-height="500" data-theme="dark" data-chrome="noheader nofooter transparent" 
-               href="https://twitter.com/search?q=from%3Akiina_boat%20%23キイナ予想">
-               Loading Kiina's Predictions...
-            </a>
+    <a href="ichika.html" class="tool-card card-ichika">
+        <img src="ichika_sd.png" class="chara-icon">
+        <div class="tool-info">
+            <span class="tool-name">1号艇 鬼絞り判定 🌸</span>
+            <span class="tool-desc">「ここ、逃げますぉ！」本命レースを統計データで精密に絞り込みます。</span>
         </div>
-    </div>
+    </a>
 
-    <div id="hatsune-xtalk" class="tab-content">
-        <div class="x-timeline-container">
-            <a class="twitter-timeline" data-height="500" data-theme="dark" data-chrome="noheader nofooter transparent" 
-               href="https://twitter.com/search?q=from%3Ahastune_boat%20%23初音予想">
-               Loading Hatsune's Predictions...
-            </a>
+    <a href="hatsune.html" class="tool-card card-hatsune">
+        <img src="hatsune_sd.png" class="chara-icon">
+        <div class="tool-info">
+            <span class="tool-name">女子戦 ひらめき鑑定 🍀</span>
+            <span class="tool-desc">「波乱の予感ですっ！」女子戦特有の荒れるレースを鋭くひらめきます。</span>
         </div>
-    </div>
-</div>
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-</div>
-    <div class="char-profile">
-        <div class="char-img-container"><img src="S__14409739_0.jpg" alt="キイナ"></div>
-        <div class="char-info">
-            <h3>NAVIGATOR: キイナ</h3>
-            <p>「5号艇の穴狙いならお任せ！高配当を掴みましょう🔥」</p>
-            <div class="sns-links">
-                <a href="#" class="sns-btn btn-x">𝕏</a>
-                <a href="#" class="sns-btn btn-youtube">YouTube</a>
-                <a href="#" class="sns-btn btn-tiktok">TikTok</a>
-            </div>
+    </a>
+
+    <a href="kiina5.html" class="tool-card card-kiina">
+        <img src="kiina_sd.png" class="chara-icon">
+        <div class="tool-info">
+            <span class="tool-name">5 Master 精密解析 ⚡</span>
+            <span class="tool-desc">「万舟、獲らせてやるよ。」5枠の突き抜けをAI級の精度で弾き出します。</span>
         </div>
+    </a>
+
+    <div class="section-title">DATABASE & SUPPORT</div>
+    <div class="sub-grid">
+        <a href="date1.html" class="sub-card">
+            <span class="sub-icon">📗</span>
+            <span class="sub-label">イン逃げ攻略ノート</span>
+        </a>
+        <a href="dateg.html" class="sub-card">
+            <span class="sub-icon">🍀</span>
+            <span class="sub-label">女子戦解析ノート</span>
+        </a>
+        <a href="date5.html" class="sub-card">
+            <span class="sub-icon">⚡</span>
+            <span class="sub-label">5 Masterノート</span>
+        </a>
+        <a href="poikatsu.html" class="sub-card" style="background: #fffbeb; border-color: #fef3c7;">
+            <span class="sub-icon">💰</span>
+            <span class="sub-label" style="color: #92400e;">軍資金を稼ぐ</span>
+        </a>
     </div>
 
-    <div class="char-profile">
-        <div class="char-img-container"><img src="S__14409740_0.jpg" alt="初音"></div>
-        <div class="char-info">
-            <h3>NAVIGATOR: 初音</h3>
-            <p>「女子戦初日大好き♡一緒に万舟狙いましょう♪」</p>
-            <div class="sns-links">
-                <a href="#" class="sns-btn btn-x">𝕏</a>
-                <a href="#" class="sns-btn btn-youtube">YouTube</a>
-                <a href="#" class="sns-btn btn-tiktok">TikTok</a>
-            </div>
-        </div>
-    </div>
+    <a href="https://line.me/R/ti/p/あなたのLINE" class="info-banner">
+        <div style="font-size: 0.9rem; font-weight: 800;">公式LINE限定</div>
+        <div style="font-size: 0.7rem; opacity: 0.9;">合言葉やゲリラ予想を配信中！</div>
+    </a>
 
-    <div class="info-panel">
-        <p style="color: var(--accent-gold); font-weight: bold; margin-top: 0;">[SYSTEM UPDATE]</p>
-        <p>・2026.03.11: ナビゲーターの動作安定化アップデートを適用しました。</p>
-        <p>・全24会場の計算エンジンを最新版に更新済みです。</p>
-    </div>
+    <footer>
+        &copy; 2026 BOAT STRIKE Project<br>
+        ギャンブルは20歳になってから。無理のない範囲で楽しみましょう。
+    </footer>
 </div>
 
-<div id="floating-navi" onclick="jumpSNS()">
-    <div id="navi-balloon" class="balloon">5号艇の穴狙い、準備はいい？</div>
-    <img id="navi-img" src="1fe3eb2e-ec88-4aef-8140-6c4f9bad84e1.png" class="navi-char" alt="ナビゲーター">
-</div>
-
-      <!-- admax -->
-<script src="https://adm.shinobi.jp/s/b7d21d503cff30dd7e2876ac8bec9796"></script>
-<!-- admax -->
-
-<footer>
-    <p>&copy; 2026 BOAT STRIKE PROJECT - P-STAR</p>
-    <div style="margin-top: 10px;">
-        <div style="text-align: center; font-size: 0.7rem; color: #475569; margin-bottom: 20px;">
-    運営：BOAT STRIKE PROJECT (P-STAR)<br>
-    お問い合わせは𝕏のDMにて受け付けております。
-</div>
-        <a href="info.html" style="color: var(--accent-blue); text-decoration: none; margin: 0 10px;">USAGE</a> | 
-        <a href="info.html" style="color: var(--accent-blue); text-decoration: none; margin: 0 10px;">PRIVACY</a>
-    </div>
-</footer>
-
-<script>
- // 1. データの定義（画像・URL・セリフ）
-const naviData = [
-    { 
-        img: "1fe3eb2e-ec88-4aef-8140-6c4f9bad84e1.png", 
-        msg: "ねぇねぇ、ここをタップしてみて！", // 初期メッセージ
-        url: "https://www.youtube.com/@YOUR_KIINA",
-        voices: [
-            "タップして！穴狙いの秘策教えるよ♪", 
-            "ここ押すと良いことあるかも？", 
-            "キイナをタップしてね！", 
-            "万舟狙い、準備OK？タップ！"
-        ]
-    },
-    { 
-        img: "1b41b474-2278-41e2-8673-a56a68d3acf4.png", 
-        msg: "初音をタップして女子戦チェック♡", 
-        url: "https://www.tiktok.com/@YOUR_HATSUNE",
-        voices: [
-            "女子戦情報、ここから見てね♪", 
-            "タップして一緒にお話しよ♡", 
-            "ねぇねぇ、ここ押してみて？", 
-            "初音の最新予想はここから！"
-        ]
-    }
-];
-
-let currentIndex = 0;
-const naviWrapper = document.getElementById('floating-navi');
-const naviImg = document.getElementById('navi-img');
-const naviBalloon = document.getElementById('navi-balloon');
-
-// 2. 自動切り替えの関数
-function switchNavi() {
-    if(!naviWrapper) return;
-    naviWrapper.style.opacity = "0";
-    setTimeout(() => {
-        currentIndex = (currentIndex + 1) % naviData.length;
-        naviImg.src = naviData[currentIndex].img;
-        naviBalloon.innerText = naviData[currentIndex].msg;
-        setTimeout(() => { naviWrapper.style.opacity = "1"; }, 50);
-    }, 500);
-}
-setInterval(switchNavi, 7000);
-
-// 3. クリック時の派手な演出（ジャンプ機能付き）
-function jumpSNS() {
-    // アニメーション付与
-    naviImg.classList.remove('bounce-animation');
-    void naviImg.offsetWidth; // おまじない
-    naviImg.classList.add('bounce-animation');
-
-    // 吹き出し強調
-    naviBalloon.classList.add('active-pop');
-    
-    // ランダムなセリフを表示
-    const currentVoices = naviData[currentIndex].voices;
-    const randomVoice = currentVoices[Math.floor(Math.random() * currentVoices.length)];
-    naviBalloon.innerText = randomVoice;
-
-    // スマホバイブ（対応機種のみ）
-    if (window.navigator.vibrate) window.navigator.vibrate(50);
-
-    // 0.8秒後に演出を戻してSNSへ移動
-    setTimeout(() => {
-        naviBalloon.classList.remove('active-pop');
-        // SNSへ飛ばしたい場合は下のコメントアウトを外してください
-        // window.open(naviData[currentIndex].url, '_blank');
-    }, 800);
-}
-
-// 4. 𝕏予想タブの切り替え
-function openTab(evt, tabName) {
-    var i, tabContent, tabButtons;
-    tabContent = document.getElementsByClassName("tab-content");
-    for (i = 0; i < tabContent.length; i++) {
-        tabContent[i].style.display = "none";
-    }
-    tabButtons = document.getElementsByClassName("tab-btn");
-    for (i = 0; i < tabButtons.length; i++) {
-        tabButtons[i].className = tabButtons[i].className.replace(" active", "");
-    }
-    document.getElementById(tabName).style.display = "block";
-    evt.currentTarget.className += " active";
-}
-    window.addEventListener('load', function() {
-    const loader = document.getElementById('loader');
-    const status = document.getElementById('loader-status');
-    
-    // ステータスを「READY」に変える演出
-    setTimeout(() => {
-        status.innerText = "ALL SYSTEMS ONLINE";
-        status.style.color = "#00ff00"; // 緑色に
-    }, 1500);
-
-    // 2秒後にフェードアウト
-    setTimeout(() => {
-        loader.style.opacity = "0";
-        setTimeout(() => {
-            loader.style.display = "none";
-        }, 800);
-    }, 2000);
-});
-</script>
-<!-- admax -->
-<script src="https://adm.shinobi.jp/s/491a3ad04097a571c09368a04980ec91"></script>
-<!-- admax -->
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
