@@ -2,265 +2,532 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>一果の1号艇・鬼絞り判定所 🌸 BOAT STRIKE</title>
-    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800;900&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一果の1号艇・鬼絞り判定所 🌸</title>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&display=swap" rel="stylesheet">
     <style>
-        /* --- 全体スタイル --- */
+        /* --- サイトマップ（フッターナビ）のデザイン --- */
+        .footer-sitemap {
+            width: 100%;
+            max-width: 440px;
+            margin: 30px auto 10px;
+            padding: 20px;
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 25px;
+            border: 1px solid #ffcad4;
+        }
+
+        .sitemap-title {
+            font-size: 0.9rem;
+            color: #ff8fa3;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .sitemap-title::before, .sitemap-title::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #ffcad4;
+        }
+
+        .sitemap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .sitemap-item {
+            background: white;
+            padding: 12px;
+            border-radius: 15px;
+            text-decoration: none;
+            color: #666;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            border: 1px solid #fff0f3;
+            transition: 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        .sitemap-item:hover {
+            transform: translateY(-3px);
+            border-color: #ff8fa3;
+            color: #ff8fa3;
+            box-shadow: 0 5px 15px rgba(255, 143, 163, 0.1);
+        }
+
+        .sitemap-icon {
+            font-size: 1.2rem;
+        }
+
+        .sitemap-desc {
+            font-size: 0.6rem;
+            color: #999;
+            font-weight: normal;
+        }
+
+        .footer-copy {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #ff8fa3;
+            margin: 20px 0;
+            font-weight: 700;
+        }
+        /* --- 既存のスタイル --- */
         body {
             font-family: 'M PLUS Rounded 1c', sans-serif;
-            margin: 0; padding: 0;
-            background-color: #fffafb;
-            background-image: radial-gradient(#ffcad4 1px, transparent 1px);
-            background-size: 25px 25px;
+            margin: 0; padding: 10px;
             display: flex; flex-direction: column; align-items: center;
-            overflow-x: hidden;
+            background-color: #fffafb;
+            background-image: 
+                linear-gradient(90deg, rgba(255, 182, 193, 0.05) 1px, transparent 1px),
+                linear-gradient(rgba(255, 182, 193, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
         }
 
-        /* --- 上部固定ステータスバー --- */
-        .status-bar {
-            position: fixed; top: 0; left: 0; width: 100%;
-            background: rgba(255, 250, 251, 0.95); backdrop-filter: blur(10px);
-            border-bottom: 1px solid #ffcad4;
-            padding: 8px 15px; display: flex; align-items: center; z-index: 2000; box-sizing: border-box;
+        .header-banner { width: 100%; max-width: 440px; margin: 10px auto; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(255, 107, 129, 0.2); }
+        .header-banner img { width: 100%; height: auto; display: block; }
+
+        .outer-frame {
+            position: relative; width: 100%; max-width: 440px; padding: 25px 15px 15px 15px; box-sizing: border-box;
+            background-color: white; border: 3px solid #d4b185; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 20px;
         }
-        .system-clock { font-family: monospace; font-weight: bold; color: #ff8fa3; font-size: 14px; margin-right: 15px; border-right: 1px solid #ffcad4; padding-right: 10px; }
-        .ticker-wrap { flex: 1; overflow: hidden; }
-        .ticker-content { display: inline-block; white-space: nowrap; font-size: 12px; font-weight: bold; color: #ff6b81; animation: i-ticker 20s linear infinite; }
-        @keyframes i-ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* --- 鍵画面 --- */
-        #lock-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #fffafb; z-index: 9999;
-            display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-            text-align: center; color: #ff8fa3; padding: 40px 20px; box-sizing: border-box; overflow-y: auto;
-        }
-        .intro-box { background: #fff; border: 2px solid #ffcad4; border-radius: 20px; padding: 20px; width: 100%; max-width: 340px; margin-bottom: 25px; text-align: left; }
-        .intro-title { font-size: 15px; color: #ff6b81; font-weight: 900; text-align: center; margin-bottom: 10px; }
-        .intro-list { font-size: 12px; line-height: 1.8; color: #666; padding-left: 18px; margin: 0; }
-        .lock-card { background: white; padding: 25px; border-radius: 25px; border: 2px solid #ffcad4; width: 100%; max-width: 320px; }
-        .lock-input { width: 100%; padding: 15px; border-radius: 15px; border: 2px solid #ffcad4; text-align: center; font-size: 1.1rem; margin-bottom: 15px; box-sizing: border-box; }
-        .lock-btn { background: linear-gradient(135deg, #ff9a9e 0%, #ff6b81 100%); color: white; border: none; padding: 15px; border-radius: 50px; font-weight: 800; cursor: pointer; width: 100%; }
-
-        /* --- メインコンテンツ --- */
-        #main-content { display: none; width: 100%; max-width: 440px; padding-top: 60px; padding-bottom: 120px; box-sizing: border-box; }
-        .header-banner { width: 100%; border-radius: 20px; overflow: hidden; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(255, 107, 129, 0.2); }
-        .header-banner img { width: 100%; display: block; }
-
-        .outer-frame { position: relative; background: white; border: 3px solid #d4b185; border-radius: 25px; padding: 25px 15px 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        
-        .top-section { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: -15px; z-index: 10; position: relative; }
+        .top-section { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: -15px; position: relative; z-index: 10; }
         .chara-container { flex: 0 0 145px; margin-left: -5px; }
         .ichika-chara { width: 110%; height: auto; display: block; transition: 0.3s; }
-        
         .input-top-right { flex: 1; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; padding-bottom: 15px; }
-        .stadium-select-wrapper { position: relative; width: 100%; max-width: 200px; height: 44px; background-image: url('stadium_bar.png'); background-size: 100% 100%; display: flex; align-items: center; justify-content: center; }
+
+        .admin-pass-wrapper { position: relative; display: flex; align-items: center; height: 35px; }
+        .gold-keyhole-icon { width: 45px; position: absolute; left: -18px; z-index: 11; }
+        .admin-pass-input { border: 1px solid #ddd; border-radius: 20px; padding: 4px 10px 4px 32px; width: 85px; font-size: 0.75rem; font-family: inherit; }
+
+        .stadium-select-wrapper { position: relative; width: 100%; max-width: 220px; height: 44px; background-image: url('stadium_bar.png'); background-size: 100% 100%; display: flex; align-items: center; justify-content: center; }
         .stadium-text-display { color: #d4b185; font-size: 1rem; font-weight: 800; text-shadow: 1px 1px 2px black; }
         .stadium-select { position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 15; }
 
-        .stadium-memo-wrapper { position: relative; width: 100%; min-height: 100px; padding: 20px; box-sizing: border-box; margin-top: 10px; border: 1px dashed #d4b185; border-radius: 15px; background: #fffdf9; }
-        .memo-title { color: #8c6a4a; font-weight: 800; font-size: 0.9rem; margin-bottom: 5px; text-align: center; }
-        .memo-content { font-size: 0.75rem; color: #444; line-height: 1.5; text-align: center; }
+        .stadium-memo-wrapper { position: relative; width: 100%; min-height: 120px; padding: 25px 20px; box-sizing: border-box; z-index: 1; }
+        .stadium-memo-wrapper::before { content: ""; position: absolute; inset: 0; background-image: url('memo_frame.png'); background-size: 100% 100%; z-index: -1; }
+        .memo-title { color: #8c6a4a; font-weight: 800; font-size: 0.95rem; margin-bottom: 8px; text-align: center; }
+        .memo-content { font-size: 0.8rem; color: #444; line-height: 1.6; text-align: center; }
+        .memo-link { color: #ff6b81; font-size: 0.75rem; font-weight: 800; text-decoration: underline; display: block; text-align: center; margin-top: 10px; }
 
-        .control-label { display: block; font-weight: 800; font-size: 0.85rem; color: #ff8fa3; margin: 15px 0 5px; border-left: 5px solid #ff6b81; padding-left: 10px; }
+        .param-controls { margin-top: 15px; border-top: 1px dashed #d4b185; padding-top: 15px; }
+        .control-row { margin-bottom: 12px; }
+        .control-label { display: block; font-weight: 800; font-size: 0.85rem; color: #ff8fa3; margin-bottom: 5px; border-left: 5px solid #ff6b81; padding-left: 10px; }
         .slider-group { display: flex; align-items: center; gap: 12px; }
-        input[type="range"] { flex: 1; accent-color: #ff6b81; }
-        .val-disp { font-size: 1.1rem; font-weight: 800; color: #ff6b81; min-width: 60px; text-align: right; }
-        .condition-select { width: 100%; padding: 12px; border-radius: 12px; border: 2px solid #fff0f3; font-weight: 700; font-size: 0.9rem; }
+        input[type="range"] { flex: 1; accent-color: #ff6b81; cursor: pointer; }
+        .val-disp { font-size: 1.1rem; font-weight: 800; color: #ff6b81; min-width: 65px; text-align: right; }
+        .condition-select { width: 100%; padding: 12px; border-radius: 12px; border: 2px solid #fff0f3; font-family: inherit; font-weight: 700; font-size: 0.9rem; cursor: pointer; }
 
-        .calc-btn { width: 100%; padding: 18px; margin-top: 20px; background: linear-gradient(135deg, #ff9a9e 0%, #ff6b81 100%); color: white; border: none; border-radius: 15px; font-weight: 800; font-size: 1.2rem; cursor: pointer; box-shadow: 0 5px 15px rgba(255, 107, 129, 0.3); }
+        .calc-btn { width: 100%; padding: 18px; margin-top: 15px; background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); color: white; border: none; border-radius: 15px; font-weight: 800; font-size: 1.2rem; cursor: pointer; box-shadow: 0 5px 15px rgba(255, 107, 129, 0.3); font-family: inherit; }
 
-        /* 結果エリア */
         #result { display: none; margin-top: 20px; padding: 20px; border-radius: 20px; text-align: center; }
-        .balloon { background: #fff; border: 2px solid #d4b185; padding: 12px; border-radius: 15px; font-size: 0.85rem; text-align: left; margin-bottom: 10px; }
-        .score-display { font-size: 3.5rem; font-weight: 800; color: #ff6b81; line-height: 1; }
+        .balloon { position: relative; background: #fff; border: 2px solid #d4b185; padding: 12px; border-radius: 15px; font-size: 0.85rem; text-align: left; margin-bottom: 15px; }
+        .score-display { font-size: 3.5rem; font-weight: 800; color: #ff6b81; display: block; line-height: 1; margin: 10px 0; }
 
-        /* --- 下部固定ナビ --- */
-        .footer-fixed-nav {
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            display: grid; grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px; padding: 10px 15px 25px;
-            background: rgba(255, 250, 251, 0.95); backdrop-filter: blur(15px);
-            border-top: 2px solid #ffcad4; z-index: 2000; box-sizing: border-box;
+        /* --- SNSシェア用カードのデザイン --- */
+        #share-card-area {
+            display: none; width: 100%; max-width: 360px; padding: 20px; background: white; border: 5px solid #ffcad4;
+            border-radius: 20px; text-align: center; position: relative; margin: 20px auto; box-sizing: border-box;
+            background-image: radial-gradient(#fff5f6 2px, transparent 2px); background-size: 20px 20px;
         }
-        .nav-item {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            text-decoration: none; border-radius: 15px; padding: 8px 5px; font-weight: 800;
-            background: #fff; border: 1px solid #fff0f3;
-        }
-        .nav-hatsune { color: #38a169; }
-        .nav-kiina { color: #2962ff; }
-        .nav-home { color: #ff8fa3; }
-        .nav-icon { font-size: 1.2rem; }
-        .nav-label { font-size: 10px; }
+        .share-title { font-size: 0.9rem; color: #ff8fa3; font-weight: 800; margin-bottom: 5px; }
+        .share-stadium { font-size: 1.4rem; color: #4a4a4a; font-weight: 800; margin-bottom: 10px; }
+        .share-score { font-size: 4rem; font-weight: 800; color: #ff6b81; line-height: 1; }
+        .share-footer { font-size: 0.6rem; color: #ff8fa3; margin-top: 15px; }
+        .save-btn { width: 100%; padding: 15px; background: #ff8fa3; color: white; border: none; border-radius: 50px; font-weight: 800; margin-top: 10px; cursor: pointer; font-family: inherit; }
 
-        #share-card-area { display: none; background: white; border: 4px solid #ffcad4; border-radius: 20px; padding: 15px; margin-top: 15px; }
-        .save-btn { width: 100%; padding: 12px; background: #ff8fa3; color: white; border: none; border-radius: 50px; font-weight: 800; margin-top: 10px; }
-        
+        /* 補正エリア */
+        #player-correction { display: none; margin-top: 20px; padding: 15px; background: #fff5f6; border: 2px dashed #ffcad4; border-radius: 20px; text-align: left; }
+        .correction-toggle-btn { width: 100%; padding: 12px; margin-top: 15px; background: #fff; border: 2px solid #ffcad4; border-radius: 15px; color: #ff8fa3; font-weight: 800; cursor: pointer; font-family: inherit; }
+
+        .record-container { margin-top: 20px; background: #fffafb; padding: 15px; border-radius: 18px; border: 2px dashed #ffcad4; }
+        .record-label { font-size: 0.75rem; font-weight: 700; color: #ff8fa3; display: block; margin-bottom: 10px; }
+        .btn-row { display: flex; gap: 8px; margin-bottom: 10px; }
+        .btn-row button { flex: 1; padding: 10px; border: none; border-radius: 10px; color: white; font-weight: 800; cursor: pointer; font-family: inherit; }
+        .btn-tool-hit { background: #ff85a1; } .btn-tool-miss { background: #d1d1d1; }
+        .btn-self-hit { background: #ff6b81; } .btn-self-miss { background: #f8c291; }
+
+        /* 分析パネル */
+        .stats-card { width: 100%; max-width: 440px; background: white; border-radius: 25px; padding: 20px; box-sizing: border-box; border: 1px solid #ffeef1; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .stat-box { background: white; padding: 12px 5px; border-radius: 15px; text-align: center; border: 1px solid #ffe0e6; }
+        .stat-val { display: block; font-size: 1.3rem; font-weight: 800; color: #ff6b81; }
+        .stat-label { font-size: 0.6rem; color: #ff8fa3; font-weight: 700; }
+        .table-container { overflow-x: auto; max-height: 300px; border-radius: 15px; border: 1px solid #ffe0e6; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+        th { background: #ff8fa3; color: white; padding: 10px 5px; position: sticky; top: 0; }
+        td { padding: 8px 5px; border-bottom: 1px solid #fff5f6; text-align: center; }
+
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         .ichika-bounce { animation: bounce 0.5s ease infinite; }
-        #result.high { background: #fff0f3; border: 2px solid #ff8fa3; }
+        .gold-mode { border-color: #fcc419; background: #fff9db; border-width: 3px; box-shadow: 0 0 15px rgba(252, 196, 25, 0.5); }
+        #result.high { background: #e6fcf5; border: 2px solid #b2f2bb; }
+        #result.mid { background: #fff9db; border: 2px solid #ffec99; }
+        #result.low { background: #fff5f5; border: 2px solid #ffc9c9; }
+        .reset-btn { font-size: 0.7rem; color: #ffcad4; background: none; border: none; cursor: pointer; text-decoration: underline; margin-top: 15px; display: block; width: 100%; }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
+<div id="lock-screen" style="
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #fff5f6; z-index: 9999;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; color: #ff8fa3; padding: 20px; box-sizing: border-box;
+    background-image: radial-gradient(#ffcad4 1px, transparent 1px); background-size: 20px 20px;
+">
+    <img src="30e480e9-e3b7-475e-97e2-130141b7b1e3.png
+" style="width: 150px; margin-bottom: 20px; filter: drop-shadow(0 5px 10px rgba(255,143,163,0.3));">
+    
+    <h2 style="font-size: 1.2rem; margin-bottom: 5px;">🌸 会員限定エリア 🌸</h2>
+    <p style="font-size: 0.8rem; margin-bottom: 20px;">ここから先は、合言葉を知っている<br>特別な人しか入れないんですよぉ。</p>
+    
+    <input type="text" id="pass-input" placeholder="合言葉は？" style="
+        padding: 15px; border-radius: 20px; border: 2px solid #ffcad4;
+        background: #fff; color: #ff8fa3; text-align: center; font-size: 1.1rem; 
+        width: 100%; max-width: 240px; font-family: 'M PLUS Rounded 1c', sans-serif;
+    ">
+    
+    <button onclick="checkPass()" style="
+        margin-top: 20px; padding: 12px 50px; border-radius: 50px;
+        background: linear-gradient(135deg, #ff9a9e 0%, #ff6b81 100%);
+        color: #fff; border: none; font-weight: 800; cursor: pointer;
+        font-family: 'M PLUS Rounded 1c', sans-serif;
+        box-shadow: 0 4px 15px rgba(255, 107, 129, 0.4);
+    ">扉をあける 🌸</button>
+    
+    <p id="error-msg" style="color: #ff4444; font-size: 0.75rem; margin-top: 15px; display: none; font-weight: 800;">
+        合言葉が違いますぅ…。<br>もう一度確認してみてくださいね？
+    </p>
+</div>
 
-<div class="status-bar" id="top-status-bar" style="display: none;">
-    <div class="system-clock" id="i-clock">00:00:00</div>
-    <div class="ticker-wrap">
-        <div class="ticker-content" id="i-ticker-msg">🌸 [システム稼働中] 1号艇の逃げ信頼度を精密解析していますっ♪ 🌸</div>
+<div id="main-content" style="display: none; width: 100%;">
+    ```
+
+
+<header class="header-banner">
+    <img src="Gemini_Generated_Image_se1losse1losse1l.png" alt="一果の鬼絞り判定所">
+</header>
+
+<div class="outer-frame">
+    <div class="top-section">
+        <div class="chara-container">
+            <img src="ichika_chara3.png" class="ichika-chara" id="ichikaImg">
+        </div>
+        <div class="input-top-right">
+            <div class="admin-pass-wrapper">
+                <img src="gold_keyhole.png" class="gold-keyhole-icon">
+                <input type="password" id="adminPass" class="admin-pass-input" placeholder="合言葉？" oninput="checkAdmin()">
+            </div>
+            <div class="stadium-select-wrapper">
+                <div class="stadium-text-display" id="stadiumName">競艇場を選択</div>
+                <select class="stadium-select" id="stadium" onchange="showStadiumMemo()">
+                    <option value="">選択してください</option>
+                    <option value="01 桐生">01 桐生</option><option value="02 戸田">02 戸田</option><option value="03 江戸川">03 江戸川</option>
+                    <option value="04 平和島">04 平和島</option><option value="05 多摩川">05 多摩川</option><option value="06 浜名湖">06 浜名湖</option>
+                    <option value="07 蒲郡">07 蒲郡</option><option value="08 常滑">08 常滑</option><option value="09 津">09 津</option>
+                    <option value="10 三国">10 三国</option><option value="11 びわこ">11 びわこ</option><option value="12 住之江">12 住之江</option>
+                    <option value="13 尼崎">13 尼崎</option><option value="14 鳴門">14 鳴門</option><option value="15 丸亀">15 丸亀</option>
+                    <option value="16 児島">16 児島</option><option value="17 宮島">17 宮島</option><option value="18 徳山">18 徳山</option>
+                    <option value="19 下関">19 下関</option><option value="20 若松">20 若松</option><option value="21 芦屋">21 芦屋</option>
+                    <option value="22 福岡">22 福岡</option><option value="23 唐津">23 唐津</option><option value="24 大村">24 大村</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="stadium-memo-wrapper" id="stadiumMemo">
+        <div class="memo-title" id="memoTitle">🌸 競艇場の特徴 🌸</div>
+        <div class="memo-content" id="memoText">場を選択すると、一果が豆知識を教えちゃうんですよぉ。</div>
+        <a href="date1.html" class="memo-link">もっと詳しいデータを見る？ 🌸</a>
+    </div>
+
+    <div class="param-controls">
+        <div class="control-row"><label class="control-label">① 1号艇 2連対率</label><div class="slider-group"><input type="range" id="rank1" min="0" max="100" value="70" oninput="updateVal('rank1Val', this.value + '%')"><span class="val-disp" id="rank1Val">70%</span></div></div>
+        <div class="control-row"><label class="control-label">② 1号艇 平均ST</label><div class="slider-group"><input type="range" id="st1" min="10" max="25" value="15" oninput="updateVal('st1Val', '0.' + this.value + 's')"><span class="val-disp" id="st1Val">0.15s</span></div></div>
+        <div class="control-row"><label class="control-label">③ 1号艇 展示気配</label><div class="slider-group"><input type="range" id="tenji1" min="-2" max="2" value="0" oninput="updateTenjiDisplay(this.value)"><span class="val-disp" id="tenjiVal">普通</span></div></div>
+        <div class="control-row"><label class="control-label">④ 2号艇 2連対率 (壁)</label><div class="slider-group"><input type="range" id="rank2" min="0" max="100" value="50" oninput="updateVal('rank2Val', this.value + '%')"><span class="val-disp" id="rank2Val">50%</span></div></div>
+        <div class="control-row"><label class="control-label">⑤ 2号艇 ST (凹み)</label><div class="slider-group"><input type="range" id="st2" min="10" max="25" value="15" oninput="updateVal('st2Val', '0.' + this.value + 's')"><span class="val-disp" id="st2Val">0.15s</span></div></div>
+        <div class="control-row"><label class="control-label">⑥ その他条件</label><select id="condition" class="condition-select"><option value="0">普通</option><option value="-15">外に超抜あり</option><option value="-25">外に超抜複数</option><option value="-10">追い風強</option><option value="-12">向かい風強</option></select></div>
+        <button class="calc-btn" onclick="calculate()">一果に聞いてみる♪</button>
+    </div>
+
+    <div id="result">
+        <div class="balloon" id="adviceBalloon"><div id="advice" style="font-weight: bold;"></div></div>
+        <div style="font-size: 0.75rem; color: #8c6a4a;">推定逃げ確率</div>
+        <span class="score-display" id="score">0%</span>
+
+        <div id="share-card-area">
+            <div class="share-title">🌸 一果の1号艇・鬼絞り判定 🌸</div>
+            <div class="share-stadium" id="share-stadium-name">--</div>
+            <div style="font-size: 0.7rem; color: #8c6a4a;">推定イン逃げ確率</div>
+            <div class="share-score" id="share-score-val">0%</div>
+            <div id="share-advice" style="font-size: 0.8rem; margin-top: 10px; font-weight: 800; color: #444;"></div>
+            <img src="ichika_chara3.png" style="width: 70px; position: absolute; bottom: 10px; right: 10px; opacity: 0.8;">
+            <div class="share-footer">#BOATSTRIKE #一果の鬼絞り判定</div>
+        </div>
+        <button class="save-btn" onclick="saveAsImage()">画像を保存してSNSに投稿する 🌸</button>
+        
+        <button class="correction-toggle-btn" id="toggleBtn" onclick="toggleCorrection()">選手個別のデータでさらに補正する ＋</button>
+
+        <div id="player-correction">
+            <p style="font-size: 0.75rem; color: #ff6b81; font-weight: 800; text-align: center; margin-bottom: 10px;">【選手データ補正】</p>
+            <div class="control-row"><label class="control-label">⑦ 1号艇 逃げ率</label><div class="slider-group"><input type="range" id="p1_nige" min="0" max="100" value="50" oninput="reCalc()"><span class="val-disp" id="v_p1n">50%</span></div></div>
+            <div class="control-row"><label class="control-label">⑧ 1号艇 被差し率</label><div class="slider-group"><input type="range" id="p1_sashi" min="0" max="40" value="10" oninput="reCalc()"><span class="val-disp" id="v_p1s">10%</span></div></div>
+            <div class="control-row"><label class="control-label">⑨ 1号艇 被捲られ率</label><div class="slider-group"><input type="range" id="p1_maku" min="0" max="40" value="5" oninput="reCalc()"><span class="val-disp" id="v_p1m">5%</span></div></div>
+            <hr style="border: 0; border-top: 1px dashed #ffcad4; margin: 10px 0;">
+            <div class="control-row"><label class="control-label">⑩ 2号艇 逃がし率</label><div class="slider-group"><input type="range" id="p2_nigashi" min="0" max="100" value="50" oninput="reCalc()"><span class="val-disp" id="v_p2n">50%</span></div></div>
+            <div class="control-row"><label class="control-label">⑪ 2号艇 差し率</label><div class="slider-group"><input type="range" id="p2_sashi" min="0" max="40" value="15" oninput="reCalc()"><span class="val-disp" id="v_p2s">15%</span></div></div>
+            <div class="control-row"><label class="control-label">⑫ 2号艇 まくり率</label><div class="slider-group"><input type="range" id="p2_maku" min="0" max="40" value="5" oninput="reCalc()"><span class="val-disp" id="v_p2m">5%</span></div></div>
+        </div>
+
+        <div class="record-container">
+            <span class="record-label">【1】逃げ判定（答え合わせ）</span>
+            <div class="btn-row"><button class="btn-tool-hit" onclick="saveData('tool', true)">逃げた</button><button class="btn-tool-miss" onclick="saveData('tool', false)">逃げず</button></div>
+            <span class="record-label">【2】自分予想（収支記録）</span>
+            <div class="btn-row"><button class="btn-self-hit" onclick="saveData('self', true)">的中！</button><button class="btn-self-miss" onclick="saveData('self', false)">不的中</button></div>
+        </div>
     </div>
 </div>
 
-<div id="lock-screen">
-    <img src="30e480e9-e3b7-475e-97e2-130141b7b1e3.png" style="width: 120px; margin-bottom: 10px;">
-    <h2 style="font-weight: 900; margin: 0;">鬼絞り判定所</h2>
-    <p style="font-size: 14px; font-weight: bold; margin-bottom: 25px;">IN-SIDE PRECISION ANALYZE</p>
-
-    <div class="intro-box">
-        <p class="intro-title">✨ 一果のツールでできることっ！ ✨</p>
-        <ul class="intro-list">
-            <li><b>1号艇の「逃げ信頼度」を極限まで可視化</b></li>
-            <li><b>本命レースを絞り込んで無駄をカット🌸</b></li>
-            <li><b>選手個別の詳細データでさらに精密補正</b></li>
-        </ul>
+<div class="stats-card">
+    <h2 style="font-size: 1.1rem; color: #ff6b81; text-align: center; margin-top: 0;">🏆 総合・場別分析パネル</h2>
+    <div class="stats-grid">
+        <div class="stat-box" style="border-top: 4px solid #087f5b;"><span class="stat-val" id="rateHigh">0%</span><span class="stat-label">🔥 鉄板成功率<br><small id="countHigh">(75%以上時)</small></span></div>
+        <div class="stat-box" style="border-top: 4px solid #f08c00;"><span class="stat-val" id="rateMid">0%</span><span class="stat-label">⚖️ 本命成功率<br><small id="countMid">(60-74%時)</small></span></div>
+        <div class="stat-box" style="background: #e9f2ff; border-top: 4px solid #004085;"><span class="stat-val" id="adminTotalRate" style="color: #004085;">0%</span><span class="stat-label">👑 管理人的中率<br><small id="adminTotalCount">(全データ)</small></span></div>
+        <div class="stat-box" style="background: #f0fff4; border-top: 4px solid #2f855a;"><span class="stat-val" id="selfTotalRate" style="color: #2f855a;">0%</span><span class="stat-label">👤 自分の的中率<br><small id="selfTotalCount">(個人成績)</small></span></div>
     </div>
-
-    <div class="lock-card">
-        <input type="text" id="pass" class="lock-input" placeholder="合言葉は？">
-        <button class="lock-btn" onclick="checkPass()">扉をあける 🌸</button>
-    </div>
-
-    <div style="margin-top: 30px;">
-        <p style="font-size: 13px;">合言葉は公式LINEで配布中っ🌸</p>
-        <a href="https://lin.ee/y2p5W3n" target="_blank" style="background:#06c755; color:white; padding:12px 30px; border-radius:50px; text-decoration:none; font-weight:bold; display:inline-block;">💬 LINEで合言葉をGET</a>
-    </div>
-</div>
-
-<div id="main-content">
-    <header class="header-banner">
-        <img src="Gemini_Generated_Image_se1losse1losse1l.png" alt="一果の鬼絞り判定所">
-    </header>
-
-    <div class="outer-frame">
-        <div class="top-section">
-            <div class="chara-container">
-                <img src="ichika_chara3.png" class="ichika-chara" id="ichikaImg">
-            </div>
-            <div class="input-top-right">
-                <div class="stadium-select-wrapper">
-                    <div class="stadium-text-display" id="stadiumName">場を選択</div>
-                    <select class="stadium-select" id="stadium" onchange="showStadiumMemo()">
-                        <option value="">選択してください</option>
-                        <option value="01 桐生">01 桐生</option><option value="02 戸田">02 戸田</option><option value="24 大村">24 大村</option>
-                        </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="stadium-memo-wrapper" id="stadiumMemo">
-            <div class="memo-title" id="memoTitle">🌸 競艇場の特徴 🌸</div>
-            <div class="memo-content" id="memoText">場を選択すると、一果のアドバイスが表示されますっ。</div>
-        </div>
-
-        <div class="param-controls">
-            <label class="control-label">① 1号艇 2連対率</label>
-            <div class="slider-group"><input type="range" id="rank1" min="0" max="100" value="70" oninput="updateVal('rank1Val', this.value + '%')"><span class="val-disp" id="rank1Val">70%</span></div>
-            
-            <label class="control-label">② 1号艇 展示気配</label>
-            <div class="slider-group"><input type="range" id="tenji1" min="-2" max="2" value="0" oninput="updateTenjiDisplay(this.value)"><span class="val-disp" id="tenjiVal">普通</span></div>
-
-            <label class="control-label">③ その他条件</label>
-            <select id="condition" class="condition-select"><option value="0">普通</option><option value="-15">外に超抜あり</option><option value="-10">追い風強</option></select>
-
-            <button class="calc-btn" onclick="calculate()">一果に聞いてみる♪</button>
-        </div>
-
-        <div id="result">
-            <div class="balloon" id="adviceBalloon"><strong><span id="advice"></span></strong></div>
-            <div style="font-size: 0.75rem; color: #8c6a4a;">推定逃げ確率</div>
-            <span class="score-display" id="score">0%</span>
-
-            <div id="share-card-area">
-                <div style="font-weight:900; color:#ff6b81;">🌸 一果の鬼絞り判定結果 🌸</div>
-                <div id="share-score-val" style="font-size:2.5rem; font-weight:900;">0%</div>
-            </div>
-            <button class="save-btn" onclick="saveAsImage()">結果を画像で保存 🌸</button>
-        </div>
-    </div>
-
-    <div class="footer-fixed-nav">
-        <a href="hatsune.html" class="nav-item nav-hatsune"><span class="nav-icon">🍀</span><span class="nav-label">初音ツール</span></a>
-        <a href="kiina5.html" class="nav-item nav-kiina"><span class="nav-icon">⚡</span><span class="nav-label">キイナツール</span></a>
-        <a href="index.html" class="nav-item nav-home"><span class="nav-icon">🏠</span><span class="nav-label">HOME</span></a>
-    </div>
+    <div class="table-container"><table><thead><tr><th>競艇場</th><th>管理人</th><th>自分</th></tr></thead><tbody id="fieldStatsBody"></tbody></table></div>
+    <button class="reset-btn" onclick="resetStats()">ローカルデータをリセット</button>
 </div>
 
 <script>
-    const stadiumBaseData = {"01 桐生": 51, "02 戸田": 44, "24 大村": 66};
-    
-    function checkPass() {
-        if(document.getElementById('pass').value === "0913") {
+function checkPass() {
+    const pass = document.getElementById('pass-input').value;
+    const secret = "0913"; // ここに好きな合言葉を設定してください（例：いちか）
+
+    if (pass === secret) {
+        // 成功時の演出
+        document.getElementById('lock-screen').style.transition = "0.5s";
+        document.getElementById('lock-screen').style.opacity = "0";
+        setTimeout(() => {
             document.getElementById('lock-screen').style.display = 'none';
             document.getElementById('main-content').style.display = 'block';
-            document.getElementById('top-status-bar').style.display = 'flex';
-            updateClock();
-        } else { alert("合言葉が違いますぅ…。"); }
+            alert("認証成功ですっ🌸 ゆっくりしていってくださいねぇ♪");
+        }, 500);
+    } else {
+        // 失敗時
+        const msg = document.getElementById('error-msg');
+        msg.style.display = 'block';
+        // ぷるぷる震える演出（オプション）
+        document.getElementById('pass-input').style.borderColor = "#ff4444";
+        setTimeout(() => { document.getElementById('pass-input').style.borderColor = "#ffcad4"; }, 500);
     }
+}
+
+    
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbyUkTIb26j8PG4vFKxflHTVnL51kzj0w1_CHPkPeh0Hy-rY5MNSKEL3PtFQTMJCH5K-EA/exec";
+    const stadiumBaseData = {"01 桐生": 51, "02 戸田": 44, "03 江戸川": 45, "04 平和島": 45, "05 多摩川": 53, "06 浜名湖": 54, "07 蒲郡": 55, "08 常滑": 55, "09 津": 54, "10 三国": 53, "11 びわこ": 49, "12 住之江": 58, "13 尼崎": 54, "14 鳴門": 50, "15 丸亀": 54, "16 児島": 55, "17 宮島": 54, "18 徳山": 63, "19 下関": 60, "20 若松": 56, "21 芦屋": 61, "22 福岡": 45, "23 唐津": 55, "24 大村": 66};
+    const stadiumMemos = {"01 桐生": "標高が高くて、イン逃げ率は標準的ですぅ。夜はモーターの力が強くなるんですよぉ。", "02 戸田": "日本一狭いコースで、イン逃げ率は低めです…。カドからの攻めに注意してくださいねっ。", "03 江戸川": "日本唯一の河川コース！流れが強くて、イン逃げはとっても難しいんですよぉ…。", "04 平和島": "「東のメッカ」ですねっ。差しや捲りが決まりやすくて、インは苦戦気味ですぅ。", "12 住之江": "「聖地」ですね！イン逃げ率は高めで、安定感がありますぅ。さすがの迫力ですっ。", "18 徳山": "インがとーっても強い場ですっ。6割以上も逃げが決まるので、安心感がありますねぇ。", "24 大村": "日本一のインの聖地！迷ったら1号艇さん、って言われるくらい強いんですよぉ🌸"};
+
+    let lastScore = 0;
+    let currentStadium = "";
+    let isAdmin = false;
+    let adminFieldData = {};
 
     function updateVal(id, val) { document.getElementById(id).innerText = val; }
-    function updateTenjiDisplay(val) { const texts = {"-2":"最悪","-1":"劣勢","0":"普通","1":"良好","2":"超抜"}; document.getElementById('tenjiVal').innerText = texts[val]; }
+    function updateTenjiDisplay(val) { const texts = { "-2": "最悪", "-1": "やや劣勢", "0": "普通", "1": "良好", "2": "超抜" }; document.getElementById('tenjiVal').innerText = texts[val]; }
 
     function showStadiumMemo() {
-        const val = document.getElementById('stadium').value;
-        document.getElementById('stadiumName').innerText = val || "場を選択";
-        document.getElementById('memoText').innerText = val ? `${val}はイン逃げ率 ${stadiumBaseData[val]}% の場ですよぉ🌸` : "場を選択してくださいねぇ。";
+        const select = document.getElementById('stadium');
+        currentStadium = select.value;
+        if (currentStadium === "") { document.getElementById('stadiumName').innerText = "競艇場を選択"; return; }
+        document.getElementById('stadiumName').innerText = currentStadium;
+        const info = stadiumMemos[currentStadium] || "バランスの良い場ですねぇ。一果と一緒に見極めましょう。";
+        document.getElementById('memoTitle').innerText = `🌸 ${currentStadium} の特徴 🌸`;
+        document.getElementById('memoText').innerHTML = `平均イン逃げ率：<strong>${stadiumBaseData[currentStadium]}%</strong><br>${info}`;
+    }
+
+    function checkAdmin() { isAdmin = (document.getElementById('adminPass').value === "0913"); document.getElementById('adminPass').style.backgroundColor = isAdmin ? "#e6fcf5" : "#fff"; }
+
+    function toggleCorrection() {
+        const area = document.getElementById('player-correction');
+        const btn = document.getElementById('toggleBtn');
+        area.style.display = (area.style.display === "none") ? "block" : "none";
+        btn.innerText = (area.style.display === "none") ? "選手個別のデータでさらに補正する ＋" : "補正エリアを閉じる −";
     }
 
     function calculate() {
-        const stadium = document.getElementById('stadium').value;
-        if(!stadium) { alert("場を選んでくださいね♪"); return; }
-        
+        if (!currentStadium) { alert("場を選んでくださいね♪"); return; }
+        document.getElementById('result').style.display = "block";
+        reCalc();
+        window.scrollTo({ top: document.getElementById('result').offsetTop - 20, behavior: 'smooth' });
+    }
+
+    function reCalc() {
         const r1 = parseInt(document.getElementById('rank1').value);
+        const st1 = parseInt(document.getElementById('st1').value);
         const tj1 = parseInt(document.getElementById('tenji1').value);
+        const r2 = parseInt(document.getElementById('rank2').value);
+        const st2 = parseInt(document.getElementById('st2').value);
         const cd = parseInt(document.getElementById('condition').value);
 
-        let res = Math.round(stadiumBaseData[stadium] + (r1-50)*0.5 + tj1*8 + cd);
-        res = Math.min(98, Math.max(5, res));
-
-        document.getElementById('result').style.display = "block";
-        document.getElementById('score').innerText = res + "%";
-        document.getElementById('share-score-val').innerText = res + "%";
-        document.getElementById('share-card-area').style.display = "block";
+        let fix = (r1-50)*0.6 + (15-st1)*2.5 + tj1*8 + (r2-50)*0.3 + (st2>=18 ? (17-st2)*5.5 : (15-st2)*1.0) + cd + 5;
         
-        const msg = res >= 80 ? "「鬼絞りのチャンスですっ！一果、太鼓判押しちゃいます🌸」" : "「イン逃げの気配はありますが、油断は禁物ですよぉ？」";
-        document.getElementById('advice').innerText = msg;
-        
-        if(res >= 80) document.getElementById('ichikaImg').classList.add('ichika-bounce');
-        else document.getElementById('ichikaImg').classList.remove('ichika-bounce');
+        const p1n = (parseInt(document.getElementById('p1_nige').value) - 50) * 0.4;
+        const p1s = (10 - parseInt(document.getElementById('p1_sashi').value)) * 0.7;
+        const p1m = (5 - parseInt(document.getElementById('p1_maku').value)) * 0.8;
+        const p2n = (parseInt(document.getElementById('p2_nigashi').value) - 50) * 0.4;
+        const p2s = (15 - parseInt(document.getElementById('p2_sashi').value)) * 0.3;
+        const p2m = (5 - parseInt(document.getElementById('p2_maku').value)) * 0.4;
 
-        window.scrollTo({ top: document.getElementById('result').offsetTop - 100, behavior: 'smooth' });
+        updateVal('v_p1n', document.getElementById('p1_nige').value + '%');
+        updateVal('v_p1s', document.getElementById('p1_sashi').value + '%');
+        updateVal('v_p1m', document.getElementById('p1_maku').value + '%');
+        updateVal('v_p2n', document.getElementById('p2_nigashi').value + '%');
+        updateVal('v_p2s', document.getElementById('p2_sashi').value + '%');
+        updateVal('v_p2m', document.getElementById('p2_maku').value + '%');
+
+        lastScore = Math.round(Math.min(98, Math.max(5, (stadiumBaseData[currentStadium] || 52) + fix + p1n + p1s + p1m + p2n + p2s + p2m)));
+
+        const img = document.getElementById('ichikaImg');
+        const balloon = document.getElementById('adviceBalloon');
+        img.classList.remove('ichika-bounce');
+        balloon.classList.remove('gold-mode');
+
+        const msgList = {
+            90: ["「究極の**“鬼絞り”**発動ですっ！一果、ノートに特大の花丸をつけちゃいます🌸」", "「ふわぁぁ…！これはもう、迷わずイン逃げを信じて良さそうですよぉ🌸」", "「1号艇さんの独壇場ですねっ。一果も安心して見ていられますぅ🌸」"],
+            80: ["「盤石の気配ですねぇ♪ イン逃げを信じて、点数を絞って勝負ですよぉ🌸」", "「1号艇さん、とっても強そうですっ。本命サイドでガッツリ狙いましょう♪」", "「ここは一果も太鼓判！逃げ切る姿が目に浮かびますねぇ🌸」"],
+            65: ["「逃げの気配は十分！でも2号艇さんの差しが鋭いとヒモが荒れるかも…？」", "「イン有利は揺るぎませんが、相手選びが重要になりそうですねぇ🌸」", "「逃げそうですが…2着争いが激しくなりそうな予感がしますぅ。」"],
+            60: ["「逃げそうですが…外枠の足音が聞こえますぅ。捲り差しに注意してくださいねっ。」", "「60%台、本命党さんの出番ですねっ。でも油断は禁物ですよぉ？」", "「イン逃げ確率は高めですが、スタートの凹みが怖いですねぇ…。」"],
+            55: ["「うぅ〜ん、五分五分よりは上…といったところ。展示タイムをよく見てくださいねぇ。」", "「ちょっと悩ましいラインですね。1号艇さんがどこまで踏ん張れるか…！」", "「逃げる確率は低くないですが、一果ならヒモを少し広げちゃいます🌸」"],
+            50: ["「ちょうど真ん中、運命の分かれ道ですっ。1マークの攻防から目が離せませんよぉ…！」", "「50%…イン逃げか、それとも波乱か。ドキドキしちゃいますねぇ。」", "「まさに五分五分！ここは選手の“腕”を信じるしかありませんっ…！」"],
+            45: ["「イン逃げはちょっと苦戦するかも。2着・3着に誰を残すか、腕の見せ所ですねっ。」", "「逃げ切るには、かなり精度の高いスタートが求められそうですよぉ…。」", "「一果的には、ちょっと1号艇さんが不安そうに見えちゃいますねぇ…。」"],
+            40: ["「40%台…波乱の予感がぷんぷんしますっ！無理は禁物。一果なら少し慎重になりますぅ。」", "「うぅ〜ん、ここはイン逃げを過信しちゃダメなパターンかも…？」", "「荒れる匂いがしますねぇ。本命党さんも、ここはお財布と相談ですっ⚠️」"],
+            35: ["「混戦模様ですねぇ…。ここは本命党さん泣かせの、難しいレースになりそうですぅ。」", "「1号艇さん、かなり攻められそうな予感が…。一果、ハラハラしちゃいますぅ。」", "「ここは難しい…！インが勝つには、かなりの幸運が必要かもしれませんねぇ。」"],
+            0: ["「一果、大切なお金を守るために“見”を推奨しますっ！次はもっと良い場を探しましょう🌸」", "「ここは波乱の香りが強すぎますっ！一果なら、次までガマンしちゃいますねぇ。」", "「無理は禁物ですよぉ。もっと自信を持って勝負できるレースを待ちましょう🌸」"]
+        };
+
+        const keys = [90, 80, 65, 60, 55, 50, 45, 40, 35, 0];
+        const patterns = msgList[keys.find(k => lastScore >= k)];
+        const comment = patterns[Math.floor(Math.random() * patterns.length)];
+
+        if(lastScore >= 80) { img.classList.add('ichika-bounce'); balloon.classList.add('gold-mode'); }
+        
+        document.getElementById('score').innerText = lastScore + "%";
+        document.getElementById('advice').innerHTML = `<strong>${comment}</strong>`;
+        document.getElementById('result').className = (lastScore >= 75) ? "high" : (lastScore <= 40) ? "low" : "mid";
+
+        // シェアカード反映
+        document.getElementById('share-card-area').style.display = 'block';
+        document.getElementById('share-stadium-name').innerText = currentStadium;
+        document.getElementById('share-score-val').innerText = lastScore + "%";
+        document.getElementById('share-advice').innerText = comment.replace(/\*\*|🌸/g, "");
     }
 
-    function updateClock() {
-        const now = new Date();
-        const h = now.getHours();
-        document.getElementById('i-clock').innerText = now.toLocaleTimeString('ja-JP', { hour12: false });
-        let m = (h >= 8 && h < 11) ? "🌸 モーニング開催中ですっ♪" : (h >= 15 && h < 21) ? "🌸 ナイター開催中ですっ♪" : "🌸 解析システム稼働中ですよぉ♪";
-        document.getElementById('i-ticker-msg').innerText = m;
+    async function saveData(type, isHit) {
+        const img = document.getElementById('ichikaImg');
+        const advice = document.getElementById('advice');
+        const old = advice.innerHTML;
+        advice.innerHTML = isHit ? "「的中ですっ♪ おめでとうございます〜！！」" : "「残念でしたぁ…。次は一果が頑張りますねぇ…。」";
+        if(isHit) img.classList.add('ichika-bounce');
+        setTimeout(() => { advice.innerHTML = old; if(lastScore < 80) img.classList.remove('ichika-bounce'); }, 2500);
+        
+        let stats = JSON.parse(localStorage.getItem('boatDoubleStats')) || {};
+        if (!stats[currentStadium]) stats[currentStadium] = { tT: 0, tH: 0, sT: 0, sH: 0 };
+        if(type === 'tool') { stats[currentStadium].tT++; if(isHit) stats[currentStadium].tH++; } else { stats[currentStadium].sT++; if(isHit) stats[currentStadium].sH++; }
+        localStorage.setItem('boatDoubleStats', JSON.stringify(stats));
+        renderTable();
     }
-    setInterval(updateClock, 1000);
+
+    async function loadAdminStats() {
+        try {
+            const res = await fetch(GAS_URL); const data = await res.json();
+            document.getElementById('rateHigh').innerText = data.highRate + "%";
+            document.getElementById('rateMid').innerText = data.midRate + "%";
+            document.getElementById('adminTotalRate').innerText = data.adminRate + "%";
+            adminFieldData = data.fields; renderTable();
+        } catch(e) {}
+    }
+
+    function renderTable() {
+        let stats = JSON.parse(localStorage.getItem('boatDoubleStats')) || {};
+        let tbody = document.getElementById('fieldStatsBody'); tbody.innerHTML = "";
+        let st = 0, sh = 0;
+        Object.keys(stadiumBaseData).forEach(name => {
+            let s = stats[name] || { sT: 0, sH: 0 }; let a = adminFieldData[name] || { t: 0, h: 0 };
+            st += s.sT; sh += s.sH;
+            tbody.innerHTML += `<tr><td>${name}</td><td>${a.h}/${a.t}</td><td>${s.sH}/${s.sT}</td></tr>`;
+        });
+        document.getElementById('selfTotalRate').innerText = (st > 0 ? Math.round(sh/st*100) : 0) + "%";
+    }
 
     function saveAsImage() {
-        html2canvas(document.getElementById('share-card-area')).then(canvas => {
+        const card = document.getElementById('share-card-area');
+        html2canvas(card, { scale: 2 }).then(canvas => {
             const link = document.createElement('a');
-            link.download = 'ichika_result.png';
-            link.href = canvas.toDataURL();
+            link.download = `ichika_nige_${currentStadium}.png`;
+            link.href = canvas.toDataURL("image/png");
             link.click();
+            alert("画像を保存しましたっ🌸 SNSに貼り付けて自慢しちゃいましょう！");
         });
     }
-</script>
 
+    function resetStats() { if(confirm("リセットしちゃいますかぁ？")) { localStorage.clear(); renderTable(); } }
+    window.onload = () => { renderTable(); loadAdminStats(); };
+</script>
+    <!-- admax -->
+<script src="https://adm.shinobi.jp/s/e65909d39a271ad3779bc0a29eca55ec"></script>
+<!-- admax -->
+<nav class="footer-sitemap">
+    <div class="sitemap-title">一果の案内所 🌸</div>
+    <div class="sitemap-grid">
+        <a href="date1.html" class="sitemap-item">
+            <span class="sitemap-icon">📚</span>
+            <span>24場・攻略ノート</span>
+            <span class="sitemap-desc">全国の傾向を丸裸に🌸</span>
+        </a>
+        
+        <a href="https://note.com/boat_strikers" class="sitemap-item" target="_blank">
+            <span class="sitemap-icon">📝</span>
+            <span>一果のnote</span>
+            <span class="sitemap-desc">限定・鬼絞り予想公開中！</span>
+        </a>
+
+        <a href="https://fantia.jp/あなたのID" class="sitemap-item" target="_blank">
+            <span class="sitemap-icon">🎀</span>
+            <span>Fantiaサポーター</span>
+            <span class="sitemap-desc">準備中♪</span>
+        </a>
+
+        <a href="https://www.youtube.com/@BoatStrikers_official" class="sitemap-item">
+            <span class="sitemap-icon"🏠</span>
+            <span>YouTube</span></span>
+            <span class="sitemap-desc">頑張ってますっ</span>
+        </a>
+    </div>
+</nav>
+
+<div class="footer-copy">
+    &copy; P-STAR / BOAT STRIKE Project 2026
+</div>
 </body>
 </html>
+
+
+
+一果ちゃんのツールも合言葉をいれるところにツールの詳細と公式LINEの誘導、ページ上部の固定と下部のリンク固定をキイナちゃん、初音ちゃんみたいにお願いします
