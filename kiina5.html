@@ -6,318 +6,138 @@
 <title>キイナの5 Master判定所 ⚡ BOAT STRIKE</title>
 
 <style>
-/* --- ヘッダー・ステータスバー（最上部に固定） --- */
+/* --- ヘッダー・ステータスバー --- */
 .status-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background: rgba(10, 25, 41, 0.95);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    position: fixed; top: 0; left: 0; width: 100%;
+    background: rgba(10, 25, 41, 0.95); backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(0, 210, 255, 0.4);
-    padding: 8px 15px;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    z-index: 1000;
-    box-sizing: border-box;
+    padding: 8px 15px; display: flex; align-items: center; z-index: 1000; box-sizing: border-box;
 }
+.system-clock { font-family: 'Courier New', monospace; font-weight: bold; color: #ffcc00; font-size: 14px; margin-right: 15px; border-right: 1px solid rgba(0, 210, 255, 0.3); padding-right: 10px; }
+.ticker-wrap { flex: 1; overflow: hidden; }
+.ticker-content { display: inline-block; white-space: nowrap; font-size: 12px; font-weight: bold; color: #00d2ff; animation: k-ticker 15s linear infinite; }
+@keyframes k-ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-.system-clock {
-    font-family: 'Courier New', Courier, monospace;
-    font-weight: bold;
-    color: #ffcc00;
-    font-size: 14px;
-    margin-right: 15px;
-    white-space: nowrap;
-    border-right: 1px solid rgba(0, 210, 255, 0.3);
-    padding-right: 10px;
-}
+/* ベースデザイン */
+body { font-family: sans-serif; background-image: url('IMG_4726.png'); background-size: cover; background-position: center; background-attachment: fixed; margin: 0; padding: 10px; color: #fff; }
+.container { max-width: 480px; margin: 55px auto 20px; background: rgba(10, 25, 41, 0.93); backdrop-filter: blur(10px); padding: 20px; border-radius: 25px; border: 1px solid rgba(0, 210, 255, 0.3); box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5); box-sizing: border-box; }
+.header-img-area img { width: 100%; border-radius: 15px; }
 
-.ticker-wrap {
-    flex: 1;
-    overflow: hidden;
-}
-
-.ticker-content {
-    display: inline-block;
-    white-space: nowrap;
-    font-size: 12px;
-    font-weight: bold;
-    color: #00d2ff;
-    animation: k-ticker 15s linear infinite;
-}
-
-@keyframes k-ticker {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
-}
-
-/* 背景：稲妻画像 */
-body {
-  font-family: 'Helvetica Neue', Arial, "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
-  background-image: url('IMG_4726.png');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  margin: 0;
-  padding: 10px;
-  color: #fff;
-}
-
-/* メインコンテナ：ステータスバー分(約50px)の余白を上に確保 */
-.container {
-  max-width: 480px;
-  margin: 55px auto 20px; /* 上の余白を55pxに設定 */
-  background: rgba(10, 25, 41, 0.93);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  padding: 20px;
-  border-radius: 25px;
-  border: 1px solid rgba(0, 210, 255, 0.3);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
-  box-sizing: border-box;
-}
-
-.header-img-area img {
-  width: 100%;
-  border-radius: 15px;
-}
-
-.chara-section {
-  display: flex;
-  align-items: center;
-  margin-bottom: 25px;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 15px;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
+/* キャラセクション */
+.chara-section { display: flex; align-items: center; margin-bottom: 25px; background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); }
 .chara-img { width: 100px; flex-shrink: 0; margin-right: 15px; }
 .chara-img img { width: 100%; height: auto; }
+.advice-bubble { flex: 1; background: rgba(0, 82, 212, 0.2); border: 1px solid #00d2ff; border-radius: 15px; padding: 12px; font-size: 13px; line-height: 1.5; color: #e0f7ff; min-height: 50px; display: flex; align-items: center; }
 
-.advice-bubble {
-  flex: 1;
-  background: rgba(0, 82, 212, 0.2);
-  border: 1px solid #00d2ff;
-  border-radius: 15px;
-  padding: 12px;
-  font-size: 13px;
-  line-height: 1.5;
-  color: #e0f7ff;
-}
+/* 入力・ボタン */
+label { display: block; font-weight: bold; margin: 20px 0 8px; font-size: 14px; border-left: 4px solid #ffcc00; padding-left: 10px; }
+select { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.3); background: rgba(0, 0, 0, 0.6); color: #fff; font-size: 16px; appearance: none; }
+.calc-btn { width: 100%; padding: 20px; background: linear-gradient(45deg, #0052d4, #00d2ff); color: white; border: none; border-radius: 50px; font-size: 20px; font-weight: bold; margin: 30px 0 10px; box-shadow: 0 0 20px rgba(0, 210, 255, 0.6); }
 
-label {
-  display: block;
-  font-weight: bold;
-  margin: 20px 0 8px;
-  font-size: 14px;
-  color: #eee;
-  border-left: 4px solid #ffcc00;
-  padding-left: 10px;
-}
-label span { color: #ffcc00; margin-right: 5px; }
+/* 解析結果エリア（スリム版） */
+.result-box { margin-top: 25px; padding: 25px; border-radius: 20px; background: rgba(0, 0, 0, 0.5); border: 2px solid #ffcc00; display: none; text-align: center; }
+.percent-display { font-size: 55px; font-weight: bold; color: #ffcc00; text-shadow: 0 0 20px rgba(255, 204, 0, 0.5); font-family: 'Impact', sans-serif; }
+.analysis-msg-box { margin-top: 15px; font-size: 14px; font-weight: bold; color: #00d2ff; line-height: 1.4; padding: 10px; border-top: 1px solid rgba(255,255,255,0.1); }
 
-select {
-  width: 100%;
-  padding: 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  background: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  font-size: 16px;
-  appearance: none;
-}
-
-.calc-btn {
-  width: 100%;
-  padding: 20px;
-  background: linear-gradient(45deg, #0052d4, #00d2ff);
-  color: white;
-  border: none;
-  border-radius: 50px;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 0 20px rgba(0, 210, 255, 0.6);
-  margin: 30px 0 10px;
-}
-
-.result-box {
-  margin-top: 25px;
-  padding: 25px;
-  border-radius: 20px;
-  background: rgba(0, 0, 0, 0.5);
-  border: 2px solid #ffcc00;
-  display: none;
-  text-align: center;
-}
-.percent-display {
-  font-size: 55px;
-  font-weight: bold;
-  color: #ffcc00;
-  text-shadow: 0 0 20px rgba(255, 204, 0, 0.5);
-  font-family: 'Impact', sans-serif;
-}
-.eye-box {
-  margin-top: 20px;
-  padding: 15px;
-  background: rgba(214, 51, 132, 0.2);
-  border-radius: 12px;
-  font-weight: bold;
-  color: #ff66b2;
-  border: 1px dashed #ff66b2;
-}
+/* 固定ナビ */
+.footer-fixed-nav { position: fixed; bottom: 0; left: 0; width: 100%; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 10px 15px 25px; background: rgba(10, 25, 41, 0.95); border-top: 2px solid rgba(0, 210, 255, 0.3); z-index: 1000; box-sizing: border-box; }
+.nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; text-decoration: none; border-radius: 15px; padding: 8px 5px; font-weight: 800; background: rgba(255, 255, 255, 0.05); }
+.nav-ichika { color: #ff8fa3; } .nav-hatsune { color: #69f0ae; } .nav-home { color: #00d2ff; }
+.nav-label { font-size: 10px; }
 
 footer { text-align: center; margin-top: 30px; font-size: 11px; color: rgba(255,255,255,0.3); }
-
-/* --- 下部固定ナビゲーション --- */
-.footer-fixed-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 10px;
-    padding: 10px 15px 25px;
-    background: rgba(10, 25, 41, 0.95);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border-top: 2px solid rgba(0, 210, 255, 0.3);
-    z-index: 1000;
-    box-sizing: border-box;
-}
-
-.nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    border-radius: 15px;
-    padding: 8px 5px;
-    font-weight: 800;
-    transition: 0.3s;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.nav-ichika { color: #ff8fa3; border-color: rgba(255, 143, 163, 0.3); }
-.nav-hatsune { color: #69f0ae; border-color: rgba(105, 240, 174, 0.3); }
-.nav-home { color: #00d2ff; border-color: rgba(0, 210, 255, 0.3); }
-
-.nav-icon { font-size: 1.2rem; }
-.nav-label { font-size: 10px; font-weight: 900; }
-
-/* 下部ナビの被り防止 */
-.container-wrap { margin-bottom: 110px; }
-
 </style>
 </head>
 
 <body>
 
-<div id="lock-screen" style="
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: radial-gradient(circle at center, #0a1929 0%, #000 100%); z-index: 9999;
-    display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-    backdrop-filter: blur(15px); text-align: center; color: #fff; padding: 40px 20px; box-sizing: border-box;
-    overflow-y: auto;
-">
+<div id="lock-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, #0a1929 0%, #000 100%); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; backdrop-filter: blur(15px); text-align: center; color: #fff; padding: 40px 20px; box-sizing: border-box; overflow-y: auto;">
     <div style="font-size: 50px; margin-bottom: 10px; filter: drop-shadow(0 0 10px #ffcc00);">⚡</div>
     <h2 style="color: #ffcc00; font-family: 'Orbitron', sans-serif; letter-spacing: 2px; margin: 0;">5-MASTER</h2>
     <p style="font-size: 14px; color: #00d2ff; margin-bottom: 25px; font-weight: bold;">SECRET ANALYZE SYSTEM</p>
-
     <div style="background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 20px; padding: 20px; width: 100%; max-width: 340px; margin-bottom: 30px; text-align: left;">
-        <p style="font-size: 15px; color: #ffcc00; font-weight: 900; margin-top: 0; text-align: center;">⚡ このツールでできることッ！ ⚡</p>
-        <ul style="font-size: 12px; line-height: 1.8; color: #e0f7ff; padding-left: 18px; margin-bottom: 0;">
-            <li><b>5号艇の「突き抜け」展開を完全可視化</b><br>膨大な統計データから5枠1着の可能性を精密解析。</li>
-            <li><b>激熱の「万舟チャンス」を逃さない</b><br>条件が揃った時の爆発力はアタシの折り紙付きだッ！</li>
-            <li><b>一撃特化の推奨買い目を自動生成</b><br>解析結果に合わせて、高配当狙いの目を弾き出すよ。</li>
+        <p style="font-size: 15px; color: #ffcc00; font-weight: 900; text-align: center;">⚡ このツールでできることッ！ ⚡</p>
+        <ul style="font-size: 12px; line-height: 1.8; color: #e0f7ff; padding-left: 18px;">
+            <li><b>5号艇の「突き抜け」展開を完全可視化</b></li>
+            <li><b>激熱の「万舟チャンス」を逃さない</b></li>
+            <li><b>精密解析に基づいた勝率シミュレート</b></li>
         </ul>
     </div>
-
     <div style="background: rgba(255,255,255,0.05); padding: 25px; border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.1); width: 100%; max-width: 320px;">
         <input type="text" id="pass-input" placeholder="合言葉は？" style="padding: 15px; border-radius: 12px; border: 2px solid #0052d4; background: rgba(0,0,0,0.7); color: #fff; text-align: center; font-size: 20px; width: 100%; box-sizing: border-box;">
         <button onclick="checkPass()" style="margin-top: 20px; padding: 15px; border-radius: 50px; width: 100%; background: linear-gradient(45deg, #0052d4, #00d2ff); color: #fff; border: none; font-weight: bold; cursor: pointer;">MISSION START</button>
-        <p id="error-msg" style="color: #ff4444; font-size: 12px; margin-top: 15px; display: none;">合言葉が違うよッ！やり直し！</p>
     </div>
-
-    <div style="margin-top: 30px; padding: 15px;">
-        <p style="font-size: 13px; color: #eee; margin-bottom: 12px;">公式LINEで「<b>合言葉</b>」って送ってねッ！⚡</p>
-        <a href="https://lin.ee/y2p5W3n" target="_blank" style="background: #06c755; color: #fff; text-decoration: none; padding: 12px 30px; border-radius: 50px; font-weight: bold; font-size: 14px; display: inline-block;">公式LINEで合言葉をGET</a>
-    </div>
+    <div style="margin-top: 30px;"><a href="https://lin.ee/y2p5W3n" target="_blank" style="background: #06c755; color: #fff; text-decoration: none; padding: 12px 30px; border-radius: 50px; font-weight: bold; font-size: 14px; display: inline-block;">公式LINEで合言葉をGET</a></div>
 </div>
 
 <div id="main-content" style="display: none;">
     <div class="status-bar">
         <div class="system-clock" id="k-clock">00:00:00</div>
-        <div class="ticker-wrap">
-            <div class="ticker-content" id="k-ticker-msg">SYSTEM BOOTING... ANALYZING DATA...</div>
-        </div>
+        <div class="ticker-wrap"><div class="ticker-content" id="k-ticker-msg">SYSTEM BOOTING...</div></div>
     </div>
 
-    <div class="container-wrap">
+    <div style="margin-bottom: 110px;">
         <div class="container">
-          <div class="header-img-area">
-            <img src="IMG_4729.png" alt="キイナの5 Master判定所">
-          </div>
+          <div class="header-img-area"><img src="IMG_4729.png" alt="キイナの5 Master判定所"></div>
 
           <div class="chara-section">
             <div class="chara-img"><img src="cd0f5f2e-605b-4bd7-83d9-2b904ddc07b1.png"></div>
-            <div class="advice-bubble" id="kiina-talk">💬⚡「データを入力してねッ！精密解析で一撃の可能性を暴いてあげるよ！」</div>
+            <div class="advice-bubble" id="kiina-talk">💬⚡「会場を選んでなッ！アタシがその場の『5枠の攻め方』を教えてやるよ！」</div>
           </div>
 
           <div class="input-group">
             <label><span>①</span> 開催場を選択</label>
-            <select id="stadium">
+            <select id="stadium" onchange="changeStadiumMsg()">
               <option value="">会場を選択...</option>
-              <optgroup label="関東"><option value="0.061">01# 桐生</option><option value="0.075">02# 戸田 ★激高</option><option value="0.066">03# 江戸川</option><option value="0.068">04# 平和島</option><option value="0.063">05# 多摩川</option></optgroup>
-              <optgroup label="東海/近畿"><option value="0.064">06# 浜名湖</option><option value="0.053">07# 蒲郡</option><option value="0.056">08# 常滑</option><option value="0.064">09# 津</option><option value="0.052">10# 三国</option><option value="0.066">11# びわこ</option><option value="0.052">12# 住之江</option><option value="0.054">13# 尼崎</option></optgroup>
-              <optgroup label="中四国/九州"><option value="0.069">14# 鳴門</option><option value="0.054">15# 丸亀</option><option value="0.054">16# 児島</option><option value="0.062">17# 宮島</option><option value="0.034">18# 徳山</option><option value="0.048">19# 下関</option><option value="0.058">20# 若松</option><option value="0.042">21# 芦屋</option><option value="0.038">22# 福岡</option><option value="0.050">23# 唐津</option><option value="0.030">24# 大村</option></optgroup>
+              <optgroup label="関東">
+                <option value="0.061" data-msg="桐生か。ナイターの5枠はカドが叩いた後の捲り差しが効くぜッ！">01# 桐生</option>
+                <option value="0.075" data-msg="戸田はアタシの聖地だッ！4カドが攻めれば5枠の突き抜け率は全国イチだぜ！">02# 戸田 ★激高</option>
+                <option value="0.066" data-msg="江戸川は特殊だ。波があれば5枠の全速旋回がぶち決まることもあるぜッ！">03# 江戸川</option>
+                <option value="0.068" data-msg="平和島は狭いからな。5枠が展開を突いて最内を差す形が面白いぜ！">04# 平和島</option>
+                <option value="0.063" data-msg="多摩川は広いぜ。5枠の握りマイがどこまで届くか、機力次第だなッ！">05# 多摩川</option>
+              </optgroup>
+              <optgroup label="東海/近畿">
+                <option value="0.064" data-msg="浜名湖は広いから、5枠も実力が出やすい。まくり差しが狙い目だッ！">06# 浜名湖</option>
+                <option value="0.053" data-msg="蒲郡ナイターか。5枠が食い込むには、スリットの伸びが絶対条件だぜ！">07# 蒲郡</option>
+                <option value="0.056" data-msg="常滑はインが強いけど、カドが凹めば5枠の差し場がガッポリ空くぜッ！">08# 常滑</option>
+                <option value="0.064" data-msg="津は風が難しい。5枠は風向きを見てから判断したほうがいいぜッ。">09# 津</option>
+                <option value="0.052" data-msg="三国はインが強いな。5枠が来るなら、道中の追い上げ勝負になるぜッ。">10# 三国</option>
+                <option value="0.066" data-msg="びわこは荒れるぜ！5枠の捲り差しが決まれば、特大の万舟だッ！">11# びわこ</option>
+                <option value="0.052" data-msg="聖地・住之江。5枠が勝つには、1マークで一番差しを突き通す覚悟が必要だぜ！">12# 住之江</option>
+                <option value="0.054" data-msg="尼崎はセンターが強い。5枠が展開を拾う確率は低くないぜッ！">13# 尼崎</option>
+              </optgroup>
+              <optgroup label="中四国/九州">
+                <option value="0.069" data-msg="鳴門はカド受けが弱い。4が攻めて、5が捲り差す黄金パターンが狙えるぜッ！">14# 鳴門</option>
+                <option value="0.054" data-msg="丸亀ナイター。5枠がカドから連動しての捲り差し、期待していいぜッ。">15# 丸亀</option>
+                <option value="0.054" data-msg="児島は潮の満ち引きで5枠の攻め方が変わる。引き潮なら攻め時だッ！">16# 児島</option>
+                <option value="0.062" data-msg="宮島は展開が二転三転する。5枠が最内をスルスル抜けるのを狙えッ！">17# 宮島</option>
+                <option value="0.034" data-msg="徳山はインが鬼だ。5枠が勝つのは至難の業だけど、万が一はあるぜ…！">18# 徳山</option>
+                <option value="0.048" data-msg="下関ナイター。5枠が頭で来るなら、展示タイムで他を圧倒してないと厳しいぜ！">19# 下関</option>
+                <option value="0.058" data-msg="若松はインが強め。5枠は3連単のヒモとして考えるのが現実的かもな。">20# 若松</option>
+                <option value="0.042" data-msg="芦屋はイン逃げの聖地。5枠が来るには、1マークで奇跡の差しが必要だぜッ。">21# 芦屋</option>
+                <option value="0.038" data-msg="福岡はうねりが曲者だ。5枠がダッシュを乗せて捲る姿、見たいよなッ！">22# 福岡</option>
+                <option value="0.050" data-msg="唐津はインが厚い。5枠が台頭するには、強力な伸び脚が必須だぜッ！">23# 唐津</option>
+                <option value="0.030" data-msg="大村はインが絶対。ここで5枠を頭で買えるのは、かなりの勝負師だけだぜッ。">24# 大村</option>
+              </optgroup>
             </select>
 
             <label><span>②</span> 風のコンディション</label>
-            <select id="wind">
-              <option value="1.0">無風〜弱風</option>
-              <option value="1.3">向かい風 4m↑ (ダッシュ有利⚡)</option>
-              <option value="1.1">追い風 3m↑</option>
-              <option value="0.9">強風 6m↑</option>
-            </select>
+            <select id="wind"><option value="1.0">無風〜弱風</option><option value="1.3">向かい風 4m↑ (ダッシュ有利⚡)</option><option value="1.1">追い風 3m↑</option><option value="0.9">強風 6m↑</option></select>
 
             <label><span>③</span> 5号艇の機力 (直線・伸び)</label>
-            <select id="motor">
-              <option value="1.0">普通</option>
-              <option value="1.5">上位</option>
-              <option value="2.2">超抜🔥</option>
-            </select>
+            <select id="motor"><option value="1.0">普通</option><option value="1.5">上位</option><option value="2.2">超抜🔥</option></select>
 
             <label><span>④</span> 周回展示 (回り足・押し)</label>
-            <select id="turn">
-              <option value="1.0">普通</option>
-              <option value="1.4">強力◎</option>
-            </select>
+            <select id="turn"><option value="1.0">普通</option><option value="1.4">強力◎</option></select>
 
             <label><span>⑤</span> 4カドの攻め期待度</label>
-            <select id="kado">
-              <option value="1.0">期待薄</option>
-              <option value="1.8">期待大⚡</option>
-            </select>
+            <select id="kado"><option value="1.0">期待薄</option><option value="1.8">期待大⚡</option></select>
 
             <label><span>⑥</span> 2号艇の「壁」信頼度</label>
-            <select id="wall">
-              <option value="1.0">普通</option>
-              <option value="1.3">壁が薄い</option>
-              <option value="0.8">壁が厚い</option>
-            </select>
+            <select id="wall"><option value="1.0">普通</option><option value="1.3">壁が薄い</option><option value="0.8">壁が厚い</option></select>
 
             <label><span>⑦</span> 1号艇のイン信頼度</label>
-            <select id="in-race">
-              <option value="1.0">普通</option>
-              <option value="1.2">不安定</option>
-            </select>
+            <select id="in-race"><option value="1.0">普通</option><option value="1.2">不安定</option></select>
           </div>
 
           <button class="calc-btn" onclick="analyze()">⚡ 精密解析を実行！ ⚡</button>
@@ -325,34 +145,47 @@ footer { text-align: center; margin-top: 30px; font-size: 11px; color: rgba(255,
           <div id="result-area" class="result-box">
             <div style="font-size:13px; color:#aaa;">推定5枠1着確率</div>
             <div class="percent-display"><span id="prob-display">0</span>%</div>
-            <div class="eye-box">💰 推奨: <span id="recommend-eye">5 - 124 - 1246</span></div>
+            <div class="analysis-msg-box" id="analysis-msg"></div>
           </div>
           
           <a href="date5.html#nav" style="display: block; text-align: center; margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.1); color: #00d2ff; border: 1px solid #00d2ff; border-radius: 50px; text-decoration: none; font-size: 14px; font-weight: bold;">📚 24場・攻略ノートを見るッ！⚡</a>
-
-          <footer>&copy; 2026 BOAT STRIKE Project / 5-MASTER</footer>
+          <footer>&copy; 2026 BOAT STRIKE Project</footer>
         </div>
     </div>
 
     <div class="footer-fixed-nav">
-        <a href="ichika.html" class="nav-item nav-ichika"><span class="nav-icon">🌸</span><span class="nav-label">一果ツール</span></a>
-        <a href="hatsune.html" class="nav-item nav-hatsune"><span class="nav-icon">🍀</span><span class="nav-label">初音ツール</span></a>
-        <a href="index.html" class="nav-item nav-home"><span class="nav-icon">🏠</span><span class="nav-label">HOME</span></a>
+        <a href="ichika.html" class="nav-item nav-ichika"><span style="font-size:1.2rem;">🌸</span><span class="nav-label">一果ツール</span></a>
+        <a href="hatsune.html" class="nav-item nav-hatsune"><span style="font-size:1.2rem;">🍀</span><span class="nav-label">初音ツール</span></a>
+        <a href="index.html" class="nav-item nav-home"><span style="font-size:1.2rem;">🏠</span><span class="nav-label">HOME</span></a>
     </div>
 </div>
 
 <script>
+// 合言葉チェック
 function checkPass() {
-    const pass = document.getElementById('pass-input').value;
-    if (pass === "1130") {
+    if (document.getElementById('pass-input').value === "1130") {
         document.getElementById('lock-screen').style.display = 'none';
         document.getElementById('main-content').style.display = 'block';
     } else {
-        document.getElementById('error-msg').style.display = 'block';
-        document.getElementById('pass-input').value = "";
+        alert("合言葉が違うよッ！");
     }
 }
 
+// 【新機能】場を選択したときのアドバイス切り替え
+function changeStadiumMsg() {
+    const stadiumSelect = document.getElementById('stadium');
+    const selectedOption = stadiumSelect.options[stadiumSelect.selectedIndex];
+    const msg = selectedOption.getAttribute('data-msg');
+    const talkBubble = document.getElementById('kiina-talk');
+    
+    if (msg) {
+        talkBubble.innerHTML = `💬⚡「${msg}」`;
+    } else {
+        talkBubble.innerHTML = `💬⚡「会場を選んでなッ！アタシがその場の『5枠の攻め方』を教えてやるよ！」`;
+    }
+}
+
+// 解析実行
 function analyze() {
     const base = parseFloat(document.getElementById('stadium').value);
     if(!base) { alert("会場を選んでねッ！"); return; }
@@ -370,28 +203,24 @@ function analyze() {
     document.getElementById('result-area').style.display = 'block';
     document.getElementById('prob-display').innerText = prob;
 
-    let msg = prob > 25 ? "キタキタ！稲妻が突き刺さる最高の展開だよッ⚡" : 
-              prob > 15 ? "いい条件だね！4カドが連れて行ってくれればッ！" : 
-              prob > 8 ? "チャンスはあるけど展開待ちだねッ。" : "今は静観。次を待とう！";
+    // 解析後のメッセージ生成（買い目なし）
+    let msg = "";
+    if (prob > 25) msg = "⚡️キタキタ！稲妻が突き刺さる最高の展開だよッ！迷わず狙っちゃいなッ！";
+    else if (prob > 15) msg = "⚡️いい条件だぜ！4カドが連れて行ってくれれば一気に突き抜けるよ！";
+    else if (prob > 8) msg = "⚡️チャンスはあるけど展開待ち。2枠が凹めばアタシの出番だねッ！";
+    else msg = "⚡️今は静観。無理に狙うレースじゃないかもな。次を待とうぜ。";
 
-    document.getElementById('kiina-talk').innerText = "💬「" + msg + "」";
+    document.getElementById('analysis-msg').innerText = msg;
     window.scrollTo({ top: document.getElementById('result-area').offsetTop - 100, behavior: 'smooth' });
 }
 
+// 時計とテロップ
 function updateStatus() {
     const now = new Date();
     const h = now.getHours();
-    const m = String(now.getMinutes()).padStart(2, '0');
-    const s = String(now.getSeconds()).padStart(2, '0');
-    document.getElementById('k-clock').innerText = `${String(h).padStart(2, '0')}:${m}:${s}`;
-    
-    let msg = (h >= 8 && h < 11) ? "⚡ モーニング開催中ッ！早い時間の5アタマは展示の伸びをチェック！" :
-              (h >= 11 && h < 15) ? "⚡ デイレース真っ最中ッ！解析で中穴〜万舟を暴いてやるよ！" :
-              (h >= 15 && h < 21) ? "⚡ ナイター開催中ッ！夜の5枠突き抜けは破壊力抜群だッ！" :
-              "⚡ 現在非開催中... 明日に向けて、今のうちに軍資金を貯めとこッ！";
-    
-    const ticker = document.getElementById('k-ticker-msg');
-    if (ticker.innerText !== msg) ticker.innerText = msg;
+    document.getElementById('k-clock').innerText = `${String(h).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+    let m = (h >= 8 && h < 11) ? "⚡ モーニング開催中ッ！" : (h >= 11 && h < 15) ? "⚡ デイレース真っ最中ッ！" : (h >= 15 && h < 21) ? "⚡ ナイター開催中ッ！" : "⚡ 現在非開催中...軍資金を貯めとこッ！";
+    document.getElementById('k-ticker-msg').innerText = m;
 }
 setInterval(updateStatus, 1000);
 updateStatus();
