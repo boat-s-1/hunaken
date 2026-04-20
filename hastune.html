@@ -2,9 +2,9 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>初音の女子戦・ひらめき鑑定所 🍀 BOAT STRIKE</title>
-    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         /* --- 全体スタイル --- */
@@ -17,49 +17,61 @@
             display: flex; flex-direction: column; align-items: center;
         }
 
-        /* --- 鍵画面（ロック） --- */
+        /* --- 鍵画面（説明＆LINE付き） --- */
         #lock-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #f0fff4; z-index: 9999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            text-align: center; color: #2d6a4f; padding: 20px; box-sizing: border-box;
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+            text-align: center; color: #2d6a4f; padding: 40px 20px; box-sizing: border-box;
+            overflow-y: auto;
         }
+        .lock-logo { font-size: 40px; margin-bottom: 5px; }
+        .lock-title { color: #38a169; font-weight: 900; letter-spacing: 1px; margin: 0; }
+        .lock-subtitle { font-size: 14px; color: #2f855a; margin-bottom: 25px; font-weight: bold; }
+
+        /* ツール説明文 */
+        .intro-box {
+            background: #e6fffa; border: 2px solid #b2f2bb; border-radius: 20px;
+            padding: 20px; width: 100%; max-width: 340px; margin-bottom: 30px; text-align: left;
+        }
+        .intro-title { font-size: 15px; color: #38a169; font-weight: 900; text-align: center; margin-bottom: 10px; }
+        .intro-list { font-size: 12px; line-height: 1.8; color: #2d6a4f; padding-left: 18px; margin: 0; }
+
         .lock-card {
-            background: white; padding: 30px; border-radius: 30px; border: 3px solid #b2f2bb;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05); width: 100%; max-width: 320px;
+            background: white; padding: 25px; border-radius: 25px; border: 2px solid #b2f2bb;
+            width: 100%; max-width: 320px;
         }
         .lock-input {
             width: 100%; padding: 15px; border-radius: 15px; border: 2px solid #b2f2bb;
-            text-align: center; font-size: 1.1rem; margin-bottom: 15px; box-sizing: border-box;
+            text-align: center; font-size: 1.1rem; margin-bottom: 15px; box-sizing: border-box; outline: none;
         }
         .lock-btn {
             background: linear-gradient(135deg, #63e6be 0%, #38a169 100%);
-            color: white; border: none; padding: 12px 30px; border-radius: 50px;
-            font-weight: 800; cursor: pointer; width: 100%;
+            color: white; border: none; padding: 15px; border-radius: 50px;
+            font-weight: 800; cursor: pointer; width: 100%; font-size: 16px;
+        }
+
+        /* LINE誘導 */
+        .line-box { margin-top: 30px; width: 100%; max-width: 320px; }
+        .line-btn {
+            display: inline-block; background: #06c755; color: white; text-decoration: none;
+            padding: 12px 30px; border-radius: 50px; font-weight: 800; font-size: 14px; margin-top: 10px;
         }
 
         /* --- メインコンテンツ --- */
-        #main-content { display: none; width: 100%; max-width: 440px; }
+        #main-content { display: none; width: 100%; max-width: 440px; padding-bottom: 120px; }
 
-        .header-banner { 
-            width: 100%; border-radius: 20px; overflow: hidden; 
-            box-shadow: 0 4px 15px rgba(47, 158, 68, 0.2); 
-            margin-bottom: 15px; border: 2px solid #b2f2bb; 
-        }
+        .header-banner { width: 100%; border-radius: 20px; overflow: hidden; margin-bottom: 15px; border: 2px solid #b2f2bb; }
         .header-banner img { width: 100%; display: block; }
 
-        .outer-frame {
-            background: white; border: 3px solid #b2f2bb; border-radius: 25px;
-            padding: 20px; box-sizing: border-box; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
+        .outer-frame { background: white; border: 3px solid #b2f2bb; border-radius: 25px; padding: 20px; }
 
         .chara-section {
             display: flex; align-items: center; background: #e6fffa;
             padding: 15px; border-radius: 20px; margin-bottom: 20px; border: 1px solid #b2f2bb;
         }
-        .chara-img { width: 80px; margin-right: 12px; }
-        .advice-bubble { font-size: 0.8rem; line-height: 1.5; color: #2d6a4f; position: relative; }
-        .advice-bubble::after { content: " 🎵✨"; font-size: 0.7rem; }
+        .chara-img { width: 80px; margin-right: 12px; flex-shrink: 0; }
+        .advice-bubble { font-size: 0.8rem; line-height: 1.5; color: #2d6a4f; }
 
         label {
             display: block; font-weight: 800; font-size: 0.85rem; color: #2f855a;
@@ -67,44 +79,36 @@
         }
         select {
             width: 100%; padding: 12px; border-radius: 12px; border: 2px solid #dfffee;
-            font-family: inherit; font-weight: 700; color: #2d6a4f; cursor: pointer;
+            font-family: inherit; font-weight: 700; color: #2d6a4f;
         }
 
         .calc-btn {
             width: 100%; padding: 18px; margin-top: 20px;
             background: linear-gradient(135deg, #63e6be 0%, #38a169 100%);
-            color: white; border: none; border-radius: 15px; font-weight: 800;
-            font-size: 1.2rem; cursor: pointer; box-shadow: 0 5px 15px rgba(56, 161, 105, 0.2);
+            color: white; border: none; border-radius: 15px; font-weight: 800; font-size: 1.2rem;
         }
 
-        /* --- 結果表示 --- */
-        #result {
-            display: none; margin-top: 25px; padding: 20px; border-radius: 20px;
-            background: #f0fff4; border: 2px solid #38a169; text-align: center;
-        }
-        .score-val { font-size: 3.5rem; font-weight: 800; color: #2f855a; line-height: 1; }
-        
-        /* --- SNSシェア用 --- */
-        #share-card {
-            background: white; border: 4px solid #b2f2bb; border-radius: 20px;
-            padding: 20px; margin: 20px 0; position: relative; display: none;
-        }
-        .share-tag { color: #38a169; font-size: 0.7rem; font-weight: 800; }
-        .save-btn {
-            width: 100%; padding: 15px; background: #2d6a4f; color: white;
-            border: none; border-radius: 50px; font-weight: 800; cursor: pointer; margin-top: 10px;
-        }
+        #result { display: none; margin-top: 25px; padding: 20px; border-radius: 20px; background: #f0fff4; border: 2px solid #38a169; text-align: center; }
+        .score-val { font-size: 3.5rem; font-weight: 800; color: #2f855a; }
 
-        /* --- サイトマップ（一果ちゃんツール風の調整） --- */
-        .footer-sitemap {
-            width: 100%; max-width: 440px; margin: 30px auto 10px;
-            padding: 20px; box-sizing: border-box; background: rgba(255, 255, 255, 0.6);
-            border-radius: 25px; border: 1px solid #b2f2bb;
+        /* --- 下部固定ナビ --- */
+        .footer-fixed-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            display: grid; grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px; padding: 10px 15px 25px;
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(15px);
+            border-top: 2px solid #b2f2bb; z-index: 2000; box-sizing: border-box;
         }
-        .sitemap-title { font-size: 0.9rem; color: #2f855a; font-weight: 800; text-align: center; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .sitemap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .sitemap-item { background: white; padding: 12px; border-radius: 15px; text-decoration: none; color: #666; font-size: 0.75rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 5px; border: 1px solid #e6fffa; transition: 0.3s; }
-        .sitemap-item:hover { transform: translateY(-3px); border-color: #38a169; color: #38a169; }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-decoration: none; border-radius: 15px; padding: 8px 5px; font-weight: 800;
+            background: #fff; border: 1px solid #e6fffa;
+        }
+        .nav-ichika { color: #ff8fa3; border-color: #ffcad4; }
+        .nav-kiina { color: #2962ff; border-color: #dbeafe; }
+        .nav-home { color: #38a169; border-color: #b2f2bb; }
+        .nav-icon { font-size: 1.2rem; }
+        .nav-label { font-size: 10px; }
 
         footer { text-align: center; font-size: 0.7rem; color: #2f855a; margin: 20px 0; opacity: 0.6; }
     </style>
@@ -112,12 +116,29 @@
 <body>
 
 <div id="lock-screen">
+    <div class="lock-logo">🍀</div>
+    <h2 class="lock-title">ひらめき鑑定所</h2>
+    <p class="lock-subtitle">GIRLS RACE ANALYZE</p>
+
+    <div class="intro-box">
+        <p class="intro-title">✨ 初音のツールでできることっ！ ✨</p>
+        <ul class="intro-list">
+            <li><b>女子戦特有の「荒れる予感」を完全数値化</b><br>場や選手のクセから、ひらめき度を算出しますっ♪</li>
+            <li><b>波乱レースを見抜いて万舟を狙う</b><br>おてんばな展開になりそうな時は要注意ですよぉ！</li>
+            <li><b>鑑定結果を画像にして仲間とシェア</b><br>初音と一緒に波乱予想で盛り上がりましょう🍀</li>
+        </ul>
+        <p style="font-size: 11px; color: #38a169; margin-top: 10px; text-align: center; font-style: italic;">「女子戦のドキドキ、初音が鑑定しちゃいますっ🍀」</p>
+    </div>
+
     <div class="lock-card">
-        <img src="bbce91ad-666f-4178-ac48-c15c46fbde64.png" style="width: 100px; margin-bottom: 10px;">
-        <h3 style="margin: 0 0 10px 0;">秘密の楽屋 🍀</h3>
-        <p style="font-size: 0.7rem; margin-bottom: 20px;">合言葉を知っているプロの方だけ<br>お入りいただけますっ♪</p>
+        <p style="font-size: 12px; color: #666; margin-bottom: 15px;">合言葉を入力してねっ🍀</p>
         <input type="password" id="pass" class="lock-input" placeholder="合言葉は？">
-        <button class="lock-btn" onclick="checkPass()">扉をあける 🍀</button>
+        <button class="lock-btn" onclick="checkPass()">鑑定をはじめる 🍀</button>
+    </div>
+
+    <div class="line-box">
+        <p style="font-size: 13px;">合言葉を持っていない人は<br>公式LINEで「<b>合言葉</b>」って送ってねっ♪</p>
+        <a href="https://lin.ee/y2p5W3n" target="_blank" class="line-btn">💬 公式LINEで合言葉をGET</a>
     </div>
 </div>
 
@@ -172,45 +193,34 @@
             <div style="font-size: 0.8rem; font-weight: 800; color: #666;">初音のひらめき：推定波乱度</div>
             <div class="score-val"><span id="score">0</span>%</div>
             <p id="res-msg" style="font-size: 0.85rem; font-weight: 800; color: #2d6a4f; margin: 15px 0;"></p>
-            
-            <div id="share-card">
-                <div class="share-tag">🍀 初音の女子戦・ひらめき鑑定 🍀</div>
-                <div style="font-size: 0.7rem; color: #999; margin: 5px 0;">推定波乱度（荒れる確率）</div>
-                <div class="score-val" id="share-score" style="font-size: 3rem;">0%</div>
-                <div id="share-txt" style="font-size: 0.8rem; margin-top: 10px; font-weight: 800;"></div>
-                <div style="font-size: 0.6rem; color: #38a169; margin-top: 10px;">#BOATSTRIKE #女子戦 #初音の鑑定所</div>
-            </div>
-
-            <button class="save-btn" onclick="saveImage()">画像を保存してSNSへ 🍀</button>
         </div>
     </div>
 
     <div style="text-align: center; margin-top: 20px;">
-        <a href="dateg.html#nav" style="
-            display: inline-block; width: 90%; max-width: 380px; padding: 15px;
-            background: #fff; color: #38a169; border: 2px solid #b2f2bb;
-            border-radius: 50px; text-decoration: none; font-size: 14px;
-            font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        ">📚 初音の24場解析ノートを見るっ🍀</a>
+        <a href="dateg.html#nav" style="display: inline-block; width: 90%; max-width: 380px; padding: 15px; background: #fff; color: #38a169; border: 2px solid #b2f2bb; border-radius: 50px; text-decoration: none; font-size: 14px; font-weight: bold;">📚 初音の24場解析ノートを見るっ🍀</a>
     </div>
 
-    <nav class="footer-sitemap">
-        <div class="sitemap-title">BOAT STRIKE 案内所 🌟</div>
-        <div class="sitemap-grid">
-            <a href="ichika.html" class="sitemap-item">🌸 1号艇・鬼絞り</a>
-            <a href="kiina5.html" class="sitemap-item">⚡ 5 Master判定</a>
-            <a href="hatsune.html" class="sitemap-item">🍀 女子戦鑑定</a>
-            <a href="dateg.html" class="sitemap-item">📗 解析ノート</a>
-        </div>
-    </nav>
-
     <footer>&copy; 2026 BOAT STRIKE Project / HATSUNE</footer>
+
+    <div class="footer-fixed-nav">
+        <a href="ichika.html" class="nav-item nav-ichika">
+            <span class="nav-icon">🌸</span>
+            <span class="nav-label">一果ツール</span>
+        </a>
+        <a href="kiina5.html" class="nav-item nav-kiina">
+            <span class="nav-icon">⚡</span>
+            <span class="nav-label">キイナツール</span>
+        </a>
+        <a href="index.html" class="nav-item nav-home">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">HOME</span>
+        </a>
+    </div>
 </div>
 
 <script>
     function checkPass() {
-        const p = document.getElementById('pass').value;
-        if(p === "0011") { // 合言葉
+        if(document.getElementById('pass').value === "0011") {
             document.getElementById('lock-screen').style.display = 'none';
             document.getElementById('main-content').style.display = 'block';
         } else {
@@ -231,31 +241,13 @@
 
         document.getElementById('result').style.display = 'block';
         document.getElementById('score').innerText = score;
-        document.getElementById('share-score').innerText = score + "%";
 
-        let msg = "";
-        if(score >= 80) {
-            msg = "ひゃわわ！大波乱アイドル降臨ですっ！万舟券のサインが見えちゃいましたぁ🍀";
-        } else if(score >= 50) {
-            msg = "ちょっと注意が必要ですねぇ。中配当を狙ってみるのがいいかもですっ♪";
-        } else {
-            msg = "ここはガチガチの予感。本命さんを信じて絞って勝負ですよぉ🍀";
-        }
+        let msg = (score >= 80) ? "ひゃわわ！大波乱アイドル降臨ですっ！万舟券のサインが見えちゃいましたぁ🍀" :
+                  (score >= 50) ? "ちょっと注意が必要ですねぇ。中配当を狙ってみるのがいいかもですっ♪" :
+                  "ここはガチガチの予感。本命さんを信じて絞って勝負ですよぉ🍀";
 
         document.getElementById('res-msg').innerText = msg;
-        document.getElementById('share-txt').innerText = msg;
-        document.getElementById('share-card').style.display = 'block';
-        
-        window.scrollTo({ top: document.getElementById('result').offsetTop - 20, behavior: 'smooth' });
-    }
-
-    function saveImage() {
-        html2canvas(document.getElementById('share-card')).then(canvas => {
-            const link = document.createElement('a');
-            link.download = 'hatsune_kantei.png';
-            link.href = canvas.toDataURL();
-            link.click();
-        });
+        window.scrollTo({ top: document.getElementById('result').offsetTop - 100, behavior: 'smooth' });
     }
 </script>
 
