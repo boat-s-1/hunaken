@@ -142,6 +142,54 @@ select {
 }
 
 footer { text-align: center; margin-top: 30px; font-size: 11px; color: rgba(255,255,255,0.3); }
+/* --- 下部固定ナビゲーション --- */
+.footer-fixed-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    padding: 12px 15px 25px; /* iPhoneの下部バー対策 */
+    background: rgba(10, 25, 41, 0.95);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-top: 2px solid rgba(0, 210, 255, 0.3);
+    z-index: 2000;
+    box-sizing: border-box;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    border-radius: 15px;
+    padding: 8px 5px;
+    font-weight: 800;
+    transition: 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.nav-item:active { transform: scale(0.95); }
+
+/* 各ボタンのカラー */
+.nav-ichika { color: #ff8fa3; border-color: rgba(255, 143, 163, 0.3); }
+.nav-hatsune { color: #69f0ae; border-color: rgba(105, 240, 174, 0.3); }
+.nav-home { color: #00d2ff; border-color: rgba(0, 210, 255, 0.3); }
+
+.nav-icon { font-size: 1.2rem; margin-bottom: 2px; }
+.nav-label { font-size: 10px; white-space: nowrap; font-weight: 900; }
+
+/* コンテンツがナビに被らないように余白を追加 */
+.container {
+    margin-bottom: 120px !important;
+}
+
+
 </style>
 </head>
 
@@ -366,6 +414,22 @@ function analyze() {
     window.scrollTo({ top: document.getElementById('result-area').offsetTop, behavior: 'smooth' });
 }
 </script>
+<div class="footer-fixed-nav">
+    <a href="ichika.html" class="nav-item nav-ichika">
+        <span class="nav-icon">🌸</span>
+        <span class="nav-label">一果ツール</span>
+    </a>
+
+    <a href="hatsune.html" class="nav-item nav-hatsune">
+        <span class="nav-icon">🍀</span>
+        <span class="nav-label">初音ツール</span>
+    </a>
+
+    <a href="index.html" class="nav-item nav-home">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">HOME</span>
+    </a>
+</div>
 
 </body>
 </html>
