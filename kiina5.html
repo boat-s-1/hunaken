@@ -190,29 +190,43 @@ function analyze() {
     const base = parseFloat(document.getElementById('stadium').value);
     if(!base) { alert("会場を選んでねッ！"); return; }
 
-    const wind = parseFloat(document.getElementById('wind').value);
-    const motor = parseFloat(document.getElementById('motor').value);
-    const turn = parseFloat(document.getElementById('turn').value);
-    const kado = parseFloat(document.getElementById('kado').value);
-    const wall = parseFloat(document.getElementById('wall').value);
-    const inRace = parseFloat(document.getElementById('in-race').value);
+    const btn = document.querySelector('.calc-btn');
+    const resultArea = document.getElementById('result-area');
     
-    let prob = (base * wind * motor * turn * kado * wall * inRace * 100).toFixed(1);
-    if(prob > 45) prob = 45.0;
+    // ボタンを「解析中」にして無効化
+    btn.disabled = true;
+    btn.innerText = "⚡ ANALYZING DATA... ⚡";
+    resultArea.style.display = 'none';
 
-    document.getElementById('result-area').style.display = 'block';
-    document.getElementById('prob-display').innerText = prob;
+    // 1.5秒の「タメ」を作る
+    setTimeout(() => {
+        const wind = parseFloat(document.getElementById('wind').value);
+        const motor = parseFloat(document.getElementById('motor').value);
+        const turn = parseFloat(document.getElementById('turn').value);
+        const kado = parseFloat(document.getElementById('kado').value);
+        const wall = parseFloat(document.getElementById('wall').value);
+        const inRace = parseFloat(document.getElementById('in-race').value);
+        
+        let prob = (base * wind * motor * turn * kado * wall * inRace * 100).toFixed(1);
+        if(prob > 45) prob = 45.0;
 
-    // 解析後のメッセージ生成（買い目なし）
-    let msg = "";
-    if (prob > 25) msg = "⚡️キタキタ！稲妻が突き刺さる最高の展開だよッ！迷わず狙っちゃいなッ！";
-    else if (prob > 15) msg = "⚡️いい条件だぜ！4カドが連れて行ってくれれば一気に突き抜けるよ！";
-    else if (prob > 8) msg = "⚡️チャンスはあるけど展開待ち。2枠が凹めばアタシの出番だねッ！";
-    else msg = "⚡️今は静観。無理に狙うレースじゃないかもな。次を待とうぜ。";
+        document.getElementById('result-area').style.display = 'block';
+        document.getElementById('prob-display').innerText = prob;
 
-    document.getElementById('analysis-msg').innerText = msg;
-    window.scrollTo({ top: document.getElementById('result-area').offsetTop - 100, behavior: 'smooth' });
+        let msg = prob > 25 ? "⚡️キタキタ！稲妻が突き刺さる最高の展開だよッ！" : 
+                  prob > 15 ? "⚡️いい条件だぜ！4カドが連れて行ってくれればッ！" : 
+                  prob > 8 ? "⚡️チャンスはあるけど展開待ちだねッ。" : "⚡️今は静観。次を待とうぜ。";
+
+        document.getElementById('analysis-msg').innerText = msg;
+        
+        // ボタンを元に戻す
+        btn.disabled = false;
+        btn.innerText = "⚡ 精密解析を実行！ ⚡";
+
+        window.scrollTo({ top: document.getElementById('result-area').offsetTop - 100, behavior: 'smooth' });
+    }, 1500);
 }
+
 
 // 時計とテロップ
 function updateStatus() {
