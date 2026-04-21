@@ -6,6 +6,57 @@
     <title>一果の1号艇・鬼絞り判定所 🌸</title>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&display=swap" rel="stylesheet">
     <style>
+        /* --- 上部固定ステータスバー --- */
+.status-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(255, 250, 251, 0.95); /* 一果ちゃんらしい薄ピンク透過 */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid #ffcad4;
+    padding: 8px 15px;
+    display: flex;
+    align-items: center;
+    z-index: 2000;
+    box-sizing: border-box;
+}
+
+.system-clock {
+    font-family: monospace;
+    font-weight: bold;
+    color: #ff8fa3;
+    font-size: 14px;
+    margin-right: 15px;
+    border-right: 1px solid #ffcad4;
+    padding-right: 10px;
+    white-space: nowrap;
+}
+
+.ticker-wrap {
+    flex: 1;
+    overflow: hidden;
+}
+
+.ticker-content {
+    display: inline-block;
+    white-space: nowrap;
+    font-size: 12px;
+    font-weight: bold;
+    color: #ff6b81;
+    animation: i-ticker 20s linear infinite;
+}
+
+@keyframes i-ticker {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+/* メインコンテンツがバーに被らないように調整 */
+.header-banner {
+    margin-top: 50px !important;
+}
         /* --- サイトマップ（フッターナビ）のデザイン --- */
         .footer-sitemap {
             width: 100%;
@@ -182,6 +233,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
+    <div class="status-bar" id="top-status-bar" style="display: none;">
+    <div class="system-clock" id="i-clock">00:00:00</div>
+    <div class="ticker-wrap">
+        <div class="ticker-content" id="i-ticker-msg">
+            🌸 [システム稼働中] 1号艇の逃げ信頼度を精密解析していますっ♪ 🌸
+        </div>
+    </div>
+</div>
 <div id="lock-screen" style="
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: #fff5f6; z-index: 9999;
@@ -215,7 +274,6 @@
 </div>
 
 <div id="main-content" style="display: none; width: 100%;">
-    ```
 
 
 <header class="header-banner">
@@ -489,6 +547,42 @@ function checkPass() {
 
     function resetStats() { if(confirm("リセットしちゃいますかぁ？")) { localStorage.clear(); renderTable(); } }
     window.onload = () => { renderTable(); loadAdminStats(); };
+    // 時計とメッセージの更新
+function updateStatus() {
+    const now = new Date();
+    const h = now.getHours();
+    const m = String(now.getMinutes()).padStart(2, '0');
+    const s = String(now.getSeconds()).padStart(2, '0');
+    
+    // 時計表示を更新
+    const clockElem = document.getElementById('i-clock');
+    if (clockElem) {
+        clockElem.innerText = `${String(h).padStart(2, '0')}:${m}:${s}`;
+    }
+    
+    // 時間帯によるメッセージ判定
+    let msg = "";
+    if (h >= 8 && h < 11) {
+        msg = "🌸 モーニング開催中ですっ♪ 朝の1号艇さんは期待大ですよぉ！";
+    } else if (h >= 11 && h < 15) {
+        msg = "🌸 デイレース真っ最中！一果の判定でしっかり絞りましょう♪";
+    } else if (h >= 15 && h < 21) {
+        msg = "🌸 ナイター開催中ですっ♪ 夜の静水面は逃げが堅いですねぇ🌸";
+    } else {
+        msg = "🌸 現在非開催中...明日のために軍資金をチャージしておきましょう♪";
+    }
+    
+    const ticker = document.getElementById('i-ticker-msg');
+    if (ticker && ticker.innerText !== msg) {
+        ticker.innerText = msg;
+    }
+}
+
+// 1秒ごとに実行
+setInterval(updateStatus, 1000);
+
+// 合言葉解除（checkPass関数）の中に以下の一行を追加してください
+// document.getElementById('top-status-bar').style.display = 'flex';
 </script>
     <!-- admax -->
 <script src="https://adm.shinobi.jp/s/e65909d39a271ad3779bc0a29eca55ec"></script>
@@ -527,7 +621,3 @@ function checkPass() {
 </div>
 </body>
 </html>
-
-
-
-一果ちゃんのツールも合言葉をいれるところにツールの詳細と公式LINEの誘導、ページ上部の固定と下部のリンク固定をキイナちゃん、初音ちゃんみたいにお願いします
