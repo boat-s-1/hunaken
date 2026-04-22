@@ -6,83 +6,6 @@
     <title>軍資金チャージ所 💰 BOAT STRIKE</title>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&display=swap" rel="stylesheet">
     <style>
-                /* --- ボタン用マイクロコピー（アニメーション付き） --- */
-        .btn-microcopy {
-            text-align: center;
-            font-size: 0.85rem;
-            font-weight: 800;
-            color: #ff3366; /* 目を引く濃いピンク */
-            margin-bottom: 10px;
-            /* フワフワ動くアニメーション設定 */
-            animation: bounce-soft 2s infinite; 
-        }
-
-        /* アニメーションの動きの定義 */
-        @keyframes bounce-soft {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-4px); }
-        }
-
-               /* --- 3ステップ図解 --- */
-        .step-guide {
-            background: #ffffff;
-            border: 2px dashed #ffcad4; /* 可愛いピンクの点線 */
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 10px rgba(255, 202, 212, 0.2); /* ほんのりピンクの影 */
-        }
-        .step-title {
-            text-align: center;
-            color: #ff6b81;
-            font-size: 1.1rem;
-            font-weight: 800;
-            margin-top: 0;
-            margin-bottom: 15px;
-        }
-        .step-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .step-item {
-            display: flex;
-            align-items: center;
-            background: #fff1f3; /* 柔らかい薄ピンク背景 */
-            border-radius: 12px;
-            padding: 10px 15px;
-        }
-        .step-num {
-            width: 30px;
-            height: 30px;
-            background: #ff6b81;
-            color: #fff;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: 800;
-            margin-right: 15px;
-            flex-shrink: 0;
-            box-shadow: 0 2px 5px rgba(255, 107, 129, 0.4);
-        }
-        .step-text {
-            font-size: 0.85rem;
-            color: #444;
-            line-height: 1.4;
-        }
-        .step-text b {
-            color: #ff6b81; /* 強調部分は濃いピンク */
-        }
-        .step-note {
-            text-align: center;
-            font-size: 0.8rem;
-            color: #ff6b81;
-            font-weight: 800;
-            margin-top: 15px;
-            margin-bottom: 0;
-        }
- 
         /* --- 全体スタイル --- */
         body {
             font-family: 'M PLUS Rounded 1c', sans-serif;
@@ -110,6 +33,23 @@
         .chara-group { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; }
         .chara-mini { width: 70px; height: 70px; border-radius: 50%; background: #f9f9f9; border: 2px solid #eee; object-fit: cover;}
 
+        /* --- 3ステップ図解 --- */
+        .step-guide {
+            background: #ffffff; border: 2px dashed #ffcad4; border-radius: 20px;
+            padding: 20px; margin-bottom: 30px; box-shadow: 0 4px 10px rgba(255, 202, 212, 0.2);
+        }
+        .step-title { text-align: center; color: #ff6b81; font-size: 1.1rem; font-weight: 800; margin-top: 0; margin-bottom: 15px; }
+        .step-list { display: flex; flex-direction: column; gap: 12px; }
+        .step-item { display: flex; align-items: center; background: #fff1f3; border-radius: 12px; padding: 10px 15px; }
+        .step-num {
+            width: 30px; height: 30px; background: #ff6b81; color: #fff; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; font-weight: 800;
+            margin-right: 15px; flex-shrink: 0; box-shadow: 0 2px 5px rgba(255, 107, 129, 0.4);
+        }
+        .step-text { font-size: 0.85rem; color: #444; line-height: 1.4; }
+        .step-text b { color: #ff6b81; }
+        .step-note { text-align: center; font-size: 0.8rem; color: #ff6b81; font-weight: 800; margin-top: 15px; margin-bottom: 0; }
+
         /* --- 案件カード共通スタイル --- */
         .mission-card {
             background: white; border-radius: 25px; padding: 25px;
@@ -119,32 +59,23 @@
 
         /* --- オススメタイトル（キャラアイコン付き） --- */
         .recommend-title {
-            position: absolute; top: -20px; left: 15px;
-            display: flex; align-items: center;
-            background: white; padding: 5px 15px 5px 5px;
-            border-radius: 50px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: absolute; top: -20px; left: 15px; display: flex; align-items: center;
+            background: white; padding: 5px 15px 5px 5px; border-radius: 50px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-        .recommend-icon {
-            width: 35px; height: 35px; border-radius: 50%;
-            margin-right: 8px; object-fit: cover; border: 2px solid #fff;
-        }
-        .recommend-text {
-            color: white; font-size: 0.75rem; font-weight: 800;
-            padding: 3px 12px; border-radius: 50px;
-        }
+        .recommend-icon { width: 35px; height: 35px; border-radius: 50%; margin-right: 8px; object-fit: cover; border: 2px solid #fff; }
+        .recommend-text { color: white; font-size: 0.75rem; font-weight: 800; padding: 3px 12px; border-radius: 50px; }
 
         /* キャラ別デザイン */
-        /* 一果 */
         .ichika { border-color: #ffcad4; }
         .ichika .recommend-icon { border-color: #ff8fa3; background-color: #fff1f3; }
         .ichika .recommend-text { background: #ff8fa3; }
         .ichika .site-name { color: #ff6b81; }
-        /* 初音 */
+        
         .hatsune { border-color: #b2f2bb; }
         .hatsune .recommend-icon { border-color: #38a169; background-color: #f0fff4; }
         .hatsune .recommend-text { background: #38a169; }
         .hatsune .site-name { color: #2d6a4f; }
-        /* キイナ */
+        
         .kiina { border-color: #a1c4fd; }
         .kiina .recommend-icon { border-color: #0052d4; background-color: #f0f5ff; }
         .kiina .recommend-text { background: #0052d4; }
@@ -153,13 +84,15 @@
         /* 案件内容 */
         .site-name { font-size: 1.6rem; font-weight: 800; display: block; margin: 25px 0 10px; }
         .site-desc { font-size: 0.85rem; line-height: 1.6; color: #666; margin-bottom: 15px; }
-        
-        .recommend-point {
-            background: #f9f9f9; border-radius: 12px; padding: 12px;
-            font-size: 0.8rem; text-align: left; margin-bottom: 20px;
-        }
+        .recommend-point { background: #f9f9f9; border-radius: 12px; padding: 12px; font-size: 0.8rem; text-align: left; margin-bottom: 20px; }
 
-        /* ボタン */
+        /* --- ボタンとマイクロコピー --- */
+        .btn-microcopy {
+            text-align: center; font-size: 0.85rem; font-weight: 800; color: #ff3366;
+            margin-bottom: 10px; animation: bounce-soft 2s infinite; 
+        }
+        @keyframes bounce-soft { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
         .ad-btn {
             display: block; text-align: center; color: white; text-decoration: none;
             padding: 18px; border-radius: 50px; font-weight: 800; font-size: 1.1rem;
@@ -181,8 +114,9 @@
 
     <div class="intro-card">
         <div class="chara-group">
-            <img src="ichika_sd.png" class="chara-mini"> <img src="hatsune_sd.png" class="chara-mini">
-            <img src="kiina_sd.png" class="chara-mini">
+            <img src="ichika_sd.png" class="chara-mini" alt="一果"> 
+            <img src="hatsune_sd.png" class="chara-mini" alt="初音">
+            <img src="kiina_sd.png" class="chara-mini" alt="キイナ">
         </div>
         <p style="font-size: 0.85rem; font-weight: 800; line-height: 1.6; margin:0;">
             「舟券代が足りない…」なんて時は、<br>
@@ -190,6 +124,7 @@
             <span style="color:#ff6b81;">目的別にオススメを使い分けるのがコツ</span>ですよぉ🌸
         </p>
     </div>
+
     <div class="step-guide">
         <h2 class="step-title">🌸 舟券チャージまでの3ステップ 🌸</h2>
         <div class="step-list">
@@ -209,57 +144,58 @@
         <p class="step-note">＼ 早ければその日のうちに勝負できちゃいますっ✨ ／</p>
     </div>
 
-
     <div class="mission-card ichika">
         <div class="recommend-title">
-            <img src="ichika_icon.png" class="recommend-icon"> <span class="recommend-text">一果オススメ🌸 コツコツ派へ</span>
+            <img src="ichika_icon.png" class="recommend-icon" alt="一果"> <span class="recommend-text">一果オススメ🌸 コツコツ派へ</span>
         </div>
         
         <span class="site-name">モッピー</span>
         <p class="site-desc">
-            「日本で一番有名なサイトですぉ🌸 毎日ガチャを回したり、アンケートに答えるだけで、1レース分の100円はすぐに貯まっちゃいます！」
+            「日本で一番有名なサイトですぉ🌸 毎日コツコツ貯めれば、鉄板のイン逃げ勝負の軍資金はすぐ作れちゃいます！」
         </p>
         <div class="recommend-point">
             ✨ <b>一果のチャージ術：</b><br>
             初心者の人はここ！無料アプリをDLするだけでサクッと軍資金が作れるので、まずはここから始めましょう🌸
         </div>
-                        <div class="btn-microcopy">＼ 初心者カンタン！サクッとイン逃げ資金GET 🌸 ／</div>
-        <a href="https://pc.moppy.jp/entry/invite.php?invite=hvNJe123" class="ad-btn" style="background:#ff8fa3;">一果と一緒に貯める 🌸</a>
-
-        <a href="ポイントインカムの" class="ad-btn" style="background:#38a169;">初音と楽しく稼ぐ 🍀</a>
-
+        
+        <div class="btn-microcopy">＼ 初心者カンタン！サクッとイン逃げ資金GET 🌸 ／</div>
+        <a href="URLをここに入力" class="ad-btn" style="background:#ff8fa3;">一果と一緒に貯める 🌸</a>
     </div>
 
     <div class="mission-card hatsune">
         <div class="recommend-title">
-            <img src="hatsune_icon.png" class="recommend-icon"> <span class="recommend-text">初音オススメ🍀 楽しく稼ぐ派へ</span>
+            <img src="hatsune_icon.png" class="recommend-icon" alt="初音"> <span class="recommend-text">初音オススメ🍀 楽しく稼ぐ派へ</span>
         </div>
 
-        <span class="site-name">ポイントインカム</span>
+        <span class="site-name">ワラウ（warau）</span>
         <p class="site-desc">
-            「ログインするだけでポイントがもらえるイベントが盛りだくさんっ🍀 女子戦を毎日楽しみたい人にピッタリのサイトですよぉ♪」
+            「雑誌のコラムを読んだり、簡単なゲームで遊ぶだけでポイントが貯まっちゃいますっ🍀 サイトも可愛くて、毎日開くのが楽しいですよぉ♪」
         </p>
         <div class="recommend-point">
             ✨ <b>初音のチャージ術：</b><br>
-            女子戦1日分の軍資金が欲しい時は、ここにある『会員登録案件』を2〜3個やるのが初音のひらめき攻略ですっ🍀
+            毎日のログインボーナスや、ワンタップのアンケートを日課にするのが初音のひらめき攻略！女子戦のちょっとした舟券代を楽しく稼いじゃいましょうっ🍀
         </div>
-        <a href="ポイントインカムの" class="ad-btn" style="background:#38a169;">初音と楽しく稼ぐ 🍀</a>
+        
+        <div class="btn-microcopy">＼ 遊びながら楽しく！女子戦の軍資金GET 🍀 ／</div>
+        <a href="URLをここに入力" class="ad-btn" style="background:#38a169;">初音と楽しく稼ぐ 🍀</a>
     </div>
 
     <div class="mission-card kiina">
         <div class="recommend-title">
-            <img src="kiina_icon.png" class="recommend-icon"> <span class="recommend-text">キイナオススメ⚡ 一撃勝負派へ</span>
+            <img src="kiina_icon.png" class="recommend-icon" alt="キイナ"> <span class="recommend-text">キイナオススメ⚡ 一撃勝負派へ</span>
         </div>
 
         <span class="site-name">ハピタス</span>
         <p class="site-desc">
-            「チマチマやるのが面倒ならここだ⚡ クレカ発行や口座開設の還元率がズバ抜けてる。万舟狙いの大金が欲しいならココ一択だッ！」
+            「チマチマやるのが面倒ならここだ⚡ 5コースからの一撃大穴狙いには、それなりの資金が必要だろ？数万円をノーリスクで作って、特大万舟をブチ当てようぜッ！」
         </p>
         <div class="recommend-point">
             ✨ <b>キイナのチャージ術：</b><br>
-            一撃で数万円の軍資金をブチ込みたいなら、ハピタスで高単価案件を狙いな。リスクゼロで勝負するのがプロだろ？⚡
+            一撃で数万円の軍資金をブチ込みたいなら、ハピタスでクレカ発行などの高単価案件を狙いな。リスクゼロで勝負するのがプロだろ？⚡
         </div>
-        <a href"https://hapitas.jp/appinvite?i=25871365&route=text" class="ad-btn" style="background:#0052d4;">キイナと一撃を狙う ⚡</a>
+        
+        <div class="btn-microcopy">＼ 圧倒的高単価！一撃で特大万舟のタネ銭を作れ ⚡ ／</div>
+        <a href="URLをここに入力" class="ad-btn" style="background:#0052d4;">キイナと一撃を狙う ⚡</a>
     </div>
 
     <div class="footer-nav">
