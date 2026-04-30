@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>漫画ビューアー</title>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #111; /* 漫画が映えるように背景を黒に設定 */
+      color: #fff;
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    /* ビューアー全体のサイズ設定 */
+    .swiper {
+      width: 100%;
+      max-width: 650px; /* PCでの最大の幅 */
+      height: 85vh;      /* 画面の高さに合わせる */
+      background-color: #000;
+    }
+
+    /* 各スライド（漫画のページ） */
+    .swiper-slide {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* 画像の表示サイズを調整 */
+    .swiper-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain; /* アスペクト比を維持し、画像全体を表示 */
+    }
+
+    /* ナビゲーション矢印の色 */
+    .swiper-button-next,
+    .swiper-button-prev {
+      color: #ffffff;
+    }
+
+    /* ページ番号（ページネーション）の文字色 */
+    .swiper-pagination {
+      color: #ffffff;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="swiper">
+    <div class="swiper-wrapper">
+      
+      <div class="swiper-slide"><img src="page1.jpg" alt="1ページ目"></div>
+      <div class="swiper-slide"><img src="page2.jpg" alt="2ページ目"></div>
+      <div class="swiper-slide"><img src="page3.jpg" alt="3ページ目"></div>
+      <div class="swiper-slide"><img src="page4.jpg" alt="4ページ目"></div>
+      <div class="swiper-slide"><img src="page5.jpg" alt="5ページ目"></div>
+      <div class="swiper-slide"><img src="page6.jpg" alt="6ページ目"></div>
+      <div class="swiper-slide"><img src="page7.jpg" alt="7ページ目"></div>
+      <div class="swiper-slide"><img src="page8.jpg" alt="8ページ目"></div>
+      <div class="swiper-slide"><img src="page9.jpg" alt="9ページ目"></div>
+      <div class="swiper-slide"><img src="page10.jpg" alt="10ページ目"></div>
+
+    </div>
+
+    <div class="swiper-pagination"></div>
+
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  
+  <script>
+    const swiper = new Swiper('.swiper', {
+      direction: 'horizontal', // 左右の動き
+      loop: false,             // 最後のページで止める
+
+      // ※ 日本の漫画のように右から左へめくりたい場合は、
+      // 以下の「 // rtl: true, 」の「//」を消して「rtl: true,」にしてください。
+      // rtl: true,
+
+      pagination: {
+        el: '.swiper-pagination',
+        type: 'fraction', // 表示形式を「1 / 10」にする
+      },
+
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+    });
+  </script>
+</body>
+</html>
