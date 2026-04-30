@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>漫画ビューアー</title>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #111; /* 漫画が映えるように背景を黒に設定 */
+      color: #fff;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+      padding-bottom: 90px; /* フッター固定メニューで隠れないための余白 */
+    }
+
+    .top-title {
+      margin-top: 15px;
+      margin-bottom: 10px;
+      font-size: 1.4rem;
+      text-align: center;
+      color: #ffd700; /* タイトルを目立たせる色 */
+      font-weight: bold;
+    }
+
+    /* ビューアー全体のサイズ設定 */
+    .swiper {
+      width: 100%;
+      max-width: 650px; /* PCでの最大の幅 */
+      height: 72vh;      /* 画面の高さに合わせる */
+      background-color: #000;
+    }
+
+    /* 各スライド（漫画のページ） */
+    .swiper-slide {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* 画像の表示サイズを調整 */
+    .swiper-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain; /* アスペクト比を維持 */
+    }
+
+    /* ナビゲーション矢印の色 */
+    .swiper-button-next,
+    .swiper-button-prev {
+      color: #ffffff;
+    }
+
+    /* ページ番号（ページネーション）の文字色 */
+    .swiper-pagination {
+      color: #ffffff;
+      font-weight: bold;
+    }
+
+    /* 画像のような固定フッターメニュー（1つに最適化） */
+    .footer-fixed {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #ffffff;
+      display: flex;
+      justify-content: center;
+      padding: 10px 0;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+    }
+
+    .footer-fixed a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #d81b60; /* 一果ツールカラー */
+      font-size: 0.9rem;
+      font-weight: bold;
+      width: 80%;
+      max-width: 280px;
+      border: 2px solid #ffb7c5;
+      border-radius: 15px;
+      padding: 10px 5px;
+      background-color: #fafafa;
+    }
+
+    .footer-fixed .icon {
+      font-size: 1.5rem;
+      margin-bottom: 3px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-title">LINE登録特典②</div>
+
+  <div class="swiper">
+    <div class="swiper-wrapper">
+      
+      <div class="swiper-slide"><img src="afac061a-da2f-44ed-9585-14da2b3ba15b.png" alt="1ページ目"></div>
+      <div class="swiper-slide"><img src="Untitled design.png" alt="2ページ目"></div>
+      <div class="swiper-slide"><img src="36214a5f-b582-4dac-917e-7d657c8e1d6a.png" alt="3ページ目"></div>
+      <div class="swiper-slide"><img src="21e3645c-3980-41d0-acae-30094cc7ae9a.png" alt="4ページ目"></div>
+      <div class="swiper-slide"><img src="f50e334c-9511-43fc-a5e5-85e298a544bc.png" alt="5ページ目"></div>
+      <div class="swiper-slide"><img src="445fb9b7-b3f4-4a44-b10c-77dfba8e003a.png" alt="6ページ目"></div>
+      <div class="swiper-slide"><img src="41a2757f-f6e1-4e5e-afd4-e39e78abed7e.png" alt="7ページ目"></div>
+      <div class="swiper-slide"><img src="5d5d2c21-5129-42fe-bbfe-6ec81d5caa65.png" alt="8ページ目"></div>
+      <div class="swiper-slide"><img src="e1f972dd-3ed5-44cc-be41-29e0d7ca5901.png" alt="9ページ目"></div>
+      <div class="swiper-slide"><img src="884e0427-9f56-4f84-a4ea-5685c927237c.png" alt="10ページ目"></div>
+      <div class="swiper-slide"><img src="IMG_5079.jpeg" alt="11ページ目"></div>
+      <div class="swiper-slide"><img src="IMG_5080.jpeg" alt="12ページ目"></div>
+      <div class="swiper-slide"><img src="IMG_5081.jpeg" alt="13ページ目"></div>
+
+    </div>
+
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+
+  </div>
+
+  <div class="footer-fixed">
+    <a href="https://www.boat-strike.com/ichika" target="_blank">
+      <span class="icon">🌸</span>
+      <span>一果ツール</span>
+    </a>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  
+  <script>
+    const swiper = new Swiper('.swiper', {
+      direction: 'horizontal',
+      loop: false,
+
+      pagination: {
+        el: '.swiper-pagination',
+        type: 'fraction',
+      },
+
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+    });
+  </script>
+</body>
+</html>
