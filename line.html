@@ -39,7 +39,14 @@
     .swiper-slide img {
       width: 100%;
       height: 100%;
-      object-fit: contain; /* アスペクト比を維持し、画像全体を表示 */
+      
+      /* object-fit の調整で見た目を変えられます */
+      /* contain: 全体を表示する（現在の設定） */
+      /* cover: 枠いっぱいに拡大してトリミングする */
+      object-fit: contain; 
+      
+      /* もし背景と画像の縦横比の違いをなくして一律にしたい場合は、高さを固定することも可能です */
+      /* max-height: 80vh; */
     }
 
     /* ナビゲーション矢印の色 */
@@ -70,7 +77,8 @@
       <div class="swiper-slide"><img src="37eca5b8-387d-4fb4-b6a3-94e242bb98b4.png" alt="8ページ目"></div>
       <div class="swiper-slide"><img src="10921ae3-f826-475f-a2b8-fa167be7d3b9.png" alt="9ページ目"></div>
       <div class="swiper-slide"><img src="1e0965f5-00b5-41a3-9432-86051a6d94b2.png" alt="10ページ目"></div>
-     <div class="swiper-slide"><img src="eb8e0642-39e7-480d-9e23-ef96f5dea549.png" alt="11ページ目"></div
+      <div class="swiper-slide"><img src="eb8e0642-39e7-480d-9e23-ef96f5dea549.png" alt="11ページ目"></div>
+
     </div>
 
     <div class="swiper-pagination"></div>
@@ -84,16 +92,12 @@
   
   <script>
     const swiper = new Swiper('.swiper', {
-      direction: 'horizontal', // 左右の動き
-      loop: false,             // 最後のページで止める
-
-      // ※ 日本の漫画のように右から左へめくりたい場合は、
-      // 以下の「 // rtl: true, 」の「//」を消して「rtl: true,」にしてください。
-      // rtl: true,
+      direction: 'horizontal',
+      loop: false,
 
       pagination: {
         el: '.swiper-pagination',
-        type: 'fraction', // 表示形式を「1 / 10」にする
+        type: 'fraction',
       },
 
       navigation: {
