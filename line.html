@@ -15,16 +15,26 @@
       color: #fff;
       font-family: sans-serif;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
+    }
+
+    .top-title {
+      margin-top: 15px;
+      margin-bottom: 10px;
+      font-size: 1.4rem;
+      text-align: center;
+      color: #ffd700; /* タイトルを目立たせる色 */
+      font-weight: bold;
     }
 
     /* ビューアー全体のサイズ設定 */
     .swiper {
       width: 100%;
       max-width: 650px; /* PCでの最大の幅 */
-      height: 85vh;      /* 画面の高さに合わせる */
+      height: 72vh;      /* 画面の高さに合わせる */
       background-color: #000;
     }
 
@@ -39,14 +49,7 @@
     .swiper-slide img {
       width: 100%;
       height: 100%;
-      
-      /* object-fit の調整で見た目を変えられます */
-      /* contain: 全体を表示する（現在の設定） */
-      /* cover: 枠いっぱいに拡大してトリミングする */
-      object-fit: contain; 
-      
-      /* もし背景と画像の縦横比の違いをなくして一律にしたい場合は、高さを固定することも可能です */
-      /* max-height: 80vh; */
+      object-fit: contain; /* アスペクト比を維持 */
     }
 
     /* ナビゲーション矢印の色 */
@@ -60,9 +63,42 @@
       color: #ffffff;
       font-weight: bold;
     }
+
+    .footer-links {
+      margin-top: 12px;
+      margin-bottom: 15px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .footer-links .links-title {
+      margin-bottom: 4px;
+      color: #999;
+    }
+
+    .footer-links ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .footer-links a {
+      color: #64b5f6; /* リンク色 */
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
+
+  <div class="top-title">LINE登録特典①</div>
 
   <div class="swiper">
     <div class="swiper-wrapper">
@@ -82,10 +118,18 @@
     </div>
 
     <div class="swiper-pagination"></div>
-
     <div class="swiper-button-prev"></div>
     <div class="swiper-button-next"></div>
 
+  </div>
+
+  <div class="footer-links">
+    <div class="links-title">関連ツールのご紹介</div>
+    <ul>
+      <li><a href="https://www.boat-strike.com/ichika" target="_blank">一果のイン逃げツール</a></li>
+      <li><a href="https://www.boat-strike.com/kiina5.html" target="_blank">キイナの5アタマツール</a></li>
+      <li><a href="https://www.boat-strike.com/hastune" target="_blank">初音の女子戦ツール</a></li>
+    </ul>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
