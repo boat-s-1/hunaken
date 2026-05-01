@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>漫画ビューアー</title>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #111; /* 漫画が映えるように背景を黒に設定 */
+      color: #fff;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+      padding-bottom: 90px; /* フッター固定メニューで隠れないための余白 */
+    }
+
+    .top-title {
+      margin-top: 15px;
+      margin-bottom: 10px;
+      font-size: 1.4rem;
+      text-align: center;
+      color: #ffd700; /* タイトルを目立たせる色 */
+      font-weight: bold;
+    }
+
+    /* ビューアー全体のサイズ設定 */
+    .swiper {
+      width: 100%;
+      max-width: 650px; /* PCでの最大の幅 */
+      height: 72vh;      /* 画面の高さに合わせる */
+      background-color: #000;
+    }
+
+    /* 各スライド（漫画のページ） */
+    .swiper-slide {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* 画像の表示サイズを調整 */
+    .swiper-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain; /* アスペクト比を維持 */
+    }
+
+    /* ナビゲーション矢印の色 */
+    .swiper-button-next,
+    .swiper-button-prev {
+      color: #ffffff;
+    }
+
+    /* ページ番号（ページネーション）の文字色 */
+    .swiper-pagination {
+      color: #ffffff;
+      font-weight: bold;
+    }
+
+    /* 画像のような固定フッターメニュー（キイナツール用） */
+    .footer-fixed {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #ffffff;
+      display: flex;
+      justify-content: center;
+      padding: 10px 0;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+    }
+
+    .footer-fixed a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #f57c00; /* キイナツールカラー（オレンジ系） */
+      font-size: 0.9rem;
+      font-weight: bold;
+      width: 80%;
+      max-width: 280px;
+      border: 2px solid #ffe082; /* 枠線カラー */
+      border-radius: 15px;
+      padding: 10px 5px;
+      background-color: #fafafa;
+    }
+
+    .footer-fixed .icon {
+      font-size: 1.5rem;
+      margin-bottom: 3px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-title">LINE登録特典③</div>
+
+  <div class="swiper">
+    <div class="swiper-wrapper">
+      
+      <div class="swiper-slide"><img src="IMG_5121.jpeg" alt="1ページ目"></div>
+      <div class="swiper-slide"><img src="IMG_5122.jpeg" alt="2ページ目"></div>
+      <div class="swiper-slide"><img src="IMG_5123.jpeg" alt="3ページ目"></div>
+      <div class="swiper-slide"><img src="IMG_5124.jpeg" alt="4ページ目"></div>
+      <div class="swiper-slide"><img src="IMG_5125.jpeg" alt="5ページ目"></div>
+      <div class="swiper-slide"><img src="IMG_5126.jpeg" alt="6ページ目"></div>
+      <div class="swiper-slide"><img src="IMG_5127.jpeg" alt="7ページ目"></div>
+      <div class="swiper-slide"><img src="IMG_5128.jpeg" alt="8ページ目"></div>
+      <div class="swiper-slide"><img src="IMG_5129.jpeg" alt="9ページ目"></div>
+      <div class="swiper-slide"><img src="IMG_5130.jpeg" alt="10ページ目"></div>
+      <div class="swiper-slide"><img src="IMG_5162.jpeg" alt="11ページ目"></div>
+      <div class="swiper-slide"><img src="IMG_5131.jpeg" alt="12ページ目"></div>
+      <div class="swiper-slide"><img src="IMG_5132.jpeg" alt="13ページ目"></div>
+
+    </div>
+
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+
+  </div>
+
+  <div class="footer-fixed">
+    <a href="https://www.boat-strike.com/kiina5.html" target="_blank">
+      <span class="icon">⚡</span>
+      <span>キイナツール</span>
+    </a>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  
+  <script>
+    const swiper = new Swiper('.swiper', {
+      direction: 'horizontal',
+      loop: false,
+
+      pagination: {
+        el: '.swiper-pagination',
+        type: 'fraction',
+      },
+
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+    });
+  </script>
+</body>
+</html>
