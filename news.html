@@ -12,7 +12,6 @@ body{
   background:#eee;
 }
 
-/* 横スクロール */
 .wrapper{
   display:flex;
   gap:12px;
@@ -20,7 +19,6 @@ body{
   overflow-x:auto;
 }
 
-/* 共通 */
 .paper{
   width:360px;
   padding:10px;
@@ -29,19 +27,16 @@ body{
   box-shadow:5px 5px 0 #000;
 }
 
-/* キャラ */
 .ikka{ background:#ffe4ec; }
 .kiina{ background:#fff3a3; }
 .hatsune{ background:#e3f2ff; }
 
-/* タイトル */
 .title{
   font-size:20px;
   font-weight:bold;
   border-bottom:3px dashed #000;
 }
 
-/* セクション */
 .section{
   margin-top:10px;
   border:2px solid #000;
@@ -49,7 +44,6 @@ body{
   background:#fff;
 }
 
-/* 結論（最重要） */
 .buy{
   font-size:28px;
   font-weight:bold;
@@ -57,17 +51,14 @@ body{
   text-align:center;
 }
 
-/* 本命 */
 .main{
   font-size:24px;
   font-weight:bold;
 }
 
-/* 上昇 */
 .up{ color:green; font-weight:bold; }
 .down{ color:blue; }
 
-/* 危険 */
 .danger{
   background:black;
   color:yellow;
@@ -76,7 +67,6 @@ body{
   text-align:center;
 }
 
-/* ゲージ */
 .gauge{
   height:10px;
   background:#ccc;
@@ -87,20 +77,22 @@ body{
   background:red;
 }
 
-/* 表 */
 .row{
   display:flex;
   justify-content:space-between;
   font-size:13px;
 }
 
-/* ボタン */
 .btn{
   margin:10px;
   padding:10px;
   background:#000;
   color:#fff;
   border:none;
+}
+
+input{
+  width:50px;
 }
 </style>
 </head>
@@ -136,27 +128,36 @@ ST<input id="st${i}" value="0.${i}">
 展示<input id="t${i}" value="6.${80-i}">
 <br>`;
 }
-inputs.innerHTML = html;
+document.getElementById("inputs").innerHTML = html;
 
-// 計算
+// 計算ロジック
 function calc(mode){
 let data=[];
 
 for(let i=1;i<=6;i++){
+
 let w=+document.getElementById("w"+i).value;
 let m=+document.getElementById("m"+i).value;
 let st=+document.getElementById("st"+i).value;
 let t=+document.getElementById("t"+i).value;
 
+// 基礎
 let base = w*0.5 + m*0.5;
+
+// スタート
 let start = (0.20 - st)*100;
+
+// 展示
 let display = (6.80 - t)*100;
+if(mode==="before") display *= 0.3;
 
-if(mode==="before") display*=0.3;
-
+// コース補正
 let course=[1.2,1.1,1.0,0.9,0.8,0.7][i-1];
 
+// 合成
 let total = base*0.4 + display*0.3 + start*0.2 + course*10;
+
+// 前日用
 let before = base*0.6 + start*0.2 + course*10;
 
 data.push({num:i,total:total,before:before});
@@ -165,9 +166,11 @@ data.push({num:i,total:total,before:before});
 return data;
 }
 
+// メイン生成
 function generate(){
 
-let mode = modeSelect.value;
+let mode = document.getElementById("mode").value;
+
 let d = calc(mode);
 
 // 並び替え
@@ -181,10 +184,10 @@ x.diff = Math.round(x.total - x.before);
 // 本命
 let head = sorted[0];
 
-// 危険
+// 危険判定（1号艇）
 let danger = d[0].diff < 0;
 
-// 危険度ゲージ
+// 危険度
 let risk = Math.min(100, Math.abs(head.diff)*5);
 
 // 表
@@ -200,10 +203,10 @@ return `<div class="row">
 }).join("");
 }
 
-// 買い目（簡易）
+// 買い目
 let buy = `${head.num}-${sorted[1].num}-${sorted[2].num}`;
 
-// ===== 一果 =====
+// 一果
 let ikka = `
 <div class="paper ikka">
 <div class="title">🏫 一果ちゃん新聞</div>
@@ -226,7 +229,7 @@ ${danger?'<div class="danger">⚠ 危険</div>':''}
 </div>
 `;
 
-// ===== キイナ =====
+// キイナ
 let kiina = `
 <div class="paper kiina">
 <div class="title">💅 キイナ速報</div>
@@ -243,7 +246,7 @@ let kiina = `
 </div>
 `;
 
-// ===== 初音 =====
+// 初音
 let hatsune = `
 <div class="paper hatsune">
 <div class="title">🤖 初音AI通信</div>
@@ -260,10 +263,10 @@ let hatsune = `
 </div>
 `;
 
-output.innerHTML = ikka + kiina + hatsune;
+document.getElementById("output").innerHTML = ikka + kiina + hatsune;
 }
 
-// 保存
+// 画像保存
 function save(){
 html2canvas(document.getElementById("output")).then(canvas=>{
 let link=document.createElement("a");
@@ -272,6 +275,9 @@ link.href=canvas.toDataURL();
 link.click();
 });
 }
+
+// 初期表示
+generate();
 
 </script>
 
