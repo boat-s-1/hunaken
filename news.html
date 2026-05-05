@@ -2,41 +2,121 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>競艇AI新聞 完成版</title>
+<title>競艇AI新聞 PRO</title>
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <style>
-body{font-family:sans-serif;background:#eee;margin:0}
-.wrapper{display:flex;gap:12px;padding:10px;overflow-x:auto}
-.paper{width:340px;padding:10px;border:3px solid #000;background:#fffdf5}
-.ikka{background:#ffe4ec}
-.kiina{background:#fff3a3}
-.hatsune{background:#e3f2ff}
-.title{font-weight:bold;font-size:18px;border-bottom:2px dashed #000}
-.section{margin-top:8px;border:2px solid #000;padding:5px;background:#fff}
-.main{font-size:22px;font-weight:bold}
-.good{color:red;font-weight:bold}
-.up{color:green}
-.down{color:blue}
-.stamp{border:2px solid red;color:red;padding:2px;margin-left:5px}
-.btn{margin:10px;padding:8px;background:#000;color:#fff;border:none}
-input{width:50px}
+body{
+  margin:0;
+  font-family:sans-serif;
+  background:#eee;
+}
+
+/* 横スクロール */
+.wrapper{
+  display:flex;
+  gap:12px;
+  padding:10px;
+  overflow-x:auto;
+}
+
+/* 共通 */
+.paper{
+  width:360px;
+  padding:10px;
+  border:4px solid #000;
+  background:#fffdf5;
+  box-shadow:5px 5px 0 #000;
+}
+
+/* キャラ */
+.ikka{ background:#ffe4ec; }
+.kiina{ background:#fff3a3; }
+.hatsune{ background:#e3f2ff; }
+
+/* タイトル */
+.title{
+  font-size:20px;
+  font-weight:bold;
+  border-bottom:3px dashed #000;
+}
+
+/* セクション */
+.section{
+  margin-top:10px;
+  border:2px solid #000;
+  padding:8px;
+  background:#fff;
+}
+
+/* 結論（最重要） */
+.buy{
+  font-size:28px;
+  font-weight:bold;
+  color:red;
+  text-align:center;
+}
+
+/* 本命 */
+.main{
+  font-size:24px;
+  font-weight:bold;
+}
+
+/* 上昇 */
+.up{ color:green; font-weight:bold; }
+.down{ color:blue; }
+
+/* 危険 */
+.danger{
+  background:black;
+  color:yellow;
+  padding:5px;
+  font-weight:bold;
+  text-align:center;
+}
+
+/* ゲージ */
+.gauge{
+  height:10px;
+  background:#ccc;
+  margin-top:5px;
+}
+.gauge-bar{
+  height:10px;
+  background:red;
+}
+
+/* 表 */
+.row{
+  display:flex;
+  justify-content:space-between;
+  font-size:13px;
+}
+
+/* ボタン */
+.btn{
+  margin:10px;
+  padding:10px;
+  background:#000;
+  color:#fff;
+  border:none;
+}
 </style>
 </head>
 
 <body>
 
-<h2 style="padding:10px;">競艇AI新聞（前日/直前対応）</h2>
+<h2 style="padding:10px;">競艇AI新聞 PRO</h2>
 
 <div style="padding:10px;">
-モード:
+モード：
 <select id="mode">
 <option value="before">前日</option>
 <option value="live">直前</option>
 </select>
 <br><br>
 
-<!-- 入力 -->
 <div id="inputs"></div>
 
 <button class="btn" onclick="generate()">新聞作成</button>
@@ -50,48 +130,36 @@ input{width:50px}
 // 入力生成
 let html="";
 for(let i=1;i<=6;i++){
-html += `${i}号艇 
-勝率<input id="w${i}" value="${50-i*5}">
+html += `${i}号艇 勝率<input id="w${i}" value="${50-i*5}">
 モーター<input id="m${i}" value="${50-i*3}">
 ST<input id="st${i}" value="0.${i}">
 展示<input id="t${i}" value="6.${80-i}">
 <br>`;
 }
-document.getElementById("inputs").innerHTML = html;
+inputs.innerHTML = html;
 
 // 計算
 function calc(mode){
-
 let data=[];
 
 for(let i=1;i<=6;i++){
-
 let w=+document.getElementById("w"+i).value;
 let m=+document.getElementById("m"+i).value;
 let st=+document.getElementById("st"+i).value;
 let t=+document.getElementById("t"+i).value;
 
-// 基礎
 let base = w*0.5 + m*0.5;
-
-// スタート
 let start = (0.20 - st)*100;
-
-// 展示（直前のみ強く反映）
 let display = (6.80 - t)*100;
-if(mode==="before") display *= 0.3;
 
-// コース補正
+if(mode==="before") display*=0.3;
+
 let course=[1.2,1.1,1.0,0.9,0.8,0.7][i-1];
 
-// 最終
 let total = base*0.4 + display*0.3 + start*0.2 + course*10;
+let before = base*0.6 + start*0.2 + course*10;
 
-data.push({
-num:i,
-total:total,
-before: base*0.6 + start*0.2 + course*10
-});
+data.push({num:i,total:total,before:before});
 }
 
 return data;
@@ -99,76 +167,100 @@ return data;
 
 function generate(){
 
-let mode=document.getElementById("mode").value;
-
+let mode = modeSelect.value;
 let d = calc(mode);
 
-// ソート
+// 並び替え
 let sorted=[...d].sort((a,b)=>b.total-a.total);
 
-// 上昇率
+// 差分
 d.forEach(x=>{
-let prev = x.before;
-x.diff = Math.round(x.total - prev);
+x.diff = Math.round(x.total - x.before);
 });
 
 // 本命
 let head = sorted[0];
 
-// 危険判定（1号艇）
-let danger=false;
-if(d[0].diff<0 && d[0].total<sorted[1].total){
-danger=true;
-}
+// 危険
+let danger = d[0].diff < 0;
+
+// 危険度ゲージ
+let risk = Math.min(100, Math.abs(head.diff)*5);
 
 // 表
 function table(){
 return d.map(x=>{
-let cls = x.total===head.total ? "good":"";
-let diff = x.diff>0 ? `<span class="up">+${x.diff}</span>`:
+let diff = x.diff>0 ? `<span class="up">+${x.diff}</span>` :
 `<span class="down">${x.diff}</span>`;
-return `<div>${x.num}号艇 ${Math.round(x.total)} ${diff}</div>`;
+return `<div class="row">
+<span>${x.num}号艇</span>
+<span>${Math.round(x.total)}</span>
+<span>${diff}</span>
+</div>`;
 }).join("");
 }
 
-// 一果
-let ikka=`
+// 買い目（簡易）
+let buy = `${head.num}-${sorted[1].num}-${sorted[2].num}`;
+
+// ===== 一果 =====
+let ikka = `
 <div class="paper ikka">
-<div class="title">🏫 一果新聞</div>
+<div class="title">🏫 一果ちゃん新聞</div>
+
+<div class="section buy">🎯 ${buy}</div>
+
 <div class="section">
-<div class="main">◎${head.num}号艇 ${Math.round(head.total)}</div>
-${danger?'<span class="stamp">危険</span>':''}
+<div class="main">◎${head.num}号艇</div>
+${danger?'<div class="danger">⚠ 危険</div>':''}
 </div>
+
+<div class="section">
+危険度
+<div class="gauge"><div class="gauge-bar" style="width:${risk}%"></div></div>
+</div>
+
 <div class="section">${table()}</div>
-<div class="section">「安定感重視」</div>
+
+<div class="section">「安定重視の本命です！」</div>
 </div>
 `;
 
-// キイナ
-let kiina=`
+// ===== キイナ =====
+let kiina = `
 <div class="paper kiina">
 <div class="title">💅 キイナ速報</div>
+
+<div class="section buy">🔥 ${buy}</div>
+
 <div class="section">
-<div class="main">荒れ度:${Math.abs(head.diff)}</div>
+<div class="main">荒れ度:${risk}</div>
 </div>
+
 <div class="section">${table()}</div>
-<div class="section">「これ荒れる可能性w」</div>
+
+<div class="section">「これ荒れる可能性あるw」</div>
 </div>
 `;
 
-// 初音
-let hatsune=`
+// ===== 初音 =====
+let hatsune = `
 <div class="paper hatsune">
-<div class="title">🤖 初音AI</div>
+<div class="title">🤖 初音AI通信</div>
+
+<div class="section buy">📊 ${buy}</div>
+
 <div class="section">
 <div class="main">1位:${head.num}</div>
 </div>
+
 <div class="section">${table()}</div>
+
 <div class="section">「指数最上位」</div>
 </div>
 `;
 
-output.innerHTML = ikka+kiina+hatsune;
+output.innerHTML = ikka + kiina + hatsune;
 }
 
 // 保存
