@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>競艇新聞ジェネレーター</title>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<style>
+body {
+  font-family: sans-serif;
+  background: #f5f5f5;
+}
+
+.container {
+  display: flex;
+  gap: 20px;
+}
+
+/* 共通新聞 */
+.paper {
+  width: 320px;
+  background: #fffbe6;
+  border: 3px solid #000;
+  padding: 10px;
+}
+
+/* キャラ別 */
+.ikka { background: #ffe4ec; }
+.kiina { background: #fff3a3; }
+.hatsune { background: #e3f2ff; }
+
+.title {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.main {
+  font-size: 20px;
+  margin: 10px 0;
+}
+
+.comment {
+  font-size: 12px;
+  margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>入力</h2>
+1号艇 1着率: <input id="rate1" value="84"><br>
+2号艇 1着率: <input id="rate2" value="43"><br>
+
+<button onclick="generate()">新聞作成</button>
+<button onclick="save()">画像保存</button>
+
+<hr>
+
+<div id="output" class="container"></div>
+
+<script>
+function generate() {
+  const r1 = document.getElementById("rate1").value;
+  const r2 = document.getElementById("rate2").value;
+
+  const html = `
+  <div class="paper ikka">
+    <div class="title">一果ちゃん新聞</div>
+    <div class="main">◎1号艇 ${r1}%</div>
+    <div>2号艇 ${r2}%</div>
+    <div class="comment">「ここは安定です！」</div>
+  </div>
+
+  <div class="paper kiina">
+    <div class="title">キイナ速報</div>
+    <div class="main">1強だけどワンチャン2</div>
+    <div class="comment">「これ荒れたらウケるw」</div>
+  </div>
+
+  <div class="paper hatsune">
+    <div class="title">初音AI分析</div>
+    <div class="main">勝率:${r1}% 優位</div>
+    <div class="comment">「統計的に1号艇有利」</div>
+  </div>
+  `;
+
+  document.getElementById("output").innerHTML = html;
+}
+
+function save() {
+  html2canvas(document.getElementById("output")).then(canvas => {
+    const link = document.createElement("a");
+    link.download = "news.png";
+    link.href = canvas.toDataURL();
+    link.click();
+  });
+}
+</script>
+
+</body>
+</html>
