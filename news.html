@@ -2,98 +2,225 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>競艇新聞ジェネレーター</title>
+<title>競艇AI新聞</title>
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
 <style>
-body {
-  font-family: sans-serif;
-  background: #f5f5f5;
+body{
+  margin:0;
+  font-family:"Hiragino Maru Gothic ProN",sans-serif;
+  background:#eee;
 }
 
-.container {
-  display: flex;
-  gap: 20px;
+/* 全体 */
+.wrapper{
+  display:flex;
+  gap:16px;
+  padding:10px;
+  overflow-x:auto;
 }
 
-/* 共通新聞 */
-.paper {
-  width: 320px;
-  background: #fffbe6;
-  border: 3px solid #000;
-  padding: 10px;
+/* 新聞 */
+.paper{
+  width:360px;
+  padding:12px;
+  border:4px solid #000;
+  box-shadow:5px 5px 0 #000;
+  background:#fffdf5;
 }
 
-/* キャラ別 */
-.ikka { background: #ffe4ec; }
-.kiina { background: #fff3a3; }
-.hatsune { background: #e3f2ff; }
+/* キャラカラー */
+.ikka{ background:#ffe4ec; }
+.kiina{ background:#fff3a3; }
+.hatsune{ background:#e3f2ff; }
 
-.title {
-  font-weight: bold;
-  font-size: 18px;
+/* タイトル */
+.title{
+  font-size:20px;
+  font-weight:bold;
+  border-bottom:3px dashed #000;
+  padding-bottom:5px;
 }
 
-.main {
-  font-size: 20px;
-  margin: 10px 0;
+/* 見出し */
+.section{
+  margin-top:10px;
+  border:2px solid #000;
+  padding:6px;
+  background:#fff;
 }
 
-.comment {
-  font-size: 12px;
-  margin-top: 10px;
+/* 本命 */
+.main{
+  font-size:26px;
+  font-weight:bold;
+}
+
+/* スタンプ */
+.stamp{
+  display:inline-block;
+  padding:3px 6px;
+  border:2px solid red;
+  color:red;
+  font-weight:bold;
+  transform:rotate(-10deg);
+  margin-left:5px;
+}
+
+/* 表 */
+.table{
+  font-size:13px;
+  margin-top:5px;
+}
+
+.row{
+  display:flex;
+  justify-content:space-between;
+}
+
+/* コメント */
+.comment{
+  font-size:12px;
+  margin-top:5px;
+}
+
+/* ボタン */
+.btn{
+  margin:10px;
+  padding:10px;
+  background:#000;
+  color:#fff;
+  border:none;
 }
 </style>
 </head>
 
 <body>
 
-<h2>入力</h2>
-1号艇 1着率: <input id="rate1" value="84"><br>
-2号艇 1着率: <input id="rate2" value="43"><br>
+<h2 style="padding:10px;">競艇AI新聞ジェネレーター</h2>
 
-<button onclick="generate()">新聞作成</button>
-<button onclick="save()">画像保存</button>
+<div style="padding:10px;">
+1号艇: <input id="r1" value="84">
+2号艇: <input id="r2" value="43">
+3号艇: <input id="r3" value="30">
+4号艇: <input id="r4" value="25">
+5号艇: <input id="r5" value="18">
+6号艇: <input id="r6" value="10">
 
-<hr>
+<br><br>
+<button class="btn" onclick="generate()">新聞作成</button>
+<button class="btn" onclick="save()">画像保存</button>
+</div>
 
-<div id="output" class="container"></div>
+<div id="output" class="wrapper"></div>
 
 <script>
-function generate() {
-  const r1 = document.getElementById("rate1").value;
-  const r2 = document.getElementById("rate2").value;
+function generate(){
 
-  const html = `
-  <div class="paper ikka">
-    <div class="title">一果ちゃん新聞</div>
-    <div class="main">◎1号艇 ${r1}%</div>
-    <div>2号艇 ${r2}%</div>
-    <div class="comment">「ここは安定です！」</div>
-  </div>
+const r=[0,
+  +r1.value,+r2.value,+r3.value,
+  +r4.value,+r5.value,+r6.value
+];
 
-  <div class="paper kiina">
-    <div class="title">キイナ速報</div>
-    <div class="main">1強だけどワンチャン2</div>
-    <div class="comment">「これ荒れたらウケるw」</div>
-  </div>
+// 本命判定
+let max = Math.max(...r.slice(1));
+let head = r.indexOf(max);
 
-  <div class="paper hatsune">
-    <div class="title">初音AI分析</div>
-    <div class="main">勝率:${r1}% 優位</div>
-    <div class="comment">「統計的に1号艇有利」</div>
-  </div>
-  `;
+// 一果
+let ikka = `
+<div class="paper ikka">
+<div class="title">🏫 一果ちゃん新聞</div>
 
-  document.getElementById("output").innerHTML = html;
+<div class="section">
+<div class="main">◎${head}号艇 ${max}%</div>
+<span class="stamp">本命</span>
+</div>
+
+<div class="section table">
+${rows(r)}
+</div>
+
+<div class="section comment">
+「${head}号艇の安定感が抜けています」
+</div>
+
+<div class="section">
+🎯 1-${head}-全
+</div>
+</div>
+`;
+
+// キイナ
+let kiina = `
+<div class="paper kiina">
+<div class="title">💅 キイナ速報</div>
+
+<div class="section">
+<div class="main">${head}強めだけど荒れ注意</div>
+<span class="stamp">波乱</span>
+</div>
+
+<div class="section table">
+${rows(r)}
+</div>
+
+<div class="section comment">
+「これ普通に荒れる可能性あるw」
+</div>
+
+<div class="section">
+🎯 ${head}-穴-全
+</div>
+</div>
+`;
+
+// 初音
+let hatsune = `
+<div class="paper hatsune">
+<div class="title">🤖 初音AI分析</div>
+
+<div class="section">
+<div class="main">勝率 ${max}% 優位</div>
+<span class="stamp">DATA</span>
+</div>
+
+<div class="section table">
+${rows(r)}
+</div>
+
+<div class="section comment">
+「統計的に${head}号艇優勢」
+</div>
+
+<div class="section">
+🎯 ${head}-対抗-流し
+</div>
+</div>
+`;
+
+output.innerHTML = ikka + kiina + hatsune;
 }
 
-function save() {
-  html2canvas(document.getElementById("output")).then(canvas => {
-    const link = document.createElement("a");
-    link.download = "news.png";
-    link.href = canvas.toDataURL();
-    link.click();
-  });
+// 表生成
+function rows(r){
+let html="";
+for(let i=1;i<=6;i++){
+html += `<div class="row">
+<span>${i}号艇</span>
+<span>${r[i]}%</span>
+</div>`;
+}
+return html;
+}
+
+// 画像保存
+function save(){
+html2canvas(document.getElementById("output")).then(canvas=>{
+let link=document.createElement("a");
+link.download="news.png";
+link.href=canvas.toDataURL();
+link.click();
+});
 }
 </script>
 
